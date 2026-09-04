@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>한국디벨로퍼협회(KODA) 일정 안내</title>
+
+<!-- 모바일 홈 화면(PWA) 및 iOS 앱 설정 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KODA 일정">
+<link rel="apple-touch-icon" href="로고.png">
+<link rel="manifest" href="manifest.json">
+
+<!-- 카카오톡 인앱 브라우저 강제 탈출 스크립트 -->
+<script>
+  var userAgent = navigator.userAgent.toLowerCase();
+  if(userAgent.indexOf('kakaotalk') > -1){
+    location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href);
+  }
+</script>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary-color: #0052cc; 
+    --accent-color: #c5a977; 
+    --bg-color: #f4f6f9;
+    --card-bg: #ffffff;
+    --text-dark: #1a202c;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --today-color: #e53e3e; 
+  }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    user-select: none; 
+    -webkit-user-select: none;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--bg-color);
+  }
+
+  /* 헤더 영역 */
+  .header {
+    background-color: var(--card-bg);
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+  .header img {
+    height: 26px; 
+    width: auto;
+    max-width: 55%;
+    object-fit: contain;
+  }
+  
+  .refresh-btn {
+    position: absolute;
+    left: 10px;
+    background-color: transparent;
+    color: #cbd5e0;
+    border: none;
+    padding: 4px 0;
+    font-size: 0.6rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .refresh-btn:active {
+    color: #718096;
+  }
+
+  .install-btn {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    color: #a0aec0;
+    border: 1px solid #e2e8f0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* 달력 영역 */
+  .calendar-wrapper {
+    background: var(--card-bg);
+    margin: 10px;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden; 
+  }
+  .cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .cal-nav-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px 8px;
+  }
+  
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0.3; transform: translateX(5px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .cal-day-name {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    padding-bottom: 3px;
+    font-weight: 600;
+  }
+  .cal-cell {
+    min-height: 48px;
+    border-radius: 4px;
+    background: #fdfdfd;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .cal-cell.empty { background: transparent; border: none; }
+  
+  .cal-cell.today {
+    background: #fff5f5; 
+    border: 1.5px solid var(--today-color); 
+  }
+  
+  .cal-date-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+    padding-left: 1px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .text-red { color: #e53e3e !important; }
+  .text-blue { color: #3182ce !important; }
+
+  .today-badge {
+    background-color: var(--today-color);
+    color: #ffffff;
+    font-size: 0.45rem;
+    padding: 1px 2px;
+    border-radius: 2px;
+    margin-left: 2px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  
+  .cal-event-chip {
+    font-size: 0.55rem;
+    padding: 2px 2px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .cal-event-chip.chairman {
+    background-color: #d0e1fd;
+    border: 1px solid #d0e1fd;
+    color: #000000;
+  }
+
+  /* 상단 메뉴바 */
+  .quick-menu-container {
+    display: grid;
+    grid-template-columns: 2.8fr 2.8fr 2.8fr 2.8fr 2.8fr 2.0fr;
+    gap: 4px;
+    padding: 0 10px 10px 10px;
+    width: 100%;
+    align-items: stretch;
+  }
+  .quick-btn {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 11px 1px; 
+    font-size: 0.58rem; 
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    word-break: keep-all;
+    line-height: 1.15;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .quick-btn:hover {
+    background-color: #f7fafc;
+    border-color: #cbd5e0;
+  }
+  .quick-btn.active-bookmark {
+    background-color: #d69e2e !important;
+    color: #ffffff !important;
+    border-color: #d69e2e !important;
+  }
+  .quick-btn.disabled {
+    color: #a0aec0;
+    background-color: #f7fafc;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .search-box-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .search-input {
+    width: 100%;
+    height: 100%;
+    padding: 0 4px 0 22px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.58rem;
+    background-color: #ffffff;
+    color: var(--text-dark);
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .search-input:focus {
+    border-color: var(--primary-color);
+  }
+  .search-icon {
+    position: absolute;
+    left: 6px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  /* 일정 리스트 영역 */
+  .schedule-container {
+    padding: 0 10px 30px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .event-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.04);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .event-header {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 70px 12px 15px; 
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  /* 카드 우측 상단 액션 버튼 그룹 (공유 + 즐겨찾기, 같은 라인 배치) */
+  .card-actions {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  /* 공통 아이콘 버튼 스타일 (모든 아이콘을 동일한 정사각 박스에 중앙 정렬해 라인을 맞춤) */
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #cbd5e0; /* 옅은 회색 적용 */
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .share-btn:active {
+      color: #718096;
+  }
+
+  .star-btn.starred {
+    color: #d69e2e;
+  }
+
+  .event-meta {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px; 
+    width: 100%;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+
+  .event-date {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #000000;
+  }
+  
+  .event-divider {
+    font-size: 0.85rem;
+    color: #cbd5e0;
+    font-weight: 700;
+  }
+
+  /* 장소명과 D-day가 함께 표시되는 영역 */
+  .event-location {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .event-title {
+    font-size: 1rem; 
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.35;
+    word-break: keep-all;
+    margin-top: 2px;
+  }
+  
+  .event-title.chairman {
+    color: var(--primary-color);
+    font-weight: 800;
+  }
+
+  /* 팝업(모달) 스타일 */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #a0aec0;
+    z-index: 10;
+  }
+  
+  /* 날짜 클릭 시 해당 날짜의 여러 일정을 선택하는 목록 */
+  .day-events-modal-content { max-width: 400px; }
+  .day-events-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+  .day-events-subtitle { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px; }
+  .day-event-list { display: flex; flex-direction: column; gap: 7px; }
+  .day-event-item {
+    width: 100%; text-align: left; background: #ffffff;
+    border: 1px solid #e5e7eb; border-radius: 9px;
+    padding: 10px 11px; cursor: pointer;
+  }
+  .day-event-item:active { background: #f8fafc; }
+  .day-event-item-title { font-size: 0.82rem; font-weight: 700; line-height: 1.35; word-break: keep-all; }
+  .day-event-item-title .chairman-mark {
+    font-size: 0.58rem;
+    vertical-align: super;
+    line-height: 0;
+    margin-left: 2px;
+    color: #c08a22;
+    font-weight: 800;
+  }
+  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); }
+  .day-event-item.chairman { border-color: #d0e1fd; background: #f5f9ff; }
+
+  .modal-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-right: 25px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.35;
+    word-break: keep-all;
+  }
+  .modal-title.chairman {
+    color: var(--primary-color);
+  }
+
+  .modal-star {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #cbd5e0;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+  .modal-star.starred {
+    color: #d69e2e;
+  }
+
+  .modal-detail-row {
+    margin-bottom: 7px;
+    display: flex;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+  .modal-label {
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .modal-value {
+    color: var(--text-dark);
+    flex-grow: 1;
+    word-break: keep-all;
+  }
+
+  /* 회의자료 보고 - 이미지(JPG) 뷰어 */
+  .material-viewer-content {
+    max-width: 480px;
+    padding: 14px;
+    text-align: center;
+  }
+  .material-viewer-img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .material-download-btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .material-viewer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .material-viewer-nav-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+  .material-viewer-nav-btn:disabled {
+    color: #cbd5e0;
+    border-color: #f0f0f0;
+    cursor: not-allowed;
+  }
+  .material-viewer-page-indicator {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .pdf-viewer-content {
+    max-width: 560px;
+    width: 94%;
+    padding: 14px;
+  }
+  .pdf-viewer-frame {
+    width: 100%;
+    height: 72vh;
+    border: none;
+    border-radius: 8px;
+    background: #f4f6f9;
+    display: block;
+  }
+  .pdf-viewer-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .loading-msg {
+    text-align: center;
+    padding: 30px;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+    font-weight: bold;
+  }
+  .no-data {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* 입장코드 화면 */
+  .entry-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: radial-gradient(circle at 50% 0%, #eef2f8 0%, #f7f9fc 45%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .entry-inner {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .entry-logo {
+    width: 132px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 28px;
+  }
+  .entry-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .entry-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 26px;
+  }
+  .entry-code-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5em;
+    color: var(--text-dark);
+    background: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .entry-code-input:focus {
+    border-color: var(--primary-color);
+  }
+  .entry-code-input::placeholder {
+    letter-spacing: 0.5em;
+    color: #cbd5e0;
+    font-weight: 600;
+  }
+  .entry-error {
+    width: 100%;
+    text-align: left;
+    color: var(--today-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin: -2px 0 14px 4px;
+  }
+  .entry-btn {
+    width: 100%;
+    padding: 15px 0;
+    background: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 82, 204, 0.25);
+    transition: opacity 0.15s;
+  }
+  .entry-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .entry-footer {
+    margin-top: 22px;
+    font-size: 0.72rem;
+    color: #a0aec0;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="entry-screen" id="entryScreen">
+  <div class="entry-inner">
+    <img class="entry-logo" src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
+    <div class="entry-title">한국디벨로퍼협회에<br>오신 것을 환영합니다</div>
+    <div class="entry-subtitle">입장코드 4자리를 입력해주세요</div>
+    <input
+      type="tel"
+      inputmode="numeric"
+      maxlength="4"
+      class="entry-code-input"
+      id="entryCodeInput"
+      placeholder="••••"
+      autocomplete="off">
+    <div class="entry-error" id="entryError" style="display:none;"></div>
+    <button class="entry-btn" id="entryBtn" onclick="verifyEntryCode()">입장하기</button>
+    <div class="entry-footer">한국디벨로퍼협회</div>
+  </div>
+</div>
+
+<div class="app-container" id="appContainer" style="display:none;">
+  <div class="header">
+    <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
+    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
+    <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
+  </div>
+
+  <div class="calendar-wrapper" id="calendarWrapper">
+    <div class="cal-header">
+      <button class="cal-nav-btn" onclick="changeMonth(-1)">&#10094;</button>
+      <span id="calMonthDisplay"></span>
+      <button class="cal-nav-btn" onclick="changeMonth(1)">&#10095;</button>
+    </div>
+    <div class="cal-grid" id="calendarGrid">
+    </div>
+  </div>
+
+  <div class="quick-menu-container">
+    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">KODA 홈페이지</a>
+    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">언론보도 현황</a>
+    <button class="quick-btn" id="materialsBtn" onclick="openMaterialsScreen()">회의자료 보고</button>
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">KODA-TV</a>
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
+    
+    <div class="search-box-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="검색" oninput="handleSearchInput(event)">
+    </div>
+  </div>
+
+  <div class="schedule-container" id="scheduleContainer">
+    <div class="loading-msg">최신 일정을 불러오는 중입니다...⏳</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="dayEventsModal" onclick="closeDayEventsModalOnOutsideClick(event)">
+  <div class="modal-content day-events-modal-content">
+    <button class="modal-close" onclick="closeDayEventsModal()">×</button>
+    <div class="day-events-title" id="dayEventsTitle"></div>
+    <div class="day-events-subtitle" id="dayEventsSubtitle"></div>
+    <div class="day-event-list" id="dayEventList"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="materialsModal" onclick="closeMaterialsOnOutsideClick(event)">
+  <div class="modal-content day-events-modal-content">
+    <button class="modal-close" onclick="closeMaterialsModal()">×</button>
+    <div class="day-events-title">회의자료 보고</div>
+    <div class="day-events-subtitle" id="materialsSubtitle">확인하실 자료를 선택하세요.</div>
+    <div class="day-event-list" id="materialsList"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pdfViewerModal" onclick="closePdfViewerOnOutsideClick(event)">
+  <div class="modal-content pdf-viewer-content">
+    <button class="modal-close" onclick="closePdfViewer()">×</button>
+    <iframe class="pdf-viewer-frame" id="pdfViewerFrame" src="" frameborder="0"></iframe>
+    <div class="pdf-viewer-actions">
+      <a class="material-download-btn" id="pdfViewerDownload" href="" target="_blank" download>PDF 다운로드</a>
+      <a class="material-viewer-nav-btn" id="pdfViewerOpenNewTab" href="" target="_blank">새 탭에서 열기</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="materialViewerModal" onclick="closeMaterialViewerOnOutsideClick(event)">
+  <div class="modal-content material-viewer-content">
+    <button class="modal-close" onclick="closeMaterialViewer()">×</button>
+    <img class="material-viewer-img" id="materialViewerImg" src="" alt="회의자료 이미지">
+    <a class="material-download-btn" id="materialViewerFallback" href="" target="_blank" style="display:none; margin-bottom:12px;">이미지가 안 보이면 새 탭에서 열기</a>
+    <div class="material-viewer-nav" id="materialViewerNav" style="display:none;">
+      <button type="button" class="material-viewer-nav-btn" id="materialViewerPrevBtn" onclick="showPrevMaterialImage()">‹ 이전</button>
+      <span class="material-viewer-page-indicator" id="materialViewerPageIndicator"></span>
+      <button type="button" class="material-viewer-nav-btn" id="materialViewerNextBtn" onclick="showNextMaterialImage()">다음 ›</button>
+    </div>
+    <a class="material-download-btn" id="materialViewerDownload" href="" target="_blank" download>이미지 다운로드</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModalAction()">×</button>
+    <div class="modal-title-area">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">일시</span>
+      <span class="modal-value" id="modalDate"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">장소</span>
+      <span class="modal-value" id="modalLocation"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">참석</span>
+      <span class="modal-value" id="modalAttendees"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">내용</span>
+      <span class="modal-value" id="modalContent"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">주최/주관</span>
+      <span class="modal-value" id="modalHost"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">비고</span>
+      <span class="modal-value" id="modalNote"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
+
+  // ▼▼▼ 회의자료 보고용 "시트2" CSV 링크입니다.
+  // 구글시트에서 시트2를 만든 뒤 [파일] > [공유] > [웹에 게시]에서
+  // "시트2" 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고, 생성된 링크로 아래 값을 교체하세요.
+  const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
+
+  // ▼▼▼ 입장코드 확인용 "입장코드" 시트 CSV 링크입니다.
+  // 구글시트에서 새 탭(예: "입장코드")을 만든 뒤 A열에 유효한 코드를 한 줄씩 입력하세요. (예: 1234)
+  // [파일] > [공유] > [웹에 게시]에서 해당 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고,
+  // 생성된 링크로 아래 값을 교체하세요.
+  const ENTRY_CODE_SHEET_CSV_URL = "여기에_입장코드_시트_CSV_링크를_붙여넣으세요";
+  const ENTRY_STORAGE_KEY = 'koda_entry_verified';
+
+  function checkEntryStatus() {
+    if (localStorage.getItem(ENTRY_STORAGE_KEY) === 'true') {
+      grantEntry();
+    } else {
+      const input = document.getElementById('entryCodeInput');
+      if (input) input.focus();
+    }
+  }
+
+  function grantEntry() {
+    const entryScreen = document.getElementById('entryScreen');
+    const appContainer = document.getElementById('appContainer');
+    if (entryScreen) entryScreen.style.display = 'none';
+    if (appContainer) appContainer.style.display = 'block';
+  }
+
+  window.verifyEntryCode = async function() {
+    const input = document.getElementById('entryCodeInput');
+    const errorEl = document.getElementById('entryError');
+    const btn = document.getElementById('entryBtn');
+    const code = input.value.trim();
+
+    errorEl.style.display = 'none';
+
+    if (code.length !== 4) {
+      errorEl.innerText = '입장코드 4자리를 입력해주세요.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    const originalLabel = btn.innerText;
+    btn.innerText = '확인 중...';
+
+    try {
+      const res = await fetch(ENTRY_CODE_SHEET_CSV_URL + (ENTRY_CODE_SHEET_CSV_URL.includes('?') ? '&' : '?') + 't=' + Date.now());
+      if (!res.ok) throw new Error('sheet fetch failed');
+      const csvText = await res.text();
+
+      const validCodes = csvText
+        .split(/\r?\n/)
+        .map(line => line.split(',')[0].replace(/"/g, '').trim())
+        .filter(c => c && c !== '입장코드' && c.toLowerCase() !== 'code');
+
+      if (validCodes.includes(code)) {
+        localStorage.setItem(ENTRY_STORAGE_KEY, 'true');
+        grantEntry();
+      } else {
+        errorEl.innerText = '입장코드가 올바르지 않습니다. 다시 확인해주세요.';
+        errorEl.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    } catch (err) {
+      errorEl.innerText = '확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      errorEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerText = originalLabel;
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('entryCodeInput');
+    if (input) {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') verifyEntryCode();
+      });
+      input.addEventListener('input', function() {
+        input.value = input.value.replace(/[^0-9]/g, '').slice(0, 4);
+      });
+    }
+    checkEntryStatus();
+  });
+
+  let scheduleData = [];
+  let materialsData = [];
+  let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
+  
+  let showBookmarksOnly = false;
+  let searchQuery = '';
+
+  const todayDateObj = new Date();
+  todayDateObj.setHours(0, 0, 0, 0); 
+  
+  const currentYear = todayDateObj.getFullYear();
+  const currentMonth = todayDateObj.getMonth() + 1;
+  const currentDay = todayDateObj.getDate();
+
+  let calYear = currentYear;
+  let calMonth = currentMonth; 
+
+  const holidays2026 = [
+    "01-01", 
+    "02-16", "02-17", "02-18", 
+    "03-01", "03-02", 
+    "05-05", 
+    "05-24", "05-25", 
+    "06-03", 
+    "06-06", 
+    "08-15", "08-17", 
+    "09-24", "09-25", "09-26", 
+    "10-03", "10-05", 
+    "10-09", 
+    "12-25"  
+  ];
+
+  function parseCSV(csv) {
+    const rows = [];
+    let row = [], curr = '';
+    let insideQuote = false;
+    
+    for (let i = 0; i < csv.length; i++) {
+      const char = csv[i];
+      const nextChar = csv[i + 1];
+      
+      if (char === '"' && insideQuote && nextChar === '"') {
+        curr += '"';
+        i++; 
+      } else if (char === '"') {
+        insideQuote = !insideQuote;
+      } else if (char === ',' && !insideQuote) {
+        row.push(curr);
+        curr = '';
+      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++; 
+        row.push(curr);
+        rows.push(row);
+        row = [];
+        curr = '';
+      } else {
+        curr += char;
+      }
+    }
+    if (curr || row.length > 0) {
+      row.push(curr);
+      rows.push(row);
+    }
+
+    const dataArr = [];
+    for(let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length < 3 || !r[0]) continue; 
+      
+      const dateStr = r[0].trim();
+      let m = 1, d = 1;
+      const match = dateStr.match(/(\d{1,2})\.(\d{1,2})/);
+      let eventDateObj = new Date();
+      if (match) {
+        m = parseInt(match[1], 10);
+        d = parseInt(match[2], 10);
+        eventDateObj = new Date(currentYear, m - 1, d);
+      }
+
+      let ddayStr = "";
+      if(match) {
+          const diffTime = eventDateObj.getTime() - todayDateObj.getTime();
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+          
+          if (diffDays === 0) {
+              ddayStr = "D-day";
+          } else if (diffDays > 0) {
+              ddayStr = `D-${diffDays}`;
+          } else {
+              ddayStr = `D+${Math.abs(diffDays)}`;
+          }
+      }
+
+      const id = `${dateStr}_${r[2] ? r[2].trim() : ''}`;
+
+      dataArr.push({
+        id: id,
+        month: m,
+        day: d,
+        date: dateStr,
+        location: r[1] ? r[1].trim() : "ㅡ",
+        title: r[2] ? r[2].trim() : "ㅡ",
+        attendees: r[3] ? r[3].trim() : "ㅡ",
+        content: r[4] ? r[4].trim() : "ㅡ",
+        host: r[5] ? r[5].trim() : "ㅡ",
+        note: r[6] ? r[6].trim() : "ㅡ",
+        dday: ddayStr 
+      });
+    }
+    return dataArr;
+  }
+
+  // 구글드라이브 공유링크(.../file/d/파일ID/view?usp=sharing)에서 파일ID만 추출합니다.
+  function getDriveFileId(url) {
+    if (!url) return null;
+    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
+               || url.match(/[?&]id=([^&]+)/);
+    return match ? match[1] : null;
+  }
+
+  function parseMaterialsCSV(csv) {
+    const rows = [];
+    let row = [], curr = '';
+    let insideQuote = false;
+
+    for (let i = 0; i < csv.length; i++) {
+      const char = csv[i];
+      const nextChar = csv[i + 1];
+
+      if (char === '"' && insideQuote && nextChar === '"') {
+        curr += '"';
+        i++;
+      } else if (char === '"') {
+        insideQuote = !insideQuote;
+      } else if (char === ',' && !insideQuote) {
+        row.push(curr);
+        curr = '';
+      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(curr);
+        rows.push(row);
+        row = [];
+        curr = '';
+      } else {
+        curr += char;
+      }
+    }
+    if (curr || row.length > 0) {
+      row.push(curr);
+      rows.push(row);
+    }
+
+    // 시트2 열 구성: A=날짜(예: 26.08.24)  B=제목  C=파일링크(구글드라이브 공유링크)  D=파일타입(pdf 또는 jpg)
+    const dataArr = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length < 3 || !r[0]) continue;
+
+      const dateStr = r[0].trim();
+      const title = r[1] ? r[1].trim() : '';
+      const rawUrlsStr = r[2] ? r[2].trim() : '';
+      const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
+
+      // C열에 쉼표(,)로 여러 링크를 구분해서 넣으면 여러 페이지(장)로 처리됩니다.
+      const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
+      const images = rawUrls.map(u => {
+        const fileId = getDriveFileId(u);
+        return {
+          viewSrc: fileId ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w2000` : u,
+          downloadUrl: fileId ? `https://drive.google.com/uc?export=download&id=${fileId}` : u,
+          openUrl: fileId ? `https://drive.google.com/file/d/${fileId}/view` : u,
+          previewUrl: fileId ? `https://drive.google.com/file/d/${fileId}/preview` : u
+        };
+      });
+
+      dataArr.push({
+        date: dateStr,
+        title: title,
+        fileType: fileType,
+        images: images // jpg: 여러 장 지원 / pdf: images[0]만 사용
+      });
+    }
+
+    // 최신 날짜(YY.MM.DD 형식 기준)가 위로 오도록 정렬
+    dataArr.sort((a, b) => {
+      const toNum = (s) => {
+        const p = s.split('.').map(v => parseInt(v, 10));
+        return p.length === 3 ? p[0] * 10000 + p[1] * 100 + p[2] : 0;
+      };
+      return toNum(b.date) - toNum(a.date);
+    });
+
+    return dataArr;
+  }
+
+  async function loadMaterialsData() {
+    const list = document.getElementById('materialsList');
+    list.innerHTML = `<div class="loading-msg">자료를 불러오는 중입니다...⏳</div>`;
+    try {
+      const response = await fetch(MATERIALS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const csvText = await response.text();
+      materialsData = parseMaterialsCSV(csvText);
+      renderMaterialsList();
+    } catch (error) {
+      console.error("회의자료 연동 실패:", error);
+      list.innerHTML = `<div class="no-data">자료를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  function renderMaterialsList() {
+    const list = document.getElementById('materialsList');
+    list.innerHTML = '';
+
+    if (materialsData.length === 0) {
+      list.innerHTML = `<div class="no-data">등록된 회의자료가 없습니다.</div>`;
+      return;
+    }
+
+    materialsData.forEach((item, index) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-event-item';
+
+      const title = document.createElement('div');
+      title.className = 'day-event-item-title';
+      title.innerText = `[${item.date}] ${item.title}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'day-event-item-meta';
+      meta.innerText = item.fileType === 'pdf'
+        ? 'PDF 바로 보기'
+        : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
+
+      btn.appendChild(title);
+      btn.appendChild(meta);
+      btn.onclick = () => openMaterial(index);
+
+      list.appendChild(btn);
+    });
+  }
+
+  let currentMaterialImages = [];
+  let currentMaterialImageIndex = 0;
+
+  window.openMaterial = function(index) {
+    const item = materialsData[index];
+    if (!item || !item.images || item.images.length === 0) return;
+
+    if (item.fileType === 'pdf') {
+      openPdfViewer(item.images[0]);
+      return;
+    }
+
+    currentMaterialImages = item.images;
+    currentMaterialImageIndex = 0;
+    renderMaterialImage();
+
+    document.getElementById('materialViewerModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ materialViewerOpen: true }, "", "");
+  };
+
+  function openPdfViewer(fileInfo) {
+    document.getElementById('pdfViewerFrame').src = fileInfo.previewUrl;
+    document.getElementById('pdfViewerDownload').href = fileInfo.downloadUrl;
+    document.getElementById('pdfViewerOpenNewTab').href = fileInfo.openUrl;
+    document.getElementById('pdfViewerModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ pdfViewerOpen: true }, "", "");
+  }
+
+  window.closePdfViewer = function(goBack = true) {
+    document.getElementById('pdfViewerModal').style.display = 'none';
+    document.getElementById('pdfViewerFrame').src = ''; // 로딩 중단
+    if (goBack) history.back();
+  };
+
+  window.closePdfViewerOnOutsideClick = function(e) {
+    if (e.target.id === 'pdfViewerModal') history.back();
+  };
+
+  function renderMaterialImage() {
+    const img = document.getElementById('materialViewerImg');
+    const fallback = document.getElementById('materialViewerFallback');
+    const nav = document.getElementById('materialViewerNav');
+    const indicator = document.getElementById('materialViewerPageIndicator');
+    const prevBtn = document.getElementById('materialViewerPrevBtn');
+    const nextBtn = document.getElementById('materialViewerNextBtn');
+
+    const total = currentMaterialImages.length;
+    const current = currentMaterialImages[currentMaterialImageIndex];
+
+    img.style.display = 'block';
+    fallback.style.display = 'none';
+    img.src = current.viewSrc;
+
+    img.onerror = function() {
+      img.style.display = 'none';
+      fallback.style.display = 'inline-block';
+      fallback.href = current.openUrl;
+    };
+
+    document.getElementById('materialViewerDownload').href = current.downloadUrl;
+
+    if (total > 1) {
+      nav.style.display = 'flex';
+      indicator.innerText = `${currentMaterialImageIndex + 1} / ${total}`;
+      prevBtn.disabled = currentMaterialImageIndex === 0;
+      nextBtn.disabled = currentMaterialImageIndex === total - 1;
+    } else {
+      nav.style.display = 'none';
+    }
+  }
+
+  window.showPrevMaterialImage = function() {
+    if (currentMaterialImageIndex > 0) {
+      currentMaterialImageIndex--;
+      renderMaterialImage();
+    }
+  };
+
+  window.showNextMaterialImage = function() {
+    if (currentMaterialImageIndex < currentMaterialImages.length - 1) {
+      currentMaterialImageIndex++;
+      renderMaterialImage();
+    }
+  };
+
+  window.closeMaterialViewer = function(goBack = true) {
+    document.getElementById('materialViewerModal').style.display = 'none';
+    if (goBack) history.back();
+  };
+
+  window.closeMaterialViewerOnOutsideClick = function(e) {
+    if (e.target.id === 'materialViewerModal') history.back();
+  };
+
+  window.openMaterialsScreen = function() {
+    document.getElementById('materialsModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ materialsOpen: true }, "", "");
+    if (materialsData.length === 0) {
+      loadMaterialsData();
+    } else {
+      renderMaterialsList();
+    }
+  };
+
+  window.closeMaterialsModal = function(goBack = true) {
+    document.getElementById('materialsModal').style.display = 'none';
+    if (goBack) history.back();
+  };
+
+  window.closeMaterialsOnOutsideClick = function(e) {
+    if (e.target.id === 'materialsModal') history.back();
+  };
+
+  window.toggleBookmark = function(event, id) {
+    event.stopPropagation(); 
+    if (bookmarks.includes(id)) {
+      bookmarks = bookmarks.filter(item => item !== id);
+    } else {
+      bookmarks.push(id);
+    }
+    localStorage.setItem('koda_bookmarks', JSON.stringify(bookmarks));
+    updateView();
+  }
+  
+  window.shareEvent = function(event, globalIndex) {
+      event.stopPropagation(); 
+      
+      const schedule = scheduleData[globalIndex];
+      const shareTitle = `[KODA 일정] ${schedule.title}`;
+      const shareText = `📅 일시: ${schedule.date}\n📍 장소: ${schedule.location}\n\n자세한 일정은 앱을 통해 확인하세요!`;
+      const shareUrl = window.location.href; 
+
+      if (navigator.share) {
+          navigator.share({
+              title: shareTitle,
+              text: shareText,
+              url: shareUrl,
+          })
+          .then(() => console.log('공유 성공'))
+          .catch((error) => console.log('공유 실패', error));
+      } else {
+          alert("현재 브라우저에서는 공유 기능이 지원되지 않습니다.\n\n" + shareTitle + "\n" + shareText);
+      }
+  }
+
+  let currentModalGlobalIndex = null;
+  window.toggleBookmarkModal = function() {
+    if (currentModalGlobalIndex === null) return;
+    const event = scheduleData[currentModalGlobalIndex];
+    if (bookmarks.includes(event.id)) {
+      bookmarks = bookmarks.filter(item => item !== event.id);
+    } else {
+      bookmarks.push(event.id);
+    }
+    localStorage.setItem('koda_bookmarks', JSON.stringify(bookmarks));
+    
+    const modalStar = document.getElementById('modalStarBtn');
+    if (bookmarks.includes(event.id)) {
+      modalStar.classList.add('starred');
+    } else {
+      modalStar.classList.remove('starred');
+    }
+    updateView();
+  }
+
+  window.toggleBookmarksOnly = function() {
+    showBookmarksOnly = !showBookmarksOnly;
+    const btn = document.getElementById('bookmarkFilterBtn');
+    if (showBookmarksOnly) {
+      btn.classList.add('active-bookmark');
+    } else {
+      btn.classList.remove('active-bookmark');
+    }
+    updateView();
+  }
+
+  window.handleSearchInput = function(e) {
+    searchQuery = e.target.value.trim().toLowerCase();
+    updateView();
+  }
+
+  function getFilteredData() {
+    let data = scheduleData;
+
+    if (showBookmarksOnly) {
+      data = data.filter(event => bookmarks.includes(event.id));
+    }
+
+    if (searchQuery !== '') {
+      data = data.filter(event => 
+        event.title.toLowerCase().includes(searchQuery) ||
+        event.location.toLowerCase().includes(searchQuery) ||
+        event.date.toLowerCase().includes(searchQuery) ||
+        event.content.toLowerCase().includes(searchQuery) ||
+        event.host.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    if (!showBookmarksOnly && searchQuery === '') {
+      data = data.filter(event => event.month == calMonth);
+    }
+
+    return data;
+  }
+
+  async function manualRefresh() {
+    scheduleContainer.innerHTML = `<div class="loading-msg">최신 일정을 새로고침 중입니다...⏳</div>`;
+    await loadData();
+  }
+
+  async function loadData() {
+    try {
+      const response = await fetch(GOOGLE_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const csvText = await response.text();
+      scheduleData = parseCSV(csvText);
+      updateView();
+    } catch (error) {
+      console.error("데이터 연동 실패:", error);
+      scheduleContainer.innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  function updateView() {
+    renderCalendar();
+    renderSchedules();
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const display = document.getElementById('calMonthDisplay');
+    
+    grid.style.animation = 'none';
+    grid.offsetHeight; 
+    grid.style.animation = 'fadeIn 0.3s ease-out';
+    
+    grid.innerHTML = '';
+    display.innerText = `${calYear}년 ${calMonth}월`;
+
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    days.forEach((day, index) => {
+      let dayClass = "cal-day-name";
+      if (index === 0) dayClass += " text-red";
+      else if (index === 6) dayClass += " text-blue";
+      grid.innerHTML += `<div class="${dayClass}">${day}</div>`;
+    });
+
+    const firstDayIndex = new Date(calYear, calMonth - 1, 1).getDay();
+    const lastDay = new Date(calYear, calMonth, 0).getDate();
+
+    for(let i = 0; i < firstDayIndex; i++) {
+      grid.innerHTML += `<div class="cal-cell empty"></div>`;
+    }
+
+    for(let d = 1; d <= lastDay; d++) {
+      let monthBaseData = scheduleData.filter(e => e.month === calMonth && e.day === d);
+      if (showBookmarksOnly) {
+        monthBaseData = monthBaseData.filter(e => bookmarks.includes(e.id));
+      }
+
+      let eventsHtml = '';
+      monthBaseData.forEach(e => {
+        const globalIndex = scheduleData.indexOf(e);
+        const isChairman = e.note.includes("회장님 참석");
+        
+        let chipClass = "cal-event-chip";
+        if (isChairman) chipClass += " chairman";
+
+        const shortTitle = e.title.length > 7 ? e.title.substring(0, 7) + '..' : e.title;
+        eventsHtml += `<div class="${chipClass}" onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d}); event.stopPropagation();">${shortTitle}</div>`;
+      });
+
+      const isToday = (calYear === currentYear && calMonth === currentMonth && d === currentDay);
+      const cellClass = isToday ? "cal-cell today" : "cal-cell";
+      const todayBadge = isToday ? `<span class="today-badge">TODAY</span>` : "";
+
+      const currentDayOfWeek = new Date(calYear, calMonth - 1, d).getDay();
+      const mmdd = String(calMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      let dateNumClass = "cal-date-num";
+      
+      if (currentDayOfWeek === 0 || holidays2026.includes(mmdd)) {
+        dateNumClass += " text-red";
+      } else if (currentDayOfWeek === 6) {
+        dateNumClass += " text-blue";
+      }
+
+      const dateClick = monthBaseData.length > 0
+        ? `onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d})"`
+        : "";
+
+      grid.innerHTML += `
+        <div class="${cellClass}" ${dateClick} style="${monthBaseData.length > 0 ? 'cursor:pointer;' : ''}">
+          <div class="${dateNumClass}">${d}${todayBadge}</div>
+          ${eventsHtml}
+        </div>
+      `;
+    }
+  }
+
+  window.changeMonth = function(offset) {
+    calMonth += offset;
+    if(calMonth > 12) { calMonth = 1; calYear++; }
+    else if(calMonth < 1) { calMonth = 12; calYear--; }
+
+    updateView();
+  };
+
+  function renderSchedules() {
+    scheduleContainer.innerHTML = '';
+    
+    const currentFilteredData = getFilteredData();
+
+    if (currentFilteredData.length === 0) {
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`;
+      return;
+    }
+
+    currentFilteredData.forEach(event => {
+      const globalIndex = scheduleData.indexOf(event);
+      const isChairman = event.note.includes("회장님 참석");
+      const titleClass = isChairman ? "event-title chairman" : "event-title";
+      const isStarred = bookmarks.includes(event.id);
+
+      const card = document.createElement('div');
+      card.className = 'event-card';
+
+      // 공유 버튼: 네이버 뉴스에서 쓰는 공유(노드) 아이콘으로 대체, 별표 버튼과 같은 라인에 그룹핑
+      card.innerHTML = `
+        <div class="card-actions">
+          <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
+            </svg>
+          </button>
+          <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
+            ${isStarred
+              ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+              : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+            }
+          </button>
+        </div>
+        <button class="event-header" onclick="openModal(${globalIndex})">
+          <div class="event-meta">
+            <div class="event-date">${event.date}</div>
+            <div class="event-divider">/</div>
+            <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
+          </div>
+          <div class="${titleClass}">${event.title}</div>
+        </button>
+      `;
+      scheduleContainer.appendChild(card);
+    });
+  }
+  
+  window.addEventListener('popstate', function(event) {
+    document.getElementById('dayEventsModal').style.display = 'none';
+    document.getElementById('materialsModal').style.display = 'none';
+    document.getElementById('materialViewerModal').style.display = 'none';
+    document.getElementById('pdfViewerModal').style.display = 'none';
+    document.getElementById('pdfViewerFrame').src = '';
+    hideModalDOM();
+  });
+
+  // 날짜를 클릭하면 그 날짜의 일정들을 먼저 보여줍니다.
+  // 일정이 1개면 바로 상세 화면, 2개 이상이면 선택 목록을 표시합니다.
+  window.openDayEventsModal = function(year, month, day) {
+    const dayEvents = scheduleData.filter(eventData =>
+      Number(eventData.month) === Number(month) &&
+      Number(eventData.day) === Number(day) &&
+      (!showBookmarksOnly || bookmarks.includes(eventData.id))
+    );
+
+    if (dayEvents.length === 0) return;
+
+    document.getElementById('dayEventsTitle').innerText =
+      `${year}년 ${month}월 ${day}일 일정`;
+    document.getElementById('dayEventsSubtitle').innerText =
+      `총 ${dayEvents.length}개의 일정이 있습니다. 확인할 일정을 선택하세요.`;
+
+    const list = document.getElementById('dayEventList');
+    list.innerHTML = '';
+
+    dayEvents.forEach(eventData => {
+      const index = scheduleData.indexOf(eventData);
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'day-event-item' +
+        (eventData.note.includes("회장님 참석") ? ' chairman' : '');
+
+      const title = document.createElement('div');
+      title.className = 'day-event-item-title';
+      title.innerHTML = '';
+      const titleText = document.createTextNode(eventData.title);
+      title.appendChild(titleText);
+
+      if (eventData.note.includes("회장님 참석")) {
+        const chairmanMark = document.createElement('sup');
+        chairmanMark.className = 'chairman-mark';
+        chairmanMark.innerText = '★';
+        title.appendChild(chairmanMark);
+      }
+
+      const meta = document.createElement('div');
+      meta.className = 'day-event-item-meta';
+      meta.innerText = `${eventData.location} · ${eventData.dday}`;
+
+      item.appendChild(title);
+      item.appendChild(meta);
+
+      item.onclick = function() {
+        closeDayEventsModal(false);
+        openModal(index);
+      };
+
+      list.appendChild(item);
+    });
+
+    document.getElementById('dayEventsModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ dayEventsModalOpen: true }, "", "");
+  };
+
+  window.closeDayEventsModal = function(goBack = true) {
+    document.getElementById('dayEventsModal').style.display = 'none';
+    if (goBack) history.back();
+  };
+
+  window.closeDayEventsModalOnOutsideClick = function(e) {
+    if (e.target.id === 'dayEventsModal') history.back();
+  };
+
+  window.openModal = function(globalIndex) {
+    currentModalGlobalIndex = globalIndex;
+    const event = scheduleData[globalIndex];
+    const isChairman = event.note.includes("회장님 참석");
+    
+    const titleEl = document.getElementById('modalTitle');
+    titleEl.innerText = event.title;
+    titleEl.className = isChairman ? "modal-title chairman" : "modal-title";
+
+    document.getElementById('modalDate').innerText = event.date;
+    document.getElementById('modalLocation').innerText = event.location;
+    document.getElementById('modalAttendees').innerText = event.attendees;
+    document.getElementById('modalContent').innerText = event.content;
+    document.getElementById('modalHost').innerText = event.host;
+    document.getElementById('modalNote').innerText = event.note;
+
+    const modalStar = document.getElementById('modalStarBtn');
+    if (bookmarks.includes(event.id)) {
+      modalStar.innerText = '★';
+      modalStar.classList.add('starred');
+    } else {
+      modalStar.innerText = '☆';
+      modalStar.classList.remove('starred');
+    }
+
+    document.getElementById('eventModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    history.pushState({ modalOpen: true }, "", "");
+  };
+
+  function hideModalDOM() {
+    document.getElementById('eventModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  window.closeModalAction = function() {
+    history.back(); 
+  };
+
+  window.closeModalOnOutsideClick = function(e) {
+    if(e.target.id === 'eventModal') {
+      history.back();
+    }
+  };
+
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-block'; 
+
+    installBtn.addEventListener('click', () => {
+      installBtn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        deferredPrompt = null;
+      });
+    });
+  });
+
+  const isIos = () => {
+    const ua = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(ua);
+  };
+  const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+  if (isIos() && !isInStandaloneMode()) {
+    installBtn.style.display = 'inline-block';
+    installBtn.addEventListener('click', () => {
+      alert("아이폰 화면 맨 아래의 '공유(내보내기) [↑]' 버튼을 누른 후,\n'홈 화면에 추가 [+]'를 선택해주세요!");
+    });
+  }
+
+  const calendarWrapper = document.getElementById('calendarWrapper');
+  let startX = 0;
+  let endX = 0;
+
+  calendarWrapper.addEventListener('touchstart', (e) => {
+    startX = e.changedTouches[0].screenX;
+  }, {passive: true});
+
+  calendarWrapper.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, {passive: true});
+
+  function handleSwipe() {
+    const swipeThreshold = 50; 
+    if (startX - endX > swipeThreshold) {
+      changeMonth(1);
+    } else if (endX - startX > swipeThreshold) {
+      changeMonth(-1);
+    }
+  }
+
+  loadData();
+
+</script>
+</body>
+</html>
