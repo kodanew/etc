@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>한국디벨로퍼협회(KODA) 일정 안내</title>
 
+<!-- 카카오톡 등 SNS 공유 시 표시되는 정보 (Open Graph) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="KODA SCHEDULE APP">
+<meta property="og:description" content="한국디벨로퍼협회(KODA) 일정 안내">
+<meta property="og:url" content="https://kodanew.github.io/koda-planning/">
+<meta property="og:image" content="https://kodanew.github.io/koda-planning/share-image.png">
+<meta property="og:image:width" content="866">
+<meta property="og:image:height" content="283">
+
 <!-- 모바일 홈 화면(PWA) 및 iOS 앱 설정 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -295,6 +304,48 @@
     width: 100%;
   }
 
+  /* 🎯 새로 추가된: 일정 헤더 및 리스트 감싸기 스타일 */
+  .schedule-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 5px 5px 10px 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid var(--text-dark);
+    width: 100%;
+  }
+  .schedule-section-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .past-schedule-btn {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 2px 2px 0;
+    font-weight: 600;
+  }
+  .past-schedule-btn:hover {
+    color: var(--text-dark);
+  }
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  #pastScheduleList {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+  /* ------------------------------------- */
+
   .event-card {
     background: var(--card-bg);
     border-radius: 10px;
@@ -315,7 +366,7 @@
     text-align: left;
   }
 
-  /* 카드 우측 상단 액션 버튼 그룹 (공유 + 즐겨찾기, 같은 라인 배치) */
+  /* 카드 우측 상단 액션 버튼 그룹 */
   .card-actions {
     position: absolute;
     top: 10px;
@@ -326,7 +377,7 @@
     gap: 2px;
   }
 
-  /* 공통 아이콘 버튼 스타일 (모든 아이콘을 동일한 정사각 박스에 중앙 정렬해 라인을 맞춤) */
+  /* 공통 아이콘 버튼 스타일 */
   .icon-btn {
     background: none;
     border: none;
@@ -601,124 +652,11 @@
     color: var(--text-muted);
     font-size: 0.85rem;
   }
-
-  /* 입장코드 화면 */
-  .entry-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: radial-gradient(circle at 50% 0%, #eef2f8 0%, #f7f9fc 45%, #ffffff 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    overflow-y: auto;
-  }
-  .entry-inner {
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .entry-logo {
-    width: 132px;
-    height: auto;
-    object-fit: contain;
-    margin-bottom: 28px;
-  }
-  .entry-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    line-height: 1.5;
-    margin-bottom: 8px;
-  }
-  .entry-subtitle {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 26px;
-  }
-  .entry-code-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 12px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.5em;
-    color: var(--text-dark);
-    background: #ffffff;
-    border: 1.5px solid var(--border-color);
-    border-radius: 10px;
-    outline: none;
-    margin-bottom: 10px;
-    transition: border-color 0.15s;
-  }
-  .entry-code-input:focus {
-    border-color: var(--primary-color);
-  }
-  .entry-code-input::placeholder {
-    letter-spacing: 0.5em;
-    color: #cbd5e0;
-    font-weight: 600;
-  }
-  .entry-error {
-    width: 100%;
-    text-align: left;
-    color: var(--today-color);
-    font-size: 0.72rem;
-    font-weight: 600;
-    margin: -2px 0 14px 4px;
-  }
-  .entry-btn {
-    width: 100%;
-    padding: 15px 0;
-    background: var(--primary-color);
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 82, 204, 0.25);
-    transition: opacity 0.15s;
-  }
-  .entry-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  .entry-footer {
-    margin-top: 22px;
-    font-size: 0.72rem;
-    color: #a0aec0;
-    font-weight: 600;
-  }
 </style>
 </head>
 <body>
 
-<div class="entry-screen" id="entryScreen">
-  <div class="entry-inner">
-    <img class="entry-logo" src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
-    <div class="entry-title">한국디벨로퍼협회에<br>오신 것을 환영합니다</div>
-    <div class="entry-subtitle">입장코드 4자리를 입력해주세요</div>
-    <input
-      type="tel"
-      inputmode="numeric"
-      maxlength="4"
-      class="entry-code-input"
-      id="entryCodeInput"
-      placeholder="••••"
-      autocomplete="off">
-    <div class="entry-error" id="entryError" style="display:none;"></div>
-    <button class="entry-btn" id="entryBtn" onclick="verifyEntryCode()">입장하기</button>
-    <div class="entry-footer">한국디벨로퍼협회</div>
-  </div>
-</div>
-
-<div class="app-container" id="appContainer" style="display:none;">
+<div class="app-container">
   <div class="header">
     <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
     <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
@@ -832,93 +770,7 @@
 
 <script>
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
-
-  // ▼▼▼ 회의자료 보고용 "시트2" CSV 링크입니다.
-  // 구글시트에서 시트2를 만든 뒤 [파일] > [공유] > [웹에 게시]에서
-  // "시트2" 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고, 생성된 링크로 아래 값을 교체하세요.
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
-
-  // ▼▼▼ 입장코드 확인용 "시트3" 시트 CSV 링크입니다.
-  // 구글시트에서 새 탭(예: "입장코드")을 만든 뒤 A열에 유효한 코드를 한 줄씩 입력하세요. (예: 1234)
-  // [파일] > [공유] > [웹에 게시]에서 해당 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고,
-  // 생성된 링크로 아래 값을 교체하세요.
-  const ENTRY_CODE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
-  const ENTRY_STORAGE_KEY = 'koda_entry_verified';
-
-  function checkEntryStatus() {
-    if (localStorage.getItem(ENTRY_STORAGE_KEY) === 'true') {
-      grantEntry();
-    } else {
-      const input = document.getElementById('entryCodeInput');
-      if (input) input.focus();
-    }
-  }
-
-  function grantEntry() {
-    const entryScreen = document.getElementById('entryScreen');
-    const appContainer = document.getElementById('appContainer');
-    if (entryScreen) entryScreen.style.display = 'none';
-    if (appContainer) appContainer.style.display = 'block';
-  }
-
-  window.verifyEntryCode = async function() {
-    const input = document.getElementById('entryCodeInput');
-    const errorEl = document.getElementById('entryError');
-    const btn = document.getElementById('entryBtn');
-    const code = input.value.trim();
-
-    errorEl.style.display = 'none';
-
-    if (code.length !== 4) {
-      errorEl.innerText = '입장코드 4자리를 입력해주세요.';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    btn.disabled = true;
-    const originalLabel = btn.innerText;
-    btn.innerText = '확인 중...';
-
-    try {
-      const res = await fetch(ENTRY_CODE_SHEET_CSV_URL + (ENTRY_CODE_SHEET_CSV_URL.includes('?') ? '&' : '?') + 't=' + Date.now());
-      if (!res.ok) throw new Error('sheet fetch failed');
-      const csvText = await res.text();
-
-      const validCodes = csvText
-        .split(/\r?\n/)
-        .map(line => line.split(',')[0].replace(/"/g, '').trim())
-        .filter(c => c && c !== '입장코드' && c.toLowerCase() !== 'code');
-
-      if (validCodes.includes(code)) {
-        localStorage.setItem(ENTRY_STORAGE_KEY, 'true');
-        grantEntry();
-      } else {
-        errorEl.innerText = '입장코드가 올바르지 않습니다. 다시 확인해주세요.';
-        errorEl.style.display = 'block';
-        input.value = '';
-        input.focus();
-      }
-    } catch (err) {
-      errorEl.innerText = '확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-      errorEl.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-      btn.innerText = originalLabel;
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('entryCodeInput');
-    if (input) {
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') verifyEntryCode();
-      });
-      input.addEventListener('input', function() {
-        input.value = input.value.replace(/[^0-9]/g, '').slice(0, 4);
-      });
-    }
-    checkEntryStatus();
-  });
 
   let scheduleData = [];
   let materialsData = [];
@@ -938,18 +790,9 @@
   let calMonth = currentMonth; 
 
   const holidays2026 = [
-    "01-01", 
-    "02-16", "02-17", "02-18", 
-    "03-01", "03-02", 
-    "05-05", 
-    "05-24", "05-25", 
-    "06-03", 
-    "06-06", 
-    "08-15", "08-17", 
-    "09-24", "09-25", "09-26", 
-    "10-03", "10-05", 
-    "10-09", 
-    "12-25"  
+    "01-01", "02-16", "02-17", "02-18", "03-01", "03-02", "05-05", 
+    "05-24", "05-25", "06-03", "06-06", "08-15", "08-17", 
+    "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
   ];
 
   function parseCSV(csv) {
@@ -1032,7 +875,6 @@
     return dataArr;
   }
 
-  // 구글드라이브 공유링크(.../file/d/파일ID/view?usp=sharing)에서 파일ID만 추출합니다.
   function getDriveFileId(url) {
     if (!url) return null;
     const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
@@ -1072,7 +914,6 @@
       rows.push(row);
     }
 
-    // 시트2 열 구성: A=날짜(예: 26.08.24)  B=제목  C=파일링크(구글드라이브 공유링크)  D=파일타입(pdf 또는 jpg)
     const dataArr = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1083,7 +924,6 @@
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
 
-      // C열에 쉼표(,)로 여러 링크를 구분해서 넣으면 여러 페이지(장)로 처리됩니다.
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
       const images = rawUrls.map(u => {
         const fileId = getDriveFileId(u);
@@ -1099,11 +939,10 @@
         date: dateStr,
         title: title,
         fileType: fileType,
-        images: images // jpg: 여러 장 지원 / pdf: images[0]만 사용
+        images: images
       });
     }
 
-    // 최신 날짜(YY.MM.DD 형식 기준)가 위로 오도록 정렬
     dataArr.sort((a, b) => {
       const toNum = (s) => {
         const p = s.split('.').map(v => parseInt(v, 10));
@@ -1193,7 +1032,7 @@
 
   window.closePdfViewer = function(goBack = true) {
     document.getElementById('pdfViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerFrame').src = ''; // 로딩 중단
+    document.getElementById('pdfViewerFrame').src = '';
     if (goBack) history.back();
   };
 
@@ -1470,7 +1309,58 @@
     updateView();
   };
 
+  // 개별 카드 생성 로직 분리 함수
+  function createEventCard(event) {
+    const globalIndex = scheduleData.indexOf(event);
+    const isChairman = event.note.includes("회장님 참석");
+    const titleClass = isChairman ? "event-title chairman" : "event-title";
+    const isStarred = bookmarks.includes(event.id);
+
+    const card = document.createElement('div');
+    card.className = 'event-card';
+
+    card.innerHTML = `
+      <div class="card-actions">
+        <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
+          </svg>
+        </button>
+        <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
+          ${isStarred
+            ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+          }
+        </button>
+      </div>
+      <button class="event-header" onclick="openModal(${globalIndex})">
+        <div class="event-meta">
+          <div class="event-date">${event.date}</div>
+          <div class="event-divider">/</div>
+          <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
+        </div>
+        <div class="${titleClass}">${event.title}</div>
+      </button>
+    `;
+    return card;
+  }
+
+  // 지나간 일정 열기/닫기 토글
+  window.togglePastSchedules = function() {
+    const list = document.getElementById('pastScheduleList');
+    const btn = document.getElementById('pastScheduleBtn');
+    if (list.style.display === 'none') {
+      list.style.display = 'flex';
+      btn.innerText = '지나간 일정 닫기';
+    } else {
+      list.style.display = 'none';
+      btn.innerText = '지나간 일정 다시보기';
+    }
+  }
+
+  // 🎯 새로 수정된: 일정 렌더링 함수
   function renderSchedules() {
+    const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
     
     const currentFilteredData = getFilteredData();
@@ -1480,41 +1370,68 @@
       return;
     }
 
+    const pastEvents = [];
+    const todayEvents = [];
+    const futureEvents = [];
+
+    // dday 값에 따라 오늘/다가오는일정/지나간일정 분류
     currentFilteredData.forEach(event => {
-      const globalIndex = scheduleData.indexOf(event);
-      const isChairman = event.note.includes("회장님 참석");
-      const titleClass = isChairman ? "event-title chairman" : "event-title";
-      const isStarred = bookmarks.includes(event.id);
-
-      const card = document.createElement('div');
-      card.className = 'event-card';
-
-      // 공유 버튼: 네이버 뉴스에서 쓰는 공유(노드) 아이콘으로 대체, 별표 버튼과 같은 라인에 그룹핑
-      card.innerHTML = `
-        <div class="card-actions">
-          <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
-            </svg>
-          </button>
-          <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
-            ${isStarred
-              ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-              : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-            }
-          </button>
-        </div>
-        <button class="event-header" onclick="openModal(${globalIndex})">
-          <div class="event-meta">
-            <div class="event-date">${event.date}</div>
-            <div class="event-divider">/</div>
-            <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
-          </div>
-          <div class="${titleClass}">${event.title}</div>
-        </button>
-      `;
-      scheduleContainer.appendChild(card);
+      if (event.dday === "D-day") {
+        todayEvents.push(event);
+      } else if (event.dday.startsWith("D+")) {
+        pastEvents.push(event);
+      } else {
+        futureEvents.push(event);
+      }
     });
+
+    const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<다가오는 일정>";
+
+    // 헤더 생성
+    const header = document.createElement('div');
+    header.className = 'schedule-section-header';
+    
+    const titleEl = document.createElement('div');
+    titleEl.className = 'schedule-section-title';
+    titleEl.innerText = titleText;
+    header.appendChild(titleEl);
+
+    // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
+    if (pastEvents.length > 0) {
+      const pastBtn = document.createElement('button');
+      pastBtn.className = 'past-schedule-btn';
+      pastBtn.id = 'pastScheduleBtn';
+      pastBtn.innerText = '지나간 일정 다시보기';
+      pastBtn.onclick = togglePastSchedules;
+      header.appendChild(pastBtn);
+    }
+
+    scheduleContainer.appendChild(header);
+
+    // 숨김 처리된 지나간 일정 목록 영역
+    if (pastEvents.length > 0) {
+      const pastList = document.createElement('div');
+      pastList.className = 'schedule-list-wrapper';
+      pastList.id = 'pastScheduleList';
+      pastList.style.display = 'none'; // 기본 숨김
+      pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+      scheduleContainer.appendChild(pastList);
+    }
+
+    // 오늘 + 다가오는 일정 목록 영역
+    const upcomingList = document.createElement('div');
+    upcomingList.className = 'schedule-list-wrapper';
+    
+    if (!hasUpcoming) {
+      // 다가오는 일정이 없는데 지나간 일정만 있을 경우의 처리
+      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">다가오는 일정이 없습니다.</div>`;
+    } else {
+      // 오늘 일정이 위에, 그 이후가 아래로 나열
+      todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+      futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+    }
+    scheduleContainer.appendChild(upcomingList);
   }
   
   window.addEventListener('popstate', function(event) {
@@ -1526,8 +1443,6 @@
     hideModalDOM();
   });
 
-  // 날짜를 클릭하면 그 날짜의 일정들을 먼저 보여줍니다.
-  // 일정이 1개면 바로 상세 화면, 2개 이상이면 선택 목록을 표시합니다.
   window.openDayEventsModal = function(year, month, day) {
     const dayEvents = scheduleData.filter(eventData =>
       Number(eventData.month) === Number(month) &&
