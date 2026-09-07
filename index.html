@@ -1425,12 +1425,16 @@
     titleEl.className = 'schedule-section-title';
     titleEl.innerText = titleText;
     
-    const subtitleEl = document.createElement('div');
-    subtitleEl.className = 'schedule-section-subtitle';
-    subtitleEl.innerText = "오늘 일정부터 이후 일정까지 표시됩니다.";
-
     titleWrapper.appendChild(titleEl);
-    titleWrapper.appendChild(subtitleEl);
+
+    // 오늘 일정이 1개 이상 있을 때만 안내 문구를 생성하고 추가합니다.
+    if (todayEvents.length > 0) {
+      const subtitleEl = document.createElement('div');
+      subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지 표시됩니다.";
+      titleWrapper.appendChild(subtitleEl);
+    }
+
     header.appendChild(titleWrapper);
 
     // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
