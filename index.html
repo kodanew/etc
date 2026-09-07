@@ -1291,25 +1291,7 @@
     }
 
     for(let d = 1; d <= lastDay; d++) {
-      let monthBaseData = scheduleData.filter(e => {
-        if (e.endMonth && e.endDay) {
-          // 달력의 현재 날짜를 숫자로 변환 (예: 9월 30일 -> 930)
-          const currentVal = calMonth * 100 + d;
-          const startVal = e.month * 100 + e.day;
-          const endVal = e.endMonth * 100 + e.endDay;
-          
-          // 해가 넘어가는 일정(예: 12.31~1.2)인지 체크하여 사이 날짜 계산
-          if (startVal <= endVal) {
-            return currentVal >= startVal && currentVal <= endVal;
-          } else {
-            return currentVal >= startVal || currentVal <= endVal;
-          }
-        } else {
-          // 당일치기 일정
-          return e.month === calMonth && e.day === d;
-        }
-      });
-      
+      let monthBaseData = scheduleData.filter(e => e.month === calMonth && e.day === d);
       if (showBookmarksOnly) {
         monthBaseData = monthBaseData.filter(e => bookmarks.includes(e.id));
       }
