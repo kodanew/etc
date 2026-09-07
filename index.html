@@ -319,7 +319,7 @@
     pointer-events: none;
   }
 
-  /* 추가된 4개의 버튼 영역 (1/4 사이즈) */
+  /* 서브 메뉴 컨테이너 */
   .sub-menu-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -337,12 +337,11 @@
     width: 100%;
   }
 
-  /* 일정 헤더 영역 */
   .schedule-section-header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: baseline; /* 텍스트 하단 정렬 */
+    align-items: baseline;
     padding: 5px 5px 10px 5px;
     margin-top: 10px;
     margin-bottom: 0px;
@@ -425,7 +424,6 @@
     text-align: left;
   }
 
-  /* 카드 우측 상단 액션 버튼 그룹 */
   .card-actions {
     position: absolute;
     top: 10px;
@@ -556,6 +554,8 @@
   .day-events-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
   .day-events-subtitle { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px; }
   .day-event-list { display: flex; flex-direction: column; gap: 7px; }
+  
+  /* 리스트 공통(일정, 자료, 직원) 버튼 아이템 */
   .day-event-item {
     width: 100%; text-align: left; background: #ffffff;
     border: 1px solid #e5e7eb; border-radius: 9px;
@@ -571,8 +571,25 @@
     color: #c08a22;
     font-weight: 800;
   }
-  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); }
+  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); line-height: 1.3; }
   .day-event-item.chairman { border-color: #d0e1fd; background: #f5f9ff; }
+
+  /* 직원 목록용 뱃지 스타일 */
+  .staff-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #4a5568;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .staff-badge.executive {
+    background: #ebf8ff;
+    color: #3182ce;
+  }
 
   .modal-title-area {
     display: flex;
@@ -624,27 +641,6 @@
     word-break: keep-all;
   }
 
-  /* 캘린더 추가 버튼 (디자인 및 위치 변경) */
-  .calendar-add-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff; /* 흰색 배경 */
-    border: 1px solid var(--primary-color); /* 파란색 테두리 */
-    color: var(--primary-color); /* 파란 글씨 */
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-decoration: none;
-    margin-top: 12px; /* 메모장 아래 간격 */
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .calendar-add-btn:active {
-    background: #ebf8ff; /* 클릭 시 옅은 파란 배경 */
-  }
-
   /* 나만의 메모 영역 */
   .memo-container {
     display: flex;
@@ -680,9 +676,9 @@
     background-color: #ffffff;
   }
 
-  /* 메모 저장 버튼 (오른쪽 끝 배치, 푸른색 계통) */
+  /* 메모 저장 버튼 */
   .memo-save-btn {
-    background: #3182ce; /* 검정색에서 시원한 푸른색으로 변경 */
+    background: #3182ce; 
     color: white;
     border: none;
     border-radius: 6px;
@@ -695,8 +691,8 @@
     background: #2b6cb0;
   }
 
-  /* ✨ 회의자료 보고 전용 풀스크린 페이지 ✨ */
-  .materials-screen {
+  /* 풀스크린 전용 페이지 (회의자료 & 직원현황 공통) */
+  .fullscreen-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -709,16 +705,17 @@
     overflow-y: auto;
   }
   
-  .materials-header {
+  .fullscreen-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 15px;
     background: #ffffff;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
   }
   
-  .materials-back-btn {
+  .fullscreen-back-btn {
     background: none;
     border: none;
     font-size: 0.95rem;
@@ -728,22 +725,32 @@
     padding: 0;
   }
 
-  .materials-title {
+  .fullscreen-title {
     font-size: 1.1rem;
     font-weight: 800;
     color: var(--text-dark);
   }
   
-  .materials-dummy { width: 60px; } /* 중앙 정렬용 여백 */
+  .fullscreen-dummy { width: 60px; } 
 
-  /* 향후 월별 버튼 탭 영역 */
-  .materials-month-tabs {
+  /* 가로 스크롤 탭 영역 */
+  .fullscreen-tabs {
     display: flex;
     gap: 8px;
     padding: 12px 15px 4px 15px;
     overflow-x: auto;
     white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   }
+  /* 스크롤바 숨기기 (깔끔한 UI) */
+  .fullscreen-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .fullscreen-tabs {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   .month-tab {
     padding: 7px 16px;
     border-radius: 20px;
@@ -753,6 +760,7 @@
     font-weight: 700;
     font-size: 0.8rem;
     cursor: pointer;
+    flex-shrink: 0;
   }
   .month-tab.active {
     background: var(--primary-color);
@@ -760,11 +768,12 @@
     border-color: var(--primary-color);
   }
 
-  .materials-content {
+  .fullscreen-content {
     padding: 10px 15px 30px 15px;
+    flex-grow: 1;
   }
 
-  /* 회의자료 보고 - 이미지(JPG) 뷰어 */
+  /* 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
     padding: 14px;
@@ -849,7 +858,7 @@
     font-size: 0.85rem;
   }
 
-  /* 로그인(입장) 화면 */
+  /* 로그인 화면 */
   #appRoot {
     display: none;
   }
@@ -980,10 +989,11 @@
     </div>
   </div>
 
-  <!-- 추가된 서브 메뉴 컨테이너 -->
+  <!-- 서브 메뉴 컨테이너 -->
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="alert('준비 중입니다.')">제7대 임원현황</button>
-    <button class="quick-btn" onclick="alert('준비 중입니다.')">사무국 임직원</button>
+    <!-- 👇 KODA 직원현황 텍스트 및 클릭 함수 교체 👇 -->
+    <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
     <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
     <button class="quick-btn disabled">준비중</button>
   </div>
@@ -1002,25 +1012,48 @@
   </div>
 </div>
 
-<!-- ✨ 변경된 풀스크린 형태의 회의자료 보고 페이지 ✨ -->
-<div class="materials-screen" id="materialsScreen">
-  <div class="materials-header">
-    <button class="materials-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
-    <div class="materials-title">회의자료 보고</div>
-    <div class="materials-dummy"></div> <!-- 중앙 정렬을 위한 더미 -->
+<!-- ✨ 회의자료 보고 페이지 (월별 가로스크롤 탭 추가) ✨ -->
+<div class="fullscreen-screen" id="materialsScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">회의자료 보고</div>
+    <div class="fullscreen-dummy"></div> 
   </div>
   
-  <!-- 향후 기능 확장을 위한 탭 영역 -->
-  <div class="materials-month-tabs">
-    <button class="month-tab active">전체</button>
-    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">8월</button>
-    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">9월</button>
-    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">10월</button>
+  <div class="fullscreen-tabs" id="materialTabs">
+    <button class="month-tab active" data-month="all" onclick="filterMaterials('all')">전체</button>
+    <button class="month-tab" data-month="8" onclick="filterMaterials('8')">8월</button>
+    <button class="month-tab" data-month="9" onclick="filterMaterials('9')">9월</button>
+    <button class="month-tab" data-month="10" onclick="filterMaterials('10')">10월</button>
+    <button class="month-tab" data-month="11" onclick="filterMaterials('11')">11월</button>
+    <button class="month-tab" data-month="12" onclick="filterMaterials('12')">12월</button>
+    <button class="month-tab" data-month="1" onclick="filterMaterials('1')">27년 1월</button>
+    <button class="month-tab" data-month="2" onclick="filterMaterials('2')">2월</button>
   </div>
 
-  <div class="materials-content">
+  <div class="fullscreen-content">
     <div class="day-events-subtitle" id="materialsSubtitle" style="margin-bottom:12px;">확인하실 자료를 선택하세요.</div>
     <div class="day-event-list" id="materialsList"></div>
+  </div>
+</div>
+
+<!-- ✨ KODA 직원현황 전용 페이지 ✨ -->
+<div class="fullscreen-screen" id="staffScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">KODA 직원현황</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+  
+  <div class="fullscreen-tabs" id="staffTabs">
+    <button class="month-tab active" data-cat="all" onclick="filterStaff('all')">전체</button>
+    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
+    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
+  </div>
+
+  <div class="fullscreen-content">
+    <div class="day-events-subtitle" style="margin-bottom:12px;">원하시는 분께 바로 전화를 걸 수 있습니다.</div>
+    <div class="day-event-list" id="staffList"></div>
   </div>
 </div>
 
@@ -1049,7 +1082,7 @@
   </div>
 </div>
 
-<!-- 상세 일정 모달 -->
+<!-- 상세 일정 모달 (캘린더 연동 제거됨) -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModalAction()">×</button>
@@ -1084,7 +1117,6 @@
       <span class="modal-value" id="modalNote"></span>
     </div>
 
-    <!-- 나만의 메모 영역 -->
     <div class="memo-container">
       <div class="memo-header">
         <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
@@ -1092,23 +1124,21 @@
       </div>
       <textarea id="modalMemo" class="memo-input" placeholder="회의 전/후 필요한 메모를 자유롭게 작성하세요..."></textarea>
     </div>
-    
-    <!-- 캘린더 추가 버튼을 나만의 메모 밑으로 내림 -->
-    <a href="#" target="_blank" class="calendar-add-btn" id="addToCalBtn">
-      📅 구글 캘린더에 일정 저장하기
-    </a>
   </div>
 </div>
 
 <script>
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
-
-  // ⚠️ 아래 URL을 "시트3"를 게시(웹에 게시 > 시트3 선택 > csv)해서 나온 링크로 교체하세요.
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
+  
+  // ⚠️ 아래 URL을 "시트4(직원현황)"를 게시해서 나온 CSV 링크로 교체해주세요! ⚠️
+  // A열: 구분 (7대 임원 / 사무국), B열: 이름, C열: 직책, D열: 연락처 (형식 추천)
+  const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
+  let staffData = [];
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
   
@@ -1211,11 +1241,11 @@
     return dataArr;
   }
 
-  // ===== 시트3 기반 회원 인증 =====
-  let membersData = []; // [{name, phone}] 형태로 저장
+  // ===== 시트3 회원 로그인 연동 부분 유지 =====
+  let membersData = []; 
 
   function normalizePhone(str) {
-    return (str || '').replace(/[^0-9]/g, ''); // 숫자만 남겨서 비교 (하이픈/공백 무시)
+    return (str || '').replace(/[^0-9]/g, ''); 
   }
 
   function parseMembersCSV(csv) {
@@ -1227,28 +1257,15 @@
       const char = csv[i];
       const nextChar = csv[i + 1];
 
-      if (char === '"' && insideQuote && nextChar === '"') {
-        curr += '"';
-        i++;
-      } else if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === ',' && !insideQuote) {
-        row.push(curr);
-        curr = '';
-      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+      if (char === '"' && insideQuote && nextChar === '"') { curr += '"'; i++; }
+      else if (char === '"') { insideQuote = !insideQuote; }
+      else if (char === ',' && !insideQuote) { row.push(curr); curr = ''; }
+      else if ((char === '\n' || char === '\r') && !insideQuote) {
         if (char === '\r' && nextChar === '\n') i++;
-        row.push(curr);
-        rows.push(row);
-        row = [];
-        curr = '';
-      } else {
-        curr += char;
-      }
+        row.push(curr); rows.push(row); row = []; curr = '';
+      } else { curr += char; }
     }
-    if (curr || row.length > 0) {
-      row.push(curr);
-      rows.push(row);
-    }
+    if (curr || row.length > 0) { row.push(curr); rows.push(row); }
 
     const list = [];
     for (let i = 1; i < rows.length; i++) {
@@ -1297,7 +1314,7 @@
     errorEl.style.display = 'none';
 
     if (membersData.length === 0) {
-      await loadMembersData(); // 아직 명단을 못 불러왔다면 한번 더 시도
+      await loadMembersData(); 
     }
 
     if (isAuthorizedMember(name, phone)) {
@@ -1356,6 +1373,7 @@
     document.body.style.overflow = 'hidden';
   }
 
+  // ===== 회의 자료 파싱 및 로직 =====
   function getDriveFileId(url) {
     if (!url) return null;
     const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
@@ -1372,28 +1390,15 @@
       const char = csv[i];
       const nextChar = csv[i + 1];
 
-      if (char === '"' && insideQuote && nextChar === '"') {
-        curr += '"';
-        i++;
-      } else if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === ',' && !insideQuote) {
-        row.push(curr);
-        curr = '';
-      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+      if (char === '"' && insideQuote && nextChar === '"') { curr += '"'; i++; }
+      else if (char === '"') { insideQuote = !insideQuote; }
+      else if (char === ',' && !insideQuote) { row.push(curr); curr = ''; }
+      else if ((char === '\n' || char === '\r') && !insideQuote) {
         if (char === '\r' && nextChar === '\n') i++;
-        row.push(curr);
-        rows.push(row);
-        row = [];
-        curr = '';
-      } else {
-        curr += char;
-      }
+        row.push(curr); rows.push(row); row = []; curr = '';
+      } else { curr += char; }
     }
-    if (curr || row.length > 0) {
-      row.push(curr);
-      rows.push(row);
-    }
+    if (curr || row.length > 0) { row.push(curr); rows.push(row); }
 
     const dataArr = [];
     for (let i = 1; i < rows.length; i++) {
@@ -1404,6 +1409,10 @@
       const title = r[1] ? r[1].trim() : '';
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
+      
+      // 월 추출 로직 (예: "8.12" -> "8")
+      const monthMatch = dateStr.match(/^(\d{1,2})\./);
+      const exactMonth = monthMatch ? monthMatch[1] : '';
 
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
       const images = rawUrls.map(u => {
@@ -1418,12 +1427,15 @@
 
       dataArr.push({
         date: dateStr,
+        month: exactMonth,
         title: title,
         fileType: fileType,
-        images: images
+        images: images,
+        globalIndex: i - 1 // 전체 인덱스 보존용
       });
     }
 
+    // 최신순 정렬
     dataArr.sort((a, b) => {
       const toNum = (s) => {
         const p = s.split('.').map(v => parseInt(v, 10));
@@ -1442,23 +1454,37 @@
       const response = await fetch(MATERIALS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       const csvText = await response.text();
       materialsData = parseMaterialsCSV(csvText);
-      renderMaterialsList();
+      renderMaterialsList('all'); // 기본은 전체
     } catch (error) {
       console.error("회의자료 연동 실패:", error);
       list.innerHTML = `<div class="no-data">자료를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
-  function renderMaterialsList() {
+  // 탭 클릭에 따른 회의자료 필터링 함수
+  window.filterMaterials = function(month) {
+    document.querySelectorAll('#materialTabs .month-tab').forEach(btn => {
+      if (btn.dataset.month === month) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    renderMaterialsList(month);
+  };
+
+  function renderMaterialsList(monthFilter) {
     const list = document.getElementById('materialsList');
     list.innerHTML = '';
 
-    if (materialsData.length === 0) {
-      list.innerHTML = `<div class="no-data">등록된 회의자료가 없습니다.</div>`;
+    const filteredData = materialsData.filter(item => {
+      if (monthFilter === 'all') return true;
+      return item.month === monthFilter;
+    });
+
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`;
       return;
     }
 
-    materialsData.forEach((item, index) => {
+    filteredData.forEach(item => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'day-event-item';
@@ -1475,7 +1501,10 @@
 
       btn.appendChild(title);
       btn.appendChild(meta);
-      btn.onclick = () => openMaterial(index);
+      
+      // 원본 데이터 인덱스를 넘겨주어 열기
+      const indexInOriginal = materialsData.findIndex(d => d === item);
+      btn.onclick = () => openMaterial(indexInOriginal);
 
       list.appendChild(btn);
     });
@@ -1577,7 +1606,6 @@
     if (e.target.id === 'materialViewerModal') history.back();
   };
 
-  // ✨ 변경된 회의자료 페이지 열기 함수 ✨
   window.openMaterialsScreen = function() {
     document.getElementById('materialsScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -1585,15 +1613,147 @@
     if (materialsData.length === 0) {
       loadMaterialsData();
     } else {
-      renderMaterialsList();
+      // 탭 초기화
+      filterMaterials('all'); 
     }
   };
 
-  // ✨ 변경된 회의자료 페이지 닫기 함수 ✨
   window.closeMaterialsScreen = function(goBack = true) {
     document.getElementById('materialsScreen').style.display = 'none';
     if (goBack) history.back();
   };
+
+  // ===== ✨ 시트4 KODA 직원현황 로직 추가 ✨ =====
+  function parseStaffCSV(csv) {
+    const rows = [];
+    let row = [], curr = '';
+    let insideQuote = false;
+
+    for (let i = 0; i < csv.length; i++) {
+      const char = csv[i];
+      const nextChar = csv[i + 1];
+
+      if (char === '"' && insideQuote && nextChar === '"') { curr += '"'; i++; }
+      else if (char === '"') { insideQuote = !insideQuote; }
+      else if (char === ',' && !insideQuote) { row.push(curr); curr = ''; }
+      else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(curr); rows.push(row); row = []; curr = '';
+      } else { curr += char; }
+    }
+    if (curr || row.length > 0) { row.push(curr); rows.push(row); }
+
+    const dataArr = [];
+    // A열: 구분, B열: 이름, C열: 직책, D열: 연락처/기타 로 가정
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length < 2 || !r[1]) continue;
+
+      dataArr.push({
+        category: r[0] ? r[0].trim() : "분류없음",
+        name: r[1] ? r[1].trim() : "",
+        role: r[2] ? r[2].trim() : "",
+        phone: r[3] ? r[3].trim() : ""
+      });
+    }
+    return dataArr;
+  }
+
+  async function loadStaffData() {
+    const list = document.getElementById('staffList');
+    list.innerHTML = `<div class="loading-msg">직원 정보를 불러오는 중입니다...⏳</div>`;
+    
+    // 사용자가 STAFF_SHEET_CSV_URL을 등록하지 않았을 경우의 예외처리
+    if (STAFF_SHEET_CSV_URL.includes("여기에_시트4")) {
+      list.innerHTML = `<div class="no-data">시트4 주소가 연동되지 않았습니다.<br>소스코드에서 주소를 수정해주세요.</div>`;
+      return;
+    }
+
+    try {
+      const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const csvText = await response.text();
+      staffData = parseStaffCSV(csvText);
+      renderStaffList('all');
+    } catch (error) {
+      console.error("직원 정보 연동 실패:", error);
+      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  window.filterStaff = function(category) {
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      if (btn.dataset.cat === category) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    renderStaffList(category);
+  }
+
+  function renderStaffList(categoryFilter) {
+    const list = document.getElementById('staffList');
+    list.innerHTML = '';
+
+    const filteredData = staffData.filter(item => {
+      if (categoryFilter === 'all') return true;
+      return item.category === categoryFilter;
+    });
+
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">해당되는 인원이 없습니다.</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      // <a> 태그를 버튼처럼 디자인하여 바로 전화 걸 수 있게 구성
+      const aTag = document.createElement('a');
+      const normPhone = item.phone.replace(/[^0-9]/g, '');
+      aTag.href = normPhone ? `tel:${normPhone}` : "#";
+      aTag.className = 'day-event-item';
+      aTag.style.display = 'block';
+      aTag.style.textDecoration = 'none';
+      aTag.style.color = 'inherit';
+
+      const title = document.createElement('div');
+      title.className = 'day-event-item-title';
+      
+      const badgeClass = item.category.includes('임원') ? 'staff-badge executive' : 'staff-badge';
+      title.innerHTML = `<span class="${badgeClass}">${item.category}</span>${item.name} ${item.role ? `<span style="font-weight:500; font-size:0.75rem; color:#718096; margin-left:4px;">${item.role}</span>` : ''}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'day-event-item-meta';
+      meta.style.display = 'flex';
+      meta.style.justifyContent = 'space-between';
+      meta.style.alignItems = 'center';
+      meta.style.marginTop = '6px';
+      
+      if(item.phone) {
+        meta.innerHTML = `<span>📞 ${item.phone}</span> <span style="font-size:0.6rem; color:var(--primary-color); font-weight:700;">전화걸기 &rsaquo;</span>`;
+      } else {
+        meta.innerHTML = `<span>연락처 미등록</span>`;
+      }
+
+      aTag.appendChild(title);
+      aTag.appendChild(meta);
+      list.appendChild(aTag);
+    });
+  }
+
+  window.openStaffScreen = function() {
+    document.getElementById('staffScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ staffOpen: true }, "", "");
+    if (staffData.length === 0) {
+      loadStaffData();
+    } else {
+      filterStaff('all'); 
+    }
+  };
+
+  window.closeStaffScreen = function(goBack = true) {
+    document.getElementById('staffScreen').style.display = 'none';
+    if (goBack) history.back();
+  };
+  // ==========================================
+
 
   window.toggleBookmark = function(event, id) {
     event.stopPropagation(); 
@@ -1918,9 +2078,11 @@
     scheduleContainer.appendChild(upcomingList);
   }
   
+  // 뒤로가기(기기 자체 백버튼) 대응 로직 추가
   window.addEventListener('popstate', function(event) {
     document.getElementById('dayEventsModal').style.display = 'none';
-    document.getElementById('materialsScreen').style.display = 'none'; // 수정된 부분
+    document.getElementById('materialsScreen').style.display = 'none'; 
+    document.getElementById('staffScreen').style.display = 'none'; 
     document.getElementById('materialViewerModal').style.display = 'none';
     document.getElementById('pdfViewerModal').style.display = 'none';
     document.getElementById('pdfViewerFrame').src = '';
@@ -2010,17 +2172,6 @@
     document.getElementById('modalNote').innerText = event.note;
 
     document.getElementById('modalMemo').value = memos[event.id] || '';
-
-    const yyyy = currentYear;
-    const mm = String(event.month).padStart(2, '0');
-    const dd = String(event.day).padStart(2, '0');
-    const startDate = `${yyyy}${mm}${dd}`;
-    
-    const endD = new Date(yyyy, event.month - 1, event.day + 1);
-    const endDate = `${endD.getFullYear()}${String(endD.getMonth()+1).padStart(2, '0')}${String(endD.getDate()).padStart(2, '0')}`;
-    
-    const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(event.content)}&location=${encodeURIComponent(event.location)}`;
-    document.getElementById('addToCalBtn').href = calUrl;
 
     const modalStar = document.getElementById('modalStarBtn');
     if (bookmarks.includes(event.id)) {
