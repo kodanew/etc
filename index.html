@@ -88,15 +88,16 @@
     position: absolute;
     left: 20px;
     background-color: transparent;
-    color: #cbd5e0;
-    border: none;
-    padding: 4px 0;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 3px 6px;
+    border-radius: 6px;
     font-size: 0.6rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
   }
   .refresh-btn:active {
-    color: #718096;
+    color: #1a202c;
   }
 
   .header-right {
@@ -111,7 +112,7 @@
 
   .install-btn {
     background-color: transparent;
-    color: #a0aec0;
+    color: #718096;
     border: 1px solid #e2e8f0;
     padding: 3px 6px;
     border-radius: 6px;
@@ -122,7 +123,7 @@
 
   .logout-btn {
     background-color: transparent;
-    color: #a0aec0;
+    color: #718096;
     border: 1px solid #e2e8f0;
     padding: 3px 6px;
     border-radius: 6px;
@@ -131,7 +132,7 @@
     cursor: pointer;
   }
   .logout-btn:active {
-    color: #718096;
+    color: #1a202c;
   }
 
   /* 달력 영역 */
@@ -327,6 +328,7 @@
   /* 일정 헤더 영역 */
   .schedule-section-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline; /* 텍스트 하단 정렬 */
     padding: 5px 5px 10px 5px;
@@ -334,23 +336,27 @@
     margin-bottom: 0px;
     /* border-bottom: 2px solid var(--text-dark); <- 검은줄 제거 */
     width: 100%;
+    row-gap: 4px;
   }
   
   .schedule-title-wrapper {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 8px; /* 타이틀과 서브 문구 사이 간격 */
-    margin-left: 12px; /*텍스트를 왼쪽에서 2칸 정도 우측으로 밀기 */
+    gap: clamp(4px, 2vw, 8px); /* 타이틀과 서브 문구 사이 간격 */
+    margin-left: clamp(4px, 3vw, 12px); /*텍스트를 왼쪽에서 2칸 정도 우측으로 밀기 */
+    min-width: 0;
   }
 
   .schedule-section-title {
-    font-size: 1.15rem;
+    font-size: clamp(0.95rem, 4.2vw, 1.15rem);
     font-weight: 800;
     color: var(--text-dark);
+    white-space: nowrap;
   }
 
   .schedule-section-subtitle {
-    font-size: 0.85rem; /* 제목보다 약 1.5~2pt 작은 사이즈 */
+    font-size: clamp(0.68rem, 3vw, 0.85rem); /* 제목보다 약 1.5~2pt 작은 사이즈 */
     color: #a0aec0; /* 옅은 회색 */
     font-weight: 500;
   }
@@ -358,12 +364,14 @@
   .past-schedule-btn {
     background: none;
     border: none;
-    font-size: 0.75rem;
+    font-size: clamp(0.62rem, 2.8vw, 0.75rem);
     color: var(--text-muted);
     text-decoration: none; /* 밑줄 제거 */
     cursor: pointer;
     padding: 0 2px 2px 0;
     font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .past-schedule-btn:hover {
     color: var(--text-dark);
