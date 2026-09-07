@@ -87,6 +87,7 @@
   .refresh-btn {
     position: absolute;
     left: 20px;
+    top: 15px;
     background-color: transparent;
     color: #718096;
     border: 1px solid #e2e8f0;
@@ -111,6 +112,7 @@
   }
 
   .install-btn {
+    top: 25px;
     background-color: transparent;
     color: #718096;
     border: 1px solid #e2e8f0;
@@ -122,6 +124,7 @@
   }
 
   .logout-btn {
+    top: 25px;
     background-color: transparent;
     color: #718096;
     border: 1px solid #e2e8f0;
@@ -256,7 +259,7 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 11px 1px; 
-    font-size: 0.7rem; 
+    font-size: 0.65rem; 
     font-weight: 700;
     color: var(--text-dark);
     text-align: center;
@@ -316,6 +319,15 @@
     pointer-events: none;
   }
 
+  /* 추가된 4개의 버튼 영역 (1/4 사이즈) */
+  .sub-menu-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 0 10px 10px 10px;
+    width: 100%;
+  }
+
   /* 일정 리스트 영역 */
   .schedule-container {
     padding: 0 10px 30px 10px;
@@ -334,7 +346,6 @@
     padding: 5px 5px 10px 5px;
     margin-top: 10px;
     margin-bottom: 0px;
-    /* border-bottom: 2px solid var(--text-dark); <- 검은줄 제거 */
     width: 100%;
     row-gap: 4px;
   }
@@ -617,6 +628,66 @@
     word-break: keep-all;
   }
 
+  /* 캘린더 추가 버튼 */
+  .calendar-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6f9;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .calendar-add-btn:active {
+    background: #e2e8f0;
+  }
+
+  /* 나만의 메모 영역 */
+  .memo-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+  }
+  .memo-input {
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    resize: vertical;
+    margin-top: 6px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+  }
+  .memo-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #ffffff;
+  }
+  .memo-save-btn {
+    background: var(--text-dark);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 6px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
   /* 회의자료 보고 - 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
@@ -803,7 +874,7 @@
 <div class="app-container" id="appRoot">
   <div class="header">
     <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
-    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
+    <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
       <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
@@ -831,6 +902,14 @@
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" class="search-input" placeholder="일정검색" oninput="handleSearchInput(event)">
     </div>
+  </div>
+
+  <!-- 새로 추가된 서브 메뉴 컨테이너 -->
+  <div class="sub-menu-container">
+    <button class="quick-btn" onclick="alert('준비 중입니다.')">제7대 임원현황</button>
+    <button class="quick-btn" onclick="alert('준비 중입니다.')">사무국 임직원</button>
+    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
+    <button class="quick-btn disabled">준비중</button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -881,13 +960,21 @@
   </div>
 </div>
 
+<!-- 상세 일정 모달 (캘린더 연동 및 메모 기능 추가됨) -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModalAction()">×</button>
+    
     <div class="modal-title-area">
       <div class="modal-title" id="modalTitle"></div>
       <button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button>
     </div>
+
+    <!-- 캘린더 추가 버튼 -->
+    <a href="#" target="_blank" class="calendar-add-btn" id="addToCalBtn">
+      📅 구글 캘린더에 일정 저장하기
+    </a>
+
     <div class="modal-detail-row">
       <span class="modal-label">일시</span>
       <span class="modal-value" id="modalDate"></span>
@@ -912,6 +999,13 @@
       <span class="modal-label">비고</span>
       <span class="modal-value" id="modalNote"></span>
     </div>
+
+    <!-- 나만의 메모 영역 -->
+    <div class="memo-container">
+      <span class="modal-label" style="width:100%; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
+      <textarea id="modalMemo" class="memo-input" placeholder="회의 전/후 필요한 메모를 자유롭게 작성하세요..."></textarea>
+      <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
+    </div>
   </div>
 </div>
 
@@ -926,6 +1020,8 @@
   let scheduleData = [];
   let materialsData = [];
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
+  // 추가: 메모 저장을 위한 로컬 스토리지 변수
+  let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
   
   let showBookmarksOnly = false;
   let searchQuery = '';
@@ -1654,10 +1750,10 @@
     const btn = document.getElementById('pastScheduleBtn');
     if (list.style.display === 'none') {
       list.style.display = 'flex';
-      btn.innerText = '지나간 일정 닫기';
+      btn.innerText = '전체 일정 닫기';
     } else {
       list.style.display = 'none';
-      btn.innerText = '지나간 일정 다시보기';
+      btn.innerText = '전체 일정 보기';
     }
   }
 
@@ -1689,7 +1785,7 @@
     });
 
     const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<다가오는 일정>";
+    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<예정 일정>";
 
     // 헤더 생성
     const header = document.createElement('div');
@@ -1709,7 +1805,7 @@
     if (todayEvents.length > 0) {
       const subtitleEl = document.createElement('div');
       subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정까지 표시됩니다.";
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지.";
       titleWrapper.appendChild(subtitleEl);
     }
 
@@ -1720,7 +1816,7 @@
       const pastBtn = document.createElement('button');
       pastBtn.className = 'past-schedule-btn';
       pastBtn.id = 'pastScheduleBtn';
-      pastBtn.innerText = '지나간 일정 다시보기';
+      pastBtn.innerText = '전체 일정 보기';
       pastBtn.onclick = togglePastSchedules;
       header.appendChild(pastBtn);
     }
@@ -1737,13 +1833,13 @@
       scheduleContainer.appendChild(pastList);
     }
 
-    // 오늘 + 다가오는 일정 목록 영역
+    // 오늘 + 예정 일정 목록 영역
     const upcomingList = document.createElement('div');
     upcomingList.className = 'schedule-list-wrapper';
     
     if (!hasUpcoming) {
-      // 다가오는 일정이 없는데 지나간 일정만 있을 경우의 처리
-      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">다가오는 일정이 없습니다.</div>`;
+      // 예정 일정이 없는데 지나간 일정만 있을 경우의 처리
+      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
     } else {
       // 오늘 일정이 위에, 그 이후가 아래로 나열
       todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
@@ -1843,6 +1939,21 @@
     document.getElementById('modalHost').innerText = event.host;
     document.getElementById('modalNote').innerText = event.note;
 
+    // 저장된 메모 불러오기
+    document.getElementById('modalMemo').value = memos[event.id] || '';
+
+    // 구글 캘린더 연동 링크 생성 (종일 일정 기준)
+    const yyyy = currentYear;
+    const mm = String(event.month).padStart(2, '0');
+    const dd = String(event.day).padStart(2, '0');
+    const startDate = `${yyyy}${mm}${dd}`;
+    
+    const endD = new Date(yyyy, event.month - 1, event.day + 1);
+    const endDate = `${endD.getFullYear()}${String(endD.getMonth()+1).padStart(2, '0')}${String(endD.getDate()).padStart(2, '0')}`;
+    
+    const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(event.content)}&location=${encodeURIComponent(event.location)}`;
+    document.getElementById('addToCalBtn').href = calUrl;
+
     const modalStar = document.getElementById('modalStarBtn');
     if (bookmarks.includes(event.id)) {
       modalStar.innerText = '★';
@@ -1856,6 +1967,22 @@
     document.body.style.overflow = 'hidden';
 
     history.pushState({ modalOpen: true }, "", "");
+  };
+
+  // 모달창 내 메모 저장 동작 로직
+  window.saveEventMemo = function() {
+    if (currentModalGlobalIndex === null) return;
+    const event = scheduleData[currentModalGlobalIndex];
+    const memoText = document.getElementById('modalMemo').value.trim();
+    
+    if (memoText === '') {
+      delete memos[event.id]; // 빈칸이면 삭제
+    } else {
+      memos[event.id] = memoText; // 작성한 내용 저장
+    }
+    
+    localStorage.setItem('koda_memos', JSON.stringify(memos));
+    alert('메모가 기기에 안전하게 저장되었습니다.');
   };
 
   function hideModalDOM() {
