@@ -304,48 +304,6 @@
     width: 100%;
   }
 
-  /* 🎯 새로 추가된: 일정 헤더 및 리스트 감싸기 스타일 */
-  .schedule-section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 5px 5px 10px 5px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    border-bottom: 2px solid var(--text-dark);
-    width: 100%;
-  }
-  .schedule-section-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--text-dark);
-  }
-  .past-schedule-btn {
-    background: none;
-    border: none;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0 2px 2px 0;
-    font-weight: 600;
-  }
-  .past-schedule-btn:hover {
-    color: var(--text-dark);
-  }
-  .schedule-list-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-  }
-  #pastScheduleList {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed var(--border-color);
-  }
-  /* ------------------------------------- */
-
   .event-card {
     background: var(--card-bg);
     border-radius: 10px;
@@ -366,7 +324,7 @@
     text-align: left;
   }
 
-  /* 카드 우측 상단 액션 버튼 그룹 */
+  /* 카드 우측 상단 액션 버튼 그룹 (공유 + 즐겨찾기, 같은 라인 배치) */
   .card-actions {
     position: absolute;
     top: 10px;
@@ -377,7 +335,7 @@
     gap: 2px;
   }
 
-  /* 공통 아이콘 버튼 스타일 */
+  /* 공통 아이콘 버튼 스타일 (모든 아이콘을 동일한 정사각 박스에 중앙 정렬해 라인을 맞춤) */
   .icon-btn {
     background: none;
     border: none;
@@ -639,6 +597,51 @@
     flex-wrap: wrap;
   }
 
+  /* 일정 목록 상단 영역 */
+  .schedule-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 2px 0 2px;
+    margin-bottom: 2px;
+  }
+
+  .schedule-heading-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .past-toggle-btn {
+    background: none;
+    border: none;
+    padding: 4px 2px;
+    color: #718096;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .past-toggle-btn:active {
+    color: var(--primary-color);
+  }
+
+  .past-back-btn {
+    background: none;
+    border: none;
+    padding: 4px 2px;
+    color: var(--primary-color);
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .schedule-subtitle {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin: -1px 2px 4px 2px;
+  }
+
   .loading-msg {
     text-align: center;
     padding: 30px;
@@ -770,6 +773,10 @@
 
 <script>
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
+
+  // ▼▼▼ 회의자료 보고용 "시트2" CSV 링크입니다.
+  // 구글시트에서 시트2를 만든 뒤 [파일] > [공유] > [웹에 게시]에서
+  // "시트2" 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고, 생성된 링크로 아래 값을 교체하세요.
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
 
   let scheduleData = [];
@@ -778,6 +785,7 @@
   
   let showBookmarksOnly = false;
   let searchQuery = '';
+  let showPastSchedules = false;
 
   const todayDateObj = new Date();
   todayDateObj.setHours(0, 0, 0, 0); 
@@ -790,9 +798,18 @@
   let calMonth = currentMonth; 
 
   const holidays2026 = [
-    "01-01", "02-16", "02-17", "02-18", "03-01", "03-02", "05-05", 
-    "05-24", "05-25", "06-03", "06-06", "08-15", "08-17", 
-    "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
+    "01-01", 
+    "02-16", "02-17", "02-18", 
+    "03-01", "03-02", 
+    "05-05", 
+    "05-24", "05-25", 
+    "06-03", 
+    "06-06", 
+    "08-15", "08-17", 
+    "09-24", "09-25", "09-26", 
+    "10-03", "10-05", 
+    "10-09", 
+    "12-25"  
   ];
 
   function parseCSV(csv) {
@@ -875,6 +892,7 @@
     return dataArr;
   }
 
+  // 구글드라이브 공유링크(.../file/d/파일ID/view?usp=sharing)에서 파일ID만 추출합니다.
   function getDriveFileId(url) {
     if (!url) return null;
     const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
@@ -914,6 +932,7 @@
       rows.push(row);
     }
 
+    // 시트2 열 구성: A=날짜(예: 26.08.24)  B=제목  C=파일링크(구글드라이브 공유링크)  D=파일타입(pdf 또는 jpg)
     const dataArr = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -924,6 +943,7 @@
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
 
+      // C열에 쉼표(,)로 여러 링크를 구분해서 넣으면 여러 페이지(장)로 처리됩니다.
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
       const images = rawUrls.map(u => {
         const fileId = getDriveFileId(u);
@@ -939,10 +959,11 @@
         date: dateStr,
         title: title,
         fileType: fileType,
-        images: images
+        images: images // jpg: 여러 장 지원 / pdf: images[0]만 사용
       });
     }
 
+    // 최신 날짜(YY.MM.DD 형식 기준)가 위로 오도록 정렬
     dataArr.sort((a, b) => {
       const toNum = (s) => {
         const p = s.split('.').map(v => parseInt(v, 10));
@@ -1032,7 +1053,7 @@
 
   window.closePdfViewer = function(goBack = true) {
     document.getElementById('pdfViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerFrame').src = '';
+    document.getElementById('pdfViewerFrame').src = ''; // 로딩 중단
     if (goBack) history.back();
   };
 
@@ -1170,6 +1191,7 @@
 
   window.toggleBookmarksOnly = function() {
     showBookmarksOnly = !showBookmarksOnly;
+    showPastSchedules = false;
     const btn = document.getElementById('bookmarkFilterBtn');
     if (showBookmarksOnly) {
       btn.classList.add('active-bookmark');
@@ -1181,6 +1203,7 @@
 
   window.handleSearchInput = function(e) {
     searchQuery = e.target.value.trim().toLowerCase();
+    showPastSchedules = false;
     updateView();
   }
 
@@ -1309,131 +1332,117 @@
     updateView();
   };
 
-  // 개별 카드 생성 로직 분리 함수
-  function createEventCard(event) {
-    const globalIndex = scheduleData.indexOf(event);
-    const isChairman = event.note.includes("회장님 참석");
-    const titleClass = isChairman ? "event-title chairman" : "event-title";
-    const isStarred = bookmarks.includes(event.id);
-
-    const card = document.createElement('div');
-    card.className = 'event-card';
-
-    card.innerHTML = `
-      <div class="card-actions">
-        <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
-          </svg>
-        </button>
-        <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
-          ${isStarred
-            ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-          }
-        </button>
-      </div>
-      <button class="event-header" onclick="openModal(${globalIndex})">
-        <div class="event-meta">
-          <div class="event-date">${event.date}</div>
-          <div class="event-divider">/</div>
-          <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
-        </div>
-        <div class="${titleClass}">${event.title}</div>
-      </button>
-    `;
-    return card;
+  function getEventDate(event) {
+    return new Date(currentYear, Number(event.month) - 1, Number(event.day));
   }
 
-  // 지나간 일정 열기/닫기 토글
+  function sortSchedulesAscending(data) {
+    return [...data].sort((a, b) => getEventDate(a) - getEventDate(b));
+  }
+
   window.togglePastSchedules = function() {
-    const list = document.getElementById('pastScheduleList');
-    const btn = document.getElementById('pastScheduleBtn');
-    if (list.style.display === 'none') {
-      list.style.display = 'flex';
-      btn.innerText = '지나간 일정 닫기';
-    } else {
-      list.style.display = 'none';
-      btn.innerText = '지나간 일정 다시보기';
-    }
-  }
+    showPastSchedules = !showPastSchedules;
+    renderSchedules();
+  };
 
-  // 🎯 새로 수정된: 일정 렌더링 함수
   function renderSchedules() {
-    const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
-    
-    const currentFilteredData = getFilteredData();
 
-    if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`;
+    const baseData = getFilteredData();
+
+    // 검색/관심일정 필터가 없을 때는 '오늘 + 앞으로의 일정'을 기본으로 표시합니다.
+    // 검색 또는 관심일정에서는 해당 필터 결과 안에서 오늘/미래 일정을 보여줍니다.
+    const isDefaultList = !showBookmarksOnly && searchQuery === '';
+
+    let listData;
+    if (showPastSchedules) {
+      listData = baseData.filter(event => getEventDate(event) < todayDateObj);
+    } else {
+      listData = baseData.filter(event => getEventDate(event) >= todayDateObj);
+    }
+
+    listData = sortSchedulesAscending(listData);
+
+    const hasToday = listData.some(event => getEventDate(event).getTime() === todayDateObj.getTime());
+    const headingText = showPastSchedules
+      ? '지난 일정'
+      : (hasToday ? '오늘 일정' : '다가오는 일정');
+
+    const heading = document.createElement('div');
+    heading.className = 'schedule-heading';
+
+    const title = document.createElement('div');
+    title.className = 'schedule-heading-title';
+    title.innerText = `<${headingText}>`;
+
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = showPastSchedules ? 'past-back-btn' : 'past-toggle-btn';
+    toggleBtn.innerText = showPastSchedules ? '현재 일정 보기' : '지나간 일정 다시보기';
+    toggleBtn.onclick = togglePastSchedules;
+
+    heading.appendChild(title);
+    heading.appendChild(toggleBtn);
+    scheduleContainer.appendChild(heading);
+
+    if (showPastSchedules) {
+      const subtitle = document.createElement('div');
+      subtitle.className = 'schedule-subtitle';
+      subtitle.innerText = '지나간 일정을 다시 확인할 수 있습니다.';
+      scheduleContainer.appendChild(subtitle);
+    } else if (hasToday) {
+      const subtitle = document.createElement('div');
+      subtitle.className = 'schedule-subtitle';
+      subtitle.innerText = '오늘 일정부터 이후 일정까지 표시됩니다.';
+      scheduleContainer.appendChild(subtitle);
+    }
+
+    if (listData.length === 0) {
+      const noData = document.createElement('div');
+      noData.className = 'no-data';
+      noData.innerText = showPastSchedules
+        ? '지나간 일정이 없습니다.'
+        : (isDefaultList ? '등록된 오늘 및 다가오는 일정이 없습니다.' : '조건에 맞는 일정이 없습니다.');
+      scheduleContainer.appendChild(noData);
       return;
     }
 
-    const pastEvents = [];
-    const todayEvents = [];
-    const futureEvents = [];
+    listData.forEach(event => {
+      const globalIndex = scheduleData.indexOf(event);
+      const isChairman = event.note.includes("회장님 참석");
+      const titleClass = isChairman ? "event-title chairman" : "event-title";
+      const isStarred = bookmarks.includes(event.id);
 
-    // dday 값에 따라 오늘/다가오는일정/지나간일정 분류
-    currentFilteredData.forEach(event => {
-      if (event.dday === "D-day") {
-        todayEvents.push(event);
-      } else if (event.dday.startsWith("D+")) {
-        pastEvents.push(event);
-      } else {
-        futureEvents.push(event);
-      }
+      const card = document.createElement('div');
+      card.className = 'event-card';
+
+      card.innerHTML = `
+        <div class="card-actions">
+          <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-.47-.09-.7l7.05-4.11 c0.54.5,1.25.81,2.04.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92C20.92,18.99,19.61,17.68,18,16.08z"></path>
+            </svg>
+          </button>
+          <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
+            ${isStarred
+              ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+              : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+            }
+          </button>
+        </div>
+        <button class="event-header" onclick="openModal(${globalIndex})">
+          <div class="event-meta">
+            <div class="event-date">${event.date}</div>
+            <div class="event-divider">/</div>
+            <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
+          </div>
+          <div class="${titleClass}">${event.title}</div>
+        </button>
+      `;
+      scheduleContainer.appendChild(card);
     });
-
-    const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<다가오는 일정>";
-
-    // 헤더 생성
-    const header = document.createElement('div');
-    header.className = 'schedule-section-header';
-    
-    const titleEl = document.createElement('div');
-    titleEl.className = 'schedule-section-title';
-    titleEl.innerText = titleText;
-    header.appendChild(titleEl);
-
-    // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
-    if (pastEvents.length > 0) {
-      const pastBtn = document.createElement('button');
-      pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn';
-      pastBtn.innerText = '지나간 일정 다시보기';
-      pastBtn.onclick = togglePastSchedules;
-      header.appendChild(pastBtn);
-    }
-
-    scheduleContainer.appendChild(header);
-
-    // 숨김 처리된 지나간 일정 목록 영역
-    if (pastEvents.length > 0) {
-      const pastList = document.createElement('div');
-      pastList.className = 'schedule-list-wrapper';
-      pastList.id = 'pastScheduleList';
-      pastList.style.display = 'none'; // 기본 숨김
-      pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-      scheduleContainer.appendChild(pastList);
-    }
-
-    // 오늘 + 다가오는 일정 목록 영역
-    const upcomingList = document.createElement('div');
-    upcomingList.className = 'schedule-list-wrapper';
-    
-    if (!hasUpcoming) {
-      // 다가오는 일정이 없는데 지나간 일정만 있을 경우의 처리
-      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">다가오는 일정이 없습니다.</div>`;
-    } else {
-      // 오늘 일정이 위에, 그 이후가 아래로 나열
-      todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-      futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-    }
-    scheduleContainer.appendChild(upcomingList);
   }
-  
+
   window.addEventListener('popstate', function(event) {
     document.getElementById('dayEventsModal').style.display = 'none';
     document.getElementById('materialsModal').style.display = 'none';
@@ -1443,6 +1452,8 @@
     hideModalDOM();
   });
 
+  // 날짜를 클릭하면 그 날짜의 일정들을 먼저 보여줍니다.
+  // 일정이 1개면 바로 상세 화면, 2개 이상이면 선택 목록을 표시합니다.
   window.openDayEventsModal = function(year, month, day) {
     const dayEvents = scheduleData.filter(eventData =>
       Number(eventData.month) === Number(month) &&
