@@ -354,8 +354,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: clamp(4px, 2vw, 8px); /* 타이틀과 서브 문구 사이 간격 */
-    margin-left: clamp(4px, 3vw, 12px); /*텍스트를 왼쪽에서 2칸 정도 우측으로 밀기 */
+    gap: clamp(4px, 2vw, 8px);
+    margin-left: clamp(4px, 3vw, 12px);
     min-width: 0;
   }
 
@@ -367,8 +367,8 @@
   }
 
   .schedule-section-subtitle {
-    font-size: clamp(0.68rem, 3vw, 0.85rem); /* 제목보다 약 1.5~2pt 작은 사이즈 */
-    color: #a0aec0; /* 옅은 회색 */
+    font-size: clamp(0.68rem, 3vw, 0.85rem); 
+    color: #a0aec0; 
     font-weight: 500;
   }
 
@@ -377,7 +377,7 @@
     border: none;
     font-size: clamp(0.62rem, 2.8vw, 0.75rem);
     color: var(--text-muted);
-    text-decoration: none; /* 밑줄 제거 */
+    text-decoration: none; 
     cursor: pointer;
     padding: 0 2px 2px 0;
     font-weight: 600;
@@ -410,7 +410,6 @@
     position: relative;
   }
 
-  /* 오늘 일정 카드 전용 스타일 (주황색 테두리 변경) */
   .event-card.today-card {
     border: 2.5px solid #ed8936;
   }
@@ -437,7 +436,6 @@
     gap: 2px;
   }
 
-  /* 공통 아이콘 버튼 스타일 */
   .icon-btn {
     background: none;
     border: none;
@@ -487,7 +485,6 @@
     font-weight: 700;
   }
 
-  /* 장소명과 D-day가 함께 표시되는 영역 */
   .event-location {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -555,7 +552,6 @@
     z-index: 10;
   }
   
-  /* 날짜 클릭 시 해당 날짜의 여러 일정을 선택하는 목록 */
   .day-events-modal-content { max-width: 400px; }
   .day-events-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
   .day-events-subtitle { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px; }
@@ -628,25 +624,25 @@
     word-break: keep-all;
   }
 
-  /* 캘린더 추가 버튼 */
+  /* 캘린더 추가 버튼 (디자인 및 위치 변경) */
   .calendar-add-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #f4f6f9;
-    border: 1px solid #cbd5e0;
-    color: #4a5568;
+    background: #ffffff; /* 흰색 배경 */
+    border: 1px solid var(--primary-color); /* 파란색 테두리 */
+    color: var(--primary-color); /* 파란 글씨 */
     border-radius: 6px;
     padding: 8px 12px;
     font-size: 0.75rem;
     font-weight: 700;
     text-decoration: none;
-    margin-bottom: 15px;
+    margin-top: 12px; /* 메모장 아래 간격 */
     width: 100%;
     box-sizing: border-box;
   }
   .calendar-add-btn:active {
-    background: #e2e8f0;
+    background: #ebf8ff; /* 클릭 시 옅은 파란 배경 */
   }
 
   /* 나만의 메모 영역 */
@@ -657,6 +653,14 @@
     padding-top: 10px;
     border-top: 1px dashed var(--border-color);
   }
+  
+  .memo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
   .memo-input {
     width: 100%;
     min-height: 60px;
@@ -675,17 +679,89 @@
     outline: none;
     background-color: #ffffff;
   }
+
+  /* 메모 저장 버튼 (오른쪽 끝 배치, 푸른색 계통) */
   .memo-save-btn {
-    background: var(--text-dark);
+    background: #3182ce; /* 검정색에서 시원한 푸른색으로 변경 */
     color: white;
     border: none;
     border-radius: 6px;
     padding: 6px 12px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: bold;
-    margin-top: 6px;
     cursor: pointer;
-    align-self: flex-end;
+  }
+  .memo-save-btn:active {
+    background: #2b6cb0;
+  }
+
+  /* ✨ 회의자료 보고 전용 풀스크린 페이지 ✨ */
+  .materials-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 1500;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .materials-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .materials-back-btn {
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .materials-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  
+  .materials-dummy { width: 60px; } /* 중앙 정렬용 여백 */
+
+  /* 향후 월별 버튼 탭 영역 */
+  .materials-month-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 15px 4px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .month-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e0;
+    background: #ffffff;
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .month-tab.active {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+  }
+
+  .materials-content {
+    padding: 10px 15px 30px 15px;
   }
 
   /* 회의자료 보고 - 이미지(JPG) 뷰어 */
@@ -904,7 +980,7 @@
     </div>
   </div>
 
-  <!-- 새로 추가된 서브 메뉴 컨테이너 -->
+  <!-- 추가된 서브 메뉴 컨테이너 -->
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="alert('준비 중입니다.')">제7대 임원현황</button>
     <button class="quick-btn" onclick="alert('준비 중입니다.')">사무국 임직원</button>
@@ -926,11 +1002,24 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="materialsModal" onclick="closeMaterialsOnOutsideClick(event)">
-  <div class="modal-content day-events-modal-content">
-    <button class="modal-close" onclick="closeMaterialsModal()">×</button>
-    <div class="day-events-title">회의자료 보고</div>
-    <div class="day-events-subtitle" id="materialsSubtitle">확인하실 자료를 선택하세요.</div>
+<!-- ✨ 변경된 풀스크린 형태의 회의자료 보고 페이지 ✨ -->
+<div class="materials-screen" id="materialsScreen">
+  <div class="materials-header">
+    <button class="materials-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
+    <div class="materials-title">회의자료 보고</div>
+    <div class="materials-dummy"></div> <!-- 중앙 정렬을 위한 더미 -->
+  </div>
+  
+  <!-- 향후 기능 확장을 위한 탭 영역 -->
+  <div class="materials-month-tabs">
+    <button class="month-tab active">전체</button>
+    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">8월</button>
+    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">9월</button>
+    <button class="month-tab" onclick="alert('향후 연동 예정입니다.')">10월</button>
+  </div>
+
+  <div class="materials-content">
+    <div class="day-events-subtitle" id="materialsSubtitle" style="margin-bottom:12px;">확인하실 자료를 선택하세요.</div>
     <div class="day-event-list" id="materialsList"></div>
   </div>
 </div>
@@ -960,7 +1049,7 @@
   </div>
 </div>
 
-<!-- 상세 일정 모달 (캘린더 연동 및 메모 기능 추가됨) -->
+<!-- 상세 일정 모달 -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModalAction()">×</button>
@@ -969,11 +1058,6 @@
       <div class="modal-title" id="modalTitle"></div>
       <button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button>
     </div>
-
-    <!-- 캘린더 추가 버튼 -->
-    <a href="#" target="_blank" class="calendar-add-btn" id="addToCalBtn">
-      📅 구글 캘린더에 일정 저장하기
-    </a>
 
     <div class="modal-detail-row">
       <span class="modal-label">일시</span>
@@ -1002,10 +1086,17 @@
 
     <!-- 나만의 메모 영역 -->
     <div class="memo-container">
-      <span class="modal-label" style="width:100%; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
+      <div class="memo-header">
+        <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
+        <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
+      </div>
       <textarea id="modalMemo" class="memo-input" placeholder="회의 전/후 필요한 메모를 자유롭게 작성하세요..."></textarea>
-      <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
     </div>
+    
+    <!-- 캘린더 추가 버튼을 나만의 메모 밑으로 내림 -->
+    <a href="#" target="_blank" class="calendar-add-btn" id="addToCalBtn">
+      📅 구글 캘린더에 일정 저장하기
+    </a>
   </div>
 </div>
 
@@ -1014,13 +1105,11 @@
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
 
   // ⚠️ 아래 URL을 "시트3"를 게시(웹에 게시 > 시트3 선택 > csv)해서 나온 링크로 교체하세요.
-  // 예: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=여기에시트3의gid&single=true&output=csv
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
-  // 추가: 메모 저장을 위한 로컬 스토리지 변수
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
   
   let showBookmarksOnly = false;
@@ -1161,7 +1250,6 @@
       rows.push(row);
     }
 
-    // 1행은 헤더로 간주하고 건너뜀. A열=이름, B열=핸드폰번호
     const list = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1253,7 +1341,6 @@
 
     await loadMembersData();
 
-    // 이전에 인증에 성공한 기록이 있고, 명단에서도 여전히 확인되면 자동 입장
     const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
     if (saved && isAuthorizedMember(saved.name, saved.phone)) {
       enterApp();
@@ -1268,7 +1355,6 @@
     loginScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
-  // ===== 회원 인증 끝 =====
 
   function getDriveFileId(url) {
     if (!url) return null;
@@ -1491,8 +1577,9 @@
     if (e.target.id === 'materialViewerModal') history.back();
   };
 
+  // ✨ 변경된 회의자료 페이지 열기 함수 ✨
   window.openMaterialsScreen = function() {
-    document.getElementById('materialsModal').style.display = 'flex';
+    document.getElementById('materialsScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ materialsOpen: true }, "", "");
     if (materialsData.length === 0) {
@@ -1502,13 +1589,10 @@
     }
   };
 
-  window.closeMaterialsModal = function(goBack = true) {
-    document.getElementById('materialsModal').style.display = 'none';
+  // ✨ 변경된 회의자료 페이지 닫기 함수 ✨
+  window.closeMaterialsScreen = function(goBack = true) {
+    document.getElementById('materialsScreen').style.display = 'none';
     if (goBack) history.back();
-  };
-
-  window.closeMaterialsOnOutsideClick = function(e) {
-    if (e.target.id === 'materialsModal') history.back();
   };
 
   window.toggleBookmark = function(event, id) {
@@ -1704,18 +1788,15 @@
     updateView();
   };
 
-  // 개별 카드 생성 로직 분리 함수
   function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
     const isStarred = bookmarks.includes(event.id);
     
-    // 오늘 일정인지 확인
     const isToday = event.dday === "D-day";
 
     const card = document.createElement('div');
-    // 오늘 일정이면 'today-card' 클래스 추가
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
     card.innerHTML = `
@@ -1744,7 +1825,6 @@
     return card;
   }
 
-  // 지나간 일정 열기/닫기 토글
   window.togglePastSchedules = function() {
     const list = document.getElementById('pastScheduleList');
     const btn = document.getElementById('pastScheduleBtn');
@@ -1757,7 +1837,6 @@
     }
   }
 
-  // 일정 렌더링 함수
   function renderSchedules() {
     const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
@@ -1773,7 +1852,6 @@
     const todayEvents = [];
     const futureEvents = [];
 
-    // dday 값에 따라 오늘/다가오는일정/지나간일정 분류
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") {
         todayEvents.push(event);
@@ -1787,11 +1865,9 @@
     const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
     const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<예정 일정>";
 
-    // 헤더 생성
     const header = document.createElement('div');
     header.className = 'schedule-section-header';
     
-    // 타이틀과 서브 문구를 감싸는 래퍼
     const titleWrapper = document.createElement('div');
     titleWrapper.className = 'schedule-title-wrapper';
 
@@ -1801,7 +1877,6 @@
     
     titleWrapper.appendChild(titleEl);
 
-    // 오늘 일정이 1개 이상 있을 때만 안내 문구를 생성하고 추가합니다.
     if (todayEvents.length > 0) {
       const subtitleEl = document.createElement('div');
       subtitleEl.className = 'schedule-section-subtitle';
@@ -1811,7 +1886,6 @@
 
     header.appendChild(titleWrapper);
 
-    // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
     if (pastEvents.length > 0) {
       const pastBtn = document.createElement('button');
       pastBtn.className = 'past-schedule-btn';
@@ -1823,25 +1897,21 @@
 
     scheduleContainer.appendChild(header);
 
-    // 숨김 처리된 지나간 일정 목록 영역
     if (pastEvents.length > 0) {
       const pastList = document.createElement('div');
       pastList.className = 'schedule-list-wrapper';
       pastList.id = 'pastScheduleList';
-      pastList.style.display = 'none'; // 기본 숨김
+      pastList.style.display = 'none'; 
       pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
       scheduleContainer.appendChild(pastList);
     }
 
-    // 오늘 + 예정 일정 목록 영역
     const upcomingList = document.createElement('div');
     upcomingList.className = 'schedule-list-wrapper';
     
     if (!hasUpcoming) {
-      // 예정 일정이 없는데 지나간 일정만 있을 경우의 처리
       upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
     } else {
-      // 오늘 일정이 위에, 그 이후가 아래로 나열
       todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
       futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
     }
@@ -1850,7 +1920,7 @@
   
   window.addEventListener('popstate', function(event) {
     document.getElementById('dayEventsModal').style.display = 'none';
-    document.getElementById('materialsModal').style.display = 'none';
+    document.getElementById('materialsScreen').style.display = 'none'; // 수정된 부분
     document.getElementById('materialViewerModal').style.display = 'none';
     document.getElementById('pdfViewerModal').style.display = 'none';
     document.getElementById('pdfViewerFrame').src = '';
@@ -1939,10 +2009,8 @@
     document.getElementById('modalHost').innerText = event.host;
     document.getElementById('modalNote').innerText = event.note;
 
-    // 저장된 메모 불러오기
     document.getElementById('modalMemo').value = memos[event.id] || '';
 
-    // 구글 캘린더 연동 링크 생성 (종일 일정 기준)
     const yyyy = currentYear;
     const mm = String(event.month).padStart(2, '0');
     const dd = String(event.day).padStart(2, '0');
@@ -1969,16 +2037,15 @@
     history.pushState({ modalOpen: true }, "", "");
   };
 
-  // 모달창 내 메모 저장 동작 로직
   window.saveEventMemo = function() {
     if (currentModalGlobalIndex === null) return;
     const event = scheduleData[currentModalGlobalIndex];
     const memoText = document.getElementById('modalMemo').value.trim();
     
     if (memoText === '') {
-      delete memos[event.id]; // 빈칸이면 삭제
+      delete memos[event.id]; 
     } else {
-      memos[event.id] = memoText; // 작성한 내용 저장
+      memos[event.id] = memoText; 
     }
     
     localStorage.setItem('koda_memos', JSON.stringify(memos));
