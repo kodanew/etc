@@ -673,11 +673,106 @@
     color: var(--text-muted);
     font-size: 0.85rem;
   }
+
+  /* 로그인(입장) 화면 */
+  #appRoot {
+    display: none;
+  }
+  .login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-box {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .login-logo {
+    height: 30px;
+    margin-bottom: 16px;
+  }
+  .login-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .login-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .login-btn {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .login-btn:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+  }
+  .login-input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .login-input:focus {
+    border-color: var(--primary-color);
+  }
+  .login-error {
+    color: var(--today-color);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    line-height: 1.45;
+    display: none;
+  }
 </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고" class="login-logo">
+    <div class="login-title">KODA 일정 안내</div>
+    <div class="login-subtitle">등록된 회원만 이용하실 수 있습니다.<br>이름과 핸드폰 번호를 입력해주세요.</div>
+
+    <button type="button" id="loginBtn" class="login-btn" onclick="attemptLogin()">입장하기</button>
+
+    <input type="text" id="loginName" class="login-input" placeholder="이름" autocomplete="name">
+    <input type="tel" id="loginPhone" class="login-input" placeholder="핸드폰 번호 (- 없이 입력)" autocomplete="tel" onkeydown="if(event.key==='Enter'){attemptLogin();}">
+
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<div class="app-container" id="appRoot">
   <div class="header">
     <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
     <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
@@ -793,6 +888,10 @@
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
 
+  // ⚠️ 아래 URL을 "시트3"를 게시(웹에 게시 > 시트3 선택 > csv)해서 나온 링크로 교체하세요.
+  // 예: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=여기에시트3의gid&single=true&output=csv
+  const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
+
   let scheduleData = [];
   let materialsData = [];
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
@@ -894,8 +993,8 @@
         id: id,
         month: m,
         day: d,
-        endMonth: endM, // 추가됨
-        endDay: endD,   // 추가됨
+        endMonth: endM, 
+        endDay: endD,   
         date: dateStr,
         location: r[1] ? r[1].trim() : "ㅡ",
         title: r[2] ? r[2].trim() : "ㅡ",
@@ -908,6 +1007,137 @@
     }
     return dataArr;
   }
+
+  // ===== 시트3 기반 회원 인증 =====
+  let membersData = []; // [{name, phone}] 형태로 저장
+
+  function normalizePhone(str) {
+    return (str || '').replace(/[^0-9]/g, ''); // 숫자만 남겨서 비교 (하이픈/공백 무시)
+  }
+
+  function parseMembersCSV(csv) {
+    const rows = [];
+    let row = [], curr = '';
+    let insideQuote = false;
+
+    for (let i = 0; i < csv.length; i++) {
+      const char = csv[i];
+      const nextChar = csv[i + 1];
+
+      if (char === '"' && insideQuote && nextChar === '"') {
+        curr += '"';
+        i++;
+      } else if (char === '"') {
+        insideQuote = !insideQuote;
+      } else if (char === ',' && !insideQuote) {
+        row.push(curr);
+        curr = '';
+      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(curr);
+        rows.push(row);
+        row = [];
+        curr = '';
+      } else {
+        curr += char;
+      }
+    }
+    if (curr || row.length > 0) {
+      row.push(curr);
+      rows.push(row);
+    }
+
+    // 1행은 헤더로 간주하고 건너뜀. A열=이름, B열=핸드폰번호
+    const list = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const name = r[0] ? r[0].trim() : '';
+      const phone = r[1] ? normalizePhone(r[1]) : '';
+      if (name && phone) list.push({ name, phone });
+    }
+    return list;
+  }
+
+  async function loadMembersData() {
+    try {
+      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const csvText = await response.text();
+      membersData = parseMembersCSV(csvText);
+    } catch (error) {
+      console.error("회원 명단 연동 실패:", error);
+      membersData = [];
+    }
+  }
+
+  function isAuthorizedMember(name, phone) {
+    const normName = (name || '').trim();
+    const normPhone = normalizePhone(phone);
+    return membersData.some(m => m.name === normName && m.phone === normPhone);
+  }
+
+  window.attemptLogin = async function() {
+    const nameInput = document.getElementById('loginName');
+    const phoneInput = document.getElementById('loginPhone');
+    const errorEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+
+    if (!name || !phone) {
+      errorEl.innerText = '이름과 핸드폰 번호를 모두 입력해주세요.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = '확인 중...';
+    errorEl.style.display = 'none';
+
+    if (membersData.length === 0) {
+      await loadMembersData(); // 아직 명단을 못 불러왔다면 한번 더 시도
+    }
+
+    if (isAuthorizedMember(name, phone)) {
+      localStorage.setItem('koda_auth', JSON.stringify({ name: name, phone: normalizePhone(phone) }));
+      enterApp();
+    } else {
+      errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 이름과 핸드폰 번호를 다시 확인해주세요.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.innerText = '입장하기';
+    }
+  };
+
+  function enterApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appRoot').style.display = 'block';
+    document.body.style.overflow = 'auto';
+    loadData();
+  }
+
+  async function initAuth() {
+    const loginScreen = document.getElementById('loginScreen');
+    const errorEl = document.getElementById('loginError');
+
+    await loadMembersData();
+
+    // 이전에 인증에 성공한 기록이 있고, 명단에서도 여전히 확인되면 자동 입장
+    const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+    if (saved && isAuthorizedMember(saved.name, saved.phone)) {
+      enterApp();
+      return;
+    }
+
+    if (membersData.length === 0) {
+      errorEl.innerText = '회원 명단을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      errorEl.style.display = 'block';
+    }
+
+    loginScreen.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  // ===== 회원 인증 끝 =====
 
   function getDriveFileId(url) {
     if (!url) return null;
@@ -1456,12 +1686,16 @@
     titleEl.className = 'schedule-section-title';
     titleEl.innerText = titleText;
     
-    const subtitleEl = document.createElement('div');
-    subtitleEl.className = 'schedule-section-subtitle';
-    subtitleEl.innerText = "오늘 일정부터 이후 일정까지 표시됩니다.";
-
     titleWrapper.appendChild(titleEl);
-    titleWrapper.appendChild(subtitleEl);
+
+    // 오늘 일정이 1개 이상 있을 때만 안내 문구를 생성하고 추가합니다.
+    if (todayEvents.length > 0) {
+      const subtitleEl = document.createElement('div');
+      subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지 표시됩니다.";
+      titleWrapper.appendChild(subtitleEl);
+    }
+
     header.appendChild(titleWrapper);
 
     // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
@@ -1674,7 +1908,7 @@
     }
   }
 
-  loadData();
+  initAuth();
 
 </script>
 </body>
