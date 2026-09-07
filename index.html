@@ -1122,7 +1122,7 @@
         <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
         <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
       </div>
-      <textarea id="modalMemo" class="memo-input" placeholder="회의 전/후 필요한 메모를 자유롭게 작성하세요..."></textarea>
+      <textarea id="modalMemo" class="memo-input" placeholder="필요한 메모를 자유롭게 작성하세요..."></textarea>
     </div>
   </div>
 </div>
@@ -1133,7 +1133,7 @@
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   
   // ⚠️ 아래 URL을 "시트4(직원현황)"를 게시해서 나온 CSV 링크로 교체해주세요! ⚠️
-  // A열: 구분 (7대 임원 / 사무국), B열: 이름, C열: 직책, D열: 연락처 (형식 추천)
+  // A열: 구분 (7대 임원 / 사무국), B열: 성명, C열: 직책, D열: 연락처 (형식 추천)
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
 
   let scheduleData = [];
@@ -1644,7 +1644,7 @@
     if (curr || row.length > 0) { row.push(curr); rows.push(row); }
 
     const dataArr = [];
-    // A열: 구분, B열: 이름, C열: 직책, D열: 연락처/기타 로 가정
+    // A열: 구분, B열: NO, C열: 성명, D열: 소속 로 가정
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
       if (r.length < 2 || !r[1]) continue;
@@ -1664,7 +1664,7 @@
     list.innerHTML = `<div class="loading-msg">직원 정보를 불러오는 중입니다...⏳</div>`;
     
     // 사용자가 STAFF_SHEET_CSV_URL을 등록하지 않았을 경우의 예외처리
-    if (STAFF_SHEET_CSV_URL.includes("여기에_시트4")) {
+    if (STAFF_SHEET_CSV_URL.includes("https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv")) {
       list.innerHTML = `<div class="no-data">시트4 주소가 연동되지 않았습니다.<br>소스코드에서 주소를 수정해주세요.</div>`;
       return;
     }
