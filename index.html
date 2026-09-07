@@ -607,9 +607,18 @@
   }
 
   .schedule-heading-title {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
     font-size: 1rem;
     font-weight: 800;
     color: var(--text-dark);
+  }
+
+  .schedule-heading-subtitle {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-muted);
   }
 
   .past-toggle-btn {
@@ -1375,6 +1384,16 @@
     title.className = 'schedule-heading-title';
     title.innerText = `<${headingText}>`;
 
+    const subtitle = document.createElement('span');
+    subtitle.className = 'schedule-heading-subtitle';
+    subtitle.innerText = showPastSchedules
+      ? '지나간 일정을 다시 확인할 수 있습니다.'
+      : (hasToday ? '오늘 일정부터 이후 일정까지 표시됩니다.' : '');
+
+    if (subtitle.innerText) {
+      title.appendChild(subtitle);
+    }
+
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
     toggleBtn.className = showPastSchedules ? 'past-back-btn' : 'past-toggle-btn';
@@ -1384,18 +1403,6 @@
     heading.appendChild(title);
     heading.appendChild(toggleBtn);
     scheduleContainer.appendChild(heading);
-
-    if (showPastSchedules) {
-      const subtitle = document.createElement('div');
-      subtitle.className = 'schedule-subtitle';
-      subtitle.innerText = '지나간 일정을 다시 확인할 수 있습니다.';
-      scheduleContainer.appendChild(subtitle);
-    } else if (hasToday) {
-      const subtitle = document.createElement('div');
-      subtitle.className = 'schedule-subtitle';
-      subtitle.innerText = '오늘 일정부터 이후 일정까지 표시됩니다.';
-      scheduleContainer.appendChild(subtitle);
-    }
 
     if (listData.length === 0) {
       const noData = document.createElement('div');
