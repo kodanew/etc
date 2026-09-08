@@ -1132,8 +1132,7 @@
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   
-  // ⚠️ 아래 URL을 "시트4(직원현황)"를 게시해서 나온 CSV 링크로 교체해주세요! ⚠️
-  // A열: 구분 (7대 임원 / 사무국), B열: 성명, C열: 직책, D열: 연락처 (형식 추천)
+  // 💡 [수정완료]: 주소를 웹페이지(pubhtml) 방식에서 순수 CSV(pub, output=csv) 방식으로 변경했습니다.
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
 
   let scheduleData = [];
@@ -1629,6 +1628,7 @@
     let row = [], curr = '';
     let insideQuote = false;
 
+    // CSV 문자열 쪼개기
     for (let i = 0; i < csv.length; i++) {
       const char = csv[i];
       const nextChar = csv[i + 1];
@@ -1644,22 +1644,43 @@
     if (curr || row.length > 0) { row.push(curr); rows.push(row); }
 
     const dataArr = [];
-    // 시트 구조 매핑: B열(1) 구분, C열(2) NO, D열(3) 성명, E열(4) 소속, F열(5) 직위, G열(6) 부서, H열(7) 연락처, I열(8) 이메일, J열(9) 비고
+    if (rows.length < 2) return dataArr;
+
+    // 💡 [스마트 파싱 적용]: 구글 시트가 A열이 비었다고 강제로 열을 앞당기더라도 오류가 나지 않도록 헤더 위치 자동 감지
+    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
+    let idx = {
+      cat: headers.indexOf("구분"),
+      no: headers.indexOf("NO"),
+      name: headers.indexOf("성명"),
+      affil: headers.indexOf("소속"),
+      pos: headers.indexOf("직위"),
+      dept: headers.indexOf("부서"),
+      phone: headers.indexOf("연락처"),
+      email: headers.indexOf("이메일"),
+      note: headers.indexOf("비고")
+    };
+
+    // 혹시라도 헤더 행을 못 찾았다면 (강제 인덱스 할당 - A열이 밀려났다고 가정)
+    if (idx.name === -1) {
+      idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, phone: 6, email: 7, note: 8 };
+    }
+
+    // 감지된 인덱스를 바탕으로 데이터 객체 생성
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
-      // 성명(D열, r[3]) 데이터가 없으면 건너뜀
-      if (r.length < 4 || !r[3]) continue;
+      // '성명'에 해당하는 열의 데이터가 없으면 무시
+      if (r.length <= idx.name || !r[idx.name]) continue; 
 
       dataArr.push({
-        category: r[1] ? r[1].trim() : "분류없음", // B열
-        no: r[2] ? r[2].trim() : "",             // C열
-        name: r[3] ? r[3].trim() : "",           // D열
-        affiliation: r[4] ? r[4].trim() : "",    // E열
-        position: r[5] ? r[5].trim() : "",       // F열
-        department: r[6] ? r[6].trim() : "",     // G열
-        phone: r[7] ? r[7].trim() : "",          // H열
-        email: r[8] ? r[8].trim() : "",          // I열
-        note: r[9] ? r[9].trim() : ""            // J열
+        category: idx.cat !== -1 && r[idx.cat] ? r[idx.cat].trim() : "분류없음",
+        no: idx.no !== -1 && r[idx.no] ? r[idx.no].trim() : "",
+        name: idx.name !== -1 && r[idx.name] ? r[idx.name].trim() : "",
+        affiliation: idx.affil !== -1 && r[idx.affil] ? r[idx.affil].trim() : "",
+        position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
+        department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
+        phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
+        email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
+        note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
     }
     return dataArr;
@@ -1668,13 +1689,8 @@
   async function loadStaffData() {
     const list = document.getElementById('staffList');
     list.innerHTML = `<div class="loading-msg">직원 정보를 불러오는 중입니다...⏳</div>`;
-    
-    // 사용자가 STAFF_SHEET_CSV_URL을 등록하지 않았을 경우의 예외처리
-    if (STAFF_SHEET_CSV_URL.includes("https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv")) {
-      list.innerHTML = `<div class="no-data">시트4 주소가 연동되지 않았습니다.<br>소스코드에서 주소를 수정해주세요.</div>`;
-      return;
-    }
 
+    // 💡 [수정완료]: 주소 체크 후 강제로 멈추는 방어 코드를 모두 삭제했습니다.
     try {
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       const csvText = await response.text();
