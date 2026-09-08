@@ -514,7 +514,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.55);
-    z-index: 1600;
+    z-index: 1000;
     align-items: center;
     justify-content: center;
     padding: 12px;
@@ -705,42 +705,6 @@
   .memo-save-btn:active {
     background: #2b6cb0;
   }
-
-  /* ===== KODA 직원/공지 개선 디자인 ===== */
-  #noticeDetailModal, #staffDetailModal { z-index: 1700 !important; }
-  .notice-card { position:relative; padding:14px 14px 12px; border:1px solid #e2e8f0; border-radius:12px; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.035); text-align:left; cursor:pointer; }
-  .notice-card.unread { border-left:4px solid var(--primary-color); background:#f8fbff; }
-  .notice-top { display:flex; align-items:center; gap:6px; margin-bottom:6px; }
-  .notice-date { font-size:.68rem; color:#718096; font-weight:600; }
-  .new-badge { background:#e53e3e; color:#fff; font-size:.55rem; font-weight:800; padding:2px 5px; border-radius:4px; }
-  .read-badge { margin-left:auto; font-size:.58rem; color:#a0aec0; }
-  .notice-card.unread .read-badge { color:var(--primary-color); font-weight:700; }
-  .notice-title { font-size:.88rem; font-weight:800; line-height:1.4; color:var(--text-dark); }
-  .notice-preview { margin-top:5px; font-size:.7rem; color:#718096; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .notice-detail-head { padding:4px 0 13px; border-bottom:1px solid #edf2f7; margin-bottom:13px; }
-  .notice-detail-date { font-size:.7rem; color:var(--primary-color); font-weight:700; margin-top:5px; }
-  .notice-detail-body { white-space:pre-wrap; font-size:.86rem; line-height:1.75; color:#2d3748; }
-  .staff-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-  .staff-card { border:1px solid #e2e8f0; border-radius:14px; background:#fff; padding:14px; text-align:left; cursor:pointer; box-shadow:0 3px 12px rgba(0,0,0,.035); }
-  .staff-avatar { width:40px; height:40px; border-radius:12px; background:#edf4ff; color:var(--primary-color); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1rem; margin-bottom:10px; }
-  .staff-card .staff-category { font-size:.58rem; color:var(--primary-color); font-weight:800; margin-bottom:3px; }
-  .staff-card .staff-name { font-size:.98rem; font-weight:900; color:var(--text-dark); }
-  .staff-card .staff-role { font-size:.68rem; color:#718096; margin-top:4px; line-height:1.4; min-height:28px; }
-  .staff-call-mini { margin-top:10px; padding-top:8px; border-top:1px solid #edf2f7; font-size:.65rem; color:#38a169; font-weight:800; }
-  .staff-profile { text-align:center; padding:4px 0 16px; }
-  .staff-profile-avatar { width:64px; height:64px; border-radius:20px; margin:0 auto 10px; background:#edf4ff; color:var(--primary-color); display:flex; align-items:center; justify-content:center; font-size:1.35rem; font-weight:900; }
-  .staff-profile-name { font-size:1.25rem; font-weight:900; }
-  .staff-profile-role { margin-top:4px; font-size:.72rem; color:#718096; }
-  .staff-info-card { background:#f8fafc; border-radius:12px; padding:12px 14px; }
-  .staff-info-card .modal-detail-row { margin-bottom:8px; }
-  .phonebook-search { width:100%; padding:11px 13px; border:1px solid #e2e8f0; border-radius:10px; outline:none; font-family:inherit; font-size:.8rem; margin-bottom:10px; }
-  .phonebook-search:focus { border-color:var(--primary-color); }
-  .phonebook-item { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid #e2e8f0; border-radius:11px; background:#fff; margin-bottom:7px; }
-  .phonebook-main { flex:1; min-width:0; }
-  .phonebook-name { font-weight:800; font-size:.82rem; }
-  .phonebook-meta { font-size:.66rem; color:#718096; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .phonebook-call { width:34px; height:34px; border:0; border-radius:50%; background:#eaf8f0; color:#38a169; font-size:1rem; cursor:pointer; }
-  @media(max-width:380px){ .staff-grid{grid-template-columns:1fr;} }
 
   /* 풀스크린 전용 페이지 */
   .fullscreen-screen {
@@ -982,6 +946,17 @@
     line-height: 1.45;
     display: none;
   }
+
+  /* 직원현황 컴팩트 카드형 디자인 */
+  #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
+  #staffList .day-event-item-title { font-size:.82rem !important; line-height:1.25 !important; }
+  #staffList .day-event-item-meta { font-size:.68rem !important; line-height:1.3 !important; margin-top:4px; }
+  #staffList .staff-badge { font-size:.55rem !important; padding:1px 4px !important; margin-right:3px !important; }
+  #staffList .staff-phone { font-size:.68rem !important; }
+  #staffList .staff-detail-label { font-size:.62rem !important; }
+  @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
 </style>
 </head>
 <body>
@@ -1038,7 +1013,6 @@
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNoticesScreen()">협회 중요 공지</button>
     <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
-     <button class="quick-btn" onclick="openPhonebookScreen()">전화번호부</button>
     <button class="quick-btn" onclick="openMaterialsScreen()">사무국 회의자료</button>
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
   </div>
@@ -1082,16 +1056,6 @@
   </div>
 </div>
 
-<!-- ✨ KODA 전화번호부(추후 시트5 연동) ✨ -->
-<div class="fullscreen-screen" id="phonebookScreen">
-  <div class="fullscreen-header"><button class="fullscreen-back-btn" onclick="closePhonebookScreen()">← 뒤로가기</button><div class="fullscreen-title">KODA 전화번호부</div><div class="fullscreen-dummy"></div></div>
-  <div class="fullscreen-content">
-    <div class="day-events-subtitle">전화번호부는 추후 Google Sheets 시트5와 연동할 수 있도록 준비되어 있습니다.</div>
-    <input class="phonebook-search" id="phonebookSearch" placeholder="이름·소속·전화번호 검색" oninput="renderPhonebook()">
-    <div id="phonebookList"></div>
-  </div>
-</div>
-
 <!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="noticesScreen">
   <div class="fullscreen-header">
@@ -1109,11 +1073,9 @@
 <div class="modal-overlay" id="noticeDetailModal" onclick="closeNoticeDetailModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeNoticeDetailModal()">×</button>
-    <div class="notice-detail-head">
-      <div class="modal-title" id="noticeDetailTitle"></div>
-      <div class="notice-detail-date" id="noticeDetailDate"></div>
-    </div>
-    <div class="notice-detail-body" id="noticeDetailContent"></div>
+    <div class="modal-title" id="noticeDetailTitle" style="margin-bottom: 5px;"></div>
+    <div class="day-events-subtitle" id="noticeDetailDate" style="margin-bottom: 15px; color:var(--primary-color); font-weight:bold;"></div>
+    <div class="modal-value" id="noticeDetailContent" style="white-space: pre-wrap; font-size:0.85rem; line-height:1.6;"></div>
   </div>
 </div>
 
@@ -1142,23 +1104,42 @@
 <div class="modal-overlay" id="staffDetailModal" onclick="closeStaffDetailModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeStaffDetailModal()">×</button>
-    <div class="staff-profile">
-      <div class="staff-profile-avatar" id="staffDetailAvatar">K</div>
-      <div class="staff-profile-name" id="staffDetailName"></div>
-      <div class="staff-profile-role" id="staffDetailRole"></div>
+    <div class="modal-title" style="margin-bottom: 15px; font-size:1.15rem;">직원 상세정보</div>
+
+    <div class="modal-detail-row">
+      <span class="modal-label">성명</span>
+      <span class="modal-value" id="staffDetailName"></span>
     </div>
-    <div class="staff-info-card">
-      <div class="modal-detail-row"><span class="modal-label">소속</span><span class="modal-value" id="staffDetailAffiliation"></span></div>
-      <div class="modal-detail-row"><span class="modal-label">직위</span><span class="modal-value" id="staffDetailPosition"></span></div>
-      <div class="modal-detail-row"><span class="modal-label">KODA</span><span class="modal-value" id="staffDetailKoda"></span></div>
-      <div class="modal-detail-row"><span class="modal-label">연락처</span><span class="modal-value" id="staffDetailPhone"></span></div>
-      <div class="modal-detail-row"><span class="modal-label">이메일</span><span class="modal-value" id="staffDetailEmail"></span></div>
-      <div class="modal-detail-row"><span class="modal-label">비고</span><span class="modal-value" id="staffDetailNote"></span></div>
+    <div class="modal-detail-row">
+      <span class="modal-label">소속</span>
+      <span class="modal-value" id="staffDetailAffiliation"></span>
     </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">직위</span>
+      <span class="modal-value" id="staffDetailPosition"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">KODA</span>
+      <span class="modal-value" id="staffDetailKoda"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">연락처</span>
+      <span class="modal-value" id="staffDetailPhone"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">이메일</span>
+      <span class="modal-value" id="staffDetailEmail"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">비고</span>
+      <span class="modal-value" id="staffDetailNote"></span>
+    </div>
+
+    <!-- 전화, 문자, 이메일 버튼 그룹 -->
     <div class="action-btn-group">
-      <a href="#" class="action-btn btn-call" id="staffBtnCall">📞 전화</a>
-      <a href="#" class="action-btn btn-sms" id="staffBtnSms">💬 문자</a>
-      <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉️ 메일</a>
+      <a href="#" class="action-btn btn-call" id="staffBtnCall">📞 전화걸기</a>
+      <a href="#" class="action-btn btn-sms" id="staffBtnSms">💬 문자발송</a>
+      <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉️ 이메일</a>
     </div>
   </div>
 </div>
@@ -1644,25 +1625,32 @@
     }
   }
 
-  function getNoticeKey(item){ return 'koda_notice_' + (item.date||'') + '_' + (item.title||''); }
-  function isNoticeRead(item){ return localStorage.getItem(getNoticeKey(item)) === 'read'; }
-  function isNewNotice(item){
-    const m = String(item.date||'').match(/(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})|(\d{1,2})[.\-/](\d{1,2})/);
-    if(!m) return false;
-    const d = m[1] ? new Date(+m[1], +m[2]-1, +m[3]) : new Date(currentYear, +m[4]-1, +m[5]);
-    const diff = (todayDateObj-d)/(1000*60*60*24);
-    return diff >= 0 && diff <= 7;
+  function getNoticeKey(item, index) { return 'koda_notice_read_' + btoa(unescape(encodeURIComponent((item.date||'')+'|'+(item.title||'')+'|'+index))).replace(/=/g,''); }
+  function isNoticeRead(item,index){ return localStorage.getItem(getNoticeKey(item,index)) === '1'; }
+  function markNoticeRead(item,index){ localStorage.setItem(getNoticeKey(item,index),'1'); }
+  function isNoticeNew(item){
+    const d = new Date(String(item.date||'').replace(/\./g,'-').replace(/\//g,'-'));
+    if (isNaN(d)) return false;
+    const today = new Date(); today.setHours(0,0,0,0); d.setHours(0,0,0,0);
+    return Math.floor((today-d)/86400000) >= 0 && Math.floor((today-d)/86400000) <= 7;
   }
+
   function renderNoticeList() {
     const list = document.getElementById('noticeList'); list.innerHTML = '';
     if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
     noticeData.forEach((item,index)=>{
-      const btn=document.createElement('button'); btn.type='button'; btn.className='notice-card'+(isNoticeRead(item)?'':' unread');
-      const top=document.createElement('div'); top.className='notice-top';
-      top.innerHTML=`<span class="notice-date">${item.date||''}</span>${isNewNotice(item)?'<span class="new-badge">NEW</span>':''}<span class="read-badge">${isNoticeRead(item)?'읽음':'안 읽음'}</span>`;
-      const title=document.createElement('div'); title.className='notice-title'; title.innerText=item.title;
-      const preview=document.createElement('div'); preview.className='notice-preview'; preview.innerText=(item.content||'').replace(/\n/g,' ');
-      btn.append(top,title,preview); btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
+      const btn=document.createElement('button'); btn.type='button';
+      btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
+      const top=document.createElement('div'); top.className='notice-item-top';
+      const title=document.createElement('div'); title.className='day-event-item-title';
+      title.innerText=item.title;
+      const badges=document.createElement('span'); badges.className='notice-badges';
+      if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
+      const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
+      top.appendChild(title); top.appendChild(badges);
+      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
+      btn.appendChild(top); btn.appendChild(meta);
+      btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
     });
   }
 
@@ -1672,19 +1660,17 @@
     history.pushState({ noticesOpen: true }, "", "");
     if (noticeData.length === 0) loadNoticeData();
   };
-  window.closeNoticesScreen = function(goBack=true) { document.getElementById('noticesScreen').style.display = 'none'; 
-    document.getElementById('phonebookScreen').style.display = 'none'; if(goBack) history.back(); };
+  window.closeNoticesScreen = function(goBack=true) { document.getElementById('noticesScreen').style.display = 'none'; if(goBack) history.back(); };
 
   window.openNoticeDetailModal = function(index) {
     const item = noticeData[index];
-    if (!item) return;
-    document.getElementById('noticeDetailTitle').innerText = item.title || '-';
-    document.getElementById('noticeDetailDate').innerText = item.date || '-';
-    document.getElementById('noticeDetailContent').innerText = item.content || '등록된 내용이 없습니다.';
-    localStorage.setItem(getNoticeKey(item),'read');
-    renderNoticeList();
+    markNoticeRead(item,index);
+    document.getElementById('noticeDetailTitle').innerText = item.title;
+    document.getElementById('noticeDetailDate').innerText = item.date;
+    document.getElementById('noticeDetailContent').innerText = item.content;
+    
     document.getElementById('noticeDetailModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    renderNoticeList();
     history.pushState({ noticeDetailOpen: true }, "", "");
   };
   window.closeNoticeDetailModal = function(goBack=true) { document.getElementById('noticeDetailModal').style.display = 'none'; if(goBack) history.back(); };
@@ -1753,12 +1739,13 @@
     const list=document.getElementById('staffList'); list.innerHTML='';
     const filteredData=staffData.filter(item=>categoryFilter==='all'||item.category===categoryFilter);
     if(!filteredData.length){list.innerHTML='<div class="no-data">해당되는 인원이 없습니다.</div>';return;}
-    list.className='staff-grid';
     filteredData.forEach(item=>{
-      const btn=document.createElement('button'); btn.type='button'; btn.className='staff-card';
-      const role=[item.affiliation,item.department,item.position].filter(Boolean).join(' · ');
-      btn.innerHTML=`<div class="staff-avatar">${(item.name||'K').charAt(0)}</div><div class="staff-category">${item.category||'KODA'}</div><div class="staff-name">${item.name||'-'}</div><div class="staff-role">${role||'정보 준비중'}</div><div class="staff-call-mini">📞 ${item.phone||'연락처 미등록'} · 상세보기 ›</div>`;
-      const idx=staffData.indexOf(item); btn.onclick=()=>openStaffDetailModal(idx); list.appendChild(btn);
+      const indexInOriginal=staffData.indexOf(item);
+      const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
+      const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
+      const role=[item.department,item.position].filter(Boolean).join(' · ');
+      btn.innerHTML=`<div class="day-event-item-title"><span class="${badgeClass}">${item.category}</span><strong>${item.name||'-'}</strong></div><div class="day-event-item-meta">${role||item.affiliation||'-'}</div><div class="staff-phone">${item.phone||''}</div>`;
+      btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
     });
   }
 
@@ -1774,8 +1761,6 @@
     const staff = staffData[index];
     
     document.getElementById('staffDetailName').innerText = staff.name || '-';
-    document.getElementById('staffDetailAvatar').innerText = (staff.name || 'K').charAt(0);
-    document.getElementById('staffDetailRole').innerText = [staff.category, staff.position].filter(Boolean).join(' · ');
     document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
     document.getElementById('staffDetailPosition').innerText = staff.position || '-';
     document.getElementById('staffDetailKoda').innerText = staff.department || '-'; 
@@ -1812,22 +1797,6 @@
   window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
 
-
-  // ===== KODA 전화번호부 =====
-  function getPhonebookData(){
-    return staffData.map(s=>({name:s.name, affiliation:s.affiliation, department:s.department, position:s.position, phone:s.phone, email:s.email}));
-  }
-  window.openPhonebookScreen=function(){
-    document.getElementById('phonebookScreen').style.display='flex'; document.body.style.overflow='hidden'; history.pushState({phonebookOpen:true},'', '');
-    if(staffData.length===0) loadStaffData(); else renderPhonebook();
-  };
-  window.closePhonebookScreen=function(goBack=true){document.getElementById('phonebookScreen').style.display='none'; if(goBack) history.back();};
-  window.renderPhonebook=function(){
-    const q=(document.getElementById('phonebookSearch').value||'').trim().toLowerCase(); const list=document.getElementById('phonebookList'); list.innerHTML='';
-    const data=getPhonebookData().filter(x=>[x.name,x.affiliation,x.department,x.position,x.phone].join(' ').toLowerCase().includes(q));
-    if(!data.length){list.innerHTML='<div class="no-data">검색 결과가 없습니다.</div>';return;}
-    data.forEach(x=>{const row=document.createElement('div');row.className='phonebook-item';const meta=[x.affiliation,x.department,x.position].filter(Boolean).join(' · ');const p=normalizePhone(x.phone);row.innerHTML=`<div class="staff-avatar" style="width:36px;height:36px;border-radius:10px;margin:0;font-size:.85rem;flex-shrink:0">${(x.name||'K').charAt(0)}</div><div class="phonebook-main"><div class="phonebook-name">${x.name||'-'}</div><div class="phonebook-meta">${meta||''}${x.phone?' · '+x.phone:''}</div></div>${p?`<button class="phonebook-call" onclick="event.stopPropagation();location.href='tel:${p}'">☎</button>`:''}`;list.appendChild(row);});
-  };
 
   window.toggleBookmark = function(event, id) {
     event.stopPropagation(); 
@@ -2101,19 +2070,29 @@
     }
   }
   
-  // 기기 자체 백버튼(뒤로가기) 대응 로직 추가 (모든 모달 및 화면 닫기)
+  // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
+  if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
-    document.getElementById('dayEventsModal').style.display = 'none';
-    document.getElementById('materialsScreen').style.display = 'none'; 
-    document.getElementById('staffScreen').style.display = 'none'; 
-    document.getElementById('noticesScreen').style.display = 'none'; 
-    document.getElementById('phonebookScreen').style.display = 'none'; 
-    document.getElementById('materialViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerModal').style.display = 'none';
-    document.getElementById('staffDetailModal').style.display = 'none';
-    document.getElementById('noticeDetailModal').style.display = 'none';
+    const st = event.state || {};
+    const ids = ['dayEventsModal','materialsScreen','staffScreen','noticesScreen','materialViewerModal','pdfViewerModal','staffDetailModal','noticeDetailModal'];
+    ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     document.getElementById('pdfViewerFrame').src = '';
     hideModalDOM();
+    document.body.style.overflow = 'auto';
+
+    // 뒤로 이동한 목적지 상태만 다시 표시
+    if (st.noticesOpen) document.getElementById('noticesScreen').style.display='flex';
+    else if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
+    else if (st.materialsOpen) document.getElementById('materialsScreen').style.display='flex';
+    else if (st.noticeDetailOpen) document.getElementById('noticeDetailModal').style.display='flex';
+    else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
+    else if (st.materialViewerOpen) document.getElementById('materialViewerModal').style.display='flex';
+    else if (st.pdfViewerOpen) document.getElementById('pdfViewerModal').style.display='flex';
+    else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
+
+    if (st.noticesOpen || st.staffOpen || st.materialsOpen || st.noticeDetailOpen || st.staffDetailOpen || st.materialViewerOpen || st.pdfViewerOpen || st.dayEventsModalOpen) {
+      document.body.style.overflow='hidden';
+    }
   });
 
   window.openDayEventsModal = function(year, month, day) {
