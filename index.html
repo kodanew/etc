@@ -985,7 +985,6 @@
     </div>
   </div>
 
-  <!-- 👇 메뉴 위치 교체 완료 👇 -->
   <div class="quick-menu-container">
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">KODA 홈페이지</a>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">언론보도 현황</a>
@@ -1003,7 +1002,7 @@
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNoticesScreen()">협회 중요 공지</button>
     <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
-    <button class="quick-btn disabled">사무국 회의자료</button>
+    <button class="quick-btn" onclick="openMaterialsScreen()">사무국 회의자료</button>
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
   </div>
 
@@ -1210,10 +1209,7 @@
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
-  
-  // 💡 [새로 추가] 시트5 (중요 알림) 웹에 게시 주소를 아래에 꼭 넣어주세요! 
-  // 예시: ".../pub?gid=시트5의GID&single=true&output=csv"
-  const NOTICE_SHEET_CSV_URL = "여기에_시트5_웹에게시_CSV주소_입력";
+  const NOTICE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1511131931&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
@@ -1597,7 +1593,6 @@
         content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : "",
       });
     }
-    // 최신순 반영
     return dataArr.reverse();
   }
 
@@ -1619,7 +1614,6 @@
     }
   }
 
-  // 💡 [수정완료]: 공지사항 리스트 UI 개선 (좌측 제목, 우측 미리보기)
   function renderNoticeList() {
     const list = document.getElementById('noticeList');
     list.innerHTML = '';
@@ -1778,7 +1772,7 @@
       btn.appendChild(meta);
       
       const indexInOriginal = staffData.findIndex(d => d === item);
-      btn.onclick = () => openStaffDetailModal(indexInOriginal);
+      btn.setAttribute('onclick', `openStaffDetailModal(${indexInOriginal})`);
 
       list.appendChild(btn);
     });
@@ -1803,7 +1797,7 @@
     document.getElementById('staffDetailEmail').innerText = staff.email || '-';
     document.getElementById('staffDetailNote').innerText = staff.note || '-';
 
-    const normPhone = staff.phone.replace(/[^0-9]/g, '');
+    const normPhone = (staff.phone || '').replace(/[^0-9]/g, '');
     const callBtn = document.getElementById('staffBtnCall');
     const smsBtn = document.getElementById('staffBtnSms');
     const emailBtn = document.getElementById('staffBtnEmail');
@@ -2026,9 +2020,9 @@
     const list = document.getElementById('pastScheduleList');
     const btn = document.getElementById('pastScheduleBtn');
     if (list.style.display === 'none') {
-      list.style.display = 'flex'; btn.innerText = '전체 일정 닫기';
+      list.style.display = 'flex'; btn.innerText = '지난 일정 닫기';
     } else {
-      list.style.display = 'none'; btn.innerText = '전체 일정 보기';
+      list.style.display = 'none'; btn.innerText = '지난 일정 보기';
     }
   }
 
@@ -2048,41 +2042,61 @@
       else futureEvents.push(event);
     });
 
-    const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<예정 일정>";
+    const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
     const header = document.createElement('div'); header.className = 'schedule-section-header';
     const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
-    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; titleEl.innerText = titleText;
+    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
+    
+    let titleText = "";
+    if (isPastMonthView) {
+        titleText = "<지난 일정>";
+    } else if (todayEvents.length > 0) {
+        titleText = "<오늘 일정>";
+    } else {
+        titleText = "<예정 일정>";
+    }
+    titleEl.innerText = titleText;
     titleWrapper.appendChild(titleEl);
 
-    if (todayEvents.length > 0) {
+    if (todayEvents.length > 0 && !isPastMonthView) {
       const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
       subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
+    } else if (isPastMonthView) {
+      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
     }
     header.appendChild(titleWrapper);
 
-    if (pastEvents.length > 0) {
+    if (!isPastMonthView && pastEvents.length > 0) {
       const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '전체 일정 보기'; pastBtn.onclick = togglePastSchedules;
+      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
       header.appendChild(pastBtn);
     }
+    
     scheduleContainer.appendChild(header);
 
-    if (pastEvents.length > 0) {
-      const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-      pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
-      pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-      scheduleContainer.appendChild(pastList);
-    }
+    if (isPastMonthView) {
+        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+        scheduleContainer.appendChild(pastList);
+    } else {
+        if (pastEvents.length > 0) {
+          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
+          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+          scheduleContainer.appendChild(pastList);
+        }
 
-    const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
-    if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-    else {
-      todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-      futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
+        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
+        else {
+          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        }
+        scheduleContainer.appendChild(upcomingList);
     }
-    scheduleContainer.appendChild(upcomingList);
   }
   
   // 기기 자체 백버튼(뒤로가기) 대응 로직 추가 (모든 모달 및 화면 닫기)
