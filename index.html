@@ -956,6 +956,64 @@
   #staffList .staff-phone { font-size:.68rem !important; }
   #staffList .staff-detail-label { font-size:.62rem !important; }
   @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  
+  /* ✨ 공지사항 리스트 한 줄 가로 배치 스타일 추가 ✨ */
+  .notice-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 10px !important;
+  }
+  
+  .notice-date {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    width: 65px; /* 날짜가 차지할 고정 너비 */
+    text-align: left;
+  }
+  
+  .notice-title {
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    max-width: 100px; /* 제목의 최대 너비 (필요에 따라 조절) */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .notice-content-preview {
+    flex-grow: 1;
+    font-size: 0.75rem;
+    color: #a0aec0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+  
+  .notice-badges {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.65rem;
+  }
+  
+  .notice-read-badge {
+    font-weight: bold;
+    color: #cbd5e0;
+  }
+  
+  /* 읽지 않은 상태의 글씨 색상 포인트 */
+  .notice-unread .notice-read-badge {
+    color: var(--primary-color);
+  }
+  
   #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
 </style>
 </head>
@@ -1636,21 +1694,63 @@
   }
 
   function renderNoticeList() {
-    const list = document.getElementById('noticeList'); list.innerHTML = '';
-    if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
-    noticeData.forEach((item,index)=>{
-      const btn=document.createElement('button'); btn.type='button';
-      btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
-      const top=document.createElement('div'); top.className='notice-item-top';
-      const title=document.createElement('div'); title.className='day-event-item-title';
-      title.innerText=item.title;
-      const badges=document.createElement('span'); badges.className='notice-badges';
-      if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
-      const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
-      top.appendChild(title); top.appendChild(badges);
-      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
-      btn.appendChild(top); btn.appendChild(meta);
-      btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
+    const list = document.getElementById('noticeList'); 
+    list.innerHTML = '';
+    
+    if (!noticeData.length) { 
+      list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; 
+      return; 
+    }
+    
+    noticeData.forEach((item, index) => {
+      const btn = document.createElement('button'); 
+      btn.type = 'button';
+      btn.className = 'day-event-item notice-item ' + (isNoticeRead(item, index) ? 'notice-read' : 'notice-unread');
+      
+      // 1. 작성일자
+      const dateEl = document.createElement('div');
+      dateEl.className = 'notice-date';
+      dateEl.innerText = item.date || '';
+      
+      // 2. 제목
+      const titleEl = document.createElement('div');
+      titleEl.className = 'notice-title';
+      titleEl.innerText = item.title || '';
+      
+      // 3. 1줄 내용 미리보기 (내용이 길면 CSS에 의해 자동으로 ... 처리됨)
+      const contentEl = document.createElement('div');
+      contentEl.className = 'notice-content-preview';
+      // 줄바꿈 문자를 띄어쓰기로 변경하여 한 줄로 매끄럽게 보이도록 처리
+      contentEl.innerText = (item.content || '').replace(/\n/g, ' ').trim();
+      
+      // 4. 우측 끝 뱃지 (읽음 / 안읽음)
+      const badges = document.createElement('div'); 
+      badges.className = 'notice-badges';
+      
+      if(isNoticeNew(item)){ 
+        const n = document.createElement('span'); 
+        n.className = 'notice-new'; 
+        n.innerText = 'NEW'; 
+        n.style.color = '#e53e3e';
+        n.style.fontWeight = 'bold';
+        n.style.marginRight = '2px';
+        badges.appendChild(n); 
+      }
+      
+      const r = document.createElement('span'); 
+      r.className = 'notice-read-badge'; 
+      // 기존 '미읽음'을 요청하신 '안읽음'으로 변경
+      r.innerText = isNoticeRead(item, index) ? '읽음' : '안읽음'; 
+      badges.appendChild(r);
+      
+      // 구성 요소들을 순서대로 버튼(행)에 추가
+      btn.appendChild(dateEl);
+      btn.appendChild(titleEl);
+      btn.appendChild(contentEl);
+      btn.appendChild(badges);
+      
+      btn.onclick = () => openNoticeDetailModal(index); 
+      list.appendChild(btn);
     });
   }
 
