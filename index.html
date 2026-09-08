@@ -1134,7 +1134,7 @@
   
   // ⚠️ 아래 URL을 "시트4(직원현황)"를 게시해서 나온 CSV 링크로 교체해주세요! ⚠️
   // A열: 구분 (7대 임원 / 사무국), B열: 성명, C열: 직책, D열: 연락처 (형식 추천)
-  const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pubhtml?gid=2094790194&single=true";
+  const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
@@ -1644,16 +1644,22 @@
     if (curr || row.length > 0) { row.push(curr); rows.push(row); }
 
     const dataArr = [];
-    // A열: 구분, B열: NO, C열: 성명, D열: 소속 로 가정
+    // 시트 구조 매핑: B열(1) 구분, C열(2) NO, D열(3) 성명, E열(4) 소속, F열(5) 직위, G열(6) 부서, H열(7) 연락처, I열(8) 이메일, J열(9) 비고
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
-      if (r.length < 2 || !r[1]) continue;
+      // 성명(D열, r[3]) 데이터가 없으면 건너뜀
+      if (r.length < 4 || !r[3]) continue;
 
       dataArr.push({
-        category: r[0] ? r[0].trim() : "분류없음",
-        name: r[1] ? r[1].trim() : "",
-        role: r[2] ? r[2].trim() : "",
-        phone: r[3] ? r[3].trim() : ""
+        category: r[1] ? r[1].trim() : "분류없음", // B열
+        no: r[2] ? r[2].trim() : "",             // C열
+        name: r[3] ? r[3].trim() : "",           // D열
+        affiliation: r[4] ? r[4].trim() : "",    // E열
+        position: r[5] ? r[5].trim() : "",       // F열
+        department: r[6] ? r[6].trim() : "",     // G열
+        phone: r[7] ? r[7].trim() : "",          // H열
+        email: r[8] ? r[8].trim() : "",          // I열
+        note: r[9] ? r[9].trim() : ""            // J열
       });
     }
     return dataArr;
@@ -1716,20 +1722,38 @@
       title.className = 'day-event-item-title';
       
       const badgeClass = item.category.includes('임원') ? 'staff-badge executive' : 'staff-badge';
-      title.innerHTML = `<span class="${badgeClass}">${item.category}</span>${item.name} ${item.role ? `<span style="font-weight:500; font-size:0.75rem; color:#718096; margin-left:4px;">${item.role}</span>` : ''}`;
+      
+      // 소속, 부서, 직위를 조합하여 하나의 텍스트로 표시
+      let roleInfo = [item.affiliation, item.department, item.position].filter(Boolean).join(' ');
+      
+      title.innerHTML = `<span class="${badgeClass}">${item.category}</span>${item.name} ${roleInfo ? `<span style="font-weight:500; font-size:0.75rem; color:#718096; margin-left:4px;">${roleInfo}</span>` : ''}`;
 
       const meta = document.createElement('div');
       meta.className = 'day-event-item-meta';
       meta.style.display = 'flex';
-      meta.style.justifyContent = 'space-between';
-      meta.style.alignItems = 'center';
+      meta.style.flexDirection = 'column';
+      meta.style.gap = '6px';
       meta.style.marginTop = '6px';
       
+      // 연락처 영역
+      let metaHtml = `<div style="display:flex; justify-content:space-between; align-items:center;">`;
       if(item.phone) {
-        meta.innerHTML = `<span>📞 ${item.phone}</span> <span style="font-size:0.6rem; color:var(--primary-color); font-weight:700;">전화걸기 &rsaquo;</span>`;
+        metaHtml += `<span>📞 ${item.phone}</span> <span style="font-size:0.6rem; color:var(--primary-color); font-weight:700;">전화걸기 &rsaquo;</span>`;
       } else {
-        meta.innerHTML = `<span>연락처 미등록</span>`;
+        metaHtml += `<span>연락처 미등록</span><span></span>`;
       }
+      metaHtml += `</div>`;
+      
+      // 이메일 및 비고 영역 (입력된 데이터가 있을 경우에만 노출)
+      if (item.email || item.note) {
+        let extraInfo = `<div style="padding-top:6px; border-top:1px dashed #e2e8f0; color:#718096; font-size:0.65rem; line-height:1.4;">`;
+        if (item.email) extraInfo += `✉️ ${item.email}<br>`;
+        if (item.note) extraInfo += `📌 ${item.note}`;
+        extraInfo += `</div>`;
+        metaHtml += extraInfo;
+      }
+
+      meta.innerHTML = metaHtml;
 
       aTag.appendChild(title);
       aTag.appendChild(meta);
