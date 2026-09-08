@@ -272,6 +272,7 @@
     line-height: 1.15;
     transition: all 0.2s;
     white-space: nowrap;
+    cursor: pointer;
   }
   .quick-btn:hover {
     background-color: #f7fafc;
@@ -984,12 +985,13 @@
     </div>
   </div>
 
+  <!-- 👇 메뉴 위치 교체 완료 👇 -->
   <div class="quick-menu-container">
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">KODA 홈페이지</a>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">언론보도 현황</a>
-    <button class="quick-btn" id="materialsBtn" onclick="openMaterialsScreen()">회의자료 보고</button>
+    <button class="quick-btn disabled">준비중</button>
     <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">KODA-TV</a>
-    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
+    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
     
     <div class="search-box-wrapper">
       <span class="search-icon">🔍</span>
@@ -999,10 +1001,10 @@
 
   <!-- 서브 메뉴 컨테이너 -->
   <div class="sub-menu-container">
-    <button class="quick-btn" onclick="openNoticesScreen()">중요 알림</button>
+    <button class="quick-btn" onclick="openNoticesScreen()">협회 중요 공지</button>
     <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
-    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
-    <button class="quick-btn disabled">준비중</button>
+    <button class="quick-btn disabled">사무국 회의자료</button>
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -1023,7 +1025,7 @@
 <div class="fullscreen-screen" id="materialsScreen">
   <div class="fullscreen-header">
     <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
-    <div class="fullscreen-title">회의자료 보고</div>
+    <div class="fullscreen-title">사무국 월간/주간 회의자료</div>
     <div class="fullscreen-dummy"></div> 
   </div>
   
@@ -1044,20 +1046,20 @@
   </div>
 </div>
 
-<!-- ✨ 중요 알림(시트5) 전용 페이지 ✨ -->
+<!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="noticesScreen">
   <div class="fullscreen-header">
     <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">← 뒤로가기</button>
-    <div class="fullscreen-title">중요 알림</div>
+    <div class="fullscreen-title">협회 중요 공지</div>
     <div class="fullscreen-dummy"></div>
   </div>
   <div class="fullscreen-content">
-    <div class="day-events-subtitle" style="margin-bottom:12px;">새로운 소식과 안내를 확인하세요.</div>
+    <div class="day-events-subtitle" style="margin-bottom:12px;">협회의 새로운 소식과 안내를 확인하세요.</div>
     <div class="day-event-list" id="noticeList"></div>
   </div>
 </div>
 
-<!-- ✨ 중요 알림 상세 모달 ✨ -->
+<!-- ✨ 중요 공지 상세 모달 ✨ -->
 <div class="modal-overlay" id="noticeDetailModal" onclick="closeNoticeDetailModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeNoticeDetailModal()">×</button>
@@ -1211,7 +1213,7 @@
   
   // 💡 [새로 추가] 시트5 (중요 알림) 웹에 게시 주소를 아래에 꼭 넣어주세요! 
   // 예시: ".../pub?gid=시트5의GID&single=true&output=csv"
-  const NOTICE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1511131931&single=true&output=csv";
+  const NOTICE_SHEET_CSV_URL = "여기에_시트5_웹에게시_CSV주소_입력";
 
   let scheduleData = [];
   let materialsData = [];
@@ -1409,13 +1411,12 @@
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
       
-      // 💡 [수정완료] 월 추출 개선: 26.08.31, 8.31 모두 정상적으로 월을 찾음
       let exactMonth = '';
       const dateParts = dateStr.split('.').map(s => s.trim());
       if (dateParts.length >= 3) {
-        exactMonth = parseInt(dateParts[1], 10).toString(); // 가운데 '08' -> '8'
+        exactMonth = parseInt(dateParts[1], 10).toString();
       } else if (dateParts.length === 2) {
-        exactMonth = parseInt(dateParts[0], 10).toString(); // 앞에 '8' -> '8'
+        exactMonth = parseInt(dateParts[0], 10).toString();
       }
 
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
@@ -1573,7 +1574,7 @@
   window.closeMaterialsScreen = function(goBack=true) { document.getElementById('materialsScreen').style.display = 'none'; if(goBack) history.back(); };
 
 
-  // ===== ✨ 시트5: 중요 알림 (신규 로직) ✨ =====
+  // ===== ✨ 시트5: 협회 중요 공지 ✨ =====
   function parseNoticeCSV(csv) {
     const rows = splitCSV(csv);
     const dataArr = [];
@@ -1596,16 +1597,16 @@
         content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : "",
       });
     }
-    // 최신글(보통 맨아래가 최신이거나 위가 최신일 수 있음, 기본 역순 정렬)
+    // 최신순 반영
     return dataArr.reverse();
   }
 
   async function loadNoticeData() {
     const list = document.getElementById('noticeList');
-    list.innerHTML = `<div class="loading-msg">알림을 불러오는 중입니다...⏳</div>`;
+    list.innerHTML = `<div class="loading-msg">공지를 불러오는 중입니다...⏳</div>`;
     
     if (NOTICE_SHEET_CSV_URL.includes("여기에_시트5")) {
-      list.innerHTML = `<div class="no-data">중요 알림(시트5) 주소가 연동되지 않았습니다.<br>소스코드 상단의 링크를 수정해주세요.</div>`;
+      list.innerHTML = `<div class="no-data">협회 중요 공지(시트5) 주소가 연동되지 않았습니다.<br>소스코드 상단의 링크를 수정해주세요.</div>`;
       return;
     }
 
@@ -1618,11 +1619,12 @@
     }
   }
 
+  // 💡 [수정완료]: 공지사항 리스트 UI 개선 (좌측 제목, 우측 미리보기)
   function renderNoticeList() {
     const list = document.getElementById('noticeList');
     list.innerHTML = '';
     if (noticeData.length === 0) {
-      list.innerHTML = `<div class="no-data">등록된 알림이 없습니다.</div>`;
+      list.innerHTML = `<div class="no-data">등록된 공지가 없습니다.</div>`;
       return;
     }
 
@@ -1630,17 +1632,32 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'day-event-item';
+      btn.style.display = 'flex';
+      btn.style.justifyContent = 'space-between';
+      btn.style.alignItems = 'center';
+      btn.style.gap = '10px';
 
-      const title = document.createElement('div');
-      title.className = 'day-event-item-title';
-      title.innerText = item.title;
+      const leftDiv = document.createElement('div');
+      leftDiv.className = 'day-event-item-title';
+      leftDiv.style.flex = '1 1 60%';
+      leftDiv.style.whiteSpace = 'nowrap';
+      leftDiv.style.overflow = 'hidden';
+      leftDiv.style.textOverflow = 'ellipsis';
+      leftDiv.style.textAlign = 'left';
+      leftDiv.innerText = `[${item.date}] ${item.title}`;
 
-      const meta = document.createElement('div');
-      meta.className = 'day-event-item-meta';
-      meta.innerText = item.date;
+      const rightDiv = document.createElement('div');
+      rightDiv.style.flex = '1 1 40%';
+      rightDiv.style.fontSize = '0.72rem';
+      rightDiv.style.color = '#a0aec0';
+      rightDiv.style.whiteSpace = 'nowrap';
+      rightDiv.style.overflow = 'hidden';
+      rightDiv.style.textOverflow = 'ellipsis';
+      rightDiv.style.textAlign = 'right';
+      rightDiv.innerText = item.content ? item.content.replace(/\n/g, ' ') : '';
 
-      btn.appendChild(title);
-      btn.appendChild(meta);
+      btn.appendChild(leftDiv);
+      btn.appendChild(rightDiv);
       btn.onclick = () => openNoticeDetailModal(index);
 
       list.appendChild(btn);
@@ -1681,7 +1698,7 @@
       name: headers.indexOf("성명"),
       affil: headers.indexOf("소속"),
       pos: headers.indexOf("직위"),
-      dept: headers.findIndex(h => h.includes("부서") || h.includes("KODA")), // 부서 or KODA 모두 감지
+      dept: headers.findIndex(h => h.includes("부서") || h.includes("KODA")), 
       phone: headers.indexOf("연락처"),
       email: headers.indexOf("이메일"),
       note: headers.indexOf("비고")
@@ -1737,7 +1754,6 @@
     }
 
     filteredData.forEach(item => {
-      // 💡 [수정완료] 리스트에서는 전화걸기 대신 상세 모달을 열도록 버튼으로 생성
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'day-event-item';
@@ -1776,19 +1792,17 @@
   };
   window.closeStaffScreen = function(goBack=true) { document.getElementById('staffScreen').style.display = 'none'; if(goBack) history.back(); };
 
-  // 💡 [새로 추가] 직원 상세정보 모달 여는 함수
   window.openStaffDetailModal = function(index) {
     const staff = staffData[index];
     
     document.getElementById('staffDetailName').innerText = staff.name || '-';
     document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
     document.getElementById('staffDetailPosition').innerText = staff.position || '-';
-    document.getElementById('staffDetailKoda').innerText = staff.department || '-'; // KODA
+    document.getElementById('staffDetailKoda').innerText = staff.department || '-'; 
     document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
     document.getElementById('staffDetailEmail').innerText = staff.email || '-';
     document.getElementById('staffDetailNote').innerText = staff.note || '-';
 
-    // 기능 버튼 URL 설정
     const normPhone = staff.phone.replace(/[^0-9]/g, '');
     const callBtn = document.getElementById('staffBtnCall');
     const smsBtn = document.getElementById('staffBtnSms');
@@ -1817,7 +1831,6 @@
 
   window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
-  // ==========================================
 
 
   window.toggleBookmark = function(event, id) {
