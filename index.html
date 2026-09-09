@@ -1368,6 +1368,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
 
+  /* ===== 임직원 미리보기 한 줄 정보 ===== */
+  #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
+  #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
+  #staffList .staff-main-line{display:flex !important;align-items:baseline !important;gap:4px !important;min-width:0 !important;overflow:hidden !important;white-space:nowrap !important;}
+  #staffList .staff-main-line .staff-badge{margin-right:1px !important;}
+  #staffList .staff-main-line strong{flex:0 0 auto !important;max-width:38% !important;color:#1769d2 !important;font-size:.9rem !important;font-weight:850 !important;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-org-role{flex:1 1 auto;min-width:0;color:#47698f;font-size:.67rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #staffList .staff-phone{margin-top:7px !important;color:#98aabd;font-size:.68rem !important;}
+  @media(max-width:360px){
+    #staffList .staff-main-line{gap:3px !important;}
+    #staffList .staff-main-line strong{font-size:.82rem !important;max-width:34% !important;}
+    #staffList .staff-org-role{font-size:.61rem !important;}
+    #staffList .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
+  }
+
   /* ===== 첫 페이지 헤더 새 디자인 ===== */
   .app-container > .header{
     position:relative; height:78px; box-sizing:border-box;
@@ -1893,12 +1908,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
       name: headers.indexOf("성명"),
       affil: headers.indexOf("소속"),
       pos: headers.indexOf("직위"),
-      dept: headers.findIndex(h => h.includes("부서") || h.includes("KODA")), 
+      dept: headers.findIndex(h => h.includes("부서")),
+      koda: headers.indexOf("KODA"),
       phone: headers.indexOf("연락처"),
       email: headers.indexOf("이메일"),
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, phone: 6, email: 7, note: 8 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, koda: 6, phone: 7, email: 8, note: 9 };
+    // 시트4의 G열이 KODA입니다. 헤더가 인식되지 않는 경우에도 G열(인덱스 6)을 사용합니다.
+    if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1910,6 +1928,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
         affiliation: idx.affil !== -1 && r[idx.affil] ? r[idx.affil].trim() : "",
         position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
+        koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
         phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
@@ -1933,10 +1952,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let currentStaffCategory = '전체';
 
   window.filterStaff = function(category) {
+    // 분류 버튼은 항상 유지하고, 선택된 버튼만 활성화합니다.
+    const validCategories = ['전체','사무국','7대 임원','회원사','ARP'];
+    if (!validCategories.includes(category)) category = '전체';
     currentStaffCategory = category;
-    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
-      if (btn.dataset.cat === category) btn.classList.add('active');
-      else btn.classList.remove('active');
+    const tabs = document.querySelectorAll('#staffTabs .month-tab');
+    tabs.forEach(btn => {
+      btn.style.display = '';
+      btn.classList.toggle('active', btn.dataset.cat === category);
     });
     const search=document.getElementById('staffSearchInput');
     if(search) search.value='';
@@ -1963,8 +1986,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const indexInOriginal=staffData.indexOf(item);
       const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
       const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
-      const role=[item.department,item.position].filter(Boolean).join(' · ');
-      btn.innerHTML=`<div class="day-event-item-title"><span class="${badgeClass}">${item.category}</span><strong>${item.name||'-'}</strong></div><div class="day-event-item-meta">${role||item.affiliation||'-'}</div><div class="staff-phone">${item.phone||''}</div>`;
+      const kodaLabel=item.koda || item.category || '분류없음';
+      const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
+      btn.innerHTML=`<div class="day-event-item-title staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div>`;
       btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
     });
   }
@@ -1973,7 +1997,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('staffScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    if (staffData.length === 0) loadStaffData(); else filterStaff('전체');
+    // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
+    currentStaffCategory = '전체';
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      btn.style.display = '';
+      btn.classList.toggle('active', btn.dataset.cat === '전체');
+    });
+    const search = document.getElementById('staffSearchInput');
+    if(search) search.value = '';
+    const clear = document.getElementById('staffSearchClear');
+    if(clear) clear.classList.remove('show');
+    if (staffData.length === 0) loadStaffData(); else renderStaffList('전체');
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -1999,7 +2033,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('staffDetailName').innerText = staff.name || '-';
     document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
     document.getElementById('staffDetailPosition').innerText = staff.position || '-';
-    document.getElementById('staffDetailKoda').innerText = staff.department || '-'; 
+    document.getElementById('staffDetailKoda').innerText = staff.koda || '-'; 
     document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
     document.getElementById('staffDetailEmail').innerText = staff.email || '-';
     document.getElementById('staffDetailNote').innerText = staff.note || '-';
