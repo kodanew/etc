@@ -1260,7 +1260,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
 
 /* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
-  /* ===== KODA 임직원현황 : 첫 화면 헤더 스타일 + 모바일 최적화 ===== */
+  /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
   #staffScreen{
     display:none; position:fixed; inset:0; z-index:1500;
     overflow-y:auto; -webkit-overflow-scrolling:touch;
@@ -1273,13 +1273,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     width:100%; max-width:430px; margin-left:auto; margin-right:auto;
   }
   #staffScreen .staff-mobile-header{
-    background:#fff; position:sticky; top:0; z-index:30;
-    border-bottom:1px solid #edf2f7; box-shadow:0 3px 14px rgba(25,67,110,.055);
-    padding:10px 16px 12px; box-sizing:border-box;
-  }
-  #staffScreen .staff-header-top{
-    min-height:58px; display:grid; grid-template-columns:48px minmax(0,1fr) auto;
-    align-items:center; column-gap:8px;
+    height:76px; position:sticky; top:0; z-index:30;
+    background:#fff; border-bottom:1px solid #edf2f7;
+    box-shadow:0 3px 14px rgba(25,67,110,.055);
+    display:grid; grid-template-columns:54px minmax(0,1fr) 72px;
+    align-items:center; padding:0 16px; box-sizing:border-box;
   }
   #staffScreen .fullscreen-back-btn{
     width:42px; height:42px; min-height:42px; padding:0;
@@ -1287,28 +1285,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
     border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
     font-size:1.55rem; font-weight:700; line-height:1;
   }
-  #staffScreen .staff-header-logo{
-    height:42px; width:auto; max-width:150px; object-fit:contain; justify-self:center;
+  #staffScreen .fullscreen-title{
+    display:block; text-align:center; color:#173f70;
+    font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
+    white-space:nowrap;
   }
   #staffScreen .staff-logout-btn{
-    border:1px solid #dfe6ee; background:#fff; color:#6b7d92;
-    border-radius:10px; padding:7px 10px; font-size:.73rem; font-weight:700;
+    justify-self:end; border:1px solid #dfe6ee; background:#fff; color:#6b7d92;
+    border-radius:10px; padding:7px 9px; font-size:.72rem; font-weight:700;
     white-space:nowrap; min-height:0; line-height:1.1;
   }
-  #staffScreen .staff-date-weather{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding:7px 2px 1px;
-  }
-  #staffScreen .staff-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
-  #staffScreen .staff-date{font-size:1.08rem;font-weight:850;color:#123b70;letter-spacing:-.035em;white-space:nowrap;}
-  #staffScreen .staff-weekday{font-size:.83rem;font-weight:750;color:#58718e;white-space:nowrap;}
-  #staffScreen .staff-weather{display:flex;align-items:center;gap:5px;color:#58718e;font-size:.76rem;font-weight:750;white-space:nowrap;}
-  #staffScreen .staff-weather-icon{font-size:1.05rem;line-height:1;}
-  #staffScreen .staff-weather-temp{color:#123b70;font-weight:850;}
-  #staffScreen .fullscreen-dummy{display:none;}
-  #staffScreen .fullscreen-title{
-    display:none;
-  }
+  #staffScreen .staff-date-weather,
+  #staffScreen .staff-header-logo{display:none;}
   #staffScreen .fullscreen-tabs{
     display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
     gap:7px; padding:12px 0 0; box-sizing:border-box;
@@ -1316,7 +1304,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen .month-tab{
     min-width:0; width:100%; height:56px; min-height:56px; padding:0 3px;
     border:1px solid #dce6f2; border-radius:15px; background:#fff;
-    color:#5d7089; font-size:.9rem; font-weight:850; letter-spacing:-.045em;
+    color:#5d7089; font-size:1rem; font-weight:850; letter-spacing:-.045em;
     box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
   }
   #staffScreen .month-tab.active{
@@ -1335,7 +1323,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen .staff-search{
     width:100%; height:46px; box-sizing:border-box; border:1px solid #dce6f2;
     border-radius:14px; background:#fff; padding:0 42px 0 42px;
-    color:#1d3858; font-size:.82rem; font-weight:650; outline:none;
+    color:#1d3858; font-size:.86rem; font-weight:650; outline:none;
     box-shadow:0 3px 11px rgba(24,71,120,.045);
   }
   #staffScreen .staff-search:focus{border-color:#6fa4df;box-shadow:0 0 0 3px rgba(23,105,210,.08);}
@@ -1372,22 +1360,66 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
   @media(max-width:360px){
     #staffScreen{padding:0 6px 14px;}
-    #staffScreen .staff-mobile-header{padding:8px 10px 10px;}
-    #staffScreen .staff-header-top{min-height:54px;grid-template-columns:44px minmax(0,1fr) auto;}
+    #staffScreen .staff-mobile-header{height:68px;padding:0 10px;grid-template-columns:48px minmax(0,1fr) 64px;}
     #staffScreen .fullscreen-back-btn{width:40px;height:40px;min-height:40px;border-radius:13px;}
-    #staffScreen .staff-header-logo{height:37px;max-width:125px;}
+    #staffScreen .fullscreen-title{font-size:1rem;}
     #staffScreen .staff-logout-btn{font-size:.67rem;padding:6px 8px;}
-    #staffScreen .staff-date{font-size:.98rem;}
-    #staffScreen .staff-weekday,#staffScreen .staff-weather{font-size:.7rem;}
-    #staffScreen .staff-weather-icon{font-size:.95rem;}
     #staffScreen .fullscreen-tabs{gap:5px;padding-top:9px;}
-    #staffScreen .month-tab{height:50px;min-height:50px;font-size:.76rem;border-radius:13px;}
+    #staffScreen .month-tab{height:50px;min-height:50px;font-size:.84rem;border-radius:13px;}
     #staffScreen .fullscreen-content{padding-top:13px;}
     #staffList{gap:6px;}
     #staffList .day-event-item{min-height:88px !important;padding:11px 8px !important;border-radius:13px !important;}
     #staffList .day-event-item-title strong{font-size:.9rem;}
     #staffList .day-event-item-meta{font-size:.64rem !important;}
     #staffList .staff-phone{font-size:.61rem !important;}
+  }
+
+  /* ===== 첫 페이지 헤더 새 디자인 ===== */
+  .app-container > .header{
+    position:relative; height:78px; box-sizing:border-box;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:8px 18px 5px !important; background:#fff;
+    border-bottom:0;
+  }
+  .app-container > .header::after{
+    content:''; position:absolute; left:18px; right:18px; bottom:0; height:1px;
+    background:linear-gradient(90deg,transparent,#dce8f5 18%,#dce8f5 82%,transparent);
+  }
+  .app-container > .header::before{
+    content:'KODA\A SCHEDULE'; white-space:pre; position:absolute; left:18px; top:17px;
+    color:#8da2b9; font-size:.48rem; line-height:1.45; font-weight:800; letter-spacing:.14em;
+  }
+  .app-container > .header img{
+    grid-column:2; height:43px; max-width:150px; width:auto; object-fit:contain;
+  }
+  .app-container > .header .header-right{
+    position:static; grid-column:3; justify-self:end; transform:none;
+    display:flex; align-items:center; gap:5px;
+  }
+  .app-container > .header .install-btn{display:none !important;}
+  .app-container > .header .logout-btn{
+    border:0 !important; background:transparent !important; color:#73849a !important;
+    padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important;
+    letter-spacing:-.03em;
+  }
+  .app-container > .today-weather-bar{
+    width:calc(100% - 36px); margin:0 18px 10px; padding:9px 0 0;
+  }
+  .app-container > .today-weather-bar .today-date{font-size:1.16rem;font-weight:850;color:#173f70;}
+  .app-container > .today-weather-bar .today-weekday{font-size:.88rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather{font-size:.82rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather-icon{font-size:1.15rem;}
+  .app-container > .today-weather-bar .today-weather-temp{font-size:.98rem;color:#173f70;font-weight:850;}
+  @media(max-width:360px){
+    .app-container > .header{height:70px;padding:7px 13px 4px !important;}
+    .app-container > .header::before{left:13px;top:15px;font-size:.43rem;}
+    .app-container > .header::after{left:13px;right:13px;}
+    .app-container > .header img{height:38px;max-width:128px;}
+    .app-container > .header .logout-btn{font-size:.68rem !important;}
+    .app-container > .today-weather-bar{width:calc(100% - 26px);margin:0 13px 8px;padding-top:7px;}
+    .app-container > .today-weather-bar .today-date{font-size:1rem;}
+    .app-container > .today-weather-bar .today-weekday{font-size:.76rem;}
+    .app-container > .today-weather-bar .today-weather{font-size:.7rem;}
   }
 
 </style>
@@ -1483,20 +1515,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <!-- ✨ KODA 임직원현황 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="staffScreen">
   <div class="staff-mobile-header">
-    <div class="staff-header-top">
-      <button class="fullscreen-back-btn" onclick="closeStaffScreen()" aria-label="뒤로가기">←</button>
-      <img src="koda-logo-re.png" alt="KODA" class="staff-header-logo">
-      <button type="button" class="staff-logout-btn" onclick="logoutUser()">로그아웃</button>
-    </div>
-    <div class="staff-date-weather" aria-label="오늘 날짜와 날씨">
-      <div class="staff-date-info">
-        <span class="staff-date" id="staffTodayDateDisplay"></span>
-        <span class="staff-weekday" id="staffTodayWeekdayDisplay"></span>
-      </div>
-      <div class="staff-weather" id="staffTodayWeatherDisplay">
-        <span class="staff-weather-icon">☁️</span><span>오늘 날씨</span>
-      </div>
-    </div>
+    <button class="fullscreen-back-btn" onclick="closeStaffScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">KODA 임직원현황</div>
+    <button type="button" class="staff-logout-btn" onclick="logoutUser()">로그아웃</button>
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
