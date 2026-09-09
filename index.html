@@ -262,7 +262,7 @@
   .schedule-banner {
     position: relative;
     width: calc(100% - 20px);
-    margin: 0 10px 10px;
+    margin: 5px 10px 10px;
     min-height: 128px;
     border-radius: 20px;
     overflow: hidden;
@@ -400,14 +400,14 @@
   .sub-menu-container {
     display:grid;
     grid-template-columns:repeat(5,1fr);
-    gap:4px;
-    padding:0 8px 9px;
+    gap:0;
+    padding:0 2px 9px;
     width:100%;
     box-sizing:border-box;
     align-items:start;
   }
   .quick-btn {
-    min-height:78px;
+    min-height:82px;
     padding:0;
     background:transparent !important;
     border:0;
@@ -424,8 +424,8 @@
     box-sizing:border-box;
   }
   .quick-icon {
-    width:50px;
-    height:50px;
+    width:54px;
+    height:54px;
     border-radius:14px;
     display:flex;
     align-items:center;
@@ -1113,6 +1113,25 @@
   #staffList .staff-detail-label { font-size:.62rem !important; }
   @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
   #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
+
+  /* 최종 상단 헤더/메뉴 정돈 */
+  .header { position:relative; min-height:88px; padding:10px 10px 7px 12px; align-items:center; }
+  .header > img { width:180px !important; max-height:58px !important; object-fit:contain; }
+  .today-weather { position:absolute; left:12px; top:10px; z-index:2; line-height:1; }
+  .today-label { font-size:.62rem; color:#7d8da3; font-weight:800; letter-spacing:.02em; margin-bottom:6px; }
+  .today-weather-row { display:flex; align-items:center; gap:5px; color:#18385f; font-size:.76rem; font-weight:750; white-space:nowrap; }
+  .weather-icon { font-size:1rem; line-height:1; }
+  .header-right { min-width:38px; justify-content:flex-end; }
+  .logout-btn { width:38px !important; height:38px !important; padding:0 !important; border-radius:11px !important; font-size:1.35rem !important; line-height:1 !important; display:flex !important; align-items:center; justify-content:center; }
+  .schedule-banner { margin-top:4px !important; }
+  .quick-menu-container { gap:0 !important; padding-left:0 !important; padding-right:0 !important; }
+  .quick-btn { min-height:82px !important; }
+  .quick-icon { width:54px !important; height:54px !important; }
+  .quick-label { margin-top:5px !important; }
+  @media (max-width:520px){ .header > img { width:150px !important; } .today-weather-row{font-size:.68rem;} .today-label{font-size:.56rem;} .quick-icon{width:50px !important;height:50px !important;} }
+
+  .calendar-wrapper { position:relative; }
+  .calendar-refresh-btn { position:absolute; right:8px; bottom:7px; width:25px; height:25px; border-radius:8px; border:1px solid #2c75c9; background:#fff; color:#1765b2; font-size:15px; font-weight:800; line-height:23px; padding:0; box-shadow:0 2px 6px rgba(19,86,150,.12); z-index:5; }
 </style>
 </head>
 <body>
@@ -1134,11 +1153,14 @@
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
+    <div class="today-weather" id="todayWeather" aria-label="오늘 날짜와 날씨">
+      <div class="today-label">Today</div>
+      <div class="today-weather-row"><span id="todayDateText">'26.9.9(수)</span><span class="weather-icon" id="weatherIcon">☀️</span><span id="weatherTemp">18°</span></div>
+    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
-      <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
+      <button id="logoutBtn" class="logout-btn" onclick="logoutUser()" aria-label="로그아웃">↪</button>
     </div>
   </div>
 
@@ -1157,6 +1179,7 @@
     </div>
     <div class="cal-grid" id="calendarGrid">
     </div>
+    <button type="button" class="calendar-refresh-btn" onclick="manualRefresh()" aria-label="일정 새로고침">↻</button>
   </div>
 
   <div class="quick-menu-container">
@@ -2240,6 +2263,23 @@
     }, {passive:true});
   }
   initBannerTouch();
+
+  function updateTodayWeather(){
+    const now = new Date();
+    const weekdays = ['일','월','화','수','목','금','토'];
+    const yy = String(now.getFullYear()).slice(-2);
+    const text = `'${yy}.${now.getMonth()+1}.${now.getDate()}(${weekdays[now.getDay()]})`;
+    const dateEl=document.getElementById('todayDateText'); if(dateEl) dateEl.textContent=text;
+    const iconEl=document.getElementById('weatherIcon'), tempEl=document.getElementById('weatherTemp');
+    if(!iconEl || !tempEl) return;
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,weather_code&timezone=Asia%2FSeoul')
+      .then(r=>r.json()).then(d=>{
+        const code=d.current?.weather_code; const t=Math.round(d.current?.temperature_2m ?? 0);
+        const icon = code===0?'☀️':(code<=3?'🌤️':(code<=48?'☁️':(code<=67?'🌧️':(code<=77?'❄️':'⛈️'))));
+        iconEl.textContent=icon; tempEl.textContent=`${t}°`;
+      }).catch(()=>{});
+  }
+  updateTodayWeather();
 
   function updateView() {
     updateScheduleBanner();
