@@ -1787,6 +1787,65 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 
 </style>
+
+<style id="koda-banner-spacing-final-fix">
+/* 배너: 기존처럼 정보와 행사명 사이를 촘촘하게 */
+.schedule-banner{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-slide{
+  padding:9px 15px 14px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  gap:7px!important;
+  margin-bottom:2px!important;
+  min-height:20px!important;
+  height:20px!important;
+  align-items:center!important;
+}
+.banner-kicker{
+  height:20px!important;
+  min-height:20px!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  font-size:.76rem!important;
+  line-height:1.2!important;
+}
+.banner-event-line2{
+  margin-top:1px!important;
+  font-size:1.02rem!important;
+  line-height:1.25!important;
+}
+
+/* 배너의 실제 텍스트 높이만큼만 여백을 유지 */
+.schedule-banner .banner-event{
+  line-height:1.25!important;
+}
+
+@media(max-width:360px){
+  .schedule-banner-slide{
+    padding:8px 12px 12px!important;
+  }
+  .banner-heading{
+    margin-bottom:1px!important;
+  }
+  .banner-meta{
+    font-size:.69rem!important;
+  }
+  .banner-event-line2{
+    font-size:.94rem!important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -2536,7 +2595,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const time = getEventTime(event);
     const location = event.location && event.location !== 'ㅡ' ? event.location : '';
     const dateText = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})`;
-    const meta = [dateText, time ? `${time}~` : '', location].filter(Boolean).join(' · ');
+    const metaParts = [dateText, time ? `${time}~` : ''].filter(Boolean);
+    const meta = location
+      ? `${metaParts.join(' ')}${metaParts.length ? ' / ' : ''}${location}`
+      : metaParts.join(' ');
     const ddayText = getBannerDDay(event);
 
     return `
