@@ -1846,6 +1846,88 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="koda-banner-final-spacing">
+/* 배너 하단 컨트롤: pause와 페이지 점을 같은 크기로, 테두리 제거 */
+#scheduleBanner .banner-pause-btn{
+  width:8px!important;
+  height:8px!important;
+  min-width:8px!important;
+  min-height:8px!important;
+  max-width:8px!important;
+  max-height:8px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.48)!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  overflow:hidden!important;
+}
+#scheduleBanner .banner-pause-btn.paused{
+  background:rgba(255,255,255,.82)!important;
+}
+#scheduleBanner .banner-dots{
+  right:27px!important;
+  bottom:8px!important;
+  height:8px!important;
+  gap:5px!important;
+}
+#scheduleBanner .banner-dot,
+#scheduleBanner .banner-dot.active{
+  width:8px!important;
+  height:8px!important;
+  min-width:8px!important;
+  min-height:8px!important;
+  max-width:8px!important;
+  max-height:8px!important;
+  flex:0 0 8px!important;
+  padding:0!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* 배지/날짜/시간/장소와 행사명 사이 간격을 더 축소 */
+#scheduleBanner .banner-heading{
+  gap:6px!important;
+  margin-bottom:0!important;
+  min-height:20px!important;
+  height:20px!important;
+}
+#scheduleBanner .banner-event-line2{
+  margin-top:0!important;
+  line-height:1.2!important;
+}
+
+/* 배너 높이를 실제 텍스트 영역에 맞춤 */
+#scheduleBanner,
+#scheduleBanner .schedule-banner-track,
+#scheduleBanner .schedule-banner-slide{
+  height:auto!important;
+  min-height:0!important;
+}
+#scheduleBanner .schedule-banner-slide{
+  padding-top:7px!important;
+  padding-bottom:13px!important;
+}
+
+/* 오늘일정 제목과 바로 아래 일정 목록의 간격을
+   목록 카드 사이 간격과 동일하게 */
+.schedule-container .schedule-section-header{
+  margin-bottom:7px!important;
+  padding-bottom:0!important;
+}
+.schedule-container .schedule-list-wrapper{
+  gap:7px!important;
+}
+.schedule-container .schedule-list-wrapper + .schedule-list-wrapper{
+  margin-top:0!important;
+}
+
 </head>
 <body>
 
