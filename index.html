@@ -276,6 +276,7 @@
 
   /* ✨ 모던 일정 배너 ✨ */
   .schedule-banner {
+    margin-top:0!important;
     position: relative;
     width: calc(100% - 20px);
     margin: 0 10px 10px;
@@ -1383,6 +1384,36 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
   }
 
+
+  /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
+  .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
+  .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
+  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;}
+  .app-container > .header .brand-line{width:86px;height:1.5px;margin-top:3px;background:linear-gradient(90deg,#1769d2,#c7ddf3 78%,transparent);}
+  .app-container > .header .city-silhouette{display:flex;align-items:flex-end;gap:2px;height:10px;margin-top:0;width:108px;opacity:.5;}
+  .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
+  .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
+  @media(max-width:360px){.app-container > .header .header-left-brand{left:24px}.app-container > .header .brand-title-ko{font-size:.68rem}.app-container > .header .brand-title-en{font-size:.35rem}.app-container > .header .city-silhouette{width:92px;transform:scale(.9);transform-origin:left bottom}}
+
+
+  /* 임직원 미리보기: 이름 아래 전화번호, 오른쪽 소속·직위 */
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
+  }
+
   /* ===== 첫 페이지 헤더 새 디자인 ===== */
   .app-container > .header{
     position:relative; height:78px; box-sizing:border-box;
@@ -1421,7 +1452,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
     position:static; grid-column:3; justify-self:end; transform:none;
     display:flex; align-items:center; gap:5px;
   }
-  .app-container > .header .install-btn{display:none !important;}
+  .app-container > .header .install-btn{
+    display:none; border:0; background:transparent; color:#1769d2;
+    padding:0 2px; font-size:.66rem; font-weight:850; line-height:1.2;
+    letter-spacing:-.03em; cursor:pointer;
+  }
+  .app-container > .header .header-right{
+    flex-direction:column; align-items:flex-end; justify-content:center;
+    gap:2px; padding-top:9px;
+  }
+  .app-container > .header .logout-btn{transform:none !important;}
   .app-container > .header .logout-btn{
     border:0 !important; background:transparent !important; color:#73849a !important;
     padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important;
@@ -1429,7 +1469,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     transform:translateY(10px);
   }
   .app-container > .today-weather-bar{
-    width:calc(100% - 36px); margin:0 18px 10px; padding:9px 0 0;
+    width:calc(100% - 36px); margin:0 18px 3px; padding:7px 0 0;
   }
   .app-container > .today-weather-bar .today-date{font-size:1.16rem;font-weight:850;color:#173f70;}
   .app-container > .today-weather-bar .today-weekday{font-size:.88rem;font-weight:750;color:#617892;}
@@ -1451,6 +1491,43 @@ button,.nav-btn,.action-btn{min-height:44px;}
     .app-container > .today-weather-bar .today-date{font-size:1rem;}
     .app-container > .today-weather-bar .today-weekday{font-size:.76rem;}
     .app-container > .today-weather-bar .today-weather{font-size:.7rem;}
+  }
+
+
+  /* 최종 요청 반영 */
+  .app-container > .header .header-right{
+    flex-direction:column!important; align-items:flex-end!important; justify-content:center!important;
+    gap:1px!important; padding-top:7px!important;
+  }
+  .app-container > .header .logout-btn{transform:translateY(7px)!important;}
+  .app-container > .header .install-btn{order:1!important;}
+  .app-container > .header .logout-btn{order:2!important;}
+  .app-container > .header .header-left-brand{top:10px!important;}
+  .app-container > .header .brand-title-ko{display:block!important;color:#173f70!important;font-size:.72rem!important;font-weight:900!important;letter-spacing:-.055em!important;line-height:1.18!important;}
+  .app-container > .header .brand-title-en{display:block!important;color:#1769d2!important;font-size:.39rem!important;font-weight:900!important;letter-spacing:.065em!important;line-height:1.2!important;white-space:nowrap!important;}
+  .app-container > .header .brand-line{width:88px!important;height:1.5px!important;margin-top:3px!important;}
+  .app-container > .header .city-silhouette{display:flex!important;align-items:flex-end!important;gap:2px!important;height:10px!important;margin-top:0!important;width:108px!important;opacity:.48!important;}
+  .app-container > .header .city-silhouette i{display:block!important;background:linear-gradient(180deg,#b8cee5,#e2ebf5)!important;border-radius:1px 1px 0 0!important;}
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+    .app-container > .header .brand-title-ko{font-size:.68rem!important;}
+    .app-container > .header .brand-title-en{font-size:.35rem!important;}
+    .app-container > .header .city-silhouette{width:92px!important;transform:scale(.9);transform-origin:left bottom;}
+    .app-container > .header .logout-btn{transform:translateY(5px)!important;}
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
   }
 
 </style>
@@ -1475,10 +1552,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="app-container" id="appRoot">
   <div class="header">
     <div class="header-left-brand" aria-hidden="true">
-      <span class="brand-kicker">KODA</span>
-      <span class="brand-title">TODAY</span>
-      <span class="brand-subtitle">DEVELOPER ASSOCIATION</span>
+      <span class="brand-title-ko">한국디벨로퍼협회</span>
+      <span class="brand-title-en">KODA DEVELOPER ASSOCIATION</span>
       <span class="brand-line"></span>
+      <span class="city-silhouette" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
     </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
@@ -1958,7 +2035,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
-      btn.style.display = '';
+      btn.hidden = false;
+      btn.style.display = 'flex';
       btn.classList.toggle('active', btn.dataset.cat === category);
     });
     const search=document.getElementById('staffSearchInput');
@@ -1986,9 +2064,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const indexInOriginal=staffData.indexOf(item);
       const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
       const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
-      const kodaLabel=item.koda || item.category || '분류없음';
+      const kodaLabel=item.koda || '';
       const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
-      btn.innerHTML=`<div class="day-event-item-title staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div>`;
+      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-name-block"><strong>${item.name||'-'}</strong><div class="staff-phone">${item.phone||''}</div></div><span class="staff-org-role">${orgRole||'-'}</span></div>`;
       btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
     });
   }
@@ -1999,8 +2077,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     history.pushState({ staffOpen: true }, "", "");
     // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
     currentStaffCategory = '전체';
-    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
-      btn.style.display = '';
+    const staffTabs = document.querySelectorAll('#staffTabs .month-tab');
+    staffTabs.forEach(btn => {
+      btn.hidden = false;
+      btn.style.display = 'flex';
       btn.classList.toggle('active', btn.dataset.cat === '전체');
     });
     const search = document.getElementById('staffSearchInput');
