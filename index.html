@@ -1260,26 +1260,26 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
 
 /* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
-  /* ===== KODA 임직원현황 : 첫 화면과 동일한 모바일 최적화 ===== */
+  /* ===== KODA 임직원현황 : 첫 화면 헤더 스타일 + 모바일 최적화 ===== */
   #staffScreen{
-    display:none;
-    position:fixed; inset:0; z-index:1500;
+    display:none; position:fixed; inset:0; z-index:1500;
     overflow-y:auto; -webkit-overflow-scrolling:touch;
-    background:#eef2f6;
-    padding:0 10px; box-sizing:border-box;
+    background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
   }
   #staffScreen::after{content:'';display:block;min-height:18px;}
-  #staffScreen .fullscreen-header,
+  #staffScreen .staff-mobile-header,
   #staffScreen .fullscreen-tabs,
   #staffScreen .fullscreen-content{
     width:100%; max-width:430px; margin-left:auto; margin-right:auto;
   }
-  #staffScreen .fullscreen-header{
-    min-height:82px; box-sizing:border-box; padding:12px 16px;
-    background:#fff; border-bottom:1px solid #edf2f7;
-    display:grid; grid-template-columns:48px minmax(0,1fr) 48px;
-    align-items:center; position:sticky; top:0; z-index:20;
-    box-shadow:0 2px 10px rgba(20,55,95,.035);
+  #staffScreen .staff-mobile-header{
+    background:#fff; position:sticky; top:0; z-index:30;
+    border-bottom:1px solid #edf2f7; box-shadow:0 3px 14px rgba(25,67,110,.055);
+    padding:10px 16px 12px; box-sizing:border-box;
+  }
+  #staffScreen .staff-header-top{
+    min-height:58px; display:grid; grid-template-columns:48px minmax(0,1fr) auto;
+    align-items:center; column-gap:8px;
   }
   #staffScreen .fullscreen-back-btn{
     width:42px; height:42px; min-height:42px; padding:0;
@@ -1287,84 +1287,105 @@ button,.nav-btn,.action-btn{min-height:44px;}
     border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
     font-size:1.55rem; font-weight:700; line-height:1;
   }
-  #staffScreen .fullscreen-title{
-    min-width:0; text-align:center; font-size:1.16rem;
-    font-weight:800; color:#123b70; letter-spacing:-.045em; white-space:nowrap;
+  #staffScreen .staff-header-logo{
+    height:42px; width:auto; max-width:150px; object-fit:contain; justify-self:center;
   }
-  #staffScreen .fullscreen-dummy{width:48px;}
+  #staffScreen .staff-logout-btn{
+    border:1px solid #dfe6ee; background:#fff; color:#6b7d92;
+    border-radius:10px; padding:7px 10px; font-size:.73rem; font-weight:700;
+    white-space:nowrap; min-height:0; line-height:1.1;
+  }
+  #staffScreen .staff-date-weather{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:7px 2px 1px;
+  }
+  #staffScreen .staff-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
+  #staffScreen .staff-date{font-size:1.08rem;font-weight:850;color:#123b70;letter-spacing:-.035em;white-space:nowrap;}
+  #staffScreen .staff-weekday{font-size:.83rem;font-weight:750;color:#58718e;white-space:nowrap;}
+  #staffScreen .staff-weather{display:flex;align-items:center;gap:5px;color:#58718e;font-size:.76rem;font-weight:750;white-space:nowrap;}
+  #staffScreen .staff-weather-icon{font-size:1.05rem;line-height:1;}
+  #staffScreen .staff-weather-temp{color:#123b70;font-weight:850;}
+  #staffScreen .fullscreen-dummy{display:none;}
+  #staffScreen .fullscreen-title{
+    display:none;
+  }
   #staffScreen .fullscreen-tabs{
     display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
     gap:7px; padding:12px 0 0; box-sizing:border-box;
   }
   #staffScreen .month-tab{
-    min-width:0; width:100%; height:54px; min-height:54px; padding:0 4px;
+    min-width:0; width:100%; height:56px; min-height:56px; padding:0 3px;
     border:1px solid #dce6f2; border-radius:15px; background:#fff;
-    color:#60738d; font-size:.78rem; font-weight:800; letter-spacing:-.035em;
-    box-shadow:0 3px 10px rgba(24,71,120,.045);
-    white-space:nowrap;
+    color:#5d7089; font-size:.9rem; font-weight:850; letter-spacing:-.045em;
+    box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
   }
   #staffScreen .month-tab.active{
     color:#fff; border-color:#1769d2;
     background:linear-gradient(135deg,#1769d2,#3182ce);
     box-shadow:0 5px 13px rgba(23,105,210,.18);
   }
-  #staffScreen .fullscreen-content{
-    box-sizing:border-box; padding:18px 0 26px;
+  #staffScreen .fullscreen-content{box-sizing:border-box;padding:15px 0 26px;}
+  #staffScreen .staff-content-heading{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+    margin:2px 4px 10px;
   }
-  #staffScreen .fullscreen-content > .day-events-subtitle{
-    margin:0 4px 10px !important; padding:0;
-    color:#7a8da7; font-size:.78rem; font-weight:800;
+  #staffScreen .staff-content-title{font-size:1.02rem;font-weight:850;color:#183b63;letter-spacing:-.04em;}
+  #staffScreen .staff-content-count{font-size:.7rem;font-weight:750;color:#8a9aaf;white-space:nowrap;}
+  #staffScreen .staff-search-wrap{position:relative;margin:0 0 11px;}
+  #staffScreen .staff-search{
+    width:100%; height:46px; box-sizing:border-box; border:1px solid #dce6f2;
+    border-radius:14px; background:#fff; padding:0 42px 0 42px;
+    color:#1d3858; font-size:.82rem; font-weight:650; outline:none;
+    box-shadow:0 3px 11px rgba(24,71,120,.045);
   }
+  #staffScreen .staff-search:focus{border-color:#6fa4df;box-shadow:0 0 0 3px rgba(23,105,210,.08);}
+  #staffScreen .staff-search::placeholder{color:#9aaabd;font-weight:600;}
+  #staffScreen .staff-search-icon{
+    position:absolute;left:15px;top:50%;transform:translateY(-50%);
+    color:#1769d2;font-size:1.05rem;pointer-events:none;
+  }
+  #staffScreen .staff-search-clear{
+    display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border:0;border-radius:50%;background:#f0f4f8;color:#718096;
+    font-size:.9rem;line-height:30px;padding:0;
+  }
+  #staffScreen .staff-search-clear.show{display:block;}
   #staffList{
     display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr));
     gap:9px; width:100%; box-sizing:border-box;
   }
   #staffList .day-event-item{
-    min-width:0; min-height:92px !important; box-sizing:border-box;
+    min-width:0; min-height:94px !important; box-sizing:border-box;
     padding:13px 11px !important; border:1px solid #e2eaf4 !important;
     border-radius:15px !important; background:#fff;
     box-shadow:0 4px 12px rgba(28,70,120,.055);
   }
-  #staffList .day-event-item:active{transform:scale(.985); background:#f8fbff;}
-  #staffList .day-event-item-title{
-    display:flex; align-items:center; min-width:0;
-    font-size:.86rem !important; line-height:1.3 !important; color:#17385f;
-    white-space:nowrap; overflow:hidden;
-  }
-  #staffList .day-event-item-title strong{
-    min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-    font-size:.95rem;
-  }
-  #staffList .day-event-item-meta{
-    margin-top:6px !important; color:#657a96; font-size:.72rem !important;
-    line-height:1.3 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  #staffList .staff-phone{
-    margin-top:5px; color:#9aaabd; font-size:.67rem !important;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  #staffList .staff-badge{
-    flex-shrink:0; font-size:.56rem !important; font-weight:800;
-    padding:2px 5px !important; margin-right:5px !important;
-    border-radius:999px; background:#edf5ff; color:#1769d2;
-  }
-  #staffList .staff-badge.executive{background:#e8f1ff; color:#0756c9;}
+  #staffList .day-event-item:active{transform:scale(.985);background:#f8fbff;}
+  #staffList .day-event-item-title{display:flex;align-items:center;min-width:0;font-size:.86rem !important;line-height:1.3 !important;color:#17385f;white-space:nowrap;overflow:hidden;}
+  #staffList .day-event-item-title strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1rem;}
+  #staffList .day-event-item-meta{margin-top:6px !important;color:#657a96;font-size:.72rem !important;line-height:1.3 !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-phone{margin-top:5px;color:#9aaabd;font-size:.67rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-badge{flex-shrink:0;font-size:.57rem !important;font-weight:800;padding:2px 5px !important;margin-right:5px !important;border-radius:999px;background:#edf5ff;color:#1769d2;}
+  #staffList .staff-badge.executive{background:#e8f1ff;color:#0756c9;}
   #staffScreen .loading-msg,#staffScreen .no-data{
-    grid-column:1 / -1; padding:30px 12px; text-align:center;
-    color:#7a8da7; font-size:.78rem; background:#fff; border-radius:15px;
-    border:1px solid #e2eaf4;
+    grid-column:1 / -1;padding:30px 12px;text-align:center;color:#7a8da7;font-size:.78rem;background:#fff;border-radius:15px;border:1px solid #e2eaf4;
   }
   @media(max-width:360px){
-    #staffScreen{padding:0 6px;}
-    #staffScreen .fullscreen-header{min-height:74px;padding:10px 10px;grid-template-columns:44px minmax(0,1fr) 44px;}
-    #staffScreen .fullscreen-title{font-size:1.03rem;}
+    #staffScreen{padding:0 6px 14px;}
+    #staffScreen .staff-mobile-header{padding:8px 10px 10px;}
+    #staffScreen .staff-header-top{min-height:54px;grid-template-columns:44px minmax(0,1fr) auto;}
+    #staffScreen .fullscreen-back-btn{width:40px;height:40px;min-height:40px;border-radius:13px;}
+    #staffScreen .staff-header-logo{height:37px;max-width:125px;}
+    #staffScreen .staff-logout-btn{font-size:.67rem;padding:6px 8px;}
+    #staffScreen .staff-date{font-size:.98rem;}
+    #staffScreen .staff-weekday,#staffScreen .staff-weather{font-size:.7rem;}
+    #staffScreen .staff-weather-icon{font-size:.95rem;}
     #staffScreen .fullscreen-tabs{gap:5px;padding-top:9px;}
-    #staffScreen .month-tab{height:48px;min-height:48px;font-size:.68rem;border-radius:12px;}
-    #staffScreen .fullscreen-content{padding-top:14px;}
+    #staffScreen .month-tab{height:50px;min-height:50px;font-size:.76rem;border-radius:13px;}
+    #staffScreen .fullscreen-content{padding-top:13px;}
     #staffList{gap:6px;}
-    #staffList .day-event-item{min-height:84px !important;padding:11px 8px !important;border-radius:13px !important;}
-    #staffList .day-event-item-title{font-size:.77rem !important;}
-    #staffList .day-event-item-title strong{font-size:.88rem;}
+    #staffList .day-event-item{min-height:88px !important;padding:11px 8px !important;border-radius:13px !important;}
+    #staffList .day-event-item-title strong{font-size:.9rem;}
     #staffList .day-event-item-meta{font-size:.64rem !important;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
@@ -1461,12 +1482,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <!-- ✨ KODA 임직원현황 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="staffScreen">
-  <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">←</button>
-    <div class="fullscreen-title">KODA 임직원현황</div>
-    <div class="fullscreen-dummy"></div>
+  <div class="staff-mobile-header">
+    <div class="staff-header-top">
+      <button class="fullscreen-back-btn" onclick="closeStaffScreen()" aria-label="뒤로가기">←</button>
+      <img src="koda-logo-re.png" alt="KODA" class="staff-header-logo">
+      <button type="button" class="staff-logout-btn" onclick="logoutUser()">로그아웃</button>
+    </div>
+    <div class="staff-date-weather" aria-label="오늘 날짜와 날씨">
+      <div class="staff-date-info">
+        <span class="staff-date" id="staffTodayDateDisplay"></span>
+        <span class="staff-weekday" id="staffTodayWeekdayDisplay"></span>
+      </div>
+      <div class="staff-weather" id="staffTodayWeatherDisplay">
+        <span class="staff-weather-icon">☁️</span><span>오늘 날씨</span>
+      </div>
+    </div>
   </div>
-  
+
   <div class="fullscreen-tabs" id="staffTabs">
     <button class="month-tab active" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
     <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
@@ -1475,7 +1507,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-content">
-    <div class="day-events-subtitle" style="margin-bottom:12px;">확인하실 직원을 선택하세요.</div>
+    <div class="staff-content-heading">
+      <div class="staff-content-title">KODA 임직원현황</div>
+      <div class="staff-content-count" id="staffResultCount"></div>
+    </div>
+    <div class="staff-search-wrap">
+      <span class="staff-search-icon" aria-hidden="true">⌕</span>
+      <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
+      <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
+    </div>
     <div class="day-event-list" id="staffList"></div>
   </div>
 </div>
@@ -1588,10 +1628,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function renderTodayDate(){
     const now=new Date();
     const weekdays=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
-    const dateEl=document.getElementById('todayDateDisplay');
-    const dayEl=document.getElementById('todayWeekdayDisplay');
-    if(dateEl) dateEl.textContent=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
-    if(dayEl) dayEl.textContent=weekdays[now.getDay()];
+    const dateText=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+    const dayText=weekdays[now.getDay()];
+    ['#todayDateDisplay','#staffTodayDateDisplay'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.textContent=dateText;});
+    ['#todayWeekdayDisplay','#staffTodayWeekdayDisplay'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.textContent=dayText;});
   }
   function weatherIcon(code){
     if(code===0) return '☀️';
@@ -1603,7 +1643,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return '⛈️';
   }
   async function loadTodayWeather(){
-    const el=document.getElementById('todayWeatherDisplay'); if(!el) return;
+    const els=[document.getElementById('todayWeatherDisplay'),document.getElementById('staffTodayWeatherDisplay')].filter(Boolean);
+    if(!els.length) return;
     try{
       if(!navigator.geolocation) throw new Error('no geolocation');
       const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,timeout:5000,maximumAge:1800000}));
@@ -1611,9 +1652,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`);
       if(!r.ok) throw new Error('weather');
       const d=await r.json(); const temp=Math.round(d.current.temperature_2m);
-      el.innerHTML=`<span class="today-weather-icon">${weatherIcon(d.current.weather_code)}</span><span>오늘 날씨</span><span class="today-weather-temp">${temp}°C</span>`;
+      const html=`<span class="today-weather-icon staff-weather-icon">${weatherIcon(d.current.weather_code)}</span><span>오늘 날씨</span><span class="today-weather-temp staff-weather-temp">${temp}°C</span>`;
+      els.forEach(el=>el.innerHTML=html);
     }catch(e){
-      el.innerHTML='<span class="today-weather-icon">🌤️</span><span>오늘 날씨</span>';
+      els.forEach(el=>el.innerHTML='<span class="today-weather-icon staff-weather-icon">🌤️</span><span>오늘 날씨</span>');
     }
   }
   renderTodayDate();
@@ -1845,19 +1887,35 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
   }
 
+  let currentStaffCategory = '7대 임원';
+
   window.filterStaff = function(category) {
+    currentStaffCategory = category;
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
       if (btn.dataset.cat === category) btn.classList.add('active');
       else btn.classList.remove('active');
     });
+    const search=document.getElementById('staffSearchInput');
+    if(search) search.value='';
+    const clear=document.getElementById('staffSearchClear');
+    if(clear) clear.classList.remove('show');
     renderStaffList(category);
   }
 
   function renderStaffList(categoryFilter) {
-    const list=document.getElementById('staffList'); list.innerHTML='';
+    const list=document.getElementById('staffList'); if(!list) return; list.innerHTML='';
     const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
-    const filteredData=staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
-    if(!filteredData.length){list.innerHTML='<div class="no-data">해당되는 인원이 없습니다.</div>';return;}
+    const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
+    let filteredData=staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
+    if(q){
+      filteredData=filteredData.filter(item=>{
+        const hay=[item.name,item.affiliation,item.position,item.department,item.phone].filter(Boolean).join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+    }
+    const countEl=document.getElementById('staffResultCount');
+    if(countEl) countEl.textContent=`${filteredData.length}명`;
+    if(!filteredData.length){list.innerHTML=`<div class="no-data">${q?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
     filteredData.forEach(item=>{
       const indexInOriginal=staffData.indexOf(item);
       const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
@@ -1872,8 +1930,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('staffScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    if (staffData.length === 0) loadStaffData(); else filterStaff('7대 임원'); 
+    if (staffData.length === 0) loadStaffData(); else filterStaff('7대 임원');
   };
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    const search=document.getElementById('staffSearchInput');
+    const clear=document.getElementById('staffSearchClear');
+    if(search){
+      search.addEventListener('input',()=>{
+        const has=search.value.trim().length>0;
+        if(clear) clear.classList.toggle('show',has);
+        renderStaffList(currentStaffCategory);
+      });
+      search.addEventListener('keydown',e=>{
+        if(e.key==='Escape'){search.value='';if(clear)clear.classList.remove('show');renderStaffList(currentStaffCategory);search.blur();}
+      });
+    }
+    if(clear){clear.addEventListener('click',()=>{search.value='';clear.classList.remove('show');renderStaffList(currentStaffCategory);search.focus();});}
+  });
   window.closeStaffScreen = function(goBack=true) { document.getElementById('staffScreen').style.display = 'none'; if(goBack) history.back(); };
 
   window.openStaffDetailModal = function(index) {
