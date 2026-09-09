@@ -261,7 +261,7 @@
     position: relative;
     width: calc(100% - 20px);
     margin: 0 10px 10px;
-    min-height: 128px;
+    min-height: 112px;
     border-radius: 20px;
     overflow: hidden;
     color: #fff;
@@ -283,11 +283,11 @@
   }
   .schedule-banner::before { width: 110px; height: 110px; right: -35px; top: -55px; }
   .schedule-banner::after { width: 72px; height: 72px; left: -34px; bottom: -42px; }
-  .schedule-banner-track { position: relative; min-height: 128px; z-index: 1; }
+  .schedule-banner-track { position: relative; min-height: 112px; z-index: 1; }
   .schedule-banner-slide {
     display: none;
-    min-height: 128px;
-    padding: 20px 20px 30px;
+    min-height: 112px;
+    padding: 15px 18px 25px;
     box-sizing: border-box;
     animation: bannerFade .28s ease;
   }
@@ -529,7 +529,7 @@
   }
 
   .event-card.today-card {
-    border: 2.5px solid #ed8936;
+    border: 2.5px solid #e53e3e;
   }
 
   .event-header {
@@ -1105,6 +1105,66 @@
   #staffList .staff-detail-label { font-size:.62rem !important; }
   @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
   #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
+
+  /* 2026-09-09 UI refinements */
+  .calendar-refresh-btn {
+    display:flex; align-items:center; justify-content:center;
+    width:32px; height:32px; margin:7px 1px 0 auto;
+    padding:0; border:0; background:transparent;
+    color:#1769d2; font-size:1.45rem; line-height:1;
+    font-weight:800; cursor:pointer;
+  }
+  .calendar-refresh-btn:active { transform:rotate(-35deg) scale(.94); }
+  .association-card-head h3 { font-size:1.08rem; }
+  .association-preview { font-size:.84rem; }
+  .notice-list-head, .material-list-head {
+    display:grid; grid-template-columns:42px 92px minmax(0,1fr);
+    gap:8px; padding:0 11px 7px; color:#64748b; font-size:.72rem; font-weight:800;
+  }
+  .notice-list-row, .material-list-row {
+    display:grid; grid-template-columns:42px 92px minmax(0,1fr);
+    gap:8px; align-items:center; width:100%; text-align:left;
+  }
+  .list-no { color:#64748b; font-size:.72rem; font-weight:800; }
+  .list-date { color:#1769d2; font-size:.72rem; font-weight:700; white-space:nowrap; }
+  .list-title { min-width:0; font-size:.9rem; font-weight:800; line-height:1.35; word-break:keep-all; }
+  #staffTabs .month-tab { font-size:.9rem; padding:8px 15px; }
+  #staffList .day-event-item-title { font-size:.88rem; }
+
+
+/* Mobile screen refinement */
+html,body{background:#eef2f6;}
+body{padding:0 10px 18px;box-sizing:border-box;}
+.app-container{max-width:430px!important;margin:0 auto!important;background:#fff;min-height:100vh;box-shadow:0 0 24px rgba(15,45,80,.08);}
+.header{padding:14px 16px!important;}
+.main-content{padding:12px 14px 24px!important;}
+.calendar-wrapper{margin:0 0 14px!important;border-radius:16px!important;padding:12px 10px 9px!important;}
+.calendar-header{padding:2px 5px 10px!important;}
+.calendar-header h2{font-size:1.05rem!important;}
+.calendar-grid{gap:4px!important;}
+.calendar-day{min-height:48px!important;border-radius:9px!important;padding:4px 3px!important;}
+.schedule-banner{min-height:104px!important;border-radius:14px!important;margin-bottom:10px!important;}
+.schedule-banner-track,.schedule-banner-slide{min-height:104px!important;}
+.schedule-banner-slide{padding:13px 15px 18px!important;}
+.event-card{border-radius:12px!important;padding:10px 12px!important;}
+.association-news{margin-top:14px!important;}
+.news-grid{gap:9px!important;}
+.news-card{border-radius:14px!important;padding:14px 13px!important;min-height:86px!important;}
+.news-card .title{font-size:1rem!important;}
+.news-card .preview{font-size:.8rem!important;line-height:1.45!important;}
+.notice-list,.material-list{gap:7px!important;}
+.notice-list-head,.material-list-head,.notice-row,.material-row{grid-template-columns:34px 76px minmax(0,1fr)!important;gap:6px!important;}
+.notice-row,.material-row{min-height:48px!important;padding:9px 8px!important;border-radius:10px!important;}
+.staff-tabs{gap:6px!important;margin-bottom:10px!important;}
+.staff-tab{min-height:42px!important;padding:9px 6px!important;border-radius:10px!important;font-size:.92rem!important;}
+.screen-content{padding:14px!important;}
+.screen-header{padding:10px 2px 12px!important;}
+.screen-header h2{font-size:1.12rem!important;}
+.back-btn{font-size:0!important;width:40px!important;height:40px!important;}
+.back-btn::before{content:'←';font-size:1.35rem;}
+.calendar-refresh-btn{width:36px!important;height:36px!important;font-size:1.5rem!important;margin-top:1px!important;}
+button,.nav-btn,.action-btn{min-height:44px;}
+@media(max-width:360px){body{padding-left:5px;padding-right:5px}.main-content{padding-left:10px!important;padding-right:10px!important}.calendar-day{min-height:44px!important}.calendar-grid{gap:3px!important}.news-grid{gap:7px!important}.notice-list-head,.material-list-head,.notice-row,.material-row{grid-template-columns:30px 68px minmax(0,1fr)!important;gap:4px!important;}}
 </style>
 </head>
 <body>
@@ -1126,7 +1186,6 @@
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -1149,6 +1208,7 @@
     </div>
     <div class="cal-grid" id="calendarGrid">
     </div>
+    <button type="button" class="calendar-refresh-btn" onclick="manualRefresh()" aria-label="새로고침">↻</button>
   </div>
 
   <div class="quick-menu-container">
@@ -1186,7 +1246,7 @@
 <!-- ✨ 회의자료 보고 페이지 ✨ -->
 <div class="fullscreen-screen" id="materialsScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">←</button>
     <div class="fullscreen-title">사무국 월간/주간 회의자료</div>
     <div class="fullscreen-dummy"></div> 
   </div>
@@ -1211,7 +1271,7 @@
 <!-- ✨ 협회소식 통합 페이지 ✨ -->
 <div class="fullscreen-screen" id="associationNewsScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">←</button>
     <div class="fullscreen-title">협회소식</div>
     <div class="fullscreen-dummy"></div>
   </div>
@@ -1234,7 +1294,7 @@
 <!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="noticesScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">←</button>
     <div class="fullscreen-title">협회 중요 공지</div>
     <div class="fullscreen-dummy"></div>
   </div>
@@ -1258,14 +1318,15 @@
 <!-- ✨ KODA 직원현황 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="staffScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">←</button>
     <div class="fullscreen-title">KODA 직원현황</div>
     <div class="fullscreen-dummy"></div>
   </div>
   
   <div class="fullscreen-tabs" id="staffTabs">
-    <button class="month-tab active" data-cat="all" onclick="filterStaff('all')">전체</button>
-    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
+    <button class="month-tab active" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
+    <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
+    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
     <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
   </div>
 
@@ -1666,32 +1727,15 @@
   function renderMaterialsList(monthFilter) {
     const list = document.getElementById('materialsList');
     list.innerHTML = '';
-
     const filteredData = materialsData.filter(item => monthFilter === 'all' || item.month === monthFilter);
-
-    if (filteredData.length === 0) {
-      list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`;
-      return;
-    }
-
-    filteredData.forEach(item => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'day-event-item';
-
-      const title = document.createElement('div');
-      title.className = 'day-event-item-title';
-      title.innerText = `[${item.date}] ${item.title}`;
-
-      const meta = document.createElement('div');
-      meta.className = 'day-event-item-meta';
-      meta.innerText = item.fileType === 'pdf' ? 'PDF 바로 보기' : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
-
-      btn.appendChild(title);
-      btn.appendChild(meta);
+    if (filteredData.length === 0) { list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`; return; }
+    const head=document.createElement('div'); head.className='material-list-head';
+    head.innerHTML='<span>No</span><span>날짜</span><span>제목</span>'; list.appendChild(head);
+    filteredData.forEach((item, index)=>{
+      const btn = document.createElement('button'); btn.type='button'; btn.className='day-event-item material-list-row';
+      btn.innerHTML=`<span class="list-no">${index+1}</span><span class="list-date">${item.date||'-'}</span><span class="list-title">${item.title||'회의자료'}</span>`;
       const indexInOriginal = materialsData.findIndex(d => d === item);
       btn.onclick = () => openMaterial(indexInOriginal);
-
       list.appendChild(btn);
     });
   }
@@ -1823,18 +1867,12 @@
   function renderNoticeList() {
     const list = document.getElementById('noticeList'); list.innerHTML = '';
     if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
+    const head=document.createElement('div'); head.className='notice-list-head';
+    head.innerHTML='<span>No</span><span>날짜</span><span>제목</span>'; list.appendChild(head);
     noticeData.forEach((item,index)=>{
       const btn=document.createElement('button'); btn.type='button';
-      btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
-      const top=document.createElement('div'); top.className='notice-item-top';
-      const title=document.createElement('div'); title.className='day-event-item-title';
-      title.innerText=item.title;
-      const badges=document.createElement('span'); badges.className='notice-badges';
-      if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
-      const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
-      top.appendChild(title); top.appendChild(badges);
-      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
-      btn.appendChild(top); btn.appendChild(meta);
+      btn.className='day-event-item notice-item notice-list-row '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
+      btn.innerHTML=`<span class="list-no">${index+1}</span><span class="list-date">${item.date||'-'}</span><span class="list-title">${item.title||'-'}</span>`;
       btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
     });
   }
@@ -1852,9 +1890,9 @@
   window.closeAssociationNewsScreen = function(goBack=true){ document.getElementById('associationNewsScreen').style.display='none'; document.body.style.overflow=''; if(goBack) history.back(); };
   window.renderAssociationNewsPreview = function(){
     const n=document.getElementById('associationNoticePreview'), m=document.getElementById('associationMaterialPreview'), st=document.getElementById('associationStaffPreview');
-    if(n) n.innerHTML=(noticeData||[]).slice(0,3).map(x=>`<div style="margin-bottom:5px"><b>${x.title||'공지'}</b><br><small>${x.date||''}</small></div>`).join('') || '등록된 공지사항이 없습니다.';
-    if(m) m.innerHTML=(materialsData||[]).slice(0,3).map(x=>`<div style="margin-bottom:5px"><b>${x.title||x.name||'회의자료'}</b></div>`).join('') || '등록된 회의자료가 없습니다.';
-    if(st) st.innerHTML=(staffData||[]).slice(0,5).map(x=>`<div style="margin-bottom:5px"><b>${x.name||'-'}</b> <span>${x.position||x.job||''}</span></div>`).join('') || '등록된 직원정보가 없습니다.';
+    if(n) n.innerHTML=(noticeData||[]).slice(0,3).map((x,i)=>`<div class="notice-list-row" style="margin-bottom:6px"><span class="list-no">${i+1}</span><span class="list-date">${x.date||'-'}</span><span class="list-title">${x.title||'공지'}</span></div>`).join('') || '등록된 공지사항이 없습니다.';
+    if(m) m.innerHTML=(materialsData||[]).slice(0,3).map((x,i)=>`<div class="material-list-row" style="margin-bottom:6px"><span class="list-no">${i+1}</span><span class="list-date">${x.date||'-'}</span><span class="list-title">${x.title||'회의자료'}</span></div>`).join('') || '등록된 회의자료가 없습니다.';
+    if(st) st.innerHTML=['7대 임원','회원사','ARP','사무국'].map(c=>`<div style="margin-bottom:7px"><b style="font-size:.92rem;color:#1769d2">${c}</b></div>`).join('');
   };
 
   window.openNoticesScreen = function() {
@@ -1924,7 +1962,7 @@
     try {
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       staffData = parseStaffCSV(await response.text());
-      renderStaffList('all');
+      filterStaff('7대 임원');
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
@@ -1940,7 +1978,8 @@
 
   function renderStaffList(categoryFilter) {
     const list=document.getElementById('staffList'); list.innerHTML='';
-    const filteredData=staffData.filter(item=>categoryFilter==='all'||item.category===categoryFilter);
+    const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
+    const filteredData=staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
     if(!filteredData.length){list.innerHTML='<div class="no-data">해당되는 인원이 없습니다.</div>';return;}
     filteredData.forEach(item=>{
       const indexInOriginal=staffData.indexOf(item);
@@ -1956,7 +1995,7 @@
     document.getElementById('staffScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    if (staffData.length === 0) loadStaffData(); else filterStaff('all'); 
+    if (staffData.length === 0) loadStaffData(); else filterStaff('7대 임원'); 
   };
   window.closeStaffScreen = function(goBack=true) { document.getElementById('staffScreen').style.display = 'none'; if(goBack) history.back(); };
 
