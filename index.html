@@ -264,7 +264,7 @@
   .schedule-banner-slide {
     display: none;
     min-height: 142px;
-    padding: 16px 44px 28px 18px;
+    padding: 16px 18px 30px 18px;
     box-sizing: border-box;
   }
   .schedule-banner-slide.active {
@@ -298,10 +298,10 @@
     gap: 5px;
   }
   .banner-event {
-    display: grid;
-    grid-template-columns: 52px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
     width: 100%;
     padding: 6px 8px;
     border: 0;
@@ -313,27 +313,22 @@
     box-sizing: border-box;
   }
   .banner-event:hover { background: #ffffff; }
-  .banner-event-date {
-    font-size: 0.64rem;
-    font-weight: 800;
+  .banner-event-line1 {
+    font-size: 1.28rem;
+    line-height: 1.25;
+    font-weight: 850;
     color: var(--primary-color);
     white-space: nowrap;
   }
-  .banner-event-title {
-    min-width: 0;
+  .banner-event-line2 {
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 0.72rem;
-    font-weight: 700;
-  }
-  .banner-event-location {
-    max-width: 90px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.58rem;
-    color: var(--text-muted);
+    font-size: 1.35rem;
+    line-height: 1.35;
+    font-weight: 850;
+    color: var(--text-dark);
   }
   .banner-empty {
     padding: 18px 8px;
@@ -361,6 +356,7 @@
   }
   .banner-prev { left: 8px; }
   .banner-next { right: 8px; }
+  .banner-nav { display: none !important; }
   .banner-dots {
     position: absolute;
     bottom: 8px;
@@ -384,6 +380,25 @@
     border-radius: 6px;
     background: var(--primary-color);
   }
+  .banner-pause-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 16px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.9);
+    color: var(--primary-color);
+    font-size: 0.55rem;
+    line-height: 16px;
+    font-weight: 900;
+    z-index: 3;
+    cursor: pointer;
+  }
+  .banner-pause-btn.paused { background: var(--primary-color); color: #fff; }
 
   /* 상단 메뉴바 */
   .quick-menu-container {
@@ -396,50 +411,46 @@
     box-sizing: border-box;
   }
   .quick-btn {
-    min-height: 58px;
-    background: linear-gradient(145deg, #ffffff, #f7f9ff);
-    border: 1px solid rgba(99,102,241,0.14);
-    border-radius: 14px;
-    padding: 8px 3px;
-    font-size: 0.67rem;
-    font-weight: 750;
+    min-height: 86px;
+    padding: 0;
+    background: transparent !important;
+    border: 0;
     color: var(--text-dark);
     text-align: center;
     text-decoration: none;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 3px 9px rgba(0,0,0,0.045);
+    justify-content: flex-start;
+    box-shadow: none;
     word-break: keep-all;
-    line-height: 1.15;
-    transition: all 0.2s;
-    white-space: normal;
     cursor: pointer;
     box-sizing: border-box;
+  }
+  .quick-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.65rem;
+    background: linear-gradient(145deg, #ffffff, #f3f7ff);
+    border: 1px solid rgba(99,102,241,0.14);
+    box-shadow: 0 3px 9px rgba(0,0,0,0.045);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .quick-btn:hover .quick-icon { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0,0,0,0.08); }
+  .quick-label {
+    margin-top: 6px;
+    font-size: 0.67rem;
+    font-weight: 750;
+    line-height: 1.15;
+    white-space: normal;
   }
   .quick-menu-container .search-box-wrapper {
     grid-column: 1 / -1;
     min-height: 42px;
-  }
-  .quick-btn:nth-child(1) { background: #f5f0ff; }
-  .quick-btn:nth-child(2) { background: #eef8ff; }
-  .quick-btn:nth-child(3) { background: #fff7ed; }
-  .quick-btn:nth-child(4) { background: #effcf6; }
-  .quick-btn:nth-child(5) { background: #fff4f7; }
-  .quick-btn:hover {
-    background-color: #f7fafc;
-    border-color: #cbd5e0;
-  }
-  .quick-btn.active-bookmark {
-    background-color: #d69e2e !important;
-    color: #ffffff !important;
-    border-color: #d69e2e !important;
-  }
-  .quick-btn.disabled {
-    color: #a0aec0;
-    background-color: #f7fafc;
-    cursor: not-allowed;
-    pointer-events: none;
   }
 
   .search-box-wrapper {
@@ -1163,34 +1174,11 @@
     </div>
   </div>
 
-  <!-- ✨ 일정 배너 캐러셀 ✨ -->
-  <section class="schedule-banner" id="scheduleBanner" aria-label="주요 일정 배너">
-    <div class="schedule-banner-track" id="scheduleBannerTrack">
-      <div class="schedule-banner-slide active" data-slide="0">
-        <div class="banner-heading">
-          <div class="banner-kicker">TODAY</div>
-          <div class="banner-title">오늘의 일정</div>
-        </div>
-        <div class="banner-list" id="todayBannerList">
-          <div class="banner-empty">오늘 일정이 없습니다.</div>
-        </div>
-      </div>
-      <div class="schedule-banner-slide" data-slide="1">
-        <div class="banner-heading">
-          <div class="banner-kicker">LAST 7 DAYS</div>
-          <div class="banner-title">최근 일주일 일정</div>
-        </div>
-        <div class="banner-list" id="recentBannerList">
-          <div class="banner-empty">최근 일주일 일정이 없습니다.</div>
-        </div>
-      </div>
-    </div>
-    <button class="banner-nav banner-prev" type="button" onclick="changeBanner(-1)" aria-label="이전 배너">‹</button>
-    <button class="banner-nav banner-next" type="button" onclick="changeBanner(1)" aria-label="다음 배너">›</button>
-    <div class="banner-dots" id="bannerDots">
-      <button type="button" class="banner-dot active" onclick="goBanner(0)" aria-label="오늘의 일정"></button>
-      <button type="button" class="banner-dot" onclick="goBanner(1)" aria-label="최근 일주일 일정"></button>
-    </div>
+  <!-- ✨ 예정 일정 배너 캐러셀 ✨ -->
+  <section class="schedule-banner" id="scheduleBanner" aria-label="예정 일정 배너">
+    <div class="schedule-banner-track" id="scheduleBannerTrack"></div>
+    <div class="banner-dots" id="bannerDots"></div>
+    <button type="button" class="banner-pause-btn" id="bannerPauseBtn" onclick="toggleBannerPause()" aria-label="배너 자동 넘김 일시정지">Ⅱ</button>
   </section>
 
   <div class="calendar-wrapper" id="calendarWrapper">
@@ -1204,16 +1192,10 @@
   </div>
 
   <div class="quick-menu-container">
-    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">KODA 홈페이지</a>
-    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">언론보도 현황</a>
-    <button class="quick-btn disabled">준비중</button>
-    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">KODA-TV</a>
-    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
-    
-    <div class="search-box-wrapper">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" class="search-input" placeholder="일정검색" oninput="handleSearchInput(event)">
-    </div>
+    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn"><span class="quick-icon">🏠</span><span class="quick-label">KODA 홈페이지</span></a>
+    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn"><span class="quick-icon">📰</span><span class="quick-label">언론보도 현황</span></a>
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn"><span class="quick-icon">📺</span><span class="quick-label">KODA-TV</span></a>
+    <a href="https://www.wehago.com/" target="_blank" class="quick-btn"><span class="quick-icon">💼</span><span class="quick-label">WEHAGO</span></a>
   </div>
 
   <!-- 서브 메뉴 컨테이너 -->
@@ -1503,6 +1485,15 @@
       }
 
       const id = `${dateStr}_${r[2] ? r[2].trim() : ''}`;
+      const timeMatch = dateStr.match(/(?:오전|오후)?\s*(\d{1,2})(?::|시)(\d{2})?/);
+      let timeStr = r[7] ? r[7].trim() : '';
+      if (!timeStr && timeMatch) {
+        let hh = parseInt(timeMatch[1], 10);
+        const isPM = /오후/.test(dateStr);
+        if (isPM && hh < 12) hh += 12;
+        if (/오전/.test(dateStr) && hh === 12) hh = 0;
+        timeStr = `${String(hh).padStart(2,'0')}:${timeMatch[2] ? timeMatch[2] : '00'}`;
+      }
 
       dataArr.push({
         id: id,
@@ -1515,6 +1506,7 @@
         content: r[4] ? r[4].trim() : "ㅡ",
         host: r[5] ? r[5].trim() : "ㅡ",
         note: r[6] ? r[6].trim() : "ㅡ",
+        time: timeStr,
         dday: ddayStr 
       });
     }
@@ -2090,60 +2082,74 @@
     }
   }
 
-  // ===== ✨ 일정 배너 캐러셀 =====
+  // ===== ✨ 예정 일정 배너 캐러셀 =====
   let currentBannerIndex = 0;
   let bannerTimer = null;
+  let bannerPaused = false;
+  let bannerTouchStartX = 0;
+  let bannerTouchStartY = 0;
 
   function getEventDate(event) {
-    return new Date(currentYear, event.month - 1, event.day);
+    return new Date(currentYear, Number(event.month) - 1, Number(event.day));
+  }
+
+  function getEventTime(event) {
+    if (event.time) return event.time;
+    const m = String(event.date || '').match(/(?:오전|오후)?\s*(\d{1,2})(?::|시)(\d{2})?/);
+    if (!m) return '';
+    let hh = Number(m[1]);
+    if (/오후/.test(m[0]) && hh < 12) hh += 12;
+    if (/오전/.test(m[0]) && hh === 12) hh = 0;
+    return `${String(hh).padStart(2,'0')}:${m[2] || '00'}`;
   }
 
   function renderBannerEvent(event) {
     const globalIndex = scheduleData.indexOf(event);
+    const time = getEventTime(event);
     return `
       <button type="button" class="banner-event" onclick="openModal(${globalIndex})">
-        <span class="banner-event-date">${event.month}.${event.day}</span>
-        <span class="banner-event-title">${event.title}</span>
-        <span class="banner-event-location">${event.location || ''}</span>
+        <span class="banner-event-line1">${event.month}.${event.day}${time ? ` · ${time}` : ''}</span>
+        <span class="banner-event-line2">${event.title}</span>
       </button>
     `;
   }
 
   function renderScheduleBanner() {
-    const todayList = document.getElementById('todayBannerList');
-    const recentList = document.getElementById('recentBannerList');
-    if (!todayList || !recentList) return;
-
-    const todayEvents = scheduleData
-      .filter(e => e.month === currentMonth && e.day === currentDay)
-      .slice(0, 3);
-
-    todayList.innerHTML = todayEvents.length
-      ? todayEvents.map(renderBannerEvent).join('')
-      : '<div class="banner-empty">오늘 예정된 일정이 없습니다.</div>';
+    const track = document.getElementById('scheduleBannerTrack');
+    const dots = document.getElementById('bannerDots');
+    if (!track || !dots) return;
 
     const todayKey = new Date(currentYear, currentMonth - 1, currentDay);
-    const weekStart = new Date(todayKey);
-    weekStart.setDate(weekStart.getDate() - 6);
-
-    const recentEvents = scheduleData
-      .filter(e => {
-        const d = getEventDate(e);
-        return d >= weekStart && d <= todayKey && !(e.month === currentMonth && e.day === currentDay);
-      })
-      .sort((a,b) => getEventDate(b) - getEventDate(a))
+    todayKey.setHours(0,0,0,0);
+    const upcomingEvents = scheduleData
+      .filter(e => getEventDate(e) > todayKey)
+      .sort((a,b) => getEventDate(a) - getEventDate(b))
       .slice(0, 3);
 
-    recentList.innerHTML = recentEvents.length
-      ? recentEvents.map(renderBannerEvent).join('')
-      : '<div class="banner-empty">최근 일주일 내 일정이 없습니다.</div>';
+    if (!upcomingEvents.length) {
+      track.innerHTML = `<div class="schedule-banner-slide active"><div class="banner-heading"><div class="banner-kicker">UPCOMING</div><div class="banner-title">예정 일정</div></div><div class="banner-empty">예정된 일정이 없습니다.</div></div>`;
+      dots.innerHTML = '';
+      return;
+    }
+
+    track.innerHTML = upcomingEvents.map((event, i) => `
+      <div class="schedule-banner-slide${i === 0 ? ' active' : ''}" data-slide="${i}">
+        <div class="banner-heading">
+          <div class="banner-kicker">UPCOMING</div>
+          <div class="banner-title">예정 일정</div>
+        </div>
+        <div class="banner-list">${renderBannerEvent(event)}</div>
+      </div>
+    `).join('');
+
+    dots.innerHTML = upcomingEvents.map((_, i) => `<button type="button" class="banner-dot${i === 0 ? ' active' : ''}" onclick="goBanner(${i})" aria-label="예정 일정 ${i+1}"></button>`).join('');
+    currentBannerIndex = 0;
   }
 
   function goBanner(index) {
     const slides = document.querySelectorAll('.schedule-banner-slide');
     const dots = document.querySelectorAll('.banner-dot');
     if (!slides.length) return;
-
     currentBannerIndex = (index + slides.length) % slides.length;
     slides.forEach((slide, i) => slide.classList.toggle('active', i === currentBannerIndex));
     dots.forEach((dot, i) => dot.classList.toggle('active', i === currentBannerIndex));
@@ -2157,14 +2163,50 @@
 
   function startBannerAutoPlay() {
     clearInterval(bannerTimer);
-    bannerTimer = setInterval(() => goBanner(currentBannerIndex + 1), 2000);
+    if (bannerPaused) return;
+    const slides = document.querySelectorAll('.schedule-banner-slide');
+    if (slides.length <= 1) return;
+    bannerTimer = setInterval(() => goBanner(currentBannerIndex + 1), 5000);
   }
+
+  window.toggleBannerPause = function() {
+    bannerPaused = !bannerPaused;
+    const btn = document.getElementById('bannerPauseBtn');
+    if (btn) {
+      btn.innerText = bannerPaused ? '▶' : 'Ⅱ';
+      btn.setAttribute('aria-label', bannerPaused ? '배너 자동 넘김 재생' : '배너 자동 넘김 일시정지');
+      btn.classList.toggle('paused', bannerPaused);
+    }
+    if (bannerPaused) clearInterval(bannerTimer);
+    else startBannerAutoPlay();
+  };
 
   function updateScheduleBanner() {
     renderScheduleBanner();
     goBanner(0);
     startBannerAutoPlay();
   }
+
+  function initBannerTouch() {
+    const banner = document.getElementById('scheduleBanner');
+    if (!banner || banner.dataset.touchReady) return;
+    banner.dataset.touchReady = '1';
+    banner.addEventListener('touchstart', e => {
+      if (e.touches.length !== 1) return;
+      bannerTouchStartX = e.touches[0].clientX;
+      bannerTouchStartY = e.touches[0].clientY;
+    }, {passive:true});
+    banner.addEventListener('touchend', e => {
+      if (e.changedTouches.length !== 1) return;
+      const dx = e.changedTouches[0].clientX - bannerTouchStartX;
+      const dy = e.changedTouches[0].clientY - bannerTouchStartY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        goBanner(currentBannerIndex + (dx < 0 ? 1 : -1));
+        startBannerAutoPlay();
+      }
+    }, {passive:true});
+  }
+  initBannerTouch();
 
   function updateView() {
     updateScheduleBanner();
