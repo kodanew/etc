@@ -1369,6 +1369,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
 
+
+  /* 임직원현황 5개 분류 버튼은 어떤 상태에서도 항상 표시 */
+  #staffScreen #staffTabs{display:grid !important;visibility:visible !important;opacity:1 !important;}
+  #staffScreen #staffTabs .month-tab{display:flex !important;visibility:visible !important;opacity:1 !important;}
+  #staffScreen #staffTabs .month-tab[hidden]{display:flex !important;}
+
   /* ===== 임직원 미리보기 한 줄 정보 ===== */
   #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
   #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
@@ -1386,10 +1392,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
   /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
-  .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
+  .app-container > .header .header-left-brand{left:29px;top:10px;gap:0;}
   .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
-  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;}
-  .app-container > .header .brand-line{width:86px;height:1.5px;margin-top:3px;background:linear-gradient(90deg,#1769d2,#c7ddf3 78%,transparent);}
+  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;margin-left:0;}
+  .app-container > .header .brand-line{display:none !important;}
   .app-container > .header .city-silhouette{display:flex;align-items:flex-end;gap:2px;height:10px;margin-top:0;width:108px;opacity:.5;}
   .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
   .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
@@ -1631,7 +1637,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="header">
     <div class="header-left-brand" aria-hidden="true">
       <span class="brand-title-ko">한국디벨로퍼협회</span>
-      <span class="brand-title-en">KOREA DEVELPOER<br>ASSOCIATION</span>
+      <span class="brand-title-en">KOREA DEVELOPER<br>ASSOCIATION</span>
       <span class="brand-line"></span>
       <span class="city-silhouette" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
     </div>
