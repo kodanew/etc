@@ -1635,6 +1635,69 @@ button,.nav-btn,.action-btn{min-height:44px;}
  #staffScreen .fullscreen-content{padding:7px 10px 25px!important;}
 }
 </style>
+<style id="koda-final-layout-fix-20260909">
+/* 1) 메인 첫 화면 좌측 브랜드 장식 완전 제거 */
+.app-container > .header .header-left-brand{display:none!important;}
+.app-container > .header::before{display:none!important;}
+
+/* 2) 임직원현황: 화면 전체를 기준으로 버튼/검색/명단을 정확히 가운데 정렬 */
+#staffScreen{
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100vw!important;
+  max-width:none!important;
+  padding:0 0 18px!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header,
+#staffScreen #staffTabs,
+#staffScreen .fullscreen-content{
+  width:min(430px, calc(100% - 20px))!important;
+  max-width:430px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+}
+#staffScreen #staffTabs{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+  padding:7px 0!important;
+}
+#staffScreen .fullscreen-content{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  padding:8px 0 30px!important;
+  overflow-y:auto!important;
+}
+#staffScreen .staff-search-wrap,
+#staffScreen #staffList{
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+
+/* 카테고리 버튼을 눌러도 페이지가 위로 끌려 올라가지 않도록 고정 */
+#staffScreen .fullscreen-tabs,
+#staffScreen .month-tab,
+#staffScreen .fullscreen-back-btn{
+  transform:none!important;
+  scroll-margin-top:0!important;
+}
+@media(max-width:360px){
+  #staffScreen .staff-mobile-header,
+  #staffScreen #staffTabs,
+  #staffScreen .fullscreen-content{
+    width:calc(100% - 14px)!important;
+  }
+  #staffScreen #staffTabs{padding:5px 0!important;}
+  #staffScreen .fullscreen-content{padding:7px 0 25px!important;}
+}
+</style>
 </head>
 <body>
 
@@ -1655,12 +1718,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <div class="header-left-brand" aria-hidden="true">
-      <span class="brand-title-ko">한국디벨로퍼협회</span>
-      <span class="brand-title-en">KOREA DEVELOPER<br>ASSOCIATION</span>
-      <span class="brand-line"></span>
-      <span class="city-silhouette" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -2143,7 +2200,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value='';
     const clear=document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
+    // 버튼 클릭 시 브라우저의 자동 포커스/스크롤 이동을 차단합니다.
+    if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
+    const staffScreen = document.getElementById('staffScreen');
+    const staffContent = staffScreen?.querySelector('.fullscreen-content');
+    if(staffScreen) staffScreen.scrollTop = 0;
+    if(staffContent) staffContent.scrollTop = 0;
     renderStaffList(category);
+    requestAnimationFrame(()=>{
+      if(staffScreen) staffScreen.scrollTop = 0;
+      if(staffContent) staffContent.scrollTop = 0;
+    });
   }
 
   function renderStaffList(categoryFilter) {
@@ -2172,7 +2239,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   window.openStaffScreen = function() {
-    document.getElementById('staffScreen').style.display = 'flex';
+    const staffScreenEl = document.getElementById('staffScreen');
+    staffScreenEl.style.display = 'flex';
+    staffScreenEl.scrollTop = 0;
+    const staffContentEl = staffScreenEl.querySelector('.fullscreen-content');
+    if(staffContentEl) staffContentEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
     // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
