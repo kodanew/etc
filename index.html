@@ -97,6 +97,8 @@
     font-weight: 600;
     cursor: pointer;
   }
+  .refresh-btn { min-width: 76px; height: 34px; }
+  .logout-btn { min-width: 76px; height: 34px; }
   .refresh-btn:active {
     color: #1a202c;
   }
@@ -529,7 +531,7 @@
   }
 
   .event-card.today-card {
-    border: 2.5px solid #ed8936;
+    border: 2.5px solid #e53e3e;
   }
 
   .event-header {
@@ -1095,6 +1097,12 @@
     display: none;
   }
 
+
+  .notice-item-top{align-items:center !important;}
+  .notice-item .day-event-item-title{display:flex;align-items:center;gap:8px;min-width:0;}
+  .notice-date-inline{flex:0 0 auto;font-size:.72rem;color:#64748b;font-weight:700;white-space:nowrap;}
+  .notice-title-inline{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .notice-badges{margin-left:auto;}
   /* 직원현황 컴팩트 카드형 디자인 */
   #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
   #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
@@ -1186,7 +1194,7 @@
 <!-- ✨ 회의자료 보고 페이지 ✨ -->
 <div class="fullscreen-screen" id="materialsScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">←</button>
     <div class="fullscreen-title">사무국 월간/주간 회의자료</div>
     <div class="fullscreen-dummy"></div> 
   </div>
@@ -1211,7 +1219,7 @@
 <!-- ✨ 협회소식 통합 페이지 ✨ -->
 <div class="fullscreen-screen" id="associationNewsScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">←</button>
     <div class="fullscreen-title">협회소식</div>
     <div class="fullscreen-dummy"></div>
   </div>
@@ -1225,7 +1233,7 @@
       <div id="associationMaterialPreview" class="association-preview">회의자료를 불러오는 중입니다.</div>
     </section>
     <section class="association-news-card" onclick="openStaffScreen()">
-      <div class="association-card-head"><span class="association-card-icon">👥</span><h3>직원현황</h3><span class="association-more">›</span></div>
+      <div class="association-card-head"><span class="association-card-icon">👥</span><h3>KODA 임직원 현황</h3><span class="association-more">›</span></div>
       <div id="associationStaffPreview" class="association-preview">직원현황을 불러오는 중입니다.</div>
     </section>
   </div>
@@ -1234,7 +1242,7 @@
 <!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="noticesScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">← 뒤로가기</button>
+    <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">←</button>
     <div class="fullscreen-title">협회 중요 공지</div>
     <div class="fullscreen-dummy"></div>
   </div>
@@ -1258,8 +1266,8 @@
 <!-- ✨ KODA 직원현황 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="staffScreen">
   <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">← 뒤로가기</button>
-    <div class="fullscreen-title">KODA 직원현황</div>
+    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">←</button>
+    <div class="fullscreen-title">KODA 임직원 현황</div>
     <div class="fullscreen-dummy"></div>
   </div>
   
@@ -1267,6 +1275,8 @@
     <button class="month-tab active" data-cat="all" onclick="filterStaff('all')">전체</button>
     <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
     <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
+    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
+    <button class="month-tab" data-cat="회원사 등" onclick="filterStaff('회원사 등')">회원사 등</button>
   </div>
 
   <div class="fullscreen-content">
@@ -1628,6 +1638,7 @@
         title: title,
         fileType: fileType,
         images: images,
+        rawUrls: rawUrls,
         globalIndex: i - 1 
       });
     }
@@ -1681,7 +1692,7 @@
 
       const title = document.createElement('div');
       title.className = 'day-event-item-title';
-      title.innerText = `[${item.date}] ${item.title}`;
+      title.innerText = `${item.date || ''} ${item.title || ''}.pdf`;
 
       const meta = document.createElement('div');
       meta.className = 'day-event-item-meta';
@@ -1701,7 +1712,12 @@
 
   window.openMaterial = function(index) {
     const item = materialsData[index];
-    if (!item || !item.images || item.images.length === 0) return;
+    if (!item) return;
+    if (!item.images || item.images.length === 0) {
+      const raw = item.rawUrls && item.rawUrls[0] ? item.rawUrls[0] : '';
+      if (raw) { window.open(raw, '_blank'); return; }
+      alert('등록된 회의자료 파일이 없습니다.'); return;
+    }
 
     if (item.fileType === 'pdf') {
       document.getElementById('pdfViewerFrame').src = item.images[0].previewUrl;
@@ -1828,13 +1844,12 @@
       btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
       const top=document.createElement('div'); top.className='notice-item-top';
       const title=document.createElement('div'); title.className='day-event-item-title';
-      title.innerText=item.title;
+      title.innerHTML=`<span class="notice-date-inline">${item.date||''}</span><span class="notice-title-inline">${item.title||''}</span>`;
       const badges=document.createElement('span'); badges.className='notice-badges';
       if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
       const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
       top.appendChild(title); top.appendChild(badges);
-      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
-      btn.appendChild(top); btn.appendChild(meta);
+      btn.appendChild(top);
       btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
     });
   }
