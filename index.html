@@ -1427,6 +1427,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #associationNewsScreen .fullscreen-title{font-size:1.08rem!important;}
 }
 
+
+/* 2026-09-09 final user adjustment */
+.schedule-container{gap:3px!important;}
+.schedule-section-header{margin-top:3px!important;margin-bottom:0!important;padding-top:2px!important;padding-bottom:3px!important;}
+.schedule-list-wrapper{gap:8px!important;}
+#associationNewsScreen .association-news-grid{
+  width:calc(100% - 20px)!important;
+  margin:0 auto!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(4,minmax(0,1fr))!important;
+  gap:10px!important;
+  padding:10px 0 14px!important;
+  box-sizing:border-box!important;
+}
+#associationNewsScreen .association-news-card{min-width:0!important;min-height:0!important;height:100%!important;}
+#associationNewsScreen .association-card-title{padding:14px 10px!important;gap:8px!important;flex-direction:column!important;}
+#associationNewsScreen .association-card-icon{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:1.35rem!important;}
+#associationNewsScreen .association-card-title h3{font-size:.92rem!important;line-height:1.25!important;text-align:center!important;}
+#associationNewsScreen .association-more{right:10px!important;top:10px!important;font-size:1.3rem!important;}
+@media(max-width:360px){
+  .schedule-section-header{padding-bottom:2px!important;}
+  #associationNewsScreen .association-news-grid{width:calc(100% - 16px)!important;margin:0 auto!important;gap:8px!important;padding:8px 0 12px!important;}
+  #associationNewsScreen .association-card-title{gap:6px!important;padding:10px 7px!important;}
+  #associationNewsScreen .association-card-icon{width:36px!important;height:36px!important;flex-basis:36px!important;font-size:1.15rem!important;}
+  #associationNewsScreen .association-card-title h3{font-size:.82rem!important;}
+}
+
 </style>
 </head>
 <body>
@@ -1548,6 +1575,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </section>
     <section class="association-news-card" onclick="openStaffScreen()" role="button" tabindex="0">
       <div class="association-card-title"><span class="association-card-icon">👥</span><h3>KODA 임직원 현황</h3><span class="association-more">›</span></div>
+    </section>
+    <section class="association-news-card association-coming-soon" aria-label="준비중">
+      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
+    </section>
+    <section class="association-news-card association-coming-soon" aria-label="준비중">
+      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
+    </section>
+    <section class="association-news-card association-coming-soon" aria-label="준비중">
+      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
     </section>
     <section class="association-news-card association-coming-soon" aria-label="준비중">
       <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
