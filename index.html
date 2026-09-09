@@ -1290,11 +1290,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
     white-space:nowrap;
   }
-  #staffScreen .staff-logout-btn{
-    justify-self:end; border:1px solid #dfe6ee; background:#fff; color:#6b7d92;
-    border-radius:10px; padding:7px 9px; font-size:.72rem; font-weight:700;
-    white-space:nowrap; min-height:0; line-height:1.1;
-  }
   #staffScreen .staff-date-weather,
   #staffScreen .staff-header-logo{display:none;}
   #staffScreen .fullscreen-tabs{
@@ -1363,7 +1358,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffScreen .staff-mobile-header{height:68px;padding:0 10px;grid-template-columns:48px minmax(0,1fr) 64px;}
     #staffScreen .fullscreen-back-btn{width:40px;height:40px;min-height:40px;border-radius:13px;}
     #staffScreen .fullscreen-title{font-size:1rem;}
-    #staffScreen .staff-logout-btn{font-size:.67rem;padding:6px 8px;}
     #staffScreen .fullscreen-tabs{gap:5px;padding-top:9px;}
     #staffScreen .month-tab{height:50px;min-height:50px;font-size:.84rem;border-radius:13px;}
     #staffScreen .fullscreen-content{padding-top:13px;}
@@ -1386,8 +1380,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
     background:linear-gradient(90deg,transparent,#dce8f5 18%,#dce8f5 82%,transparent);
   }
   .app-container > .header::before{
-    content:'KODA\A SCHEDULE'; white-space:pre; position:absolute; left:18px; top:17px;
-    color:#8da2b9; font-size:.48rem; line-height:1.45; font-weight:800; letter-spacing:.14em;
+    content:''; position:absolute; left:18px; top:18px; width:3px; height:38px;
+    border-radius:3px; background:linear-gradient(180deg,#1769d2,#9cc4e9);
+  }
+  .app-container > .header .header-left-brand{
+    position:absolute; left:29px; top:13px; display:flex; flex-direction:column;
+    align-items:flex-start; gap:0; pointer-events:none;
+  }
+  .app-container > .header .brand-kicker{
+    color:#1769d2; font-size:.42rem; font-weight:900; letter-spacing:.22em; line-height:1.1;
+  }
+  .app-container > .header .brand-title{
+    color:#173f70; font-size:.72rem; font-weight:900; letter-spacing:.11em; line-height:1.15;
+  }
+  .app-container > .header .brand-subtitle{
+    color:#8aa0b8; font-size:.39rem; font-weight:800; letter-spacing:.075em; line-height:1.25; margin-top:2px;
+  }
+  .app-container > .header .brand-line{
+    width:52px; height:2px; margin-top:5px; border-radius:2px; background:linear-gradient(90deg,#1769d2,#c7ddf3);
   }
   .app-container > .header img{
     grid-column:2; height:43px; max-width:150px; width:auto; object-fit:contain;
@@ -1401,6 +1411,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     border:0 !important; background:transparent !important; color:#73849a !important;
     padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important;
     letter-spacing:-.03em;
+    transform:translateY(10px);
   }
   .app-container > .today-weather-bar{
     width:calc(100% - 36px); margin:0 18px 10px; padding:9px 0 0;
@@ -1412,7 +1423,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .app-container > .today-weather-bar .today-weather-temp{font-size:.98rem;color:#173f70;font-weight:850;}
   @media(max-width:360px){
     .app-container > .header{height:70px;padding:7px 13px 4px !important;}
-    .app-container > .header::before{left:13px;top:15px;font-size:.43rem;}
+    .app-container > .header::before{left:13px;top:16px;height:34px;}
+    .app-container > .header .header-left-brand{left:22px;top:12px;}
+    .app-container > .header .brand-kicker{font-size:.36rem;}
+    .app-container > .header .brand-title{font-size:.61rem;}
+    .app-container > .header .brand-subtitle{font-size:.33rem;}
+    .app-container > .header .brand-line{width:44px;margin-top:4px;}
     .app-container > .header::after{left:13px;right:13px;}
     .app-container > .header img{height:38px;max-width:128px;}
     .app-container > .header .logout-btn{font-size:.68rem !important;}
@@ -1443,6 +1459,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
+    <div class="header-left-brand" aria-hidden="true">
+      <span class="brand-kicker">KODA</span>
+      <span class="brand-title">TODAY</span>
+      <span class="brand-subtitle">DEVELOPER ASSOCIATION</span>
+      <span class="brand-line"></span>
+    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -1517,7 +1539,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeStaffScreen()" aria-label="뒤로가기">←</button>
     <div class="fullscreen-title">KODA 임직원현황</div>
-    <button type="button" class="staff-logout-btn" onclick="logoutUser()">로그아웃</button>
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
