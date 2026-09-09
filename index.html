@@ -1472,6 +1472,97 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #associationNewsScreen .association-card-title h3{font-size:.82rem!important;}
 }
 
+
+  /* ===== KODA 임직원현황 모바일 최적화 ===== */
+  #staffScreen{
+    background:#f7faff;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  #staffScreen .fullscreen-header{
+    position:sticky; top:0; z-index:20;
+    min-height:58px; box-sizing:border-box;
+    padding:10px 10px;
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid #e7eef8;
+    backdrop-filter:blur(10px);
+  }
+  #staffScreen .fullscreen-back-btn{
+    width:42px; height:38px; display:flex; align-items:center; justify-content:center;
+    border-radius:12px; background:#f1f6fd; color:#1769d2; font-size:1.15rem;
+  }
+  #staffScreen .fullscreen-title{font-size:1.02rem; color:#123b70; letter-spacing:-.035em;}
+  #staffScreen .fullscreen-dummy{width:42px;}
+  #staffScreen .fullscreen-tabs{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px;
+    width:calc(100% - 20px); margin:10px 10px 0; padding:0; overflow:visible;
+    box-sizing:border-box;
+  }
+  #staffScreen .month-tab{
+    width:100%; min-width:0; height:42px; padding:0 6px;
+    border:1px solid #dbe6f4; border-radius:12px;
+    background:#fff; color:#5d718d; font-size:.76rem; font-weight:800;
+    box-shadow:0 2px 8px rgba(26,73,125,.04);
+  }
+  #staffScreen .month-tab.active{
+    background:linear-gradient(135deg,#1769d2,#3182ce); color:#fff;
+    border-color:#1769d2; box-shadow:0 5px 12px rgba(23,105,210,.18);
+  }
+  #staffScreen .fullscreen-content{
+    width:100%; box-sizing:border-box; padding:11px 10px 28px;
+  }
+  #staffScreen .fullscreen-content > .day-events-subtitle{
+    margin:0 2px 9px !important; padding:3px 0 0;
+    color:#7a8da7; font-size:.70rem; font-weight:700;
+  }
+  #staffList{
+    display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;
+    width:100%; box-sizing:border-box;
+  }
+  #staffList .day-event-item{
+    min-width:0; min-height:78px !important; box-sizing:border-box;
+    padding:11px 10px !important; border:1px solid #e2eaf4 !important;
+    border-radius:13px !important; background:#fff;
+    box-shadow:0 3px 10px rgba(28,70,120,.055);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  #staffList .day-event-item:active{transform:scale(.98); background:#f8fbff;}
+  #staffList .day-event-item-title{
+    display:flex; align-items:center; min-width:0;
+    font-size:.83rem !important; line-height:1.25 !important;
+    color:#17385f; white-space:nowrap; overflow:hidden;
+  }
+  #staffList .day-event-item-title strong{
+    min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  #staffList .day-event-item-meta{
+    margin-top:5px !important; color:#657a96; font-size:.68rem !important;
+    line-height:1.3 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  #staffList .staff-phone{
+    margin-top:5px; color:#9aaabd; font-size:.64rem !important;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  #staffList .staff-badge{
+    flex-shrink:0; font-size:.53rem !important; font-weight:800;
+    padding:2px 5px !important; margin-right:4px !important;
+    border-radius:999px; background:#edf5ff; color:#1769d2;
+  }
+  #staffList .staff-badge.executive{background:#e8f1ff; color:#0756c9;}
+  #staffScreen .loading-msg,#staffScreen .no-data{
+    grid-column:1 / -1; padding:28px 12px; text-align:center;
+    color:#7a8da7; font-size:.78rem; background:#fff; border-radius:13px;
+    border:1px solid #e2eaf4;
+  }
+  @media(max-width:360px){
+    #staffScreen .fullscreen-tabs{gap:6px;}
+    #staffScreen .month-tab{height:40px;font-size:.70rem;}
+    #staffList{gap:6px;}
+    #staffList .day-event-item{padding:10px 8px !important;}
+    #staffList .day-event-item-title{font-size:.77rem !important;}
+    #staffList .day-event-item-meta{font-size:.63rem !important;}
+  }
+
 </style>
 </head>
 <body>
