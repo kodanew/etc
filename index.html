@@ -78,7 +78,7 @@
     width: 100%;
   }
   .header img {
-    height: 26px; 
+    height: 39px; 
     width: auto;
     max-width: 55%;
     object-fit: contain;
@@ -263,7 +263,7 @@
     position: relative;
     width: calc(100% - 20px);
     margin: 5px 10px 10px;
-    min-height: 128px;
+    min-height: 106px;
     border-radius: 20px;
     overflow: hidden;
     color: #fff;
@@ -285,11 +285,11 @@
   }
   .schedule-banner::before { width: 110px; height: 110px; right: -35px; top: -55px; }
   .schedule-banner::after { width: 72px; height: 72px; left: -34px; bottom: -42px; }
-  .schedule-banner-track { position: relative; min-height: 128px; z-index: 1; }
+  .schedule-banner-track { position: relative; min-height: 106px; z-index: 1; }
   .schedule-banner-slide {
     display: none;
-    min-height: 128px;
-    padding: 20px 20px 30px;
+    min-height: 106px;
+    padding: 16px 20px 24px;
     box-sizing: border-box;
     animation: bannerFade .28s ease;
   }
@@ -301,8 +301,18 @@
   .banner-heading {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 7px;
     margin-bottom: 9px;
+  }
+  .banner-heading-meta {
+    font-size: .72rem;
+    font-weight: 650;
+    color: rgba(255,255,255,.86);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 62%;
   }
   .banner-kicker {
     display: inline-flex;
@@ -1118,10 +1128,10 @@
 
   /* 최종 상단 헤더/메뉴 정돈 */
   .header { position:relative; min-height:92px; padding:10px 10px 0 12px; align-items:center; }
-  .header > img { width:180px !important; max-height:58px !important; object-fit:contain; }
+  .header > img { width:270px !important; max-height:87px !important; object-fit:contain; }
   .today-weather { position:absolute; left:12px; top:10px; z-index:2; line-height:1; display:flex; flex-direction:column; align-items:flex-start; }
   .today-label { display:none !important; }
-  .today-weather-row { display:flex; flex-direction:column; align-items:flex-start; gap:5px; color:#173b67; white-space:nowrap; }
+  .today-weather-row { display:flex; flex-direction:row; align-items:center; gap:8px; color:#173b67; white-space:nowrap; }
   #todayDateText { font-size:1.02rem; line-height:1.15; font-weight:850; letter-spacing:-.035em; }
   .today-weather-info { display:flex; align-items:center; gap:4px; color:#4d6786; }
   .weather-icon { font-size:1.05rem; line-height:1; }
@@ -1133,30 +1143,31 @@
   .schedule-banner { margin-top:10px !important; }
   .quick-menu-container { gap:0 !important; padding-left:0 !important; padding-right:0 !important; }
   .quick-btn { min-height:90px !important; width:100% !important; }
-  .quick-icon { width:62px !important; height:62px !important; border-radius:16px !important; }
+  .quick-icon { width:100% !important; aspect-ratio:1/1 !important; height:auto !important; border-radius:16px !important; }
   .quick-label { margin-top:4px !important; font-size:.68rem !important; }
-  @media (max-width:520px){ .header > img { width:150px !important; } #todayDateText{font-size:.94rem;} .quick-icon{width:58px !important;height:58px !important;} .quick-btn{min-height:86px !important;} }
+  @media (max-width:520px){ .header > img { width:225px !important; } #todayDateText{font-size:.94rem;} .quick-icon{width:100% !important;aspect-ratio:1/1 !important;height:auto !important;} .quick-btn{min-height:86px !important;} }
 
   .calendar-wrapper { position:relative; }
   .calendar-refresh-btn { position:absolute; right:8px; bottom:7px; width:25px; height:25px; border-radius:8px; border:1px solid #2c75c9; background:#fff; color:#1765b2; font-size:15px; font-weight:800; line-height:23px; padding:0; box-shadow:0 2px 6px rgba(19,86,150,.12); z-index:5; }
 
   /* 최종 디자인 보정 */
-  .header { min-height:76px !important; height:auto !important; padding:4px 8px 0 12px !important; }
-  .header > img { width:180px !important; max-height:54px !important; }
+  .header { min-height:96px !important; height:auto !important; padding:4px 8px 0 12px !important; }
+  .header > img { width:270px !important; max-height:81px !important; }
   .today-weather { top:7px !important; left:12px !important; }
-  #todayDateText { font-size:1.22rem !important; line-height:1.08 !important; font-weight:900 !important; letter-spacing:-.045em !important; }
-  .today-weather-row { gap:4px !important; }
+  #todayDateText { font-size:2.5rem !important; line-height:1.05 !important; font-weight:900 !important; letter-spacing:-.045em !important; }
+  .today-weather-row { gap:10px !important; }
   .today-weather-info { gap:5px !important; color:#64748b !important; }
-  .weather-icon { font-size:1.12rem !important; }
-  #weatherTemp { font-size:.88rem !important; font-weight:850 !important; }
-  .logout-btn { width:22px !important; min-width:22px !important; height:22px !important; border-radius:50% !important; background:#f1f3f5 !important; border:1px solid #d9dee5 !important; color:#7b8794 !important; font-size:.68rem !important; box-shadow:0 2px 6px rgba(80,90,100,.10) !important; }
-  .logout-btn:active { background:#e7eaee !important; color:#66717d !important; }
-  .schedule-banner { margin-top:0 !important; margin-bottom:10px !important; background:linear-gradient(135deg,rgba(221,239,250,.88) 0%,rgba(242,247,250,.92) 48%,rgba(255,255,255,.97) 100%) !important; border:1px solid rgba(116,165,201,.34) !important; box-shadow:0 7px 20px rgba(66,103,130,.10) !important; color:#183b5d !important; }
+  .weather-icon { font-size:2.3rem !important; }
+  #weatherTemp { font-size:1.8rem !important; font-weight:850 !important; }
+  .logout-btn { width:28px !important; min-width:28px !important; height:28px !important; border-radius:0 !important; background:none !important; border:none !important; color:#cbd5e0 !important; font-size:1rem !important; box-shadow:none !important; }
+  .logout-btn:active { background:none !important; color:#718096 !important; }
+  .schedule-banner { margin-top:0 !important; margin-bottom:10px !important; background:linear-gradient(135deg,rgba(196,222,248,.95) 0%,rgba(210,232,250,.96) 48%,rgba(225,240,250,.97) 100%) !important; border:1px solid rgba(116,165,201,.34) !important; box-shadow:0 7px 20px rgba(66,103,130,.10) !important; color:#183b5d !important; }
   .schedule-banner::before, .schedule-banner::after { border-color:rgba(79,133,175,.10) !important; }
   .banner-kicker { font-size:.70rem !important; min-height:23px !important; padding:0 10px !important; background:rgba(255,255,255,.76) !important; color:#48657d !important; border-color:rgba(111,145,169,.25) !important; }
-  .banner-kicker.today { background:rgba(74,144,196,.15) !important; color:#07558e !important; border-color:rgba(55,123,175,.35) !important; box-shadow:0 2px 8px rgba(55,123,175,.10) !important; font-size:.70rem !important; min-height:23px !important; }
+  .banner-kicker.today { background:rgba(229,62,62,.12) !important; color:#e53e3e !important; border-color:rgba(229,62,62,.35) !important; box-shadow:0 2px 8px rgba(229,62,62,.12) !important; font-size:.70rem !important; min-height:23px !important; }
   .banner-kicker.upcoming { background:rgba(255,255,255,.78) !important; color:#64788a !important; border-color:rgba(130,150,165,.28) !important; font-size:.70rem !important; min-height:23px !important; }
   .banner-event-line1 { color:#49657b !important; font-size:.80rem !important; }
+  .banner-heading-meta { color:#49657b !important; }
   .banner-event-line2 { color:#173b5d !important; font-size:1.08rem !important; }
   .banner-empty { color:#64788a !important; }
   .banner-dot { background:rgba(65,103,132,.28) !important; }
@@ -1165,18 +1176,18 @@
   .banner-pause-btn.paused { background:#fff !important; color:#3f7fa8 !important; }
   .quick-menu-container { gap:0 !important; padding:0 !important; margin:0 !important; }
   .quick-btn { min-height:94px !important; padding:0 !important; margin:0 !important; }
-  .quick-icon { width:66px !important; height:66px !important; border-radius:17px !important; }
+  .quick-icon { width:100% !important; aspect-ratio:1/1 !important; height:auto !important; border-radius:17px !important; }
   .quick-icon img { width:78% !important; height:78% !important; }
   .quick-icon svg { width:36px !important; height:36px !important; }
   .quick-label { margin-top:3px !important; font-size:.70rem !important; font-weight:800 !important; }
   @media (max-width:520px){
-    .header { min-height:72px !important; padding-top:2px !important; }
-    .header > img { width:150px !important; max-height:50px !important; }
-    #todayDateText { font-size:1.12rem !important; }
-    .weather-icon { font-size:1.04rem !important; }
-    #weatherTemp { font-size:.84rem !important; }
+    .header { min-height:90px !important; padding-top:2px !important; }
+    .header > img { width:225px !important; max-height:75px !important; }
+    #todayDateText { font-size:2.3rem !important; }
+    .weather-icon { font-size:2.1rem !important; }
+    #weatherTemp { font-size:1.7rem !important; }
     .quick-btn { min-height:90px !important; }
-    .quick-icon { width:62px !important; height:62px !important; border-radius:16px !important; }
+    .quick-icon { width:100% !important; aspect-ratio:1/1 !important; height:auto !important; border-radius:16px !important; }
   }
 </style>
 </head>
@@ -2203,11 +2214,14 @@
     const globalIndex = scheduleData.indexOf(event);
     const time = getEventTime(event);
     const location = event.location && event.location !== 'ㅡ' ? event.location : '';
-    const meta = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})${time ? ` · ${time}~` : ''}${location ? ` · ${location}` : ''}`;
+    const dateStr = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})`;
+    const meta = `${dateStr}${time ? `, ${time}` : ''}${location ? `/${location}` : ''}`;
     return `
-      <div class="banner-heading"><span class="banner-kicker ${badgeText === '오늘 일정' ? 'today' : 'upcoming'}">${badgeText}</span></div>
+      <div class="banner-heading">
+        <span class="banner-kicker ${badgeText === '오늘 일정' ? 'today' : 'upcoming'}">${badgeText}</span>
+        <span class="banner-heading-meta">${meta}</span>
+      </div>
       <button type="button" class="banner-event" onclick="openModal(${globalIndex})" aria-label="${event.title}">
-        <span class="banner-event-line1">${meta}</span>
         <span class="banner-event-line2">${event.title}</span>
       </button>
     `;
