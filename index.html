@@ -1193,6 +1193,46 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .banner-dots{right:41px!important;}
 }
 
+/* 2026-09-09 final mobile layout refinement */
+.cal-header{display:grid!important;grid-template-columns:32px minmax(0,1fr) auto!important;align-items:center!important;column-gap:6px!important;margin-bottom:8px!important;}
+.cal-header > #calMonthDisplay{min-width:0!important;text-align:center!important;white-space:nowrap!important;}
+.cal-header-right{display:flex!important;align-items:center!important;gap:5px!important;}
+.cal-header .cal-nav-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;}
+.calendar-refresh-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;font-size:1.28rem!important;flex:0 0 30px!important;}
+.calendar-wrapper{padding:10px 10px 9px!important;}
+
+.association-news-grid{grid-template-columns:1fr!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:10px!important;padding:12px 12px 18px!important;overflow:hidden!important;flex:1!important;min-height:0!important;}
+.association-news-card{min-height:0!important;height:100%!important;padding:0!important;border-radius:16px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;}
+.association-card-title{width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;padding:18px!important;}
+.association-card-title h3{font-size:1.12rem!important;margin:0!important;color:#12345a!important;font-weight:800!important;flex:0 1 auto!important;}
+.association-card-icon{width:42px!important;height:42px!important;font-size:1.5rem!important;flex:0 0 42px!important;}
+.association-more{position:absolute!important;right:16px!important;font-size:1.6rem!important;line-height:1!important;}
+.association-coming-soon{background:#f8fafc!important;border-style:dashed!important;cursor:default!important;}
+.association-coming-soon .association-card-title h3{color:#94a3b8!important;}
+.association-coming-soon .association-card-icon{background:#eef2f7!important;filter:grayscale(.2)!important;}
+.association-preview,.association-card-head{display:none!important;}
+
+/* 공지/회의자료: 구글시트 1행을 표 머리글로 사용 */
+.sheet-table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #dbe7f5;border-radius:12px;background:#fff;}
+.sheet-table{width:100%;min-width:520px;border-collapse:separate;border-spacing:0;font-size:.78rem;}
+.sheet-table th{background:#edf5ff;color:#164a85;font-weight:800;padding:10px 8px;border-bottom:1px solid #cfe0f8;white-space:nowrap;text-align:center;}
+.sheet-table td{padding:10px 8px;border-bottom:1px solid #edf2f7;color:#334155;vertical-align:middle;text-align:left;line-height:1.4;}
+.sheet-table tr:last-child td{border-bottom:0;}
+.sheet-table tbody tr{cursor:pointer;}
+.sheet-table tbody tr:active{background:#f7fbff;}
+.sheet-table .sheet-no{width:44px;text-align:center;color:#64748b;font-weight:800;}
+.sheet-table .sheet-link{color:#1769d2;font-weight:800;white-space:nowrap;}
+#noticeList,#materialsList{width:100%;}
+#noticeList .sheet-table-wrap,#materialsList .sheet-table-wrap{margin-top:2px;}
+@media(max-width:360px){
+ .association-news-grid{gap:8px;padding:10px 10px 14px!important;}
+ .association-card-title{padding:14px!important;}
+ .association-card-title h3{font-size:1rem!important;}
+ .association-card-icon{width:38px!important;height:38px!important;flex-basis:38px!important;font-size:1.3rem!important;}
+ .sheet-table{font-size:.72rem;min-width:480px;}
+ .sheet-table th,.sheet-table td{padding:8px 6px;}
+}
+
 </style>
 </head>
 <body>
@@ -1232,11 +1272,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="cal-header">
       <button class="cal-nav-btn" onclick="changeMonth(-1)">&#10094;</button>
       <span id="calMonthDisplay"></span>
-      <button class="cal-nav-btn" onclick="changeMonth(1)">&#10095;</button>
+      <div class="cal-header-right">
+        <button type="button" class="calendar-refresh-btn" onclick="manualRefresh()" aria-label="새로고침">↻</button>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">&#10095;</button>
+      </div>
     </div>
     <div class="cal-grid" id="calendarGrid">
     </div>
-    <button type="button" class="calendar-refresh-btn" onclick="manualRefresh()" aria-label="새로고침">↻</button>
   </div>
 
   <div class="quick-menu-container">
@@ -1304,17 +1346,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="fullscreen-dummy"></div>
   </div>
   <div class="association-news-grid">
-    <section class="association-news-card" onclick="openNoticesScreen()">
-      <div class="association-card-head"><span class="association-card-icon">📢</span><h3>협회 중요 공지</h3><span class="association-more">›</span></div>
-      <div id="associationNoticePreview" class="association-preview">새로운 공지사항을 불러오는 중입니다.</div>
+    <section class="association-news-card" onclick="openNoticesScreen()" role="button" tabindex="0">
+      <div class="association-card-title"><span class="association-card-icon">📢</span><h3>협회 중요 공지</h3><span class="association-more">›</span></div>
     </section>
-    <section class="association-news-card" onclick="openMaterialsScreen()">
-      <div class="association-card-head"><span class="association-card-icon">📁</span><h3>사무국 회의자료</h3><span class="association-more">›</span></div>
-      <div id="associationMaterialPreview" class="association-preview">회의자료를 불러오는 중입니다.</div>
+    <section class="association-news-card" onclick="openMaterialsScreen()" role="button" tabindex="0">
+      <div class="association-card-title"><span class="association-card-icon">📁</span><h3>사무국 회의 자료</h3><span class="association-more">›</span></div>
     </section>
-    <section class="association-news-card" onclick="openStaffScreen()">
-      <div class="association-card-head"><span class="association-card-icon">👥</span><h3>직원현황</h3><span class="association-more">›</span></div>
-      <div id="associationStaffPreview" class="association-preview">직원현황을 불러오는 중입니다.</div>
+    <section class="association-news-card" onclick="openStaffScreen()" role="button" tabindex="0">
+      <div class="association-card-title"><span class="association-card-icon">👥</span><h3>KODA 임직원 현황</h3><span class="association-more">›</span></div>
+    </section>
+    <section class="association-news-card association-coming-soon" aria-label="준비중">
+      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
     </section>
   </div>
 </div>
@@ -1488,8 +1530,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   let scheduleData = [];
   let materialsData = [];
+  let materialsHeaders = [];
   let staffData = [];
   let noticeData = [];
+  let noticeHeaders = [];
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -1683,6 +1727,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function parseMaterialsCSV(csv) {
     const rows = splitCSV(csv);
     const dataArr = [];
+    materialsHeaders = (rows[0] || []).map(h => h ? h.trim() : '').filter(Boolean);
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
       if (r.length < 3 || !r[0]) continue;
@@ -1691,16 +1736,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const title = r[1] ? r[1].trim() : '';
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
-      
       let exactMonth = '';
       const dateParts = dateStr.split('.').map(s => s.trim());
-      if (dateParts.length >= 3) {
-        exactMonth = parseInt(dateParts[1], 10).toString();
-      } else if (dateParts.length === 2) {
-        exactMonth = parseInt(dateParts[0], 10).toString();
-      }
+      if (dateParts.length >= 3) exactMonth = parseInt(dateParts[1], 10).toString();
+      else if (dateParts.length === 2) exactMonth = parseInt(dateParts[0], 10).toString();
 
-      const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
+      const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(Boolean);
       const images = rawUrls.map(u => {
         const fileId = getDriveFileId(u);
         return {
@@ -1710,25 +1751,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
           previewUrl: fileId ? `https://drive.google.com/file/d/${fileId}/preview` : u
         };
       });
-
-      dataArr.push({
-        date: dateStr,
-        month: exactMonth,
-        title: title,
-        fileType: fileType,
-        images: images,
-        globalIndex: i - 1 
-      });
+      dataArr.push({date:dateStr,month:exactMonth,title:title,fileType:fileType,images:images,globalIndex:i-1,rawRow:r});
     }
-
-    dataArr.sort((a, b) => {
-      const toNum = (s) => {
-        const p = s.split('.').map(v => parseInt(v, 10));
-        return p.length === 3 ? p[0] * 10000 + p[1] * 100 + p[2] : 0;
-      };
-      return toNum(b.date) - toNum(a.date);
+    dataArr.sort((a,b)=>{
+      const toNum=s=>{const p=s.split('.').map(v=>parseInt(v,10));return p.length===3?p[0]*10000+p[1]*100+p[2]:0;};
+      return toNum(b.date)-toNum(a.date);
     });
-
     return dataArr;
   }
 
@@ -1753,19 +1781,30 @@ button,.nav-btn,.action-btn{min-height:44px;}
   };
 
   function renderMaterialsList(monthFilter) {
-    const list = document.getElementById('materialsList');
-    list.innerHTML = '';
-    const filteredData = materialsData.filter(item => monthFilter === 'all' || item.month === monthFilter);
-    if (filteredData.length === 0) { list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`; return; }
-    const head=document.createElement('div'); head.className='material-list-head';
-    head.innerHTML='<span>No</span><span>날짜</span><span>제목</span>'; list.appendChild(head);
-    filteredData.forEach((item, index)=>{
-      const btn = document.createElement('button'); btn.type='button'; btn.className='day-event-item material-list-row';
-      btn.innerHTML=`<span class="list-no">${index+1}</span><span class="list-date">${item.date||'-'}</span><span class="list-title">${item.title||'회의자료'}</span>`;
-      const indexInOriginal = materialsData.findIndex(d => d === item);
-      btn.onclick = () => openMaterial(indexInOriginal);
-      list.appendChild(btn);
+    const list=document.getElementById('materialsList'); list.innerHTML='';
+    const filteredData=materialsData.filter(item=>monthFilter==='all'||item.month===monthFilter);
+    if(!filteredData.length){list.innerHTML='<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>';return;}
+    const headers=materialsHeaders.length?materialsHeaders:['날짜','제목','자료','형식'];
+    const wrap=document.createElement('div'); wrap.className='sheet-table-wrap';
+    const table=document.createElement('table'); table.className='sheet-table';
+    const thead=document.createElement('thead'), trh=document.createElement('tr');
+    const noTh=document.createElement('th'); noTh.textContent='No'; trh.appendChild(noTh);
+    headers.forEach(h=>{const th=document.createElement('th');th.textContent=h;trh.appendChild(th);});
+    thead.appendChild(trh); table.appendChild(thead);
+    const tbody=document.createElement('tbody');
+    filteredData.forEach((item,index)=>{
+      const tr=document.createElement('tr');
+      tr.onclick=()=>openMaterial(materialsData.findIndex(d=>d===item));
+      const no=document.createElement('td');no.className='sheet-no';no.textContent=index+1;tr.appendChild(no);
+      headers.forEach((h,col)=>{
+        const td=document.createElement('td'); const raw=item.rawRow[col]||'';
+        if(col===2 && raw){ td.innerHTML='<span class="sheet-link">자료 보기 ›</span>'; }
+        else td.textContent=raw||'-';
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
     });
+    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(wrap);
   }
 
   let currentMaterialImages = [];
@@ -1842,24 +1881,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function parseNoticeCSV(csv) {
     const rows = splitCSV(csv);
     const dataArr = [];
+    noticeHeaders = (rows[0] || []).map(h => h ? h.trim() : '').filter(Boolean);
     if (rows.length < 2) return dataArr;
-
-    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
-    let idx = {
-      date: headers.indexOf("작성일자"),
-      title: headers.indexOf("제목"),
-      content: headers.indexOf("내용")
-    };
-    if (idx.title === -1) idx = { date: 0, title: 1, content: 2 }; 
-
-    for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      if (r.length <= idx.title || !r[idx.title]) continue; 
-      dataArr.push({
-        date: idx.date !== -1 && r[idx.date] ? r[idx.date].trim() : "",
-        title: idx.title !== -1 && r[idx.title] ? r[idx.title].trim() : "",
-        content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : "",
-      });
+    const normalized = noticeHeaders.map(h => h.replace(/\s+/g,''));
+    let idx = {date:normalized.indexOf('작성일자'),title:normalized.indexOf('제목'),content:normalized.indexOf('내용')};
+    if (idx.title === -1) idx = {date:0,title:1,content:2};
+    for (let i=1;i<rows.length;i++){
+      const r=rows[i];
+      if(r.length<=idx.title || !r[idx.title]) continue;
+      dataArr.push({date:idx.date!==-1&&r[idx.date]?r[idx.date].trim():'',title:idx.title!==-1&&r[idx.title]?r[idx.title].trim():'',content:idx.content!==-1&&r[idx.content]?r[idx.content].trim():'',rawRow:r});
     }
     return dataArr.reverse();
   }
@@ -1893,16 +1923,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   function renderNoticeList() {
-    const list = document.getElementById('noticeList'); list.innerHTML = '';
-    if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
-    const head=document.createElement('div'); head.className='notice-list-head';
-    head.innerHTML='<span>No</span><span>날짜</span><span>제목</span>'; list.appendChild(head);
+    const list=document.getElementById('noticeList'); list.innerHTML='';
+    if(!noticeData.length){list.innerHTML='<div class="no-data">등록된 공지가 없습니다.</div>';return;}
+    const headers=noticeHeaders.length?noticeHeaders:['작성일자','제목','내용'];
+    const wrap=document.createElement('div'); wrap.className='sheet-table-wrap';
+    const table=document.createElement('table'); table.className='sheet-table';
+    const thead=document.createElement('thead'), trh=document.createElement('tr');
+    const noTh=document.createElement('th'); noTh.textContent='No'; trh.appendChild(noTh);
+    headers.forEach(h=>{const th=document.createElement('th');th.textContent=h;trh.appendChild(th);});
+    thead.appendChild(trh); table.appendChild(thead);
+    const tbody=document.createElement('tbody');
     noticeData.forEach((item,index)=>{
-      const btn=document.createElement('button'); btn.type='button';
-      btn.className='day-event-item notice-item notice-list-row '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
-      btn.innerHTML=`<span class="list-no">${index+1}</span><span class="list-date">${item.date||'-'}</span><span class="list-title">${item.title||'-'}</span>`;
-      btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
+      const tr=document.createElement('tr'); tr.onclick=()=>openNoticeDetailModal(index);
+      const no=document.createElement('td');no.className='sheet-no';no.textContent=index+1;tr.appendChild(no);
+      headers.forEach((h,col)=>{const td=document.createElement('td');td.textContent=item.rawRow[col]||'-';tr.appendChild(td);});
+      tbody.appendChild(tr);
     });
+    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(wrap);
   }
 
   window.openAssociationNewsScreen = function() {
