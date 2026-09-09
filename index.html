@@ -91,9 +91,9 @@
     background-color: transparent;
     color: #718096;
     border: 1px solid #e2e8f0;
-    padding: 3px 6px;
-    border-radius: 6px;
-    font-size: 0.6rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
     font-weight: 600;
     cursor: pointer;
   }
@@ -116,9 +116,9 @@
     background-color: transparent;
     color: #718096;
     border: 1px solid #e2e8f0;
-    padding: 3px 6px;
-    border-radius: 6px;
-    font-size: 0.6rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
     font-weight: 600;
     cursor: pointer;
   }
@@ -144,7 +144,8 @@
     margin: 10px;
     border-radius: 12px;
     padding: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1.5px solid #2b73d2;
+    box-shadow: 0 5px 18px rgba(0,82,204,0.08);
     overflow: hidden; 
   }
   .cal-header {
@@ -156,15 +157,15 @@
     font-size: 1rem;
   }
   .cal-nav-btn {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #eef5ff;
     border: 1px solid #c9ddfb;
-    border-radius: 11px;
-    font-size: 1.45rem;
+    border-radius: 9px;
+    font-size: 1.15rem;
     line-height: 1;
     font-weight: 800;
     color: #0756c9;
@@ -396,15 +397,15 @@
   .quick-menu-container,
   .sub-menu-container {
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    padding:0 10px 9px;
+    grid-template-columns:repeat(5,1fr);
+    gap:4px;
+    padding:0 8px 9px;
     width:100%;
     box-sizing:border-box;
     align-items:start;
   }
   .quick-btn {
-    min-height:82px;
+    min-height:78px;
     padding:0;
     background:transparent !important;
     border:0;
@@ -421,9 +422,9 @@
     box-sizing:border-box;
   }
   .quick-icon {
-    width:52px;
-    height:52px;
-    border-radius:15px;
+    width:50px;
+    height:50px;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -845,7 +846,16 @@
   }
 
   /* 풀스크린 전용 페이지 */
-  .fullscreen-screen {
+  
+  .association-news-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:14px 12px 28px;overflow:auto;}
+  .association-news-card{background:#fff;border:1.5px solid #cfe0f8;border-radius:16px;padding:14px;min-height:150px;box-shadow:0 6px 18px rgba(25,74,135,.08);cursor:pointer;}
+  .association-card-head{display:flex;align-items:center;gap:9px;border-bottom:1px solid #edf3fb;padding-bottom:10px;margin-bottom:10px;}
+  .association-card-icon{font-size:1.45rem;width:38px;height:38px;border-radius:11px;background:#edf5ff;display:flex;align-items:center;justify-content:center;}
+  .association-card-head h3{font-size:.95rem;margin:0;color:#12345a;flex:1;}
+  .association-more{font-size:1.4rem;color:#1769d2;}
+  .association-preview{font-size:.78rem;line-height:1.55;color:#64748b;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+  @media(min-width:700px){.association-news-grid{grid-template-columns:repeat(3,1fr);align-items:stretch}.association-news-card{min-height:210px}}
+.fullscreen-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -1143,25 +1153,20 @@
 
   <div class="quick-menu-container">
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
-      <span class="quick-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">KODA 홈페이지</span>
+      <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">홈페이지</span>
     </a>
+    <button class="quick-btn" onclick="openAssociationNewsScreen()">
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">협회소식</span>
+    </button>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">
-      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 52 52"><rect x="4" y="4" width="44" height="44" rx="13" fill="#03C75A"/><path d="M16 14h7.2l6.8 10.1V14H36v24h-6.8l-6.9-10.2V38H16z" fill="#fff"/></svg></span><span class="quick-label">언론보도 현황</span>
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/><path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/></svg></span><span class="quick-label">언론보도</span>
     </a>
     <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
-      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/><path d="M27 12.5 46 22 27 31.5z" fill="#fff"/></svg></span><span class="quick-label">KODA-TV</span>
+      <span class="quick-icon"><svg viewBox="0 0 64 44" aria-hidden="true"><rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/><path d="M27 12.5 46 22 27 31.5z" fill="#fff"/></svg></span><span class="quick-label">KODA-TV</span>
     </a>
-    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">
-      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 64 52"><rect x="8" y="6" width="48" height="40" rx="12" fill="#19B86B"/><path d="M17 18h13.5c5.7 0 9.5 3.2 9.5 8s-3.8 8-9.5 8H23v7h-6zM23 23v6h7c2.3 0 4-1.1 4-3s-1.7-3-4-3z" fill="#fff"/><text x="37" y="39" font-size="7" font-weight="800" fill="#fff">WEHAGO</text></svg></span><span class="quick-label">WEHAGO</span>
-    </a>
-  </div>
-
-  <!-- 서브 메뉴 컨테이너 -->
-  <div class="sub-menu-container">
-    <button class="quick-btn" onclick="openNoticesScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M13 21a13 13 0 0 1 26 0v9l5 5H8l5-5z" fill="#246BCE"/><path d="M21 39h10" stroke="#246BCE" stroke-width="4" stroke-linecap="round"/></svg></span><span class="quick-label">협회 중요 공지</span></button>
-    <button class="quick-btn" onclick="openStaffScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><circle cx="19" cy="18" r="7" fill="#246BCE"/><circle cx="35" cy="20" r="6" fill="#78A8E8"/><path d="M8 39c0-8 5-12 11-12s11 4 11 12z" fill="#246BCE"/><path d="M28 39c0-6 3-10 8-10s8 4 8 10z" fill="#78A8E8"/></svg></span><span class="quick-label">KODA 직원현황</span></button>
-    <button class="quick-btn" onclick="openMaterialsScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M8 14h14l4 5h18v21H8z" fill="#246BCE"/><path d="M14 25h24M14 31h18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><span class="quick-label">사무국 회의자료</span></button>
-    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M15 9h22v34l-11-7-11 7z" fill="#246BCE"/><path d="m26 14 2.4 5 5.5.8-4 3.9.9 5.5-4.8-2.6-4.8 2.6.9-5.5-4-3.9 5.5-.8z" fill="#fff"/></svg></span><span class="quick-label">MY 관심 일정</span></button>
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#1267d6"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
+    </button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -1200,6 +1205,29 @@
   <div class="fullscreen-content">
     <div class="day-events-subtitle" id="materialsSubtitle" style="margin-bottom:12px;">확인하실 자료를 선택하세요.</div>
     <div class="day-event-list" id="materialsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 협회소식 통합 페이지 ✨ -->
+<div class="fullscreen-screen" id="associationNewsScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">협회소식</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+  <div class="association-news-grid">
+    <section class="association-news-card" onclick="openNoticesScreen()">
+      <div class="association-card-head"><span class="association-card-icon">📢</span><h3>협회 중요 공지</h3><span class="association-more">›</span></div>
+      <div id="associationNoticePreview" class="association-preview">새로운 공지사항을 불러오는 중입니다.</div>
+    </section>
+    <section class="association-news-card" onclick="openMaterialsScreen()">
+      <div class="association-card-head"><span class="association-card-icon">📁</span><h3>사무국 회의자료</h3><span class="association-more">›</span></div>
+      <div id="associationMaterialPreview" class="association-preview">회의자료를 불러오는 중입니다.</div>
+    </section>
+    <section class="association-news-card" onclick="openStaffScreen()">
+      <div class="association-card-head"><span class="association-card-icon">👥</span><h3>직원현황</h3><span class="association-more">›</span></div>
+      <div id="associationStaffPreview" class="association-preview">직원현황을 불러오는 중입니다.</div>
+    </section>
   </div>
 </div>
 
@@ -1810,6 +1838,24 @@
       btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
     });
   }
+
+  window.openAssociationNewsScreen = function() {
+    document.getElementById('associationNewsScreen').style.display='flex';
+    document.body.style.overflow='hidden';
+    history.pushState({associationNewsOpen:true}, '', '');
+    if(noticeData.length===0) loadNoticeData();
+    if(materialsData.length===0) loadMaterialsData();
+    if(staffData.length===0) loadStaffData();
+    setTimeout(renderAssociationNewsPreview, 250);
+    setTimeout(renderAssociationNewsPreview, 1200);
+  };
+  window.closeAssociationNewsScreen = function(goBack=true){ document.getElementById('associationNewsScreen').style.display='none'; document.body.style.overflow=''; if(goBack) history.back(); };
+  window.renderAssociationNewsPreview = function(){
+    const n=document.getElementById('associationNoticePreview'), m=document.getElementById('associationMaterialPreview'), st=document.getElementById('associationStaffPreview');
+    if(n) n.innerHTML=(noticeData||[]).slice(0,3).map(x=>`<div style="margin-bottom:5px"><b>${x.title||'공지'}</b><br><small>${x.date||''}</small></div>`).join('') || '등록된 공지사항이 없습니다.';
+    if(m) m.innerHTML=(materialsData||[]).slice(0,3).map(x=>`<div style="margin-bottom:5px"><b>${x.title||x.name||'회의자료'}</b></div>`).join('') || '등록된 회의자료가 없습니다.';
+    if(st) st.innerHTML=(staffData||[]).slice(0,5).map(x=>`<div style="margin-bottom:5px"><b>${x.name||'-'}</b> <span>${x.position||x.job||''}</span></div>`).join('') || '등록된 직원정보가 없습니다.';
+  };
 
   window.openNoticesScreen = function() {
     document.getElementById('noticesScreen').style.display = 'flex';
