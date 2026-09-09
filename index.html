@@ -1609,92 +1609,32 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList .staff-name-role{gap:4px!important;}
 }
 </style>
+<style id="koda-final-overlap-fix">
+/* 최종 헤더/임직원 탭 고정 보정 */
+.app-container > .header .header-left-brand{left:29px!important;top:10px!important;align-items:flex-start!important;gap:0!important;}
+.app-container > .header .brand-title-ko{font-size:.72rem!important;line-height:1.15!important;}
+.app-container > .header .brand-title-en{font-size:.44rem!important;line-height:1.08!important;letter-spacing:.045em!important;margin:0!important;display:block!important;}
+.app-container > .header .brand-line{display:none!important;}
+.app-container > .header .city-silhouette{margin-top:2px!important;}
 
-<style id="absolute-final-koda-fixes">
-/* 임직원현황: 5개 분류 버튼을 항상 노출 */
-#staffScreen #staffTabs {
-  display:grid !important;
-  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  height:auto !important;
-  min-height:42px !important;
-  overflow:visible !important;
-  position:sticky !important;
-  top:76px !important;
-  z-index:100 !important;
-  background:#fff !important;
-}
-#staffScreen #staffTabs .month-tab,
-#staffScreen #staffTabs .month-tab[hidden] {
-  display:flex !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  width:100% !important;
-  min-width:0 !important;
-}
-/* 첫 화면 영문 브랜드 */
-.app-container > .header .header-left-brand {
-  left:29px !important;
-  top:10px !important;
-  gap:0 !important;
-  align-items:flex-start !important;
-}
-.app-container > .header .brand-title-ko {
-  display:block !important;
-  font-size:.72rem !important;
-  line-height:1.15 !important;
-  letter-spacing:-.055em !important;
-}
-.app-container > .header .brand-title-en {
-  display:block !important;
-  margin-left:0 !important;
-  font-size:.40rem !important;
-  line-height:1.08 !important;
-  letter-spacing:.055em !important;
-  white-space:nowrap !important;
-}
-/* 건물 실루엣 위 파란 선 완전 제거 */
-.app-container > .header .brand-line { display:none !important; visibility:hidden !important; }
+/* 임직원현황: 헤더 → 5개 탭 → 검색창 순서와 간격을 절대 고정 */
+#staffScreen{display:none;flex-direction:column!important;overflow:hidden!important;}
+#staffScreen .staff-mobile-header{position:relative!important;flex:0 0 auto!important;height:54px!important;min-height:54px!important;display:flex!important;align-items:center!important;padding:0 15px!important;}
+#staffScreen #staffTabs{position:relative!important;top:auto!important;left:auto!important;right:auto!important;flex:0 0 54px!important;height:54px!important;min-height:54px!important;width:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;padding:7px 10px!important;margin:0!important;overflow:visible!important;transform:none!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;height:40px!important;min-height:40px!important;margin:0!important;padding:0 2px!important;align-items:center!important;justify-content:center!important;transform:none!important;}
+#staffScreen .fullscreen-content{position:relative!important;top:auto!important;flex:1 1 auto!important;min-height:0!important;padding:8px 15px 30px!important;margin:0!important;overflow-y:auto!important;transform:none!important;}
+#staffScreen .staff-search-wrap{position:relative!important;top:auto!important;margin:0 0 10px!important;transform:none!important;}
+#staffScreen .staff-search{transform:none!important;}
+#staffScreen .staff-mobile-header + #staffTabs + .fullscreen-content{margin-top:0!important;}
 @media(max-width:360px){
-  .app-container > .header .header-left-brand { left:25px !important; top:9px !important; }
-  .app-container > .header .brand-title-ko { font-size:.68rem !important; }
-  .app-container > .header .brand-title-en { font-size:.37rem !important; }
+ .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+ .app-container > .header .brand-title-en{font-size:.39rem!important;}
+ #staffScreen .staff-mobile-header{height:52px!important;min-height:52px!important;}
+ #staffScreen #staffTabs{flex-basis:50px!important;height:50px!important;min-height:50px!important;padding:5px 7px!important;gap:3px!important;}
+ #staffScreen #staffTabs .month-tab{height:40px!important;min-height:40px!important;font-size:.77rem!important;}
+ #staffScreen .fullscreen-content{padding:7px 10px 25px!important;}
 }
 </style>
-<script>
-(function(){
-  function forceStaffTabs(){
-    const screen=document.getElementById('staffScreen');
-    const tabs=document.querySelectorAll('#staffScreen #staffTabs .month-tab');
-    if(!screen || !tabs.length) return;
-    const wrap=document.getElementById('staffTabs');
-    wrap.hidden=false;
-    wrap.style.setProperty('display','grid','important');
-    wrap.style.setProperty('visibility','visible','important');
-    wrap.style.setProperty('opacity','1','important');
-    tabs.forEach(btn=>{
-      btn.hidden=false;
-      btn.style.setProperty('display','flex','important');
-      btn.style.setProperty('visibility','visible','important');
-      btn.style.setProperty('opacity','1','important');
-    });
-  }
-  document.addEventListener('DOMContentLoaded',forceStaffTabs);
-  window.addEventListener('load',forceStaffTabs);
-  const observer=new MutationObserver(forceStaffTabs);
-  observer.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['style','class','hidden']});
-  const oldOpen=window.openStaffScreen;
-  if(oldOpen){
-    window.openStaffScreen=function(){
-      oldOpen.apply(this,arguments);
-      requestAnimationFrame(forceStaffTabs);
-      setTimeout(forceStaffTabs,50);
-      setTimeout(forceStaffTabs,300);
-    };
-  }
-})();
-</script>
 </head>
 <body>
 
