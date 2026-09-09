@@ -148,17 +148,21 @@
     overflow: hidden; 
   }
   .cal-header {
-    display:flex; justify-content:center; align-items:center; gap:10px;
-    margin-bottom:10px; font-weight:800; font-size:1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1rem;
   }
   .cal-nav-btn {
-    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
-    background:#f7f9fc; border:1px solid #dfe5ec; border-radius:50%;
-    font-size:1rem; color:#475569; cursor:pointer; padding:0; transition:all .15s;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px 8px;
   }
-  .cal-nav-btn:hover{background:#eef4fb;border-color:#cbd5e1;color:var(--primary-color)}
-  .cal-nav-btn:active{transform:scale(.94)}
-  #calMonthDisplay{min-width:104px;text-align:center;font-weight:800;color:#1e293b}
   
   .cal-grid {
     display: grid;
@@ -241,35 +245,187 @@
     color: #000000;
   }
 
+  /* ✨ 일정 배너 캐러셀 ✨ */
+  .schedule-banner {
+    position: relative;
+    width: calc(100% - 20px);
+    margin: 0 10px 10px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f7f4ff 0%, #eef5ff 100%);
+    border: 1px solid rgba(99, 102, 241, 0.14);
+    box-shadow: 0 5px 18px rgba(50, 60, 90, 0.08);
+    min-height: 142px;
+  }
+  .schedule-banner-track {
+    position: relative;
+    min-height: 142px;
+  }
+  .schedule-banner-slide {
+    display: none;
+    min-height: 142px;
+    padding: 16px 44px 28px 18px;
+    box-sizing: border-box;
+  }
+  .schedule-banner-slide.active {
+    display: block;
+    animation: bannerFade 0.35s ease;
+  }
+  @keyframes bannerFade {
+    from { opacity: 0; transform: translateX(8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .banner-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+  .banner-kicker {
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    color: var(--primary-color);
+  }
+  .banner-title {
+    font-size: 1rem;
+    font-weight: 850;
+    color: var(--text-dark);
+  }
+  .banner-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .banner-event {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.82);
+    color: var(--text-dark);
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .banner-event:hover { background: #ffffff; }
+  .banner-event-date {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    white-space: nowrap;
+  }
+  .banner-event-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .banner-event-location {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.58rem;
+    color: var(--text-muted);
+  }
+  .banner-empty {
+    padding: 18px 8px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .banner-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 27px;
+    height: 27px;
+    border: 1px solid rgba(99,102,241,0.16);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.78);
+    color: var(--primary-color);
+    font-size: 1.35rem;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .banner-prev { left: 8px; }
+  .banner-next { right: 8px; }
+  .banner-dots {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  .banner-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+  }
+  .banner-dot.active {
+    width: 16px;
+    border-radius: 6px;
+    background: var(--primary-color);
+  }
+
   /* 상단 메뉴바 */
   .quick-menu-container {
     display: grid;
-    grid-template-columns: 2.8fr 2.8fr 2.8fr 2.8fr 2.8fr 2.0fr;
-    gap: 4px;
-    padding: 0 10px 10px 10px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    padding: 0 10px 8px 10px;
     width: 100%;
     align-items: stretch;
+    box-sizing: border-box;
   }
   .quick-btn {
-    background-color: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 11px 1px; 
-    font-size: 0.65rem; 
-    font-weight: 700;
+    min-height: 58px;
+    background: linear-gradient(145deg, #ffffff, #f7f9ff);
+    border: 1px solid rgba(99,102,241,0.14);
+    border-radius: 14px;
+    padding: 8px 3px;
+    font-size: 0.67rem;
+    font-weight: 750;
     color: var(--text-dark);
     text-align: center;
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 3px 9px rgba(0,0,0,0.045);
     word-break: keep-all;
     line-height: 1.15;
     transition: all 0.2s;
-    white-space: nowrap;
+    white-space: normal;
     cursor: pointer;
+    box-sizing: border-box;
   }
+  .quick-menu-container .search-box-wrapper {
+    grid-column: 1 / -1;
+    min-height: 42px;
+  }
+  .quick-btn:nth-child(1) { background: #f5f0ff; }
+  .quick-btn:nth-child(2) { background: #eef8ff; }
+  .quick-btn:nth-child(3) { background: #fff7ed; }
+  .quick-btn:nth-child(4) { background: #effcf6; }
+  .quick-btn:nth-child(5) { background: #fff4f7; }
   .quick-btn:hover {
     background-color: #f7fafc;
     border-color: #cbd5e0;
@@ -320,9 +476,13 @@
   .sub-menu-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    gap: 7px;
     padding: 0 10px 10px 10px;
     width: 100%;
+    box-sizing: border-box;
+  }
+  .sub-menu-container .quick-btn {
+    min-height: 58px;
   }
 
   /* 일정 리스트 영역 */
@@ -560,6 +720,27 @@
   }
   .day-event-item:active { background: #f8fafc; }
   .day-event-item-title { font-size: 0.82rem; font-weight: 700; line-height: 1.35; word-break: keep-all; }
+  /* 협회 중요 공지: 제목 영역을 넓게 사용 */
+  .notice-item-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .notice-item .day-event-item-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: left;
+  }
+  .notice-badges {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
   .day-event-item-title .chairman-mark {
     font-size: 0.58rem;
     vertical-align: super;
@@ -778,7 +959,6 @@
     flex-grow: 1;
   }
 
-\n  /* ===== 공지/회의자료 표형 리스트 ===== */\n  .list-table-wrap{width:100%;overflow-x:auto;border:1px solid #e8edf3;border-radius:10px;background:#fff;}\n  .list-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.76rem;}\n  .list-table th{background:#f7f9fc;color:#64748b;font-weight:800;padding:9px 7px;border-bottom:1px solid #e3e8ef;border-right:1px solid #edf0f4;text-align:center;white-space:nowrap;}\n  .list-table td{padding:10px 7px;border-bottom:1px solid #edf0f4;border-right:1px solid #f0f2f5;vertical-align:middle;color:#334155;}\n  .list-table tr:last-child td{border-bottom:0}.list-table td:last-child,.list-table th:last-child{border-right:0}\n  .list-table tbody tr{cursor:pointer;transition:background .15s}.list-table tbody tr:hover{background:#fafcff}\n  .list-table .no-col{width:42px;text-align:center;color:#94a3b8;font-weight:700}.list-table .date-col{width:78px;text-align:center;white-space:nowrap}\n  .list-table .title-col{width:30%;font-weight:750;color:#1e293b}.list-table .content-col{width:auto;color:#64748b}.list-table .status-col{width:62px;text-align:center}\n  .ellipsis{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n  .read-status{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:3px 6px;border-radius:12px;font-size:.62rem;font-weight:800}\n  .read-status.unread{background:#eef5ff;color:#2563eb}.read-status.read{background:#f1f5f9;color:#94a3b8}\n  .material-table .date-col{width:78px}.material-table .title-col{width:58%}.material-table .type-col{width:90px;text-align:center}\n  .material-type{display:inline-block;padding:3px 7px;border-radius:10px;background:#f1f5f9;color:#64748b;font-size:.62rem;font-weight:800}\n  .list-count{font-size:.72rem;color:#94a3b8;font-weight:700;margin-bottom:8px}\n  @media(max-width:420px){.list-table{font-size:.69rem}.list-table th,.list-table td{padding:8px 5px}.list-table .no-col{width:34px}.list-table .date-col{width:70px}.list-table .status-col{width:55px}.list-table .title-col{width:34%}.material-table .title-col{width:52%}.material-table .type-col{width:78px}}\n
   /* 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
@@ -982,6 +1162,36 @@
       <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
     </div>
   </div>
+
+  <!-- ✨ 일정 배너 캐러셀 ✨ -->
+  <section class="schedule-banner" id="scheduleBanner" aria-label="주요 일정 배너">
+    <div class="schedule-banner-track" id="scheduleBannerTrack">
+      <div class="schedule-banner-slide active" data-slide="0">
+        <div class="banner-heading">
+          <div class="banner-kicker">TODAY</div>
+          <div class="banner-title">오늘의 일정</div>
+        </div>
+        <div class="banner-list" id="todayBannerList">
+          <div class="banner-empty">오늘 일정이 없습니다.</div>
+        </div>
+      </div>
+      <div class="schedule-banner-slide" data-slide="1">
+        <div class="banner-heading">
+          <div class="banner-kicker">LAST 7 DAYS</div>
+          <div class="banner-title">최근 일주일 일정</div>
+        </div>
+        <div class="banner-list" id="recentBannerList">
+          <div class="banner-empty">최근 일주일 일정이 없습니다.</div>
+        </div>
+      </div>
+    </div>
+    <button class="banner-nav banner-prev" type="button" onclick="changeBanner(-1)" aria-label="이전 배너">‹</button>
+    <button class="banner-nav banner-next" type="button" onclick="changeBanner(1)" aria-label="다음 배너">›</button>
+    <div class="banner-dots" id="bannerDots">
+      <button type="button" class="banner-dot active" onclick="goBanner(0)" aria-label="오늘의 일정"></button>
+      <button type="button" class="banner-dot" onclick="goBanner(1)" aria-label="최근 일주일 일정"></button>
+    </div>
+  </section>
 
   <div class="calendar-wrapper" id="calendarWrapper">
     <div class="cal-header">
@@ -1478,20 +1688,34 @@
   function renderMaterialsList(monthFilter) {
     const list = document.getElementById('materialsList');
     list.innerHTML = '';
+
     const filteredData = materialsData.filter(item => monthFilter === 'all' || item.month === monthFilter);
-    if (filteredData.length === 0) { list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`; return; }
-    const count = document.createElement('div'); count.className='list-count'; count.innerText=`총 ${filteredData.length}건`;
-    const wrap=document.createElement('div'); wrap.className='list-table-wrap';
-    const table=document.createElement('table'); table.className='list-table material-table';
-    table.innerHTML=`<thead><tr><th class="no-col">No.</th><th class="date-col">날짜</th><th class="title-col">회의자료</th><th class="type-col">자료</th></tr></thead>`;
-    const tbody=document.createElement('tbody');
-    filteredData.forEach((item,index)=>{
-      const tr=document.createElement('tr');
-      const type=item.fileType==='pdf'?'PDF':(item.images.length>1?`이미지 ${item.images.length}장`:'이미지');
-      tr.innerHTML=`<td class="no-col">${index+1}</td><td class="date-col">${item.date||'-'}</td><td class="title-col"><span class="ellipsis">${item.title||'-'}</span></td><td class="type-col"><span class="material-type">${type}</span></td>`;
-      const indexInOriginal=materialsData.findIndex(d=>d===item); tr.onclick=()=>openMaterial(indexInOriginal); tbody.appendChild(tr);
+
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-event-item';
+
+      const title = document.createElement('div');
+      title.className = 'day-event-item-title';
+      title.innerText = `[${item.date}] ${item.title}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'day-event-item-meta';
+      meta.innerText = item.fileType === 'pdf' ? 'PDF 바로 보기' : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
+
+      btn.appendChild(title);
+      btn.appendChild(meta);
+      const indexInOriginal = materialsData.findIndex(d => d === item);
+      btn.onclick = () => openMaterial(indexInOriginal);
+
+      list.appendChild(btn);
     });
-    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(count); list.appendChild(wrap);
   }
 
   let currentMaterialImages = [];
@@ -1621,17 +1845,20 @@
   function renderNoticeList() {
     const list = document.getElementById('noticeList'); list.innerHTML = '';
     if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
-    const count=document.createElement('div'); count.className='list-count'; count.innerText=`총 ${noticeData.length}건`;
-    const wrap=document.createElement('div'); wrap.className='list-table-wrap';
-    const table=document.createElement('table'); table.className='list-table notice-table';
-    table.innerHTML=`<thead><tr><th class="no-col">No.</th><th class="date-col">날짜</th><th class="title-col">제목</th><th class="content-col">상세내용</th><th class="status-col">확인</th></tr></thead>`;
-    const tbody=document.createElement('tbody');
     noticeData.forEach((item,index)=>{
-      const tr=document.createElement('tr'); const read=isNoticeRead(item,index);
-      tr.innerHTML=`<td class="no-col">${index+1}</td><td class="date-col">${item.date||'-'}</td><td class="title-col"><span class="ellipsis">${item.title||'-'}</span></td><td class="content-col"><span class="ellipsis">${item.content||'-'}</span></td><td class="status-col"><span class="read-status ${read?'read':'unread'}">${read?'읽음':'미읽음'}</span></td>`;
-      tr.onclick=()=>openNoticeDetailModal(index); tbody.appendChild(tr);
+      const btn=document.createElement('button'); btn.type='button';
+      btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
+      const top=document.createElement('div'); top.className='notice-item-top';
+      const title=document.createElement('div'); title.className='day-event-item-title';
+      title.innerText=item.title;
+      const badges=document.createElement('span'); badges.className='notice-badges';
+      if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
+      const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
+      top.appendChild(title); top.appendChild(badges);
+      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
+      btn.appendChild(top); btn.appendChild(meta);
+      btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
     });
-    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(count); list.appendChild(wrap);
   }
 
   window.openNoticesScreen = function() {
@@ -1863,7 +2090,84 @@
     }
   }
 
+  // ===== ✨ 일정 배너 캐러셀 =====
+  let currentBannerIndex = 0;
+  let bannerTimer = null;
+
+  function getEventDate(event) {
+    return new Date(currentYear, event.month - 1, event.day);
+  }
+
+  function renderBannerEvent(event) {
+    const globalIndex = scheduleData.indexOf(event);
+    return `
+      <button type="button" class="banner-event" onclick="openModal(${globalIndex})">
+        <span class="banner-event-date">${event.month}.${event.day}</span>
+        <span class="banner-event-title">${event.title}</span>
+        <span class="banner-event-location">${event.location || ''}</span>
+      </button>
+    `;
+  }
+
+  function renderScheduleBanner() {
+    const todayList = document.getElementById('todayBannerList');
+    const recentList = document.getElementById('recentBannerList');
+    if (!todayList || !recentList) return;
+
+    const todayEvents = scheduleData
+      .filter(e => e.month === currentMonth && e.day === currentDay)
+      .slice(0, 3);
+
+    todayList.innerHTML = todayEvents.length
+      ? todayEvents.map(renderBannerEvent).join('')
+      : '<div class="banner-empty">오늘 예정된 일정이 없습니다.</div>';
+
+    const todayKey = new Date(currentYear, currentMonth - 1, currentDay);
+    const weekStart = new Date(todayKey);
+    weekStart.setDate(weekStart.getDate() - 6);
+
+    const recentEvents = scheduleData
+      .filter(e => {
+        const d = getEventDate(e);
+        return d >= weekStart && d <= todayKey && !(e.month === currentMonth && e.day === currentDay);
+      })
+      .sort((a,b) => getEventDate(b) - getEventDate(a))
+      .slice(0, 3);
+
+    recentList.innerHTML = recentEvents.length
+      ? recentEvents.map(renderBannerEvent).join('')
+      : '<div class="banner-empty">최근 일주일 내 일정이 없습니다.</div>';
+  }
+
+  function goBanner(index) {
+    const slides = document.querySelectorAll('.schedule-banner-slide');
+    const dots = document.querySelectorAll('.banner-dot');
+    if (!slides.length) return;
+
+    currentBannerIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === currentBannerIndex));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentBannerIndex));
+  }
+
+  window.goBanner = goBanner;
+  window.changeBanner = function(offset) {
+    goBanner(currentBannerIndex + offset);
+    startBannerAutoPlay();
+  };
+
+  function startBannerAutoPlay() {
+    clearInterval(bannerTimer);
+    bannerTimer = setInterval(() => goBanner(currentBannerIndex + 1), 2000);
+  }
+
+  function updateScheduleBanner() {
+    renderScheduleBanner();
+    goBanner(0);
+    startBannerAutoPlay();
+  }
+
   function updateView() {
+    updateScheduleBanner();
     renderCalendar();
     renderSchedules();
   }
