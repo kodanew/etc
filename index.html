@@ -156,13 +156,23 @@
     font-size: 1rem;
   }
   .cal-nav-btn {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef5ff;
+    border: 1px solid #c9ddfb;
+    border-radius: 11px;
+    font-size: 1.45rem;
+    line-height: 1;
+    font-weight: 800;
+    color: #0756c9;
     cursor: pointer;
-    padding: 5px 8px;
+    padding: 0;
+    box-shadow: 0 3px 8px rgba(0,82,204,.10);
   }
+  .cal-nav-btn:active { transform: scale(.95); background:#dcecff; }
   
   .cal-grid {
     display: grid;
@@ -245,256 +255,196 @@
     color: #000000;
   }
 
-  /* ✨ 일정 배너 캐러셀 ✨ */
+  /* ✨ 모던 일정 배너 ✨ */
   .schedule-banner {
     position: relative;
     width: calc(100% - 20px);
     margin: 0 10px 10px;
-    border-radius: 16px;
+    min-height: 128px;
+    border-radius: 20px;
     overflow: hidden;
-    background: linear-gradient(135deg, #f7f4ff 0%, #eef5ff 100%);
-    border: 1px solid rgba(99, 102, 241, 0.14);
-    box-shadow: 0 5px 18px rgba(50, 60, 90, 0.08);
-    min-height: 142px;
+    color: #fff;
+    background:
+      radial-gradient(circle at 92% 15%, rgba(110,190,255,.28) 0, rgba(110,190,255,0) 34%),
+      radial-gradient(circle at 10% 100%, rgba(38,111,255,.30) 0, rgba(38,111,255,0) 35%),
+      linear-gradient(135deg, #073b8f 0%, #0756c9 52%, #0878d9 100%);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: 0 10px 26px rgba(0,61,145,.20);
+    touch-action: pan-y;
   }
-  .schedule-banner-track {
-    position: relative;
-    min-height: 142px;
+  .schedule-banner::before,
+  .schedule-banner::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    border: 1px solid rgba(255,255,255,.10);
   }
+  .schedule-banner::before { width: 110px; height: 110px; right: -35px; top: -55px; }
+  .schedule-banner::after { width: 72px; height: 72px; left: -34px; bottom: -42px; }
+  .schedule-banner-track { position: relative; min-height: 128px; z-index: 1; }
   .schedule-banner-slide {
     display: none;
-    min-height: 142px;
-    padding: 16px 18px 30px 18px;
+    min-height: 128px;
+    padding: 20px 20px 30px;
     box-sizing: border-box;
+    animation: bannerFade .28s ease;
   }
-  .schedule-banner-slide.active {
-    display: block;
-    animation: bannerFade 0.35s ease;
-  }
+  .schedule-banner-slide.active { display: flex; flex-direction: column; justify-content: center; }
   @keyframes bannerFade {
-    from { opacity: 0; transform: translateX(8px); }
+    from { opacity: 0; transform: translateX(10px); }
     to { opacity: 1; transform: translateX(0); }
   }
   .banner-heading {
-    display: flex;
-    align-items: baseline;
+    display: inline-flex;
+    align-items: center;
     gap: 7px;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
   }
   .banner-kicker {
-    font-size: 0.58rem;
-    font-weight: 900;
-    letter-spacing: 0.06em;
-    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.92);
+    font-size: .60rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
   }
-  .banner-title {
-    font-size: 1rem;
-    font-weight: 850;
-    color: var(--text-dark);
-  }
-  .banner-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+  .banner-title { display:none; }
+  .banner-list { display:flex; flex-direction:column; gap:0; width:100%; }
   .banner-event {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 3px;
-    width: 100%;
-    padding: 6px 8px;
-    border: 0;
-    border-radius: 9px;
-    background: rgba(255,255,255,0.82);
-    color: var(--text-dark);
-    text-align: left;
-    cursor: pointer;
-    box-sizing: border-box;
+    width:100%;
+    padding:0;
+    border:0;
+    background:transparent;
+    color:#fff;
+    text-align:left;
+    cursor:pointer;
   }
-  .banner-event:hover { background: #ffffff; }
   .banner-event-line1 {
-    font-size: 1.28rem;
-    line-height: 1.25;
-    font-weight: 850;
-    color: var(--primary-color);
-    white-space: nowrap;
+    display:block;
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:rgba(255,255,255,.84);
+    font-size:.80rem;
+    line-height:1.35;
+    font-weight:650;
+    letter-spacing:-.025em;
   }
   .banner-event-line2 {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 1.35rem;
-    line-height: 1.35;
-    font-weight: 850;
-    color: var(--text-dark);
+    display:block;
+    width:100%;
+    margin-top:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#fff;
+    font-size:1.08rem;
+    line-height:1.35;
+    font-weight:800;
+    letter-spacing:-.035em;
   }
-  .banner-empty {
-    padding: 18px 8px;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-align: center;
-  }
-  .banner-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 27px;
-    height: 27px;
-    border: 1px solid rgba(99,102,241,0.16);
-    border-radius: 50%;
-    background: rgba(255,255,255,0.78);
-    color: var(--primary-color);
-    font-size: 1.35rem;
-    line-height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 2;
-  }
-  .banner-prev { left: 8px; }
-  .banner-next { right: 8px; }
-  .banner-nav { display: none !important; }
+  .banner-empty { padding:18px 8px; font-size:.78rem; color:rgba(255,255,255,.78); text-align:center; }
+  .banner-nav { display:none !important; }
   .banner-dots {
-    position: absolute;
-    bottom: 8px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 5px;
+    position:absolute;
+    right:42px;
+    bottom:9px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:5px;
+    z-index:3;
   }
   .banner-dot {
-    width: 6px;
-    height: 6px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #cbd5e1;
-    cursor: pointer;
+    width:6px;
+    height:6px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.42);
+    cursor:pointer;
   }
-  .banner-dot.active {
-    width: 16px;
-    border-radius: 6px;
-    background: var(--primary-color);
-  }
+  .banner-dot.active { width:7px; height:7px; background:#fff; box-shadow:0 0 0 2px rgba(255,255,255,.16); }
   .banner-pause-btn {
-    position: absolute;
-    left: 50%;
-    bottom: 4px;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 16px;
-    padding: 0;
-    border: 0;
-    border-radius: 5px;
-    background: rgba(255,255,255,0.9);
-    color: var(--primary-color);
-    font-size: 0.55rem;
-    line-height: 16px;
-    font-weight: 900;
-    z-index: 3;
-    cursor: pointer;
+    position:absolute;
+    right:11px;
+    bottom:6px;
+    width:24px;
+    height:24px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:8px;
+    background:rgba(255,255,255,.13);
+    color:#fff;
+    font-size:.65rem;
+    line-height:22px;
+    font-weight:900;
+    z-index:4;
+    cursor:pointer;
+    backdrop-filter:blur(6px);
   }
-  .banner-pause-btn.paused { background: var(--primary-color); color: #fff; }
+  .banner-pause-btn.paused { background:#fff; color:#0756c9; }
 
   /* 상단 메뉴바 */
-  .quick-menu-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 7px;
-    padding: 0 10px 8px 10px;
-    width: 100%;
-    align-items: stretch;
-    box-sizing: border-box;
+  .quick-menu-container,
+  .sub-menu-container {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    padding:0 10px 9px;
+    width:100%;
+    box-sizing:border-box;
+    align-items:start;
   }
   .quick-btn {
-    min-height: 86px;
-    padding: 0;
-    background: transparent !important;
-    border: 0;
-    color: var(--text-dark);
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    box-shadow: none;
-    word-break: keep-all;
-    cursor: pointer;
-    box-sizing: border-box;
+    min-height:82px;
+    padding:0;
+    background:transparent !important;
+    border:0;
+    color:var(--text-dark);
+    text-align:center;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    box-shadow:none;
+    word-break:keep-all;
+    cursor:pointer;
+    box-sizing:border-box;
   }
   .quick-icon {
-    width: 58px;
-    height: 58px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.65rem;
-    background: linear-gradient(145deg, #ffffff, #f3f7ff);
-    border: 1px solid rgba(99,102,241,0.14);
-    box-shadow: 0 3px 9px rgba(0,0,0,0.045);
-    transition: transform 0.15s, box-shadow 0.15s;
+    width:52px;
+    height:52px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border:1px solid #e6edf7;
+    box-shadow:0 5px 14px rgba(22,52,95,.08);
+    overflow:hidden;
+    transition:transform .15s, box-shadow .15s;
   }
-  .quick-btn:hover .quick-icon { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0,0,0,0.08); }
+  .quick-icon img { width:72%; height:72%; object-fit:contain; display:block; }
+  .quick-icon svg { width:31px; height:31px; display:block; }
+  .quick-btn:hover .quick-icon { transform:translateY(-2px); box-shadow:0 8px 18px rgba(22,52,95,.12); }
   .quick-label {
-    margin-top: 6px;
-    font-size: 0.67rem;
-    font-weight: 750;
-    line-height: 1.15;
-    white-space: normal;
+    margin-top:6px;
+    font-size:.66rem;
+    font-weight:750;
+    line-height:1.15;
+    white-space:normal;
   }
-  .quick-menu-container .search-box-wrapper {
-    grid-column: 1 / -1;
-    min-height: 42px;
-  }
-
-  .search-box-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-  .search-input {
-    width: 100%;
-    height: 100%;
-    padding: 0 4px 0 22px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.58rem;
-    background-color: #ffffff;
-    color: var(--text-dark);
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  }
-  .search-input:focus {
-    border-color: var(--primary-color);
-  }
-  .search-icon {
-    position: absolute;
-    left: 6px;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    pointer-events: none;
-  }
-
-  /* 서브 메뉴 컨테이너 */
-  .sub-menu-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 7px;
-    padding: 0 10px 10px 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .sub-menu-container .quick-btn {
-    min-height: 58px;
-  }
+  .sub-menu-container { padding-top:1px; padding-bottom:10px; }
+  .sub-menu-container .quick-btn { min-height:78px; }
 
   /* 일정 리스트 영역 */
   .schedule-container {
@@ -1192,18 +1142,26 @@
   </div>
 
   <div class="quick-menu-container">
-    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn"><span class="quick-icon">🏠</span><span class="quick-label">KODA 홈페이지</span></a>
-    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn"><span class="quick-icon">📰</span><span class="quick-label">언론보도 현황</span></a>
-    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn"><span class="quick-icon">📺</span><span class="quick-label">KODA-TV</span></a>
-    <a href="https://www.wehago.com/" target="_blank" class="quick-btn"><span class="quick-icon">💼</span><span class="quick-label">WEHAGO</span></a>
+    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
+      <span class="quick-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">KODA 홈페이지</span>
+    </a>
+    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">
+      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 52 52"><rect x="4" y="4" width="44" height="44" rx="13" fill="#03C75A"/><path d="M16 14h7.2l6.8 10.1V14H36v24h-6.8l-6.9-10.2V38H16z" fill="#fff"/></svg></span><span class="quick-label">언론보도 현황</span>
+    </a>
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
+      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 64 44"><rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/><path d="M27 12.5 46 22 27 31.5z" fill="#fff"/></svg></span><span class="quick-label">KODA-TV</span>
+    </a>
+    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">
+      <span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 64 52"><rect x="8" y="6" width="48" height="40" rx="12" fill="#19B86B"/><path d="M17 18h13.5c5.7 0 9.5 3.2 9.5 8s-3.8 8-9.5 8H23v7h-6zM23 23v6h7c2.3 0 4-1.1 4-3s-1.7-3-4-3z" fill="#fff"/><text x="37" y="39" font-size="7" font-weight="800" fill="#fff">WEHAGO</text></svg></span><span class="quick-label">WEHAGO</span>
+    </a>
   </div>
 
   <!-- 서브 메뉴 컨테이너 -->
   <div class="sub-menu-container">
-    <button class="quick-btn" onclick="openNoticesScreen()">협회 중요 공지</button>
-    <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
-    <button class="quick-btn" onclick="openMaterialsScreen()">사무국 회의자료</button>
-    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
+    <button class="quick-btn" onclick="openNoticesScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M13 21a13 13 0 0 1 26 0v9l5 5H8l5-5z" fill="#246BCE"/><path d="M21 39h10" stroke="#246BCE" stroke-width="4" stroke-linecap="round"/></svg></span><span class="quick-label">협회 중요 공지</span></button>
+    <button class="quick-btn" onclick="openStaffScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><circle cx="19" cy="18" r="7" fill="#246BCE"/><circle cx="35" cy="20" r="6" fill="#78A8E8"/><path d="M8 39c0-8 5-12 11-12s11 4 11 12z" fill="#246BCE"/><path d="M28 39c0-6 3-10 8-10s8 4 8 10z" fill="#78A8E8"/></svg></span><span class="quick-label">KODA 직원현황</span></button>
+    <button class="quick-btn" onclick="openMaterialsScreen()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M8 14h14l4 5h18v21H8z" fill="#246BCE"/><path d="M14 25h24M14 31h18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><span class="quick-label">사무국 회의자료</span></button>
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()"><span class="quick-icon"><svg viewBox="0 0 52 52"><path d="M15 9h22v34l-11-7-11 7z" fill="#246BCE"/><path d="m26 14 2.4 5 5.5.8-4 3.9.9 5.5-4.8-2.6-4.8 2.6.9-5.5-4-3.9 5.5-.8z" fill="#fff"/></svg></span><span class="quick-label">MY 관심 일정</span></button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -2082,7 +2040,7 @@
     }
   }
 
-  // ===== ✨ 예정 일정 배너 캐러셀 =====
+  // ===== ✨ 모던 일정 배너 캐러셀 =====
   let currentBannerIndex = 0;
   let bannerTimer = null;
   let bannerPaused = false;
@@ -2094,7 +2052,10 @@
   }
 
   function getEventTime(event) {
-    if (event.time) return event.time;
+    if (event.time) {
+      const t = String(event.time).trim();
+      if (/\d{1,2}:\d{2}/.test(t)) return t.replace(/\s*~?\s*$/, '');
+    }
     const m = String(event.date || '').match(/(?:오전|오후)?\s*(\d{1,2})(?::|시)(\d{2})?/);
     if (!m) return '';
     let hh = Number(m[1]);
@@ -2103,12 +2064,20 @@
     return `${String(hh).padStart(2,'0')}:${m[2] || '00'}`;
   }
 
-  function renderBannerEvent(event) {
+  function getEventWeekday(event) {
+    const names = ['일','월','화','수','목','금','토'];
+    return names[getEventDate(event).getDay()];
+  }
+
+  function renderBannerEvent(event, badgeText) {
     const globalIndex = scheduleData.indexOf(event);
     const time = getEventTime(event);
+    const location = event.location && event.location !== 'ㅡ' ? event.location : '';
+    const meta = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})${time ? ` · ${time}~` : ''}${location ? ` · ${location}` : ''}`;
     return `
-      <button type="button" class="banner-event" onclick="openModal(${globalIndex})">
-        <span class="banner-event-line1">${event.month}.${event.day}${time ? ` · ${time}` : ''}</span>
+      <div class="banner-heading"><span class="banner-kicker">${badgeText}</span></div>
+      <button type="button" class="banner-event" onclick="openModal(${globalIndex})" aria-label="${event.title}">
+        <span class="banner-event-line1">${meta}</span>
         <span class="banner-event-line2">${event.title}</span>
       </button>
     `;
@@ -2121,28 +2090,31 @@
 
     const todayKey = new Date(currentYear, currentMonth - 1, currentDay);
     todayKey.setHours(0,0,0,0);
+    const todayEvents = scheduleData
+      .filter(e => getEventDate(e).getTime() === todayKey.getTime())
+      .sort((a,b) => (getEventTime(a) || '').localeCompare(getEventTime(b) || ''));
     const upcomingEvents = scheduleData
       .filter(e => getEventDate(e) > todayKey)
       .sort((a,b) => getEventDate(a) - getEventDate(b))
       .slice(0, 3);
 
-    if (!upcomingEvents.length) {
-      track.innerHTML = `<div class="schedule-banner-slide active"><div class="banner-heading"><div class="banner-kicker">UPCOMING</div><div class="banner-title">예정 일정</div></div><div class="banner-empty">예정된 일정이 없습니다.</div></div>`;
+    const bannerEvents = [];
+    if (todayEvents.length) bannerEvents.push({ event: todayEvents[0], badge: '오늘 일정' });
+    upcomingEvents.forEach(event => bannerEvents.push({ event, badge: '예정 일정' }));
+
+    if (!bannerEvents.length) {
+      track.innerHTML = `<div class="schedule-banner-slide active"><div class="banner-heading"><span class="banner-kicker">일정 안내</span></div><div class="banner-empty">표시할 일정이 없습니다.</div></div>`;
       dots.innerHTML = '';
       return;
     }
 
-    track.innerHTML = upcomingEvents.map((event, i) => `
+    track.innerHTML = bannerEvents.map((item, i) => `
       <div class="schedule-banner-slide${i === 0 ? ' active' : ''}" data-slide="${i}">
-        <div class="banner-heading">
-          <div class="banner-kicker">UPCOMING</div>
-          <div class="banner-title">예정 일정</div>
-        </div>
-        <div class="banner-list">${renderBannerEvent(event)}</div>
+        ${renderBannerEvent(item.event, item.badge)}
       </div>
     `).join('');
 
-    dots.innerHTML = upcomingEvents.map((_, i) => `<button type="button" class="banner-dot${i === 0 ? ' active' : ''}" onclick="goBanner(${i})" aria-label="예정 일정 ${i+1}"></button>`).join('');
+    dots.innerHTML = bannerEvents.map((_, i) => `<button type="button" class="banner-dot${i === 0 ? ' active' : ''}" onclick="goBanner(${i})" aria-label="일정 ${i+1}"></button>`).join('');
     currentBannerIndex = 0;
   }
 
@@ -2166,7 +2138,7 @@
     if (bannerPaused) return;
     const slides = document.querySelectorAll('.schedule-banner-slide');
     if (slides.length <= 1) return;
-    bannerTimer = setInterval(() => goBanner(currentBannerIndex + 1), 5000);
+    bannerTimer = setInterval(() => goBanner(currentBannerIndex + 1), 4000);
   }
 
   window.toggleBannerPause = function() {
