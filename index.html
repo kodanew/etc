@@ -1531,6 +1531,84 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
 </style>
+
+<style id="final-staff-header-fixes">
+/* 최종 UI 보정 */
+.app-container > .header .header-left-brand{
+  top:18px!important;
+  left:29px!important;
+  gap:1px!important;
+}
+.app-container > .header .brand-title-ko{
+  line-height:1.15!important;
+}
+.app-container > .header .brand-title-en{
+  line-height:1.05!important;
+  letter-spacing:.055em!important;
+  font-size:.36rem!important;
+}
+.app-container > .header .brand-line{margin-top:3px!important;}
+.app-container > .header .city-silhouette{
+  position:absolute!important;
+  left:-2px!important;
+  top:27px!important;
+  width:112px!important;
+  height:20px!important;
+  margin:0!important;
+  opacity:.22!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+.app-container > .header .header-left-brand > .brand-title-ko,
+.app-container > .header .header-left-brand > .brand-title-en,
+.app-container > .header .header-left-brand > .brand-line{position:relative;z-index:2;}
+
+#staffScreen .staff-content-heading{display:none!important;}
+#staffScreen .fullscreen-tabs{display:grid!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;visibility:visible!important;opacity:1!important;}
+#staffList .staff-main-line{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:start!important;
+  column-gap:6px!important;
+  min-width:0!important;
+}
+#staffList .staff-info-block{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+}
+#staffList .staff-name-role{
+  min-width:0!important; width:100%!important;
+  display:flex!important; align-items:baseline!important; gap:6px!important;
+  white-space:nowrap!important; overflow:hidden!important;
+}
+#staffList .staff-name-role strong{
+  flex:0 0 auto!important; max-width:38%!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+}
+#staffList .staff-name-role .staff-org-role{
+  flex:1 1 auto!important; min-width:0!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+  padding-top:0!important; line-height:1.2!important;
+}
+#staffList .staff-info-block .staff-phone{
+  margin:2px 0 0!important; line-height:1.05!important;
+}
+#staffList .day-event-item.staff-card-compact{
+  min-height:0!important; height:auto!important;
+  padding:7px 10px!important;
+  margin-bottom:5px!important;
+}
+@media(max-width:360px){
+  .app-container > .header .header-left-brand{left:25px!important;top:18px!important;}
+  .app-container > .header .brand-title-ko{font-size:.66rem!important;}
+  .app-container > .header .brand-title-en{font-size:.33rem!important;}
+  #staffList .staff-name-role{gap:4px!important;}
+}
+</style>
 </head>
 <body>
 
@@ -1553,7 +1631,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="header">
     <div class="header-left-brand" aria-hidden="true">
       <span class="brand-title-ko">한국디벨로퍼협회</span>
-      <span class="brand-title-en">KODA DEVELOPER ASSOCIATION</span>
+      <span class="brand-title-en">KOREA DEVELPOER<br>ASSOCIATION</span>
       <span class="brand-line"></span>
       <span class="city-silhouette" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
     </div>
@@ -1642,11 +1720,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-content">
-    <div class="staff-content-heading">
-      <div class="staff-content-title">KODA 임직원현황</div>
-      <div class="staff-content-count" id="staffResultCount"></div>
-    </div>
-    <div class="staff-search-wrap">
+<div class="staff-search-wrap">
       <span class="staff-search-icon" aria-hidden="true">⌕</span>
       <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
@@ -2066,7 +2140,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
       const kodaLabel=item.koda || '';
       const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
-      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-name-block"><strong>${item.name||'-'}</strong><div class="staff-phone">${item.phone||''}</div></div><span class="staff-org-role">${orgRole||'-'}</span></div>`;
+      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
       btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
     });
   }
