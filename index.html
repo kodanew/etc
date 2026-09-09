@@ -1178,47 +1178,39 @@
     .quick-btn { min-height:90px !important; }
     .quick-icon { width:62px !important; height:62px !important; border-radius:16px !important; }
   }
-
-  /* 사용자 요청 최종 반영 */
-  .header { min-height:82px !important; }
-  .header > img { width:270px !important; max-height:68px !important; }
-  .today-weather { top:50% !important; transform:translateY(-50%); }
-  .today-weather-row { flex-direction:row !important; align-items:center !important; gap:7px !important; }
-  #todayDateText { font-size:.92rem !important; }
-  .today-weather-info { gap:3px !important; font-size:.62rem !important; }
-  .weather-icon { font-size:.72rem !important; }
-  #weatherTemp { font-size:.62rem !important; font-weight:800 !important; }
-  .logout-btn { width:28px !important; min-width:28px !important; height:28px !important; border-radius:8px !important; background:#f3f4f6 !important; border:1px solid #e1e5ea !important; color:#8a949f !important; font-size:.72rem !important; box-shadow:0 2px 6px rgba(80,90,100,.08) !important; }
-
-  .schedule-banner { min-height:108px !important; margin-top:0 !important; margin-bottom:9px !important; background:linear-gradient(135deg,rgba(183,218,243,.96) 0%,rgba(211,232,247,.95) 48%,rgba(239,246,251,.98) 100%) !important; border:1px solid rgba(73,137,184,.36) !important; box-shadow:0 7px 20px rgba(41,91,130,.13) !important; }
-  .schedule-banner-track, .schedule-banner-slide { min-height:108px !important; }
-  .schedule-banner-slide { padding:14px 18px 25px !important; }
-  .banner-heading { gap:7px !important; margin-bottom:5px !important; width:100%; overflow:hidden; white-space:nowrap; }
-  .banner-kicker, .banner-kicker.today, .banner-kicker.upcoming { min-height:23px !important; height:23px !important; padding:0 10px !important; font-size:.70rem !important; flex:0 0 auto; }
-  .banner-kicker.today { background:#fff0a8 !important; color:#07558e !important; border-color:#e4c85d !important; }
-  .banner-kicker.upcoming { background:rgba(255,255,255,.82) !important; color:#64788a !important; border-color:rgba(130,150,165,.30) !important; }
-  .banner-inline-meta { color:#48657d !important; font-size:.72rem !important; font-weight:750; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
-  .banner-event-line2 { margin-top:2px !important; color:#173b5d !important; font-size:1.02rem !important; line-height:1.3 !important; }
-
-  .quick-menu-container { gap:0 !important; padding:0 !important; margin:0 !important; grid-template-columns:repeat(5, minmax(0,1fr)) !important; }
-  .quick-btn { min-height:0 !important; height:auto !important; aspect-ratio:1 / 1 !important; padding:8px 2px !important; margin:0 !important; border:1px solid #e8edf2 !important; border-radius:0 !important; background:#fff !important; justify-content:center !important; }
-  .quick-btn + .quick-btn { border-left-width:0 !important; }
-  .quick-icon { width:56px !important; height:56px !important; border-radius:14px !important; }
-  .quick-label { margin-top:3px !important; font-size:.66rem !important; }
-  @media (max-width:520px){
-    .header { min-height:76px !important; }
-    .header > img { width:225px !important; max-height:58px !important; }
-    #todayDateText { font-size:.82rem !important; }
-    .weather-icon { font-size:.66rem !important; }
-    #weatherTemp { font-size:.58rem !important; }
-    .schedule-banner, .schedule-banner-track, .schedule-banner-slide { min-height:104px !important; }
-    .schedule-banner-slide { padding:13px 16px 23px !important; }
-    .banner-event-line2 { font-size:.98rem !important; }
-    .quick-btn { padding:6px 1px !important; }
-    .quick-icon { width:48px !important; height:48px !important; border-radius:12px !important; }
-    .quick-label { font-size:.60rem !important; }
-  }
-</style>
+<style>
+/* 최종 디자인 조정 */
+.header > img { width:270px !important; max-height:68px !important; }
+.header { min-height:78px !important; padding-top:4px !important; padding-bottom:2px !important; }
+.today-weather-row { margin-top:0 !important; margin-bottom:0 !important; gap:5px !important; }
+.logout-btn { width:auto !important; min-width:0 !important; height:28px !important; padding:0 10px !important; border:0 !important; border-radius:7px !important; background:#f1f3f5 !important; color:#6b7280 !important; font-size:.72rem !important; box-shadow:none !important; }
+.banner { min-height:104px !important; padding:8px 14px !important; background:linear-gradient(135deg,rgba(70,145,210,.95) 0%,rgba(101,169,220,.94) 52%,rgba(145,196,233,.92) 100%) !important; }
+.banner-slide { min-height:104px !important; padding:0 !important; }
+.banner-kicker, .today, .upcoming { height:25px !important; line-height:25px !important; padding:0 10px !important; border-radius:999px !important; font-size:.72rem !important; font-weight:800 !important; }
+.banner-kicker { background:rgba(255,255,255,.28) !important; color:#fff !important; border:1px solid rgba(255,255,255,.35) !important; }
+.today { background:#ffd84d !important; color:#164a78 !important; border:1px solid rgba(255,255,255,.25) !important; }
+.upcoming { background:rgba(255,255,255,.9) !important; color:#28628e !important; border:1px solid rgba(255,255,255,.7) !important; }
+.banner-inline-meta { color:rgba(255,255,255,.92) !important; font-size:.72rem !important; font-weight:600 !important; margin-left:6px !important; }
+.banner-event-line2 { color:#fff !important; margin-top:5px !important; font-size:1rem !important; line-height:1.25 !important; }
+.quick-menu-container { gap:0 !important; margin-top:5px !important; }
+.quick-btn { aspect-ratio:1/1 !important; border:0 !important; border-radius:0 !important; padding:8px 3px !important; min-height:82px !important; box-shadow:none !important; }
+.quick-btn + .quick-btn { border-left:1px solid #edf0f3 !important; }
+.quick-icon { width:58px !important; height:58px !important; }
+@media (max-width:600px){
+ .header > img { width:225px !important; max-height:58px !important; }
+ .header { min-height:70px !important; padding-top:2px !important; padding-bottom:1px !important; }
+ .today-weather-row { gap:4px !important; }
+ .logout-btn { height:26px !important; padding:0 8px !important; font-size:.68rem !important; }
+ .banner { min-height:98px !important; padding:7px 11px !important; }
+ .banner-slide { min-height:98px !important; }
+ .banner-kicker, .today, .upcoming { height:23px !important; line-height:23px !important; padding:0 8px !important; font-size:.66rem !important; }
+ .banner-inline-meta { font-size:.64rem !important; margin-left:4px !important; }
+ .banner-event-line2 { margin-top:4px !important; font-size:.9rem !important; }
+ .quick-menu-container { margin-top:3px !important; }
+ .quick-btn { min-height:68px !important; padding:5px 2px !important; }
+ .quick-icon { width:46px !important; height:46px !important; }
+}
+</style></style>
 </head>
 <body>
 
@@ -2243,10 +2235,11 @@
     const globalIndex = scheduleData.indexOf(event);
     const time = getEventTime(event);
     const location = event.location && event.location !== 'ㅡ' ? event.location : '';
-    const meta = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})${time ? `, ${time}` : ''}${location ? ` / ${location}` : ''}`;
+    const meta = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})${time ? ` · ${time}~` : ''}${location ? ` · ${location}` : ''}`;
     return `
-      <div class="banner-heading"><span class="banner-kicker ${badgeText === '오늘 일정' ? 'today' : 'upcoming'}">${badgeText}</span><span class="banner-inline-meta">${meta}</span></div>
+      <div class="banner-heading"><span class="banner-kicker ${badgeText === '오늘 일정' ? 'today' : 'upcoming'}">${badgeText}</span></div>
       <button type="button" class="banner-event" onclick="openModal(${globalIndex})" aria-label="${event.title}">
+        <span class="banner-event-line1">${meta}</span>
         <span class="banner-event-line2">${event.title}</span>
       </button>
     `;
