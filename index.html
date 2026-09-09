@@ -138,6 +138,24 @@
     color: #1a202c;
   }
 
+  /* 오늘 날짜 · 날씨 */
+  .today-weather-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    width:calc(100% - 20px);
+    margin:0 10px 9px;
+    padding:2px 3px 0;
+  }
+  .today-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
+  .today-date{font-size:1.05rem;font-weight:800;color:#123b70;letter-spacing:-.03em;white-space:nowrap;}
+  .today-weekday{font-size:.84rem;font-weight:700;color:#4f6f95;white-space:nowrap;}
+  .today-weather{display:flex;align-items:center;gap:6px;color:#4f6f95;font-size:.78rem;font-weight:700;white-space:nowrap;}
+  .today-weather-icon{font-size:1.05rem;line-height:1;}
+  .today-weather-temp{color:#123b70;font-weight:800;}
+  @media(max-width:360px){.today-weather-bar{gap:7px}.today-date{font-size:.98rem}.today-weekday,.today-weather{font-size:.72rem}}
+
   /* 달력 영역 */
   .calendar-wrapper {
     background: var(--card-bg);
@@ -1138,7 +1156,7 @@ body{padding:0 10px 18px;box-sizing:border-box;}
 .app-container{max-width:430px!important;margin:0 auto!important;background:#fff;min-height:100vh;box-shadow:0 0 24px rgba(15,45,80,.08);}
 .header{padding:14px 16px!important;}
 .main-content{padding:12px 14px 24px!important;}
-.calendar-wrapper{margin:0 0 14px!important;border-radius:16px!important;padding:12px 10px 9px!important;}
+.calendar-wrapper{margin:0 10px 14px!important;border-radius:16px!important;padding:12px 10px 9px!important;}
 .calendar-header{padding:2px 5px 10px!important;}
 .calendar-header h2{font-size:1.05rem!important;}
 .calendar-grid{gap:4px!important;}
@@ -1482,6 +1500,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </div>
   </div>
 
+  <div class="today-weather-bar" aria-label="오늘 날짜와 날씨">
+    <div class="today-date-info">
+      <span class="today-date" id="todayDateDisplay"></span>
+      <span class="today-weekday" id="todayWeekdayDisplay"></span>
+    </div>
+    <div class="today-weather" id="todayWeatherDisplay">
+      <span class="today-weather-icon">☁️</span><span>날씨 확인 중</span>
+    </div>
+  </div>
+
   <!-- ✨ 예정 일정 배너 캐러셀 ✨ -->
   <section class="schedule-banner" id="scheduleBanner" aria-label="예정 일정 배너">
     <div class="schedule-banner-track" id="scheduleBannerTrack"></div>
@@ -1506,8 +1534,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
       <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">홈페이지</span>
     </a>
-    <button class="quick-btn" onclick="openAssociationNewsScreen()">
-      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">협회소식</span>
+    <button class="quick-btn" onclick="openStaffScreen()">
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">임직원현황</span>
     </button>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/><path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/></svg></span><span class="quick-label">언론보도</span>
@@ -1559,38 +1587,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
-<!-- ✨ 협회소식 통합 페이지 ✨ -->
-<div class="fullscreen-screen" id="associationNewsScreen">
-  <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeAssociationNewsScreen()">←</button>
-    <div class="fullscreen-title">협회소식</div>
-    <div class="fullscreen-dummy"></div>
-  </div>
-  <div class="association-news-grid">
-    <section class="association-news-card" onclick="openNoticesScreen()" role="button" tabindex="0">
-      <div class="association-card-title"><span class="association-card-icon">📢</span><h3>협회 중요 공지</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card" onclick="openMaterialsScreen()" role="button" tabindex="0">
-      <div class="association-card-title"><span class="association-card-icon">📁</span><h3>사무국 회의 자료</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card" onclick="openStaffScreen()" role="button" tabindex="0">
-      <div class="association-card-title"><span class="association-card-icon">👥</span><h3>KODA 임직원 현황</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card association-coming-soon" aria-label="준비중">
-      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card association-coming-soon" aria-label="준비중">
-      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card association-coming-soon" aria-label="준비중">
-      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
-    </section>
-    <section class="association-news-card association-coming-soon" aria-label="준비중">
-      <div class="association-card-title"><span class="association-card-icon">＋</span><h3>준비중</h3><span class="association-more">›</span></div>
-    </section>
-  </div>
-</div>
-
+<!-- ✨ 임직원현황은 첫 화면 메뉴에서 바로 열립니다. 기존 협회소식/회의자료/중요공지 메뉴는 사용하지 않습니다. ✨ -->
 <!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="noticesScreen">
   <div class="fullscreen-header">
@@ -1615,11 +1612,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </div>
 
 
-<!-- ✨ KODA 직원현황 전용 페이지 ✨ -->
+<!-- ✨ KODA 임직원현황 전용 페이지 ✨ -->
 <div class="fullscreen-screen" id="staffScreen">
   <div class="fullscreen-header">
     <button class="fullscreen-back-btn" onclick="closeStaffScreen()">←</button>
-    <div class="fullscreen-title">KODA 직원현황</div>
+    <div class="fullscreen-title">KODA 임직원현황</div>
     <div class="fullscreen-dummy"></div>
   </div>
   
@@ -1770,6 +1767,41 @@ button,.nav-btn,.action-btn{min-height:44px;}
   
   let showBookmarksOnly = false;
   let searchQuery = '';
+
+  // ===== 오늘 날짜 / 요일 / 날씨 =====
+  function renderTodayDate(){
+    const now=new Date();
+    const weekdays=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    const dateEl=document.getElementById('todayDateDisplay');
+    const dayEl=document.getElementById('todayWeekdayDisplay');
+    if(dateEl) dateEl.textContent=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+    if(dayEl) dayEl.textContent=weekdays[now.getDay()];
+  }
+  function weatherIcon(code){
+    if(code===0) return '☀️';
+    if(code<=3) return '🌤️';
+    if(code<=48) return '🌫️';
+    if(code<=67) return '🌧️';
+    if(code<=77) return '🌨️';
+    if(code<=82) return '🌦️';
+    return '⛈️';
+  }
+  async function loadTodayWeather(){
+    const el=document.getElementById('todayWeatherDisplay'); if(!el) return;
+    try{
+      if(!navigator.geolocation) throw new Error('no geolocation');
+      const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,timeout:5000,maximumAge:1800000}));
+      const lat=pos.coords.latitude, lon=pos.coords.longitude;
+      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`);
+      if(!r.ok) throw new Error('weather');
+      const d=await r.json(); const temp=Math.round(d.current.temperature_2m);
+      el.innerHTML=`<span class="today-weather-icon">${weatherIcon(d.current.weather_code)}</span><span>오늘 날씨</span><span class="today-weather-temp">${temp}°C</span>`;
+    }catch(e){
+      el.innerHTML='<span class="today-weather-icon">🌤️</span><span>오늘 날씨</span>';
+    }
+  }
+  renderTodayDate();
+  loadTodayWeather();
 
   const todayDateObj = new Date();
   todayDateObj.setHours(0, 0, 0, 0); 
