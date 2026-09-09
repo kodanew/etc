@@ -1369,12 +1369,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
 
-
-  /* 임직원현황 5개 분류 버튼은 어떤 상태에서도 항상 표시 */
-  #staffScreen #staffTabs{display:grid !important;visibility:visible !important;opacity:1 !important;}
-  #staffScreen #staffTabs .month-tab{display:flex !important;visibility:visible !important;opacity:1 !important;}
-  #staffScreen #staffTabs .month-tab[hidden]{display:flex !important;}
-
   /* ===== 임직원 미리보기 한 줄 정보 ===== */
   #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
   #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
@@ -1392,10 +1386,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
   /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
-  .app-container > .header .header-left-brand{left:29px;top:10px;gap:0;}
+  .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
   .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
-  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;margin-left:0;}
-  .app-container > .header .brand-line{display:none !important;}
+  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;}
+  .app-container > .header .brand-line{width:86px;height:1.5px;margin-top:3px;background:linear-gradient(90deg,#1769d2,#c7ddf3 78%,transparent);}
   .app-container > .header .city-silhouette{display:flex;align-items:flex-end;gap:2px;height:10px;margin-top:0;width:108px;opacity:.5;}
   .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
   .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
@@ -1615,6 +1609,92 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList .staff-name-role{gap:4px!important;}
 }
 </style>
+
+<style id="absolute-final-koda-fixes">
+/* 임직원현황: 5개 분류 버튼을 항상 노출 */
+#staffScreen #staffTabs {
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  height:auto !important;
+  min-height:42px !important;
+  overflow:visible !important;
+  position:sticky !important;
+  top:76px !important;
+  z-index:100 !important;
+  background:#fff !important;
+}
+#staffScreen #staffTabs .month-tab,
+#staffScreen #staffTabs .month-tab[hidden] {
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+/* 첫 화면 영문 브랜드 */
+.app-container > .header .header-left-brand {
+  left:29px !important;
+  top:10px !important;
+  gap:0 !important;
+  align-items:flex-start !important;
+}
+.app-container > .header .brand-title-ko {
+  display:block !important;
+  font-size:.72rem !important;
+  line-height:1.15 !important;
+  letter-spacing:-.055em !important;
+}
+.app-container > .header .brand-title-en {
+  display:block !important;
+  margin-left:0 !important;
+  font-size:.40rem !important;
+  line-height:1.08 !important;
+  letter-spacing:.055em !important;
+  white-space:nowrap !important;
+}
+/* 건물 실루엣 위 파란 선 완전 제거 */
+.app-container > .header .brand-line { display:none !important; visibility:hidden !important; }
+@media(max-width:360px){
+  .app-container > .header .header-left-brand { left:25px !important; top:9px !important; }
+  .app-container > .header .brand-title-ko { font-size:.68rem !important; }
+  .app-container > .header .brand-title-en { font-size:.37rem !important; }
+}
+</style>
+<script>
+(function(){
+  function forceStaffTabs(){
+    const screen=document.getElementById('staffScreen');
+    const tabs=document.querySelectorAll('#staffScreen #staffTabs .month-tab');
+    if(!screen || !tabs.length) return;
+    const wrap=document.getElementById('staffTabs');
+    wrap.hidden=false;
+    wrap.style.setProperty('display','grid','important');
+    wrap.style.setProperty('visibility','visible','important');
+    wrap.style.setProperty('opacity','1','important');
+    tabs.forEach(btn=>{
+      btn.hidden=false;
+      btn.style.setProperty('display','flex','important');
+      btn.style.setProperty('visibility','visible','important');
+      btn.style.setProperty('opacity','1','important');
+    });
+  }
+  document.addEventListener('DOMContentLoaded',forceStaffTabs);
+  window.addEventListener('load',forceStaffTabs);
+  const observer=new MutationObserver(forceStaffTabs);
+  observer.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['style','class','hidden']});
+  const oldOpen=window.openStaffScreen;
+  if(oldOpen){
+    window.openStaffScreen=function(){
+      oldOpen.apply(this,arguments);
+      requestAnimationFrame(forceStaffTabs);
+      setTimeout(forceStaffTabs,50);
+      setTimeout(forceStaffTabs,300);
+    };
+  }
+})();
+</script>
 </head>
 <body>
 
