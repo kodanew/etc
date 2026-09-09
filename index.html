@@ -1698,6 +1698,95 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen .fullscreen-content{padding:7px 0 25px!important;}
 }
 </style>
+
+<style id="koda-banner-and-staff-title-final-fix">
+
+/* 임직원현황 제목: 화면 전체 기준 정중앙 */
+#staffScreen .staff-mobile-header{
+  position:relative!important;
+}
+#staffScreen .fullscreen-title{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:max-content!important;
+  margin:0!important;
+  text-align:center!important;
+  z-index:2!important;
+}
+#staffScreen .fullscreen-back-btn{
+  position:relative!important;
+  z-index:3!important;
+}
+
+/* 일정 배너: 텍스트 영역에 맞춘 컴팩트 레이아웃 */
+.schedule-banner{
+  min-height:88px!important;
+  height:88px!important;
+  margin-bottom:10px!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  min-height:88px!important;
+  height:88px!important;
+}
+.schedule-banner-slide{
+  padding:10px 15px 18px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin-bottom:5px!important;
+  min-height:21px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+.banner-kicker{
+  flex:0 0 auto!important;
+  min-height:20px!important;
+  height:20px!important;
+  padding:0 8px!important;
+  font-size:.60rem!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  display:block!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:rgba(255,255,255,.88)!important;
+  font-size:.76rem!important;
+  line-height:1.3!important;
+  font-weight:650!important;
+  letter-spacing:-.025em!important;
+}
+.banner-event-line2{
+  margin-top:0!important;
+  font-size:1.02rem!important;
+  line-height:1.3!important;
+}
+.schedule-banner::before{width:90px!important;height:90px!important;right:-30px!important;top:-45px!important;}
+.schedule-banner::after{width:58px!important;height:58px!important;left:-28px!important;bottom:-34px!important;}
+
+@media(max-width:360px){
+  .schedule-banner,
+  .schedule-banner-track,
+  .schedule-banner-slide{
+    min-height:84px!important;
+    height:84px!important;
+  }
+  .schedule-banner-slide{padding:9px 12px 16px!important;}
+  .banner-heading{gap:6px!important;margin-bottom:4px!important;}
+  .banner-kicker{font-size:.56rem!important;padding:0 7px!important;}
+  .banner-meta{font-size:.69rem!important;}
+  .banner-event-line2{font-size:.94rem!important;}
+}
+
+</style>
 </head>
 <body>
 
@@ -2433,15 +2522,29 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return names[getEventDate(event).getDay()];
   }
 
+  function getBannerDDay(event) {
+    const eventDate = getEventDate(event);
+    const baseDate = new Date(currentYear, currentMonth - 1, currentDay);
+    eventDate.setHours(0,0,0,0);
+    baseDate.setHours(0,0,0,0);
+    const diff = Math.round((eventDate - baseDate) / 86400000);
+    return diff <= 0 ? 'D-DAY' : `D-${diff}`;
+  }
+
   function renderBannerEvent(event, badgeText) {
     const globalIndex = scheduleData.indexOf(event);
     const time = getEventTime(event);
     const location = event.location && event.location !== 'ㅡ' ? event.location : '';
-    const meta = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})${time ? ` · ${time}~` : ''}${location ? ` · ${location}` : ''}`;
+    const dateText = `${String(event.month).padStart(2,'0')}.${String(event.day).padStart(2,'0')}(${getEventWeekday(event)})`;
+    const meta = [dateText, time ? `${time}~` : '', location].filter(Boolean).join(' · ');
+    const ddayText = getBannerDDay(event);
+
     return `
-      <div class="banner-heading"><span class="banner-kicker">${badgeText}</span></div>
+      <div class="banner-heading">
+        <span class="banner-kicker">${ddayText}</span>
+        <span class="banner-meta">${meta}</span>
+      </div>
       <button type="button" class="banner-event" onclick="openModal(${globalIndex})" aria-label="${event.title}">
-        <span class="banner-event-line1">${meta}</span>
         <span class="banner-event-line2">${event.title}</span>
       </button>
     `;
@@ -2463,8 +2566,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
       .slice(0, 3);
 
     const bannerEvents = [];
-    if (todayEvents.length) bannerEvents.push({ event: todayEvents[0], badge: '오늘 일정' });
-    upcomingEvents.forEach(event => bannerEvents.push({ event, badge: '예정 일정' }));
+    if (todayEvents.length) bannerEvents.push({ event: todayEvents[0], badge: 'D-DAY' });
+    upcomingEvents.forEach(event => bannerEvents.push({ event, badge: getBannerDDay(event) }));
 
     if (!bannerEvents.length) {
       track.innerHTML = `<div class="schedule-banner-slide active"><div class="banner-heading"><span class="banner-kicker">일정 안내</span></div><div class="banner-empty">표시할 일정이 없습니다.</div></div>`;
