@@ -145,7 +145,7 @@
     justify-content:space-between;
     gap:12px;
     width:calc(100% - 20px);
-    margin:0 10px 9px;
+    margin:0 10px 4px;
     padding:2px 3px 0;
   }
   .today-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
@@ -1293,13 +1293,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen .staff-date-weather,
   #staffScreen .staff-header-logo{display:none;}
   #staffScreen .fullscreen-tabs{
-    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:7px; padding:12px 0 0; box-sizing:border-box;
+    display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px; padding:12px 0 0; box-sizing:border-box;
   }
   #staffScreen .month-tab{
-    min-width:0; width:100%; height:56px; min-height:56px; padding:0 3px;
+    min-width:0; width:100%; height:56px; min-height:56px; padding:0 2px;
     border:1px solid #dce6f2; border-radius:15px; background:#fff;
-    color:#5d7089; font-size:1rem; font-weight:850; letter-spacing:-.045em;
+    color:#5d7089; font-size:.88rem; font-weight:850; letter-spacing:-.055em;
     box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
   }
   #staffScreen .month-tab.active{
@@ -1542,10 +1542,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
-    <button class="month-tab active" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
+    <button class="month-tab active" data-cat="전체" onclick="filterStaff('전체')">전체</button>
+    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
+    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
     <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
     <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
-    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
   </div>
 
   <div class="fullscreen-content">
@@ -1923,13 +1924,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     try {
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       staffData = parseStaffCSV(await response.text());
-      filterStaff('7대 임원');
+      filterStaff('전체');
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
-  let currentStaffCategory = '7대 임원';
+  let currentStaffCategory = '전체';
 
   window.filterStaff = function(category) {
     currentStaffCategory = category;
@@ -1948,7 +1949,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const list=document.getElementById('staffList'); if(!list) return; list.innerHTML='';
     const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
     const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
-    let filteredData=staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
+    let filteredData=(categoryFilter==='전체') ? [...staffData] : staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
     if(q){
       filteredData=filteredData.filter(item=>{
         const hay=[item.name,item.affiliation,item.position,item.department,item.phone].filter(Boolean).join(' ').toLowerCase();
@@ -1972,7 +1973,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('staffScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    if (staffData.length === 0) loadStaffData(); else filterStaff('7대 임원');
+    if (staffData.length === 0) loadStaffData(); else filterStaff('전체');
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
