@@ -148,21 +148,17 @@
     overflow: hidden; 
   }
   .cal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-weight: 700;
-    font-size: 1rem;
+    display:flex; justify-content:center; align-items:center; gap:10px;
+    margin-bottom:10px; font-weight:800; font-size:1rem;
   }
   .cal-nav-btn {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 5px 8px;
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+    background:#f7f9fc; border:1px solid #dfe5ec; border-radius:50%;
+    font-size:1rem; color:#475569; cursor:pointer; padding:0; transition:all .15s;
   }
+  .cal-nav-btn:hover{background:#eef4fb;border-color:#cbd5e1;color:var(--primary-color)}
+  .cal-nav-btn:active{transform:scale(.94)}
+  #calMonthDisplay{min-width:104px;text-align:center;font-weight:800;color:#1e293b}
   
   .cal-grid {
     display: grid;
@@ -782,6 +778,7 @@
     flex-grow: 1;
   }
 
+\n  /* ===== 공지/회의자료 표형 리스트 ===== */\n  .list-table-wrap{width:100%;overflow-x:auto;border:1px solid #e8edf3;border-radius:10px;background:#fff;}\n  .list-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.76rem;}\n  .list-table th{background:#f7f9fc;color:#64748b;font-weight:800;padding:9px 7px;border-bottom:1px solid #e3e8ef;border-right:1px solid #edf0f4;text-align:center;white-space:nowrap;}\n  .list-table td{padding:10px 7px;border-bottom:1px solid #edf0f4;border-right:1px solid #f0f2f5;vertical-align:middle;color:#334155;}\n  .list-table tr:last-child td{border-bottom:0}.list-table td:last-child,.list-table th:last-child{border-right:0}\n  .list-table tbody tr{cursor:pointer;transition:background .15s}.list-table tbody tr:hover{background:#fafcff}\n  .list-table .no-col{width:42px;text-align:center;color:#94a3b8;font-weight:700}.list-table .date-col{width:78px;text-align:center;white-space:nowrap}\n  .list-table .title-col{width:30%;font-weight:750;color:#1e293b}.list-table .content-col{width:auto;color:#64748b}.list-table .status-col{width:62px;text-align:center}\n  .ellipsis{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n  .read-status{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:3px 6px;border-radius:12px;font-size:.62rem;font-weight:800}\n  .read-status.unread{background:#eef5ff;color:#2563eb}.read-status.read{background:#f1f5f9;color:#94a3b8}\n  .material-table .date-col{width:78px}.material-table .title-col{width:58%}.material-table .type-col{width:90px;text-align:center}\n  .material-type{display:inline-block;padding:3px 7px;border-radius:10px;background:#f1f5f9;color:#64748b;font-size:.62rem;font-weight:800}\n  .list-count{font-size:.72rem;color:#94a3b8;font-weight:700;margin-bottom:8px}\n  @media(max-width:420px){.list-table{font-size:.69rem}.list-table th,.list-table td{padding:8px 5px}.list-table .no-col{width:34px}.list-table .date-col{width:70px}.list-table .status-col{width:55px}.list-table .title-col{width:34%}.material-table .title-col{width:52%}.material-table .type-col{width:78px}}\n
   /* 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
@@ -956,64 +953,6 @@
   #staffList .staff-phone { font-size:.68rem !important; }
   #staffList .staff-detail-label { font-size:.62rem !important; }
   @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
-  
-  /* ✨ 공지사항 리스트 한 줄 가로 배치 스타일 추가 ✨ */
-  .notice-item {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 12px 10px !important;
-  }
-  
-  .notice-date {
-    flex-shrink: 0;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    width: 65px; /* 날짜가 차지할 고정 너비 */
-    text-align: left;
-  }
-  
-  .notice-title {
-    flex-shrink: 0;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    max-width: 100px; /* 제목의 최대 너비 (필요에 따라 조절) */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .notice-content-preview {
-    flex-grow: 1;
-    font-size: 0.75rem;
-    color: #a0aec0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left;
-  }
-  
-  .notice-badges {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.65rem;
-  }
-  
-  .notice-read-badge {
-    font-weight: bold;
-    color: #cbd5e0;
-  }
-  
-  /* 읽지 않은 상태의 글씨 색상 포인트 */
-  .notice-unread .notice-read-badge {
-    color: var(--primary-color);
-  }
-  
   #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
 </style>
 </head>
@@ -1539,34 +1478,20 @@
   function renderMaterialsList(monthFilter) {
     const list = document.getElementById('materialsList');
     list.innerHTML = '';
-
     const filteredData = materialsData.filter(item => monthFilter === 'all' || item.month === monthFilter);
-
-    if (filteredData.length === 0) {
-      list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`;
-      return;
-    }
-
-    filteredData.forEach(item => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'day-event-item';
-
-      const title = document.createElement('div');
-      title.className = 'day-event-item-title';
-      title.innerText = `[${item.date}] ${item.title}`;
-
-      const meta = document.createElement('div');
-      meta.className = 'day-event-item-meta';
-      meta.innerText = item.fileType === 'pdf' ? 'PDF 바로 보기' : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
-
-      btn.appendChild(title);
-      btn.appendChild(meta);
-      const indexInOriginal = materialsData.findIndex(d => d === item);
-      btn.onclick = () => openMaterial(indexInOriginal);
-
-      list.appendChild(btn);
+    if (filteredData.length === 0) { list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`; return; }
+    const count = document.createElement('div'); count.className='list-count'; count.innerText=`총 ${filteredData.length}건`;
+    const wrap=document.createElement('div'); wrap.className='list-table-wrap';
+    const table=document.createElement('table'); table.className='list-table material-table';
+    table.innerHTML=`<thead><tr><th class="no-col">No.</th><th class="date-col">날짜</th><th class="title-col">회의자료</th><th class="type-col">자료</th></tr></thead>`;
+    const tbody=document.createElement('tbody');
+    filteredData.forEach((item,index)=>{
+      const tr=document.createElement('tr');
+      const type=item.fileType==='pdf'?'PDF':(item.images.length>1?`이미지 ${item.images.length}장`:'이미지');
+      tr.innerHTML=`<td class="no-col">${index+1}</td><td class="date-col">${item.date||'-'}</td><td class="title-col"><span class="ellipsis">${item.title||'-'}</span></td><td class="type-col"><span class="material-type">${type}</span></td>`;
+      const indexInOriginal=materialsData.findIndex(d=>d===item); tr.onclick=()=>openMaterial(indexInOriginal); tbody.appendChild(tr);
     });
+    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(count); list.appendChild(wrap);
   }
 
   let currentMaterialImages = [];
@@ -1694,64 +1619,19 @@
   }
 
   function renderNoticeList() {
-    const list = document.getElementById('noticeList'); 
-    list.innerHTML = '';
-    
-    if (!noticeData.length) { 
-      list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; 
-      return; 
-    }
-    
-    noticeData.forEach((item, index) => {
-      const btn = document.createElement('button'); 
-      btn.type = 'button';
-      btn.className = 'day-event-item notice-item ' + (isNoticeRead(item, index) ? 'notice-read' : 'notice-unread');
-      
-      // 1. 작성일자
-      const dateEl = document.createElement('div');
-      dateEl.className = 'notice-date';
-      dateEl.innerText = item.date || '';
-      
-      // 2. 제목
-      const titleEl = document.createElement('div');
-      titleEl.className = 'notice-title';
-      titleEl.innerText = item.title || '';
-      
-      // 3. 1줄 내용 미리보기 (내용이 길면 CSS에 의해 자동으로 ... 처리됨)
-      const contentEl = document.createElement('div');
-      contentEl.className = 'notice-content-preview';
-      // 줄바꿈 문자를 띄어쓰기로 변경하여 한 줄로 매끄럽게 보이도록 처리
-      contentEl.innerText = (item.content || '').replace(/\n/g, ' ').trim();
-      
-      // 4. 우측 끝 뱃지 (읽음 / 안읽음)
-      const badges = document.createElement('div'); 
-      badges.className = 'notice-badges';
-      
-      if(isNoticeNew(item)){ 
-        const n = document.createElement('span'); 
-        n.className = 'notice-new'; 
-        n.innerText = 'NEW'; 
-        n.style.color = '#e53e3e';
-        n.style.fontWeight = 'bold';
-        n.style.marginRight = '2px';
-        badges.appendChild(n); 
-      }
-      
-      const r = document.createElement('span'); 
-      r.className = 'notice-read-badge'; 
-      // 기존 '미읽음'을 요청하신 '안읽음'으로 변경
-      r.innerText = isNoticeRead(item, index) ? '읽음' : '안읽음'; 
-      badges.appendChild(r);
-      
-      // 구성 요소들을 순서대로 버튼(행)에 추가
-      btn.appendChild(dateEl);
-      btn.appendChild(titleEl);
-      btn.appendChild(contentEl);
-      btn.appendChild(badges);
-      
-      btn.onclick = () => openNoticeDetailModal(index); 
-      list.appendChild(btn);
+    const list = document.getElementById('noticeList'); list.innerHTML = '';
+    if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
+    const count=document.createElement('div'); count.className='list-count'; count.innerText=`총 ${noticeData.length}건`;
+    const wrap=document.createElement('div'); wrap.className='list-table-wrap';
+    const table=document.createElement('table'); table.className='list-table notice-table';
+    table.innerHTML=`<thead><tr><th class="no-col">No.</th><th class="date-col">날짜</th><th class="title-col">제목</th><th class="content-col">상세내용</th><th class="status-col">확인</th></tr></thead>`;
+    const tbody=document.createElement('tbody');
+    noticeData.forEach((item,index)=>{
+      const tr=document.createElement('tr'); const read=isNoticeRead(item,index);
+      tr.innerHTML=`<td class="no-col">${index+1}</td><td class="date-col">${item.date||'-'}</td><td class="title-col"><span class="ellipsis">${item.title||'-'}</span></td><td class="content-col"><span class="ellipsis">${item.content||'-'}</span></td><td class="status-col"><span class="read-status ${read?'read':'unread'}">${read?'읽음':'미읽음'}</span></td>`;
+      tr.onclick=()=>openNoticeDetailModal(index); tbody.appendChild(tr);
     });
+    table.appendChild(tbody); wrap.appendChild(table); list.appendChild(count); list.appendChild(wrap);
   }
 
   window.openNoticesScreen = function() {
