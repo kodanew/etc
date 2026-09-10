@@ -2150,6 +2150,44 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="final-news-menu-fix">
+  /* 회원소식 5개 카테고리 버튼: 화면 전체 폭을 정확히 5등분 */
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:5px!important;
+    padding:7px 0!important;
+    margin:0!important;
+    justify-items:stretch!important;
+    align-items:stretch!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+
+  /* 회원소식 아이콘: 다른 퀵메뉴 SVG와 동일한 시각적 크기 + 노란색 */
+  .news-quick-icon svg{
+    width:31px!important;
+    height:31px!important;
+    display:block!important;
+  }
+  .news-quick-icon{
+    background:#fff8df!important;
+    border-color:#f3df9b!important;
+  }
+</style>
+
 </head>
 <body>
 
@@ -2227,8 +2265,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <!-- 기존 퀵메뉴 컨테이너 끝나는 부분 아래에 추가 -->
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNewsScreen()">
-      <span class="quick-icon">
-        <span style="font-size:1.5rem;">📰</span>
+      <span class="quick-icon news-quick-icon">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <rect x="7" y="6" width="38" height="40" rx="8" fill="#f6c344"/>
+          <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
+        </svg>
       </span>
       <span class="quick-label">회원소식</span>
     </button>
@@ -2389,7 +2430,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
+    <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
     <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
     <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
     <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
@@ -3398,6 +3439,13 @@ function createEventCard(event) {
     return new Date(y, (m || 1) - 1, d || 1);
   }
 
+  // 시트6의 기존 "분양일정" 데이터도 새 명칭 "견본주택"으로 통일
+  function normalizeNewsCategory(category) {
+    const c = String(category || '').trim();
+    if (c === '분양일정' || c.includes('분양')) return '견본주택';
+    return c || '기타';
+  }
+
   // 시트6 데이터 파싱 함수 (B:구분, C:작성일자, D:제목, E:내용, F:관련링크(URL))
   function parseNewsCSV(csv) {
     const rows = splitCSV(csv);
@@ -3409,7 +3457,7 @@ function createEventCard(event) {
       if (!dateRaw && !titleRaw) continue; // 빈 행 건너뛰기
 
       dataArr.push({
-        category: r[1] ? r[1].trim() : "기타", // B열
+        category: normalizeNewsCategory(r[1] ? r[1].trim() : "기타"), // B열
         date: dateRaw,                          // C열
         title: titleRaw,                        // D열
         content: r[4] ? r[4].trim() : "",       // E열
@@ -3459,7 +3507,9 @@ function createEventCard(event) {
     const list = document.getElementById('newsList');
     list.innerHTML = '';
 
-    const filteredData = category === '전체' ? newsData : newsData.filter(item => item.category === category);
+    const filteredData = category === '전체'
+      ? newsData
+      : newsData.filter(item => normalizeNewsCategory(item.category) === category);
 
     if (filteredData.length === 0) {
       list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
@@ -3472,7 +3522,7 @@ function createEventCard(event) {
       card.type = 'button';
       card.className = 'day-event-item news-card-item';
       card.innerHTML = `
-        <div class="day-event-item-title"><span class="news-badge ${newsBadgeClass(item.category)}">${item.category}</span>${item.title}</div>
+        <div class="day-event-item-title"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span>${item.title}</div>
         <div class="day-event-item-meta">작성일: ${item.date}</div>
       `;
       card.onclick = () => openNewsDetailScreen(globalIndex);
@@ -3517,7 +3567,7 @@ function createEventCard(event) {
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
     const catEl = document.getElementById('newsDetailCategory');
-    catEl.innerText = item.category;
+    catEl.innerText = normalizeNewsCategory(item.category);
     catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
     document.getElementById('newsDetailTitle').innerText = item.title;
     document.getElementById('newsDetailDate').innerText = `등록일: ${item.date}`;
