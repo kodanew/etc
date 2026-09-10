@@ -1909,6 +1909,47 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
+<style id="layout-spacing-fixes">
+  /* 1. <지난 일정>, <예정 일정>, <오늘 일정> 과 아래 목록 사이의 간격을 동일하게 맞춤 */
+  .schedule-section-header {
+    padding-bottom: 5px !important;
+    margin-bottom: 5px !important;
+  }
+  .schedule-list-wrapper {
+    margin-top: 0 !important;
+  }
+  
+  /* 만약 .schedule-container의 gap 때문에 간격이 달라진다면 일관되게 고정 */
+  .schedule-container {
+    gap: 0 !important; 
+  }
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px !important; /* 목록 카드들 사이의 간격 유지 */
+  }
+
+  /* 2. 배너 내부 "배지/일시/장소" 와 "행사명" 사이의 줄간격 축소 */
+  .banner-heading {
+    margin-bottom: 0px !important; /* 기존 2~5px 이었던 하단 여백 제거 */
+    min-height: 18px !important;
+  }
+  .banner-event-line2 {
+    margin-top: 0px !important; /* 행사명 위쪽 여백 제거 */
+    line-height: 1.15 !important; /* 줄간격(높이) 미세 축소 */
+  }
+
+  /* 모바일 화면에서도 좁혀진 줄간격 유지 */
+  @media(max-width:360px) {
+    .banner-heading {
+      margin-bottom: 0px !important; 
+    }
+    .banner-event-line2 {
+      margin-top: 0px !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 
