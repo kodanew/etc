@@ -319,7 +319,7 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 4px;
+    margin-bottom: 9px;
   }
   .banner-kicker {
     display: inline-flex;
@@ -360,7 +360,7 @@
   .banner-event-line2 {
     display:block;
     width:100%;
-    margin-top:3px;
+    margin-top:4px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -410,7 +410,7 @@
     cursor:pointer;
     backdrop-filter:blur(6px);
   }
-  .banner-pause-btn.paused { background:#fff; color:#0756c9; }
+  .banner-pause-btn.paused { background:#fff!important; color:transparent!important; border:0!important; box-shadow:none!important; }
 
   /* 상단 메뉴바 */
   .quick-menu-container,
@@ -481,7 +481,7 @@
     justify-content: space-between;
     align-items: baseline;
     padding: 5px 5px 10px 5px;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 0px;
     width: 100%;
     row-gap: 4px;
@@ -1154,7 +1154,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .logout-btn{min-height:0!important;height:auto!important;line-height:1.2!important;padding:4px 8px!important;font-size:.72rem!important;border-radius:7px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;}
 .banner-dot{min-height:0!important;width:7px!important;height:7px!important;min-width:7px!important;max-width:7px!important;padding:0!important;flex:0 0 7px!important;}
 .banner-dot.active{width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;flex-basis:8px!important;}
-.banner-pause-btn{min-height:0!important;width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;padding:0!important;line-height:24px!important;flex:0 0 26px!important;border-radius:50%!important;font-size:.66rem!important;}
+.banner-pause-btn{min-height:0!important;width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;padding:0!important;line-height:8px!important;flex:0 0 8px!important;border:0!important;border-radius:50%!important;background:rgba(255,255,255,.42)!important;color:transparent!important;font-size:0!important;box-shadow:none!important;backdrop-filter:none!important;}
 .banner-dots{right:45px!important;bottom:8px!important;height:10px!important;}
 .schedule-banner-slide{padding-bottom:22px!important;}
 .schedule-container{gap:7px!important;padding-bottom:24px!important;}
@@ -1173,7 +1173,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .event-title{font-size:.9rem!important;}
   .event-date{font-size:.82rem!important;}
   .event-location{font-size:.72rem!important;}
-  .banner-pause-btn{width:24px!important;height:24px!important;min-width:24px!important;max-width:24px!important;flex-basis:24px!important;line-height:22px!important;}
+  .banner-pause-btn{width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;flex-basis:8px!important;line-height:8px!important;}
   .banner-dots{right:41px!important;}
 }
 
@@ -1258,7 +1258,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 /* 일정 제목과 목록 사이를 컴팩트하게 */
 .schedule-container{padding-top:0!important;gap:5px!important;}
-.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
+.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:2px!important;}
 
 /* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
   /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
@@ -1738,7 +1738,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .banner-heading{
   display:flex!important;
   align-items:center!important;
-  gap:3px!important;
+  gap:8px!important;
   margin-bottom:5px!important;
   min-height:21px!important;
   white-space:nowrap!important;
@@ -1846,176 +1846,155 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
-<!-- 🔥 새로 추가/수정된 사용자 맞춤 스타일 🔥 -->
-<style id="custom-modifications-applied">
-  /* 1. <오늘 일정> 라인과 목록 간격 축소 */
-  .schedule-section-header {
-    padding-bottom: 0px !important;
-    margin-bottom: 0px !important;
-  }
-  .schedule-container {
-    gap: 1px !important;
-    padding-top: 5px !important; 
-  }
-  #pastScheduleList {
-    margin-bottom: 5px !important;
-    padding-bottom: 5px !important;
-  }
 
-  /* 2. 5개 버튼아이콘과 <오늘 일정> 사이 그라데이션 라인 */
-  .schedule-container::before {
-    content: '';
-    display: block;
-    width: 94%;
-    height: 0.5px;
-    margin: 0 auto 15px auto;
-    background: linear-gradient(90deg, transparent, #a0aec0, transparent);
-  }
+<style id="koda-member-news-feature">
+/* ===== 회원소식 메뉴 ===== */
+.quick-menu-container{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  row-gap:8px!important;
+}
+@media(min-width:700px){
+  .quick-menu-container{grid-template-columns:repeat(6,minmax(0,1fr))!important;}
+}
+.quick-btn.member-news-btn .quick-icon{
+  background:linear-gradient(135deg,#1769d2,#4b8fe8);
+  border-color:#d9e7fb;
+}
+.quick-btn.member-news-btn .quick-icon svg{width:30px;height:30px;}
+.quick-btn.member-news-btn .quick-label{color:#173f70;font-weight:850;}
 
-  /* 3. 배너 안 Pause 기호 수정 및 위치 조정 */
-  .banner-pause-btn {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    width: 14px !important;
-    height: 14px !important;
-    min-width: 14px !important;
-    max-width: 14px !important;
-    flex-basis: 14px !important;
-    font-size: 0.65rem !important;
-    line-height: 14px !important;
-    right: 22px !important; /* 동그라미들 바로 옆에 위치 */
-    bottom: 5.5px !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-    padding: 0 !important;
-  }
-  .banner-pause-btn.paused {
-    background: transparent !important;
-    color: #ffffff !important;
-  }
-  .banner-dots {
-    right: 38px !important; /* Pause 버튼 옆으로 점들 위치 이동 */
-  }
-  @media(max-width:360px){
-    .banner-pause-btn { right: 18px !important; }
-    .banner-dots { right: 34px !important; }
-  }
-
-  /* 4. 관심일정 터치 시 활성화 배경 */
-  .active-bookmark .quick-icon {
-    background-color: #e6f2ff !important;
-    border-color: #cce0ff !important;
-  }
-</style>
-
-<style id="layout-spacing-fixes">
-  /* 1. <지난 일정>, <예정 일정>, <오늘 일정> 과 아래 목록 사이의 간격을 동일하게 맞춤 */
-  .schedule-section-header {
-    padding-bottom: 4px !important;
-    margin-bottom: 4px !important;
-  }
-  .schedule-list-wrapper {
-    margin-top: 0 !important;
-  }
-  
-  /* 만약 .schedule-container의 gap 때문에 간격이 달라진다면 일관되게 고정 */
-  .schedule-container {
-    gap: 0 !important; 
-  }
-  .schedule-list-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px !important; /* 목록 카드들 사이의 간격 유지 */
-  }
-
-  /* 2. 배너 내부 "배지/일시/장소" 와 "행사명" 사이의 줄간격 축소 */
-  .banner-heading {
-    margin-bottom: 0px !important; /* 기존 2~5px 이었던 하단 여백 제거 */
-    min-height: 18px !important;
-  }
-  .banner-event-line2 {
-    margin-top: 0px !important; /* 행사명 위쪽 여백 제거 */
-    line-height: 0.85 !important; /* 줄간격(높이) 미세 축소 */
-  }
-
-  /* 모바일 화면에서도 좁혀진 줄간격 유지 */
-  @media(max-width:360px) {
-    .banner-heading {
-      margin-bottom: 0px !important; 
-    }
-    .banner-event-line2 {
-      margin-top: 0px !important;
-    }
-  }
-</style>
-
-<style id="past-schedule-spacing-fix">
-  /* 지난 달력 이동 시 나오는 <지난 일정> 타이틀과 목록 사이의 간격 조정 */
-  .schedule-section-header + .schedule-list-wrapper {
-    margin-top: 4px !important; /* 위와 동일한 값으로 맞추시면 깔끔합니다 */
-  }
-</style>
-
-<style id="upcoming-schedule-spacing-fix">
-  /* <예정 일정> 및 <오늘 일정> 타이틀 아래 본 일정 목록과의 간격 조정 */
-  #scheduleContainer > .schedule-list-wrapper:last-child {
-    margin-top: 4px !important; /* 숫자를 줄이면 간격이 좁아지고, 늘리면 넓어집니다 (예: 0px ~ 10px) */
-  }
-</style>
-
-<style id="today-header-spacing-fix">
-  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
-  .schedule-section-header {
-    align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
-    padding-bottom: 0px !important;   
-    margin-bottom: 2px !important; /* 필요시 이 값을 0px로 줄이시면 더 바짝 붙습니다 */
-  }
-  
-  /* 2. "지난 일정 보기" 버튼이 차지하는 잉여 투명 공간 압축 */
-  .past-schedule-btn {
-    line-height: 1 !important;
-    padding: 0 !important;
-    margin-bottom: 2px !important; /* 글씨 하단 선 시각적 맞춤용 */
-  }
-  
-  /* 3. 부제목의 텍스트 줄간격 압축 */
-  .schedule-section-subtitle {
-    line-height: 1.1 !important;
-  }
-</style>
-
-<style id="card-today-badge-style">
-  /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
-  .card-today-badge {
-    position: absolute;
-    bottom: 0px;  /* 바닥 테두리에 완전 밀착 (기존 12px) */
-    right: 0px;   /* 오른쪽 테두리에 완전 밀착 (기존 12px) */
-    background-color: #e53e3e; 
-    color: #ffffff;
-    font-size: 0.55rem;
-    font-weight: 800;
-    padding: 3px 7px;
-    
-    /* 카드 모서리 둥글기(10px)와 자연스럽게 이어지도록 반경 설정 (좌측상단 우측상단 우측하단 좌측하단) */
-    border-radius: 8px 0 8px 0; 
-    
-    z-index: 5;
-    line-height: 1.1;
-    pointer-events: none; 
-    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); /* 안쪽으로 살짝 그림자 */
-  }
-  
-  /* 모바일 화면 맞춤 미세조정 */
-  @media(max-width:360px) {
-    .card-today-badge {
-      bottom: 0px;
-      right: 0px;
-      font-size: 0.5rem;
-      padding: 2px 5px;
-      border-radius: 6px 0 10px 0; /* 모바일 카드 모서리에 맞춤 */
-    }
-  }
+/* ===== 회원소식 목록/상세 실제 화면 ===== */
+#memberNewsScreen,#memberNewsDetailScreen{
+  position:fixed;inset:0;z-index:1800;
+  display:none;flex-direction:column;
+  background:#f4f7fb;overflow:hidden;
+}
+#memberNewsScreen .member-news-header,
+#memberNewsDetailScreen .member-news-header{
+  width:100%;max-width:430px;margin:0 auto;
+  height:58px;min-height:58px;padding:0 14px;
+  background:#fff;border-bottom:1px solid #e5edf6;
+  display:grid;grid-template-columns:48px minmax(0,1fr) 48px;
+  align-items:center;box-shadow:0 3px 14px rgba(25,67,110,.055);
+}
+.member-news-back{
+  width:40px;height:40px;min-height:40px;padding:0;
+  border:0;border-radius:13px;background:#f1f6fd;color:#1769d2;
+  font-size:1.45rem;font-weight:800;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.member-news-header-title{
+  text-align:center;color:#173f70;font-size:1.08rem;font-weight:850;
+  letter-spacing:-.045em;white-space:nowrap;
+}
+.member-news-header-spacer{width:40px;height:40px;}
+#memberNewsScreen .member-news-tabs{
+  width:100%;max-width:430px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;padding:9px 10px 8px;flex:0 0 auto;
+}
+#memberNewsScreen .member-news-tab{
+  height:43px;min-height:43px;padding:0 2px;
+  border:1px solid #dce6f2;border-radius:12px;background:#fff;
+  color:#5d7089;font-size:.78rem;font-weight:850;
+  box-shadow:0 3px 10px rgba(24,71,120,.045);
+}
+#memberNewsScreen .member-news-tab.active{
+  color:#fff;border-color:#1769d2;
+  background:linear-gradient(135deg,#1769d2,#3182ce);
+  box-shadow:0 5px 13px rgba(23,105,210,.18);
+}
+#memberNewsScreen .member-news-content{
+  width:100%;max-width:430px;margin:0 auto;
+  padding:4px 12px 28px;overflow-y:auto;flex:1;
+  -webkit-overflow-scrolling:touch;
+}
+.member-news-list-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  margin:4px 3px 9px;color:#183b63;
+}
+.member-news-list-title{font-size:.98rem;font-weight:850;letter-spacing:-.04em;}
+.member-news-list-count{font-size:.68rem;color:#8a9aaf;font-weight:750;}
+#memberNewsList{
+  display:grid;grid-template-columns:1fr;gap:9px;
+}
+.member-news-card{
+  width:100%;text-align:left;background:#fff;
+  border:1px solid #e1e9f3;border-radius:14px;
+  padding:13px 14px;box-shadow:0 4px 12px rgba(28,70,120,.055);
+  cursor:pointer;
+}
+.member-news-card:active{transform:scale(.992);background:#f8fbff;}
+.member-news-card-top{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.member-news-category{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:3px 7px;border-radius:999px;background:#edf5ff;color:#1769d2;
+  font-size:.62rem;font-weight:850;white-space:nowrap;
+}
+.member-news-date{font-size:.66rem;color:#94a3b8;font-weight:700;}
+.member-news-card-title{
+  color:#17385f;font-size:.92rem;font-weight:850;line-height:1.35;
+  letter-spacing:-.035em;word-break:keep-all;
+}
+.member-news-card-preview{
+  margin-top:5px;color:#718096;font-size:.73rem;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.member-news-empty,.member-news-loading{
+  background:#fff;border:1px solid #e2eaf4;border-radius:14px;
+  padding:34px 12px;text-align:center;color:#7a8da7;font-size:.78rem;
+}
+#memberNewsDetailScreen .member-news-detail-content{
+  width:100%;max-width:430px;margin:0 auto;padding:17px 15px 34px;
+  overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;
+}
+.member-news-detail-category{
+  display:inline-flex;padding:4px 8px;border-radius:999px;
+  background:#edf5ff;color:#1769d2;font-size:.65rem;font-weight:850;
+}
+.member-news-detail-date{
+  margin-top:8px;color:#8a9aaf;font-size:.7rem;font-weight:700;
+}
+.member-news-detail-title{
+  margin:8px 0 16px;color:#17385f;font-size:1.22rem;
+  line-height:1.35;font-weight:900;letter-spacing:-.05em;word-break:keep-all;
+}
+.member-news-detail-body{
+  background:#fff;border:1px solid #e2eaf4;border-radius:15px;
+  padding:16px 14px;color:#334155;font-size:.84rem;line-height:1.75;
+  white-space:pre-wrap;word-break:break-word;
+  box-shadow:0 4px 12px rgba(28,70,120,.045);
+}
+.member-news-related{
+  margin-top:14px;background:#fff;border:1px solid #e2eaf4;
+  border-radius:15px;padding:12px;box-shadow:0 4px 12px rgba(28,70,120,.045);
+}
+.member-news-related-label{
+  margin-bottom:8px;color:#183b63;font-size:.75rem;font-weight:850;
+}
+.member-news-link-thumb{
+  display:block;width:100%;border-radius:11px;overflow:hidden;
+  background:#edf2f7;border:1px solid #e2e8f0;text-decoration:none;
+}
+.member-news-link-thumb img{
+  display:block;width:100%;height:190px;object-fit:cover;background:#eef2f7;
+}
+.member-news-link-fallback{
+  min-height:150px;padding:25px 15px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(135deg,#eef5ff,#f8fafc);color:#1769d2;
+}
+.member-news-link-icon{font-size:2rem;margin-bottom:8px;}
+.member-news-link-text{font-size:.75rem;font-weight:800;line-height:1.45;word-break:break-all;}
+.member-news-link-url{
+  display:block;margin-top:8px;color:#718096;font-size:.64rem;
+  line-height:1.35;word-break:break-all;
+}
+@media(max-width:360px){
+  #memberNewsScreen .member-news-tab{font-size:.72rem;}
+  .member-news-card{padding:12px;}
+  .member-news-detail-title{font-size:1.12rem;}
+}
 </style>
 
 </head>
@@ -2091,6 +2070,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#1267d6"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
     </button>
+    <button class="quick-btn member-news-btn" onclick="openMemberNewsScreen()">
+      <span class="quick-icon">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <rect x="7" y="8" width="38" height="36" rx="8" fill="#1769d2"/>
+          <path d="M15 17h22M15 25h16M15 33h11" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="37" cy="33" r="6" fill="#fff"/>
+          <path d="M34.5 33h5M37 30.5v5" stroke="#1769d2" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="quick-label">회원소식</span>
+    </button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -2105,6 +2095,41 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="day-events-subtitle" id="dayEventsSubtitle"></div>
     <div class="day-event-list" id="dayEventList"></div>
   </div>
+</div>
+
+<!-- ✨ 회원소식 목록 페이지 ✨ -->
+<div id="memberNewsScreen">
+  <div class="member-news-header">
+    <button class="member-news-back" onclick="closeMemberNewsScreen()" aria-label="뒤로가기">←</button>
+    <div class="member-news-header-title">회원소식</div>
+    <div class="member-news-header-spacer"></div>
+  </div>
+  <div class="member-news-tabs" id="memberNewsTabs">
+    <button class="member-news-tab active" data-cat="전체" onclick="filterMemberNews('전체')">전체</button>
+    <button class="member-news-tab" data-cat="분양일정" onclick="filterMemberNews('분양일정')">분양일정</button>
+    <button class="member-news-tab" data-cat="결혼" onclick="filterMemberNews('결혼')">결혼</button>
+    <button class="member-news-tab" data-cat="부고" onclick="filterMemberNews('부고')">부고</button>
+    <button class="member-news-tab" data-cat="기타" onclick="filterMemberNews('기타')">기타</button>
+  </div>
+  <div class="member-news-content">
+    <div class="member-news-list-heading">
+      <div class="member-news-list-title">회원소식</div>
+      <div class="member-news-list-count" id="memberNewsResultCount"></div>
+    </div>
+    <div id="memberNewsList">
+      <div class="member-news-loading">회원소식을 불러오는 중입니다...⏳</div>
+    </div>
+  </div>
+</div>
+
+<!-- ✨ 회원소식 상세 실제 페이지 ✨ -->
+<div id="memberNewsDetailScreen">
+  <div class="member-news-header">
+    <button class="member-news-back" onclick="closeMemberNewsDetail()" aria-label="목록으로 돌아가기">←</button>
+    <div class="member-news-header-title">회원소식 상세</div>
+    <div class="member-news-header-spacer"></div>
+  </div>
+  <div class="member-news-detail-content" id="memberNewsDetailContent"></div>
 </div>
 
 <!-- ✨ KODA 임직원현황 전용 페이지 ✨ -->
@@ -2226,9 +2251,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
+  const MEMBER_NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1026643170&single=true&output=csv";
 
   let scheduleData = [];
   let staffData = [];
+  let memberNewsData = [];
+  let currentMemberNewsCategory = '전체';
+  let currentMemberNewsIndex = null;
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -2448,6 +2477,204 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('loginScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
+
+
+  // ===== ✨ 시트6 회원소식 로직 ✨ =====
+  function normalizeNewsText(v){
+    return String(v ?? '').replace(/^\uFEFF/, '').trim();
+  }
+
+  function parseMemberNewsCSV(csv){
+    const rows = splitCSV(csv);
+    if(rows.length < 2) return [];
+    const headers = rows[0].map(h => normalizeNewsText(h).replace(/\s+/g,''));
+    const findIdx = (names, fallback) => {
+      for(const name of names){
+        const i = headers.findIndex(h => h === name || h.includes(name));
+        if(i !== -1) return i;
+      }
+      return fallback;
+    };
+    const idx = {
+      date: findIdx(['작성일자','작성일','등록일자','등록일','날짜','일자'],0),
+      category: findIdx(['구분','분류','카테고리','종류'],1),
+      title: findIdx(['제목','소식명','행사명','명칭'],2),
+      content: findIdx(['내용','본문','상세내용','상세내용'],3),
+      link: findIdx(['관련링크','관련URL','URL','링크','홈페이지'],4)
+    };
+    const list=[];
+    for(let i=1;i<rows.length;i++){
+      const r=rows[i];
+      const date=idx.date>=0 ? normalizeNewsText(r[idx.date]) : '';
+      const category=idx.category>=0 ? normalizeNewsText(r[idx.category]) : '기타';
+      const title=idx.title>=0 ? normalizeNewsText(r[idx.title]) : '';
+      const content=idx.content>=0 ? normalizeNewsText(r[idx.content]) : '';
+      const link=idx.link>=0 ? normalizeNewsText(r[idx.link]) : '';
+      if(!title && !content) continue;
+      list.push({date,category:category||'기타',title:title||'제목 없음',content,link,_row:i});
+    }
+    list.sort((a,b)=>{
+      const ad=parseNewsDate(a.date), bd=parseNewsDate(b.date);
+      if(ad && bd) return bd-ad;
+      if(ad) return -1;
+      if(bd) return 1;
+      return b._row-a._row;
+    });
+    return list;
+  }
+
+  function parseNewsDate(v){
+    const t=String(v||'').trim();
+    if(!t) return null;
+    let m=t.match(/(\d{4})[.\-/년]\s*(\d{1,2})[.\-/월]\s*(\d{1,2})/);
+    if(m) return new Date(+m[1],+m[2]-1,+m[3]).getTime();
+    m=t.match(/(\d{1,2})[.\-/월]\s*(\d{1,2})/);
+    if(m) return new Date(currentYear,+m[1]-1,+m[2]).getTime();
+    const d=new Date(t);
+    return isNaN(d.getTime()) ? null : d.getTime();
+  }
+
+  function normalizeNewsCategory(v){
+    return String(v||'').replace(/\s+/g,'').toLowerCase();
+  }
+
+  function renderMemberNewsList(category='전체'){
+    const listEl=document.getElementById('memberNewsList');
+    if(!listEl) return;
+    const wanted=normalizeNewsCategory(category);
+    let data=memberNewsData.filter(item=>wanted==='전체' || normalizeNewsCategory(item.category)===wanted);
+    const count=document.getElementById('memberNewsResultCount');
+    if(count) count.textContent=`${data.length}건`;
+    if(!data.length){
+      listEl.innerHTML='<div class="member-news-empty">등록된 회원소식이 없습니다.</div>';
+      return;
+    }
+    listEl.innerHTML='';
+    data.forEach(item=>{
+      const actualIndex=memberNewsData.indexOf(item);
+      const card=document.createElement('button');
+      card.type='button';
+      card.className='member-news-card';
+      const preview=(item.content||'').replace(/\s+/g,' ').trim();
+      card.innerHTML=`
+        <div class="member-news-card-top">
+          <span class="member-news-category">${escapeHtml(item.category)}</span>
+          <span class="member-news-date">${escapeHtml(item.date)}</span>
+        </div>
+        <div class="member-news-card-title">${escapeHtml(item.title)}</div>
+        ${preview?`<div class="member-news-card-preview">${escapeHtml(preview)}</div>`:''}
+      `;
+      card.onclick=()=>openMemberNewsDetail(actualIndex);
+      listEl.appendChild(card);
+    });
+  }
+
+  window.filterMemberNews=function(category){
+    const valid=['전체','분양일정','결혼','부고','기타'];
+    if(!valid.includes(category)) category='전체';
+    currentMemberNewsCategory=category;
+    document.querySelectorAll('#memberNewsTabs .member-news-tab').forEach(btn=>{
+      btn.classList.toggle('active',btn.dataset.cat===category);
+    });
+    const screen=document.getElementById('memberNewsScreen');
+    const content=screen?.querySelector('.member-news-content');
+    if(content) content.scrollTop=0;
+    renderMemberNewsList(category);
+  };
+
+  async function loadMemberNewsData(){
+    const list=document.getElementById('memberNewsList');
+    if(list) list.innerHTML='<div class="member-news-loading">회원소식을 불러오는 중입니다...⏳</div>';
+    try{
+      const response=await fetch(MEMBER_NEWS_SHEET_CSV_URL+'&t='+Date.now());
+      if(!response.ok) throw new Error('회원소식 CSV 응답 오류');
+      memberNewsData=parseMemberNewsCSV(await response.text());
+      renderMemberNewsList(currentMemberNewsCategory);
+    }catch(error){
+      memberNewsData=[];
+      if(list) list.innerHTML='<div class="member-news-empty">회원소식을 불러오지 못했습니다.<br>네트워크 상태를 확인해주세요.</div>';
+    }
+  }
+
+  window.openMemberNewsScreen=function(){
+    const screen=document.getElementById('memberNewsScreen');
+    if(!screen) return;
+    screen.style.display='flex';
+    document.body.style.overflow='hidden';
+    currentMemberNewsCategory='전체';
+    document.querySelectorAll('#memberNewsTabs .member-news-tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.cat==='전체'));
+    const content=screen.querySelector('.member-news-content');
+    if(content) content.scrollTop=0;
+    history.pushState({memberNewsOpen:true},"","");
+    if(memberNewsData.length) renderMemberNewsList('전체');
+    else loadMemberNewsData();
+  };
+
+  window.closeMemberNewsScreen=function(goBack=true){
+    document.getElementById('memberNewsScreen').style.display='none';
+    if(goBack) history.back();
+  };
+
+  function escapeHtml(v){
+    return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+
+  function safeNewsUrl(raw){
+    let u=String(raw||'').trim();
+    if(!u) return '';
+    if(!/^https?:\/\//i.test(u)) u='https://'+u;
+    try{
+      const parsed=new URL(u);
+      if(!/^https?:$/.test(parsed.protocol)) return '';
+      return parsed.href;
+    }catch(e){ return ''; }
+  }
+
+  function renderMemberNewsDetail(item){
+    const content=document.getElementById('memberNewsDetailContent');
+    if(!content || !item) return;
+    const link=safeNewsUrl(item.link);
+    const thumb=link
+      ? `https://image.thum.io/get/width/1000/crop/700/noanimate/${encodeURIComponent(link)}`
+      : '';
+    content.innerHTML=`
+      <div class="member-news-detail-category">${escapeHtml(item.category)}</div>
+      <div class="member-news-detail-date">${escapeHtml(item.date)}</div>
+      <h1 class="member-news-detail-title">${escapeHtml(item.title)}</h1>
+      <div class="member-news-detail-body">${escapeHtml(item.content||'내용이 없습니다.')}</div>
+      ${link?`
+        <div class="member-news-related">
+          <div class="member-news-related-label">관련링크</div>
+          <a class="member-news-link-thumb" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">
+            <img src="${thumb}" alt="관련링크 미리보기" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="member-news-link-fallback" style="display:none;">
+              <div class="member-news-link-icon">🔗</div>
+              <div class="member-news-link-text">관련 페이지 열기</div>
+            </div>
+          </a>
+          <span class="member-news-link-url">${escapeHtml(link)}</span>
+        </div>`:''}
+    `;
+    content.scrollTop=0;
+  }
+
+  window.openMemberNewsDetail=function(index){
+    const item=memberNewsData[index];
+    if(!item) return;
+    currentMemberNewsIndex=index;
+    const listScreen=document.getElementById('memberNewsScreen');
+    const detailScreen=document.getElementById('memberNewsDetailScreen');
+    if(listScreen) listScreen.style.display='none';
+    if(detailScreen) detailScreen.style.display='flex';
+    document.body.style.overflow='hidden';
+    renderMemberNewsDetail(item);
+    history.pushState({memberNewsDetailOpen:true},"","");
+  };
+
+  window.closeMemberNewsDetail=function(goBack=true){
+    document.getElementById('memberNewsDetailScreen').style.display='none';
+    if(goBack) history.back();
+  };
 
   // ===== ✨ 시트4 KODA 직원현황 로직 ✨ =====
   function parseStaffCSV(csv) {
@@ -2950,7 +3177,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-function createEventCard(event) {
+  function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -2960,11 +3187,7 @@ function createEventCard(event) {
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
-    // 💡 오늘 일정인 경우 우측 하단에 들어갈 뱃지 태그 추가
-    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
-
     card.innerHTML = `
-      ${todayBadgeHtml}
       <div class="card-actions">
         <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -3006,11 +3229,9 @@ function createEventCard(event) {
     const currentFilteredData = getFilteredData();
 
     if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; 
-      return;
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; return;
     }
 
-    // 1. 이벤트 분류 (오늘, 예정, 지난 일정)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -3020,61 +3241,78 @@ function createEventCard(event) {
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    // 2. 일정을 담을 단일 리스트 래퍼 생성
-    const listWrapper = document.createElement('div'); 
-    listWrapper.className = 'schedule-list-wrapper';
-
+    const header = document.createElement('div'); header.className = 'schedule-section-header';
+    const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
+    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
+    
+    let titleText = "";
     if (isPastMonthView) {
-        // 지난 달 달력을 볼 때는 바로 지난 일정들만 나열
-        pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        titleText = "<지난 일정>";
+    } else if (todayEvents.length > 0) {
+        titleText = "<오늘 일정>";
     } else {
-        // 이번 달(또는 미래) 달력을 볼 때의 정렬 순서
-        
-        // ① 오늘의 일정 (가장 맨 위에 배치)
-        todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-        
-        // ② 예정 일정 (오늘 이후부터 이번 달 마지막 날까지)
-        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-        
-        // ③ 지나간 일정 (검은 점선 아래에 배치)
-        if (pastEvents.length > 0) {
-            // 앞에 오늘이나 예정 일정이 있을 경우에만 구분선을 그어줌
-            if (todayEvents.length > 0 || futureEvents.length > 0) {
-                const divider = document.createElement('div');
-                divider.style.borderTop = '1.5px dashed #1a202c'; // 검은 점선 스타일
-                divider.style.margin = '15px 5px'; // 점선 위아래 간격
-                divider.style.opacity = '0.5'; // 점선이 너무 진하지 않게 약간 투명도 적용
-                listWrapper.appendChild(divider);
-            }
-            // 점선 아래로 지난 일정들 추가
-            pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-        }
+        titleText = "<예정 일정>";
+    }
+    titleEl.innerText = titleText;
+    titleWrapper.appendChild(titleEl);
 
-        // 혹시라도 데이터가 아무것도 표시되지 않을 때의 예외 처리
-        if (todayEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0) {
-            listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-        }
+    if (todayEvents.length > 0 && !isPastMonthView) {
+      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
+    } else if (isPastMonthView) {
+      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
+    }
+    header.appendChild(titleWrapper);
+
+    if (!isPastMonthView && pastEvents.length > 0) {
+      const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
+      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
+      header.appendChild(pastBtn);
     }
     
-    // 3. 컨테이너에 최종 리스트 추가
-    scheduleContainer.appendChild(listWrapper);
+    scheduleContainer.appendChild(header);
+
+    if (isPastMonthView) {
+        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+        scheduleContainer.appendChild(pastList);
+    } else {
+        if (pastEvents.length > 0) {
+          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
+          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+          scheduleContainer.appendChild(pastList);
+        }
+
+        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
+        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
+        else {
+          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        }
+        scheduleContainer.appendChild(upcomingList);
+    }
   }
   
   // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal','staffScreen','staffDetailModal'];
+    const ids = ['dayEventsModal','staffScreen','staffDetailModal','memberNewsScreen','memberNewsDetailScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
 
     // 뒤로 이동한 목적지 상태만 다시 표시
-    if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
+    if (st.memberNewsOpen) document.getElementById('memberNewsScreen').style.display='flex';
+    else if (st.memberNewsDetailOpen) document.getElementById('memberNewsDetailScreen').style.display='flex';
+    else if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.memberNewsOpen || st.memberNewsDetailOpen) {
       document.body.style.overflow='hidden';
     }
   });
