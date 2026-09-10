@@ -3512,7 +3512,7 @@ function createEventCard(event) {
   // 시트6의 기존 "분양일정" 데이터도 새 명칭 "견본주택"으로 통일
   function normalizeNewsCategory(category) {
     const c = String(category || '').trim();
-    if (c === '분양일정' || c.includes('분양')) return '견본주택';
+    if (c === '분양일정') return '견본주택 오픈';
     return c || '기타';
   }
 
@@ -3580,7 +3580,9 @@ function createEventCard(event) {
 
     const filteredData = category === '전체'
       ? newsData
-      : newsData.filter(item => normalizeNewsCategory(item.category) === category);
+      : newsData.filter(item => category === '견본주택'
+          ? String(item.category || '').trim() === '견본주택 오픈'
+          : normalizeNewsCategory(item.category) === category);
 
     if (filteredData.length === 0) {
       list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
@@ -3627,6 +3629,7 @@ function createEventCard(event) {
     area.style.display = 'none';
     img.removeAttribute('src');
     link.removeAttribute('href');
+    link.style.pointerEvents = 'none';
 
     const thumbUrl = String(item.thumbnailUrl || '').trim();
     const linkUrl = String(item.linkUrl || '').trim();
@@ -3635,10 +3638,13 @@ function createEventCard(event) {
 
     img.src = thumbUrl;
     // 이미지 클릭 시 시트6 F열 관련링크로 이동
+    // F열 링크가 없으면 이미지만 표시하고 G열 주소로 대체 연결하지 않습니다.
     if (/^https?:\/\//i.test(linkUrl)) {
       link.href = linkUrl;
+      link.style.pointerEvents = 'auto';
     } else {
-      link.href = thumbUrl;
+      link.removeAttribute('href');
+      link.style.pointerEvents = 'none';
     }
     img.onerror = function(){
       area.style.display = 'none';
