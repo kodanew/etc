@@ -729,26 +729,6 @@
     color: #3182ce;
   }
 
-  /* 회원소식 목록/상세용 뱃지 (임직원현황 뱃지와 동일한 디자인 언어) */
-  .news-badge {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 7px;
-    border-radius: 999px;
-    margin-right: 6px;
-    background: #edf2f7;
-    color: #4a5568;
-  }
-  .news-badge-sale { background: #ebf8ff; color: #3182ce; }
-  .news-badge-wedding { background: #fff5f7; color: #d53f8c; }
-  .news-badge-obituary { background: #edf1f5; color: #4a5568; }
-  .news-badge-etc { background: #f7fafc; color: #718096; }
-
-  .day-event-item.news-card-item { display: flex; flex-direction: column; }
-  .news-card-item .day-event-item-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 0; }
-
   .modal-title-area {
     display: flex;
     justify-content: space-between;
@@ -2038,156 +2018,121 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
-<style id="news-screen-staff-style-match">
-/* ============================================================
-   회원소식(newsScreen / newsDetailScreen) 화면을
-   KODA 임직원현황(staffScreen)과 동일한 디자인 언어로 통일
-   ============================================================ */
-
-/* 1) 화면 배경/컨테이너: 임직원현황과 동일한 고정 전체화면 + 중앙 정렬 */
-#newsScreen, #newsDetailScreen{
-  display:none; position:fixed; inset:0; z-index:1500;
-  overflow-y:auto; -webkit-overflow-scrolling:touch;
-  background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
-}
-#newsDetailScreen{ z-index:1600; }
-#newsScreen::after, #newsDetailScreen::after{content:'';display:block;min-height:18px;}
-#newsScreen .staff-mobile-header,
-#newsScreen .fullscreen-tabs,
-#newsScreen .fullscreen-content,
-#newsDetailScreen .staff-mobile-header,
-#newsDetailScreen .fullscreen-content{
-  width:100%; max-width:430px; margin-left:auto; margin-right:auto; box-sizing:border-box;
-}
-
-/* 2) 헤더: 임직원현황과 동일한 sticky 헤더(54px, 중앙 타이틀, 라운드 뒤로가기 버튼) */
-#newsScreen .staff-mobile-header,
-#newsDetailScreen .staff-mobile-header{
-  position:sticky!important; top:0!important; z-index:30;
-  flex:0 0 auto!important; height:54px!important; min-height:54px!important;
-  display:flex!important; align-items:center!important; padding:0 15px!important;
-  background:#fff; border-bottom:1px solid #edf2f7;
-  box-shadow:0 3px 14px rgba(25,67,110,.055);
-}
-#newsScreen .fullscreen-back-btn,
-#newsDetailScreen .fullscreen-back-btn{
-  position:relative!important; z-index:3;
-  width:42px; height:42px; min-height:42px; padding:0;
-  display:flex; align-items:center; justify-content:center;
-  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
-  font-size:1.4rem; font-weight:700; line-height:1;
-}
-#newsScreen .fullscreen-title,
-#newsDetailScreen .fullscreen-title{
-  position:absolute!important; left:50%!important; top:50%!important;
-  transform:translate(-50%,-50%)!important; width:max-content!important; margin:0!important;
-  text-align:center; color:#173f70; font-size:1.12rem; font-weight:850;
-  letter-spacing:-.045em; white-space:nowrap; z-index:2;
-}
-
-/* 3) 탭(전체/분양일정/결혼/부고/기타): 임직원현황 5개 탭과 동일한 그리드/필 디자인 */
-#newsScreen #newsTabs{
-  position:relative!important; top:auto!important; flex:0 0 54px!important;
-  height:54px!important; min-height:54px!important; width:100%!important;
-  display:grid!important; grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  gap:5px!important; padding:7px 0!important; margin:0!important;
-}
-#newsScreen .month-tab{
-  min-width:0; width:100%; height:100%; padding:0 2px;
-  border:1px solid #dce6f2; border-radius:14px; background:#fff;
-  color:#5d7089; font-size:.78rem; font-weight:850; letter-spacing:-.05em;
-  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
-  display:flex; align-items:center; justify-content:center;
-}
-#newsScreen .month-tab.active{
-  color:#fff; border-color:#1769d2;
-  background:linear-gradient(135deg,#1769d2,#3182ce);
-  box-shadow:0 5px 13px rgba(23,105,210,.18);
-}
-
-/* 4) 콘텐츠 영역 */
-#newsScreen .fullscreen-content{
-  flex:1 1 auto!important; min-height:0; padding:12px 0 30px!important; overflow-y:visible;
-}
-#newsDetailScreen .fullscreen-content{
-  padding:20px 6px 40px!important;
-}
-
-/* 5) 목록 카드: 임직원현황 카드와 동일한 라운드/그림자/컬러 톤 */
-#newsList{ display:flex; flex-direction:column; gap:9px; width:100%; box-sizing:border-box; }
-#newsList .day-event-item{
-  min-width:0; box-sizing:border-box;
-  padding:13px 12px!important; border:1px solid #e2eaf4!important;
-  border-radius:15px!important; background:#fff;
-  box-shadow:0 4px 12px rgba(28,70,120,.055);
-}
-#newsList .day-event-item:active{ transform:scale(.985); background:#f8fbff; }
-#newsList .day-event-item-title{ font-size:.9rem!important; line-height:1.4!important; color:#17385f; }
-#newsList .day-event-item-meta{ margin-top:6px!important; color:#657a96; font-size:.72rem!important; }
-#newsScreen .loading-msg, #newsScreen .no-data{
-  padding:30px 12px; text-align:center; color:#7a8da7; font-size:.78rem;
-  background:#fff; border-radius:15px; border:1px solid #e2eaf4;
-}
-
-/* 6) 뱃지: 임직원현황 뱃지와 동일한 필(pill) 형태 + 카테고리별 색상 */
-.news-badge{
-  font-size:.6rem!important; font-weight:800; padding:2px 6px!important;
-  border-radius:999px; margin-right:5px!important; background:#edf5ff; color:#1769d2;
-}
-
-/* 7) 상세보기 페이지 타이포그래피 */
-#newsDetailScreen #newsDetailTitle{ color:#17385f; }
-#newsDetailScreen #newsDetailDate{ font-size:.78rem!important; }
-#newsDetailScreen #newsDetailLink.day-event-item{
-  border-radius:15px!important; border:1px solid #e2eaf4!important;
-  box-shadow:0 4px 12px rgba(28,70,120,.055);
-}
-
-@media(max-width:360px){
-  #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header{ height:52px!important; min-height:52px!important; }
-  #newsScreen #newsTabs{ flex-basis:50px!important; height:50px!important; min-height:50px!important; gap:3px!important; }
-  #newsScreen .month-tab{ font-size:.73rem; }
-}
-</style>
-
-
-<style id="final-news-menu-fix">
-  /* 회원소식 5개 카테고리 버튼: 화면 전체 폭을 정확히 5등분 */
-  #newsScreen #newsTabs{
-    width:100%!important;
-    max-width:none!important;
-    box-sizing:border-box!important;
-    display:grid!important;
-    grid-template-columns:repeat(5,minmax(0,1fr))!important;
-    gap:5px!important;
-    padding:7px 0!important;
-    margin:0!important;
-    justify-items:stretch!important;
-    align-items:stretch!important;
+<style id="news-screen-sync-style">
+  /* 회원소식 및 상세보기 레이아웃을 임직원현황과 동일하게 맞춤 */
+  #newsScreen, #newsDetailScreen {
+    display:none; position:fixed; inset:0; z-index:1500;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+    flex-direction:column; align-items:center; justify-content:flex-start;
+    width:100vw; max-width:none;
   }
-  #newsScreen #newsTabs .month-tab{
-    width:100%!important;
-    min-width:0!important;
-    max-width:none!important;
-    margin:0!important;
-    box-sizing:border-box!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
+  #newsScreen::after, #newsDetailScreen::after {content:'';display:block;min-height:18px;}
+  
+  #newsScreen .staff-mobile-header, #newsScreen .fullscreen-tabs, #newsScreen .fullscreen-content,
+  #newsDetailScreen .staff-mobile-header, #newsDetailScreen .fullscreen-content {
+    width:min(430px, calc(100% - 20px)); max-width:430px; margin-left:auto; margin-right:auto; box-sizing:border-box;
+  }
+  
+  /* 헤더 디자인 동기화 */
+  #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header {
+    height:54px; min-height:54px; position:relative; flex:0 0 54px; z-index:30;
+    background:#fff; border-bottom:1px solid #edf2f7; box-shadow:0 3px 14px rgba(25,67,110,.055);
+    display:flex; align-items:center; padding:0 15px; border-radius:0;
+  }
+  #newsScreen .fullscreen-back-btn, #newsDetailScreen .fullscreen-back-btn {
+    width:42px; height:42px; min-height:42px; padding:0; display:flex; align-items:center; justify-content:center;
+    border:0; border-radius:14px; background:#f1f6fd; color:#1769d2; font-size:1.55rem; font-weight:700; line-height:1;
+  }
+  #newsScreen .fullscreen-title, #newsDetailScreen .fullscreen-title {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:max-content; margin:0; text-align:center;
+    color:#173f70; font-size:1.12rem; font-weight:850; letter-spacing:-.045em; white-space:nowrap; z-index:2;
   }
 
-  /* 회원소식 아이콘: 다른 퀵메뉴 SVG와 동일한 시각적 크기 + 노란색 */
-  .news-quick-icon svg{
-    width:31px!important;
-    height:31px!important;
-    display:block!important;
+  /* 탭 버튼 디자인 동기화 */
+  #newsTabs {
+    flex:0 0 54px; height:54px; min-height:54px; width:100%; display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px; padding:7px 0; margin:0; box-sizing:border-box;
   }
-  .news-quick-icon{
-    background:#fff8df!important;
-    border-color:#f3df9b!important;
+  #newsTabs .month-tab {
+    display:flex; align-items:center; justify-content:center; width:100%; height:40px; min-height:40px; padding:0 2px;
+    border:1px solid #dce6f2; border-radius:15px; background:#fff; color:#5d7089; font-size:.88rem; font-weight:850; letter-spacing:-.055em;
+    box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
+  }
+  #newsTabs .month-tab.active {
+    color:#fff; border-color:#1769d2; background:linear-gradient(135deg,#1769d2,#3182ce); box-shadow:0 5px 13px rgba(23,105,210,.18);
+  }
+  
+  #newsScreen .fullscreen-content, #newsDetailScreen .fullscreen-content {
+    flex:1 1 auto; min-height:0; padding:8px 0 30px; overflow-y:auto;
+  }
+
+  /* 모바일 미세조정 */
+  @media(max-width:360px){
+    #newsScreen, #newsDetailScreen {padding:0 0 14px;}
+    #newsScreen .staff-mobile-header, #newsScreen .fullscreen-tabs, #newsScreen .fullscreen-content,
+    #newsDetailScreen .staff-mobile-header, #newsDetailScreen .fullscreen-content {width:calc(100% - 14px);}
+    #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header {height:52px; min-height:52px;}
+    #newsScreen .fullscreen-back-btn, #newsDetailScreen .fullscreen-back-btn {width:40px;height:40px;min-height:40px;border-radius:13px;}
+    #newsScreen .fullscreen-title, #newsDetailScreen .fullscreen-title {font-size:1rem;}
+    #newsTabs {flex-basis:50px;height:50px;min-height:50px;padding:5px 0;gap:3px;}
+    #newsTabs .month-tab {height:40px;min-height:40px;font-size:.77rem;border-radius:13px;}
+    #newsScreen .fullscreen-content, #newsDetailScreen .fullscreen-content {padding:7px 0 25px;}
+  }
+
+  /* 💡 리스트 카드 디자인 (임직원현황 카드와 완벽 매칭) */
+  #newsList {
+    display: flex; flex-direction: column; gap: 9px; width: 100%; box-sizing: border-box;
+  }
+  #newsList .news-card-item {
+    min-width: 0; box-sizing: border-box; padding: 14px 15px; border: 1px solid #e2eaf4;
+    border-radius: 15px; background: #fff; box-shadow: 0 4px 12px rgba(28,70,120,.055);
+    text-align: left; cursor: pointer; transition: transform 0.1s, background 0.1s;
+  }
+  #newsList .news-card-item:active { transform: scale(.985); background: #f8fbff; }
+  #newsList .news-badge {
+    display: inline-block; font-size: .65rem; font-weight: 800; padding: 3px 8px; margin-bottom: 8px;
+    border-radius: 999px; background: #edf5ff; color: #1769d2;
+  }
+  #newsList .news-title {
+    font-size: 1.05rem; font-weight: 850; color: #17385f; line-height: 1.35; margin-bottom: 6px; word-break: keep-all;
+  }
+  #newsList .news-date {
+    font-size: .75rem; color: #8298b1; font-weight: 650;
+  }
+
+  /* 💡 상세보기 카드 디자인 보강 */
+  #newsDetailScreen { z-index: 1600; }
+  #newsDetailScreen .detail-card {
+    background: #fff; border: 1px solid #e2eaf4; border-radius: 15px; padding: 24px 20px; box-shadow: 0 4px 12px rgba(28,70,120,.055);
+  }
+  #newsDetailCategory {
+    display: inline-block; font-size: .75rem; font-weight: 800; padding: 4px 10px; margin-bottom: 12px;
+    border-radius: 999px; background: #edf5ff; color: #1769d2;
+  }
+  #newsDetailTitle {
+    font-size: 1.25rem; font-weight: 850; color: #17385f; line-height: 1.4; margin-bottom: 12px; word-break: keep-all;
+  }
+  #newsDetailDate {
+    font-size: .8rem; color: #8298b1; font-weight: 650; padding-bottom: 15px; border-bottom: 1px solid #edf2f7; margin-bottom: 20px;
+  }
+  #newsDetailContent {
+    font-size: .95rem; line-height: 1.7; color: #47698f; white-space: pre-wrap; word-break: keep-all; margin-bottom: 30px;
+  }
+  #newsDetailLinkArea {
+    padding-top: 20px; border-top: 2px dashed #edf2f7;
+  }
+  #newsDetailLinkArea .link-title {
+    font-size: .85rem; font-weight: 800; margin-bottom: 12px; color: #173f70;
+  }
+  #newsDetailLink {
+    display: block; text-decoration: none; border: 1px solid #dce6f2; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 11px rgba(24,71,120,.045);
+  }
+  #newsDetailLink img { width: 100%; height: 180px; object-fit: cover; background: #f8fafc; }
+  #newsDetailLink .link-url-box {
+    padding: 14px; background: #f8fafc; font-size: .85rem; color: #1769d2; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 </style>
-
 </head>
 <body>
 
@@ -2265,11 +2210,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <!-- 기존 퀵메뉴 컨테이너 끝나는 부분 아래에 추가 -->
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNewsScreen()">
-      <span class="quick-icon news-quick-icon">
-        <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="7" y="6" width="38" height="40" rx="8" fill="#f6c344"/>
-          <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
-        </svg>
+      <span class="quick-icon">
+        <span style="font-size:1.5rem;">📰</span>
       </span>
       <span class="quick-label">회원소식</span>
     </button>
@@ -2430,38 +2372,40 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
+    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
     <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
     <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
     <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
   </div>
   <div class="fullscreen-content" style="padding-top: 15px;">
-    <div class="day-event-list" id="newsList"></div>
+    <div class="schedule-list-wrapper" id="newsList"></div>
   </div>
 </div>
 
 <!-- ✨ 2. 회원소식 상세보기 페이지 (팝업 아님) ✨ -->
-<div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
-  <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
+<div class="fullscreen-screen" id="newsDetailScreen">
+  <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
     <div class="fullscreen-title">소식 상세보기</div>
   </div>
-  <div class="fullscreen-content" style="padding: 20px 16px; text-align: left;">
-    <div style="margin-bottom: 8px;"><span id="newsDetailCategory" class="news-badge"></span></div>
-    <div id="newsDetailTitle" class="modal-title" style="font-size: 1.25rem; margin-bottom: 8px;"></div>
-    <div id="newsDetailDate" class="modal-detail-row" style="color: var(--text-muted); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color);"></div>
-
-    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 32px;"></div>
-
-    <!-- URL 썸네일 노출 영역 -->
-    <div id="newsDetailLinkArea" style="display: none; padding-top: 18px; border-top: 1px dashed var(--border-color);">
-      <div class="modal-label" style="width: auto; color: var(--primary-color); margin-bottom: 10px;">🔗 관련 링크</div>
-      <a id="newsDetailLink" href="#" target="_blank" class="day-event-item" style="display: block; padding: 0; overflow: hidden; text-decoration: none;">
-        <img id="newsDetailLinkThumb" src="" style="width: 100%; height: 170px; object-fit: cover; display: none; background: #f7fafc;" alt="링크 썸네일">
-        <div style="padding: 11px;">
-          <div id="newsDetailLinkUrl" class="day-event-item-meta" style="color: #2b6cb0; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0;"></div>
-        </div>
-      </a>
+  <div class="fullscreen-content">
+    <div class="detail-card">
+      <div id="newsDetailCategory"></div>
+      <div id="newsDetailTitle"></div>
+      <div id="newsDetailDate"></div>
+      
+      <div id="newsDetailContent"></div>
+      
+      <!-- URL 썸네일 노출 영역 -->
+      <div id="newsDetailLinkArea" style="display: none;">
+        <div class="link-title">🔗 관련 링크 (클릭 시 이동)</div>
+        <a id="newsDetailLink" href="#" target="_blank">
+          <img id="newsDetailLinkThumb" src="" alt="링크 썸네일" style="display:none;">
+          <div class="link-url-box">
+            <div id="newsDetailLinkUrl"></div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -3439,13 +3383,6 @@ function createEventCard(event) {
     return new Date(y, (m || 1) - 1, d || 1);
   }
 
-  // 시트6의 기존 "분양일정" 데이터도 새 명칭 "견본주택"으로 통일
-  function normalizeNewsCategory(category) {
-    const c = String(category || '').trim();
-    if (c === '분양일정' || c.includes('분양')) return '견본주택';
-    return c || '기타';
-  }
-
   // 시트6 데이터 파싱 함수 (B:구분, C:작성일자, D:제목, E:내용, F:관련링크(URL))
   function parseNewsCSV(csv) {
     const rows = splitCSV(csv);
@@ -3457,7 +3394,7 @@ function createEventCard(event) {
       if (!dateRaw && !titleRaw) continue; // 빈 행 건너뛰기
 
       dataArr.push({
-        category: normalizeNewsCategory(r[1] ? r[1].trim() : "기타"), // B열
+        category: r[1] ? r[1].trim() : "기타", // B열
         date: dateRaw,                          // C열
         title: titleRaw,                        // D열
         content: r[4] ? r[4].trim() : "",       // E열
@@ -3481,15 +3418,6 @@ function createEventCard(event) {
     }
   }
 
-  // 카테고리별 뱃지 색상 클래스 (임직원현황 뱃지와 동일한 디자인 언어)
-  function newsBadgeClass(category) {
-    const c = String(category || '');
-    if (c.includes('분양') || c.includes('견본주택')) return 'news-badge-sale';
-    if (c.includes('결혼')) return 'news-badge-wedding';
-    if (c.includes('부고')) return 'news-badge-obituary';
-    return 'news-badge-etc';
-  }
-
   // 카테고리 필터 및 리스트 렌더링
   window.filterNews = function(category) {
     currentNewsCategory = category;
@@ -3497,40 +3425,28 @@ function createEventCard(event) {
     tabs.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.cat === category);
     });
-    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-
-    const newsScreen = document.getElementById('newsScreen');
-    const newsContent = newsScreen?.querySelector('.fullscreen-content');
-    if (newsScreen) newsScreen.scrollTop = 0;
-    if (newsContent) newsContent.scrollTop = 0;
-
+    
     const list = document.getElementById('newsList');
     list.innerHTML = '';
-
-    const filteredData = category === '전체'
-      ? newsData
-      : newsData.filter(item => normalizeNewsCategory(item.category) === category);
-
+    
+    const filteredData = category === '전체' ? newsData : newsData.filter(item => item.category === category);
+    
     if (filteredData.length === 0) {
-      list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
+      list.innerHTML = `<div class="no-data" style="background:#fff; border:1px solid #e2eaf4; border-radius:15px; padding:30px;">등록된 소식이 없습니다.</div>`;
       return;
     }
 
     filteredData.forEach(item => {
       const globalIndex = newsData.indexOf(item);
       const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'day-event-item news-card-item';
+      card.className = 'news-card-item'; 
       card.innerHTML = `
-        <div class="day-event-item-title"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span>${item.title}</div>
-        <div class="day-event-item-meta">작성일: ${item.date}</div>
+        <span class="news-badge">${item.category}</span>
+        <div class="news-title">${item.title}</div>
+        <div class="news-date">작성일: ${item.date}</div>
       `;
       card.onclick = () => openNewsDetailScreen(globalIndex);
       list.appendChild(card);
-    });
-    requestAnimationFrame(() => {
-      if (newsScreen) newsScreen.scrollTop = 0;
-      if (newsContent) newsContent.scrollTop = 0;
     });
   }
 
@@ -3566,9 +3482,7 @@ function createEventCard(event) {
 
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
-    const catEl = document.getElementById('newsDetailCategory');
-    catEl.innerText = normalizeNewsCategory(item.category);
-    catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
+    document.getElementById('newsDetailCategory').innerText = item.category;
     document.getElementById('newsDetailTitle').innerText = item.title;
     document.getElementById('newsDetailDate').innerText = `등록일: ${item.date}`;
     document.getElementById('newsDetailContent').innerText = item.content;
