@@ -1989,27 +1989,31 @@ button,.nav-btn,.action-btn{min-height:44px;}
   /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
   .card-today-badge {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background-color: #e53e3e; /* 기존 빨간 테두리와 같은 색상 */
+    bottom: 0px;  /* 바닥 테두리에 완전 밀착 (기존 12px) */
+    right: 0px;   /* 오른쪽 테두리에 완전 밀착 (기존 12px) */
+    background-color: #e53e3e; 
     color: #ffffff;
     font-size: 0.55rem;
     font-weight: 800;
-    padding: 3px 6px;
-    border-radius: 4px;
+    padding: 3px 7px;
+    
+    /* 카드 모서리 둥글기(10px)와 자연스럽게 이어지도록 반경 설정 (좌측상단 우측상단 우측하단 좌측하단) */
+    border-radius: 8px 0 8px 0; 
+    
     z-index: 5;
-    line-height: 1;
-    pointer-events: none; /* 뱃지를 눌러도 아래에 있는 카드가 터치되도록 설정 */
-    box-shadow: 0 2px 5px rgba(229, 62, 62, 0.25); /* 살짝 그림자 추가 */
+    line-height: 1.1;
+    pointer-events: none; 
+    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); /* 안쪽으로 살짝 그림자 */
   }
   
   /* 모바일 화면 맞춤 미세조정 */
   @media(max-width:360px) {
     .card-today-badge {
-      bottom: 9px;
-      right: 9px;
+      bottom: 0px;
+      right: 0px;
       font-size: 0.5rem;
-      padding: 2px 4px;
+      padding: 2px 5px;
+      border-radius: 6px 0 10px 0; /* 모바일 카드 모서리에 맞춤 */
     }
   }
 </style>
