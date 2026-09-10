@@ -928,104 +928,6 @@
     flex-grow: 1;
   }
 
-  /* ===== 준비중 버튼 ===== */
-  .quick-btn-soon { opacity: 0.55; }
-  .quick-btn-soon .quick-icon-soon { background:#eef1f5; box-shadow:none; }
-  .quick-btn-soon:active { opacity: 0.4; }
-
-  /* ===== 회원소식 카드/뱃지 ===== */
-  .news-badge {
-    display: inline-block;
-    font-size: 0.66rem;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 20px;
-  }
-  .news-card { display:flex; flex-direction:column; gap:6px; }
-  .news-card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-  .news-card-date { font-size:0.68rem; color: var(--text-muted); font-weight:700; flex-shrink:0; }
-  .news-card-title { font-size:0.85rem; font-weight:750; line-height:1.4; color: var(--text-dark); word-break: keep-all; }
-
-  /* ===== 회원소식 상세 페이지 ===== */
-  .news-detail-title {
-    margin-top: 10px;
-    font-size: 1.08rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    line-height: 1.4;
-    word-break: keep-all;
-  }
-  .news-detail-date {
-    margin-top: 6px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 700;
-    padding-bottom: 12px;
-    border-bottom: 1px dashed var(--border-color);
-  }
-  .news-detail-body {
-    margin-top: 14px;
-    font-size: 0.86rem;
-    line-height: 1.75;
-    color: var(--text-dark);
-    white-space: normal;
-    word-break: keep-all;
-  }
-  .news-link-preview { margin-top: 22px; }
-  .news-link-label {
-    font-size: 0.72rem;
-    font-weight: 800;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-  .news-link-card {
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(22,52,95,.06);
-  }
-  .news-link-card:active { background:#f8fafc; }
-  .news-link-thumb {
-    width: 100%;
-    max-height: 220px;
-    object-fit: cover;
-    background: #eef1f5;
-    display: block;
-  }
-  .news-link-info { padding: 10px 12px; }
-  .news-link-title {
-    font-size: 0.82rem;
-    font-weight: 750;
-    color: var(--text-dark);
-    line-height: 1.4;
-    word-break: keep-all;
-  }
-  .news-link-desc {
-    margin-top: 4px;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .news-link-url {
-    margin-top: 6px;
-    font-size: 0.68rem;
-    color: #94a3b8;
-    font-weight: 700;
-  }
-  .news-link-loading {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    padding: 12px 2px;
-  }
-
   /* 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
@@ -1466,6 +1368,50 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .day-event-item-meta{font-size:.64rem !important;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
+
+<!-- ✨ 1. 회원소식 목록 페이지 ✨ -->
+<div class="fullscreen-screen" id="newsScreen">
+  <div class="staff-mobile-header">
+    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">회원소식</div>
+  </div>
+  <div class="fullscreen-tabs" id="newsTabs">
+    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
+    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
+    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
+    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
+    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
+  </div>
+  <div class="fullscreen-content" style="padding-top: 15px;">
+    <div class="schedule-list-wrapper" id="newsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 2. 회원소식 상세보기 페이지 (팝업 아님) ✨ -->
+<div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
+  <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
+    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">소식 상세보기</div>
+  </div>
+  <div class="fullscreen-content" style="padding: 24px 20px; text-align: left;">
+    <div id="newsDetailCategory" style="font-size: 0.85rem; font-weight: 800; color: #3182ce; margin-bottom: 6px;"></div>
+    <div id="newsDetailTitle" style="font-size: 1.35rem; font-weight: 800; color: #1a202c; line-height: 1.4; margin-bottom: 10px; word-break: keep-all;"></div>
+    <div id="newsDetailDate" style="font-size: 0.85rem; color: #718096; margin-bottom: 24px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;"></div>
+    
+    <div id="newsDetailContent" style="font-size: 1rem; line-height: 1.65; color: #2d3748; white-space: pre-wrap; margin-bottom: 40px; word-break: keep-all;"></div>
+    
+    <!-- URL 썸네일 노출 영역 -->
+    <div id="newsDetailLinkArea" style="display: none; padding-top: 20px; border-top: 2px dashed #e2e8f0;">
+      <div style="font-size: 0.9rem; font-weight: 800; margin-bottom: 12px; color: #4a5568;">🔗 관련 링크 (클릭 시 이동)</div>
+      <a id="newsDetailLink" href="#" target="_blank" style="display: block; text-decoration: none; border: 1px solid #cbd5e0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <img id="newsDetailLinkThumb" src="" style="width: 100%; height: 180px; object-fit: cover; display: none; background: #f7fafc;" alt="링크 썸네일">
+        <div style="padding: 14px; background: #f7fafc;">
+          <div id="newsDetailLinkUrl" style="font-size: 0.85rem; color: #2b6cb0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
 
   /* ===== 임직원 미리보기 한 줄 정보 ===== */
   #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
@@ -2190,22 +2136,29 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#1267d6"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
     </button>
   </div>
-
+<!-- 기존 퀵메뉴 컨테이너 끝나는 부분 아래에 추가 -->
   <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNewsScreen()">
-      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="6" y="10" width="40" height="30" rx="8" fill="#1267d6"/><path d="M14 19h24M14 26h16" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="38" cy="35" r="9.5" fill="#ffb020"/><path d="M38 30.5v5.2l3.6 2.1" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">회원소식</span>
+      <span class="quick-icon" style="background:#fff8f1; border-color:#fbd38d;">
+        <span style="font-size:1.5rem;">📰</span>
+      </span>
+      <span class="quick-label">회원소식</span>
     </button>
-    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
-      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
     </button>
-    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
-      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
     </button>
-    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
-      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
     </button>
-    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
-      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
     </button>
   </div>
 
@@ -2292,46 +2245,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
-<!-- ✨ 회원소식 목록 화면 ✨ -->
-<div class="fullscreen-screen" id="newsScreen">
-  <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">← 뒤로</button>
-    <div class="fullscreen-title">회원소식</div>
-    <div class="fullscreen-dummy"></div>
-  </div>
-
-  <div class="fullscreen-tabs" id="newsTabs">
-    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
-    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
-    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
-    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
-  </div>
-
-  <div class="fullscreen-content">
-    <div class="day-event-list" id="newsList">
-      <div class="loading-msg">회원소식을 불러오는 중입니다...⏳</div>
-    </div>
-  </div>
-</div>
-
-<!-- ✨ 회원소식 상세 페이지 (팝업이 아닌 실제 화면 전환) ✨ -->
-<div class="fullscreen-screen" id="newsDetailScreen">
-  <div class="fullscreen-header">
-    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">← 뒤로</button>
-    <div class="fullscreen-title">회원소식</div>
-    <div class="fullscreen-dummy"></div>
-  </div>
-
-  <div class="fullscreen-content">
-    <div id="newsDetailBadge"></div>
-    <div class="news-detail-title" id="newsDetailTitle"></div>
-    <div class="news-detail-date" id="newsDetailDate"></div>
-    <div class="news-detail-body" id="newsDetailBody"></div>
-    <div class="news-link-preview" id="newsLinkPreview" style="display:none;"></div>
-  </div>
-</div>
-
 <!-- 일정 상세 모달 -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
@@ -2382,7 +2295,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
-  const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1026643170&single=true&output=csv";
 
   let scheduleData = [];
   let staffData = [];
@@ -2795,239 +2707,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
 
-  // ===== 시트6 회원소식 연동 부분 =====
-  let newsData = [];
-  let currentNewsCategory = '전체';
-  let currentNewsIndex = null;
-
-  const NEWS_CATEGORY_BADGE = {
-    '분양일정': { bg: '#eef5ff', color: '#1267d6' },
-    '결혼':     { bg: '#fff1f6', color: '#d6336c' },
-    '부고':     { bg: '#f1f3f5', color: '#495057' },
-    '기타':     { bg: '#f6f2ff', color: '#7048e8' }
-  };
-
-  // "26.09.09" 같은 날짜 문자열을 Date 객체로 변환 (정렬용)
-  function parseNewsDateToObj(dateStr) {
-    const m = String(dateStr || '').trim().match(/(\d{2,4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
-    if (!m) return null;
-    let y = parseInt(m[1], 10);
-    if (y < 100) y += 2000;
-    const mo = parseInt(m[2], 10);
-    const d = parseInt(m[3], 10);
-    const obj = new Date(y, mo - 1, d);
-    return isNaN(obj.getTime()) ? null : obj;
-  }
-
-  // 시트의 실제 구분값을 화면에 보여줄 4개 탭(분양일정/결혼/부고/기타) 중 하나로 매핑
-  function normalizeNewsCategory(raw) {
-    const v = String(raw || '').trim();
-    if (!v) return '기타';
-    if (v.includes('결혼')) return '결혼';
-    if (v.includes('부고')) return '부고';
-    if (v.includes('분양') || v.includes('견본주택') || v.includes('견본') || v.includes('오픈') || v.includes('청약')) return '분양일정';
-    return '기타';
-  }
-
-  function parseNewsCSV(csv) {
-    const rows = splitCSV(csv);
-    const dataArr = [];
-    if (rows.length < 2) return dataArr;
-
-    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
-    let idx = {
-      cat: headers.indexOf("구분"),
-      date: headers.indexOf("작성일자"),
-      title: headers.indexOf("제목"),
-      content: headers.indexOf("내용"),
-      link: headers.indexOf("관련링크")
-    };
-    // 헤더를 인식하지 못하는 경우, 시트6 실제 열 순서(구분/작성일자/제목/내용/관련링크=B~F열)를 그대로 사용
-    if (idx.title === -1) idx = { cat: 1, date: 2, title: 3, content: 4, link: 5 };
-
-    for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      if (!r || r.length <= idx.title || !r[idx.title]) continue;
-      const rawDate = idx.date !== -1 && r[idx.date] ? r[idx.date].trim() : '';
-      const rawCat = idx.cat !== -1 && r[idx.cat] ? r[idx.cat].trim() : '';
-      dataArr.push({
-        id: `news_${i}_${rawDate}`,
-        rawCategory: rawCat,
-        category: normalizeNewsCategory(rawCat),
-        date: rawDate,
-        dateObj: parseNewsDateToObj(rawDate),
-        title: idx.title !== -1 && r[idx.title] ? r[idx.title].trim() : '제목 없음',
-        content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : '',
-        link: idx.link !== -1 && r[idx.link] ? r[idx.link].trim() : ''
-      });
-    }
-    // 작성일자 최신순(내림차순) 정렬
-    dataArr.sort((a, b) => {
-      const at = a.dateObj ? a.dateObj.getTime() : -Infinity;
-      const bt = b.dateObj ? b.dateObj.getTime() : -Infinity;
-      return bt - at;
-    });
-    return dataArr;
-  }
-
-  async function loadNewsData() {
-    const list = document.getElementById('newsList');
-    if (list) list.innerHTML = `<div class="loading-msg">회원소식을 불러오는 중입니다...⏳</div>`;
-    try {
-      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      newsData = parseNewsCSV(await response.text());
-      renderNewsList(currentNewsCategory);
-    } catch (error) {
-      if (list) list.innerHTML = `<div class="no-data">회원소식을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
-    }
-  }
-
-  function renderNewsList(categoryFilter) {
-    const list = document.getElementById('newsList'); if (!list) return; list.innerHTML = '';
-    const filteredData = (categoryFilter === '전체') ? [...newsData] : newsData.filter(item => item.category === categoryFilter);
-
-    if (!filteredData.length) {
-      list.innerHTML = `<div class="no-data">등록된 회원소식이 없습니다.</div>`;
-      return;
-    }
-
-    filteredData.forEach(item => {
-      const indexInOriginal = newsData.indexOf(item);
-      const badge = NEWS_CATEGORY_BADGE[item.category] || NEWS_CATEGORY_BADGE['기타'];
-      const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'day-event-item news-card';
-      card.innerHTML = `
-        <div class="news-card-top">
-          <span class="news-badge" style="background:${badge.bg};color:${badge.color};">${item.category}</span>
-          <span class="news-card-date">${item.date || ''}</span>
-        </div>
-        <div class="news-card-title">${escapeNewsHtml(item.title)}</div>
-      `;
-      card.onclick = () => openNewsDetail(indexInOriginal);
-      list.appendChild(card);
-    });
-  }
-
-  window.filterNews = function(category) {
-    const validCategories = ['전체', '분양일정', '결혼', '부고', '기타'];
-    if (!validCategories.includes(category)) category = '전체';
-    currentNewsCategory = category;
-    document.querySelectorAll('#newsTabs .month-tab').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.cat === category);
-    });
-    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-    renderNewsList(category);
-    const newsScreen = document.getElementById('newsScreen');
-    if (newsScreen) newsScreen.scrollTop = 0;
-  };
-
-  window.openNewsScreen = function() {
-    const screen = document.getElementById('newsScreen');
-    screen.style.display = 'flex';
-    screen.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
-    history.pushState({ newsOpen: true }, "", "");
-
-    currentNewsCategory = '전체';
-    document.querySelectorAll('#newsTabs .month-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === '전체'));
-
-    if (newsData.length === 0) loadNewsData(); else renderNewsList('전체');
-  };
-
-  window.closeNewsScreen = function(goBack = true) {
-    document.getElementById('newsScreen').style.display = 'none';
-    document.body.style.overflow = 'auto';
-    if (goBack) history.back();
-  };
-
-  function escapeNewsHtml(str) {
-    return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
-
-  function linkifyNewsContent(text) {
-    const escaped = escapeNewsHtml(text).replace(/\n/g, '<br>');
-    return escaped.replace(/(https?:\/\/[^\s<]+)/g, url => `<a href="${url}" target="_blank" rel="noopener" style="color:#1267d6;word-break:break-all;">${url}</a>`);
-  }
-
-  window.openNewsDetail = function(index) {
-    currentNewsIndex = index;
-    const item = newsData[index];
-    if (!item) return;
-
-    const badge = NEWS_CATEGORY_BADGE[item.category] || NEWS_CATEGORY_BADGE['기타'];
-    document.getElementById('newsDetailBadge').innerHTML = `<span class="news-badge" style="background:${badge.bg};color:${badge.color};">${item.category}</span>`;
-    document.getElementById('newsDetailTitle').innerText = item.title;
-    document.getElementById('newsDetailDate').innerText = item.date || '';
-    document.getElementById('newsDetailBody').innerHTML = linkifyNewsContent(item.content);
-
-    const previewEl = document.getElementById('newsLinkPreview');
-    previewEl.style.display = 'none';
-    previewEl.innerHTML = '';
-    if (item.link) {
-      previewEl.style.display = 'block';
-      previewEl.innerHTML = `<div class="news-link-label">관련 링크</div><div class="news-link-loading">링크 미리보기를 불러오는 중입니다...⏳</div>`;
-      loadNewsLinkPreview(item.link, previewEl);
-    }
-
-    const detailScreen = document.getElementById('newsDetailScreen');
-    detailScreen.style.display = 'flex';
-    detailScreen.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
-    history.pushState({ newsDetailOpen: true }, "", "");
-  };
-
-  window.closeNewsDetailScreen = function(goBack = true) {
-    document.getElementById('newsDetailScreen').style.display = 'none';
-    document.body.style.overflow = 'hidden';
-    if (goBack) history.back();
-  };
-
-  // 관련 링크(F열) URL을 실제 썸네일이 포함된 카드로 렌더링
-  async function loadNewsLinkPreview(url, containerEl) {
-    try {
-      const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=false`;
-      const res = await fetch(apiUrl);
-      const json = await res.json();
-      if (json.status !== 'success' || !json.data) throw new Error('no preview data');
-
-      const data = json.data;
-      const imgUrl = (data.image && data.image.url) || (data.screenshot && data.screenshot.url) || (data.logo && data.logo.url) || '';
-      const siteTitle = data.title || url;
-      const siteDesc = data.description || '';
-      let publisher = data.publisher || '';
-      if (!publisher) { try { publisher = new URL(url).hostname; } catch (e) { publisher = url; } }
-
-      containerEl.innerHTML = `
-        <div class="news-link-label">관련 링크</div>
-        <a href="${url}" target="_blank" rel="noopener" class="news-link-card">
-          ${imgUrl ? `<img src="${imgUrl}" alt="" class="news-link-thumb" loading="lazy">` : ''}
-          <div class="news-link-info">
-            <div class="news-link-title">${escapeNewsHtml(siteTitle)}</div>
-            ${siteDesc ? `<div class="news-link-desc">${escapeNewsHtml(siteDesc)}</div>` : ''}
-            <div class="news-link-url">${escapeNewsHtml(publisher)}</div>
-          </div>
-        </a>
-      `;
-    } catch (err) {
-      let publisher = url;
-      try { publisher = new URL(url).hostname; } catch (e) {}
-      containerEl.innerHTML = `
-        <div class="news-link-label">관련 링크</div>
-        <a href="${url}" target="_blank" rel="noopener" class="news-link-card">
-          <div class="news-link-info">
-            <div class="news-link-title">${escapeNewsHtml(publisher)}</div>
-            <div class="news-link-url">${escapeNewsHtml(url)}</div>
-          </div>
-        </a>
-      `;
-    }
-  }
-
-  // 준비중 버튼 안내
-  window.showComingSoon = function() {
-    alert('준비 중인 서비스입니다. 곧 만나보실 수 있어요! 🙏');
-  };
 
   window.toggleBookmark = function(event, id) {
     event.stopPropagation(); 
@@ -3454,7 +3133,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal','staffScreen','staffDetailModal','newsScreen','newsDetailScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'newsScreen', 'newsDetailScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -3463,10 +3142,10 @@ function createEventCard(event) {
     if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
-    else if (st.newsOpen) document.getElementById('newsScreen').style.display='flex';
-    else if (st.newsDetailOpen) { document.getElementById('newsScreen').style.display='flex'; document.getElementById('newsDetailScreen').style.display='flex'; }
+    else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
+      else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -3566,6 +3245,130 @@ function createEventCard(event) {
     if (startX - endX > 50) changeMonth(1);
     else if (endX - startX > 50) changeMonth(-1);
   }, {passive: true});
+
+// 시트6 (회원소식) URL 상수 정의
+  const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1026643170&single=true&output=csv";
+  let newsData = [];
+  let currentNewsCategory = '전체';
+
+  // 시트6 데이터 파싱 함수 (A:작성일자, B:구분, C:제목, D:내용, F:관련링크(URL))
+  function parseNewsCSV(csv) {
+    const rows = splitCSV(csv);
+    const dataArr = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length < 3 || !r[0]) continue; 
+      dataArr.push({
+        date: r[0] ? r[0].trim() : "",
+        category: r[1] ? r[1].trim() : "기타",
+        title: r[2] ? r[2].trim() : "",
+        content: r[3] ? r[3].trim() : "",
+        linkUrl: (r.length > 5 && r[5]) ? r[5].trim() : "" // F열이 인덱스 5
+      });
+    }
+    // 최신 날짜가 위로 오도록 내림차순 정렬 (날짜 형식 예: 2026.09.10)
+    dataArr.sort((a, b) => new Date(b.date.replace(/\./g, '-')) - new Date(a.date.replace(/\./g, '-')));
+    return dataArr;
+  }
+
+  async function loadNewsData() {
+    const list = document.getElementById('newsList');
+    list.innerHTML = `<div class="loading-msg">회원 소식을 불러오는 중입니다...⏳</div>`;
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      newsData = parseNewsCSV(await response.text());
+      filterNews('전체');
+    } catch (error) {
+      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  // 카테고리 필터 및 리스트 렌더링
+  window.filterNews = function(category) {
+    currentNewsCategory = category;
+    const tabs = document.querySelectorAll('#newsTabs .month-tab');
+    tabs.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === category);
+    });
+    
+    const list = document.getElementById('newsList');
+    list.innerHTML = '';
+    
+    const filteredData = category === '전체' ? newsData : newsData.filter(item => item.category === category);
+    
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const globalIndex = newsData.indexOf(item);
+      const card = document.createElement('button');
+      card.className = 'event-card'; 
+      card.style.cssText = 'width: 100%; text-align: left; background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer;';
+      card.innerHTML = `
+        <div style="font-size: 0.75rem; color: #3182ce; font-weight: 800; margin-bottom: 4px;">[${item.category}]</div>
+        <div style="font-size: 1.05rem; font-weight: 700; color: #1a202c; line-height: 1.3; margin-bottom: 6px; word-break: keep-all;">${item.title}</div>
+        <div style="font-size: 0.75rem; color: #718096;">작성일: ${item.date}</div>
+      `;
+      card.onclick = () => openNewsDetailScreen(globalIndex);
+      list.appendChild(card);
+    });
+  }
+
+  // 실제 페이지 열기 동작
+  window.openNewsScreen = function() {
+    const newsScreenEl = document.getElementById('newsScreen');
+    newsScreenEl.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsOpen: true }, "", "");
+    if (newsData.length === 0) loadNewsData(); else filterNews('전체');
+  };
+
+  window.closeNewsScreen = function() { history.back(); };
+  window.closeNewsDetailScreen = function() { history.back(); };
+
+  // 썸네일 추출기 (무료 OpenGraph API 사용)
+  async function loadLinkThumbnail(url) {
+    const imgEl = document.getElementById('newsDetailLinkThumb');
+    imgEl.style.display = 'none';
+    imgEl.src = '';
+    try {
+      // Microlink API를 통해 CORS 우회 및 썸네일 이미지 파싱
+      const res = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (data.status === 'success' && data.data.image && data.data.image.url) {
+        imgEl.src = data.data.image.url;
+        imgEl.style.display = 'block';
+      }
+    } catch(e) {
+      console.log('썸네일 이미지를 불러올 수 없습니다.');
+    }
+  }
+
+  window.openNewsDetailScreen = function(index) {
+    const item = newsData[index];
+    document.getElementById('newsDetailCategory').innerText = `[${item.category}]`;
+    document.getElementById('newsDetailTitle').innerText = item.title;
+    document.getElementById('newsDetailDate').innerText = `등록일: ${item.date}`;
+    document.getElementById('newsDetailContent').innerText = item.content;
+
+    const linkArea = document.getElementById('newsDetailLinkArea');
+    if (item.linkUrl && item.linkUrl.startsWith('http')) {
+      linkArea.style.display = 'block';
+      const linkEl = document.getElementById('newsDetailLink');
+      linkEl.href = item.linkUrl;
+      document.getElementById('newsDetailLinkUrl').innerText = item.linkUrl;
+      // 썸네일 이미지 불러오기
+      loadLinkThumbnail(item.linkUrl);
+    } else {
+      linkArea.style.display = 'none';
+    }
+
+    document.getElementById('newsDetailScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsDetailOpen: true }, "", "");
+  };
 
   initAuth();
 
