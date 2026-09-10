@@ -746,8 +746,26 @@
   .news-badge-obituary { background: #edf1f5; color: #4a5568; }
   .news-badge-etc { background: #f7fafc; color: #718096; }
 
-  .day-event-item.news-card-item { display: flex; flex-direction: column; }
-  .news-card-item .day-event-item-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 0; }
+  .day-event-item.news-card-item {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .news-card-item .day-event-item-title {
+    display:block;
+    flex:1 1 auto;
+    min-width:0;
+    line-height:1.35;
+  }
+  .news-card-item .day-event-item-meta {
+    flex:0 0 auto;
+    margin-top:0;
+    margin-left:auto;
+    text-align:right;
+    white-space:nowrap;
+  }
 
   .modal-title-area {
     display: flex;
@@ -3635,7 +3653,7 @@ function createEventCard(event) {
     catEl.innerText = normalizeNewsCategory(item.category);
     catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
     document.getElementById('newsDetailTitle').innerText = item.title;
-    document.getElementById('newsDetailDate').innerText = `등록일: ${item.date}`;
+    document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
     document.getElementById('newsDetailContent').innerText = item.content;
 
     // G열 썸네일을 상세보기 최하단에 배치하고, 클릭하면 F열 URL로 연결
