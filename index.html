@@ -2176,23 +2176,73 @@ button,.nav-btn,.action-btn{min-height:44px;}
     justify-content:center!important;
   }
 
-  /* 회원소식 아이콘: 다른 퀵메뉴 SVG와 동일한 시각적 크기 + 노란색 */
+  /* 회원소식 아이콘: 다른 퀵메뉴와 동일한 흰색 배경 */
   .news-quick-icon svg{
     width:31px!important;
     height:31px!important;
     display:block!important;
   }
   .news-quick-icon{
-    background:#fff8df!important;
-    border-color:#f3df9b!important;
+    background:#ffffff!important;
+    border-color:#e2e8f0!important;
   }
 </style>
 
 
-<style id="news-detail-g-thumbnail-final">
-#newsDetailThumbnailArea{display:none;width:100%;margin-top:24px;padding-top:16px;border-top:1px dashed #dfe7f0;box-sizing:border-box;}
-#newsDetailThumbnailLink{display:block;width:100%;border-radius:12px;overflow:hidden;background:#f7fafc;border:1px solid #e5ebf2;text-decoration:none;}
-#newsDetailThumbnail{display:block;width:100%;height:auto;max-height:420px;object-fit:contain;background:#f7fafc;}
+<style id="final-news-ui-fix">
+  /* 회원소식 5개 카테고리가 어떤 모바일 폭에서도 한 줄에 모두 들어오도록 고정 */
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:430px!important;
+    padding:8px 0!important;
+    margin:0 auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:4px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:7px 2px!important;
+    font-size:clamp(10px,2.8vw,12px)!important;
+    line-height:1.2!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+  @media(max-width:360px){
+    #newsScreen #newsTabs{gap:3px!important;padding-left:0!important;padding-right:0!important;}
+    #newsScreen #newsTabs .month-tab{padding:7px 1px!important;font-size:10px!important;}
+  }
+
+  /* 회원소식 상세보기: 시트6 G열 썸네일을 화면 최하단에 표시 */
+  #newsDetailThumbnailArea{
+    display:none;
+    margin-top:28px;
+    padding-top:18px;
+    border-top:1px dashed var(--border-color);
+  }
+  #newsDetailThumbnailLink{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    border-radius:12px;
+    overflow:hidden;
+    background:#f7fafc;
+    border:1px solid #edf2f7;
+  }
+  #newsDetailThumbnail{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:360px;
+    object-fit:contain;
+    background:#f7fafc;
+  }
 </style>
 </head>
 <body>
@@ -2459,19 +2509,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 32px;"></div>
 
-    <!-- URL 썸네일 노출 영역 -->
-    <div id="newsDetailLinkArea" style="display: none; padding-top: 18px; border-top: 1px dashed var(--border-color);">
-      <div class="modal-label" style="width: auto; color: var(--primary-color); margin-bottom: 10px;">🔗 관련 링크</div>
-      <a id="newsDetailLink" href="#" target="_blank" class="day-event-item" style="display: block; padding: 0; overflow: hidden; text-decoration: none;">
-        <img id="newsDetailLinkThumb" src="" style="width: 100%; height: 170px; object-fit: cover; display: none; background: #f7fafc;" alt="링크 썸네일">
-        <div style="padding: 11px;">
-          <div id="newsDetailLinkUrl" class="day-event-item-meta" style="color: #2b6cb0; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0;">
-      <div id="newsDetailThumbnailArea">
-        <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
-          <img id="newsDetailThumbnail" src="" alt="회원소식 썸네일 이미지">
-        </a>
-      </div></div>
-        </div>
+    <!-- 시트6 G열 썸네일: 상세보기 화면의 가장 아래에 표시되며 클릭 시 F열 관련링크로 이동 -->
+    <div id="newsDetailThumbnailArea">
+      <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
+        <img id="newsDetailThumbnail" src="" alt="회원소식 썸네일 이미지">
       </a>
     </div>
   </div>
@@ -3558,12 +3599,12 @@ function createEventCard(event) {
   window.closeNewsScreen = function() { history.back(); };
   window.closeNewsDetailScreen = function() { history.back(); };
 
-  // 시트6 G열 썸네일 이미지를 상세보기 최하단에 표시
+  // 썸네일 추출기 (무료 OpenGraph API 사용)
+  // 시트6 G열의 썸네일 이미지를 직접 표시합니다.
   function setNewsDetailThumbnail(item) {
     const area = document.getElementById('newsDetailThumbnailArea');
     const img = document.getElementById('newsDetailThumbnail');
     const link = document.getElementById('newsDetailThumbnailLink');
-    if (!area || !img || !link) return;
 
     area.style.display = 'none';
     img.removeAttribute('src');
@@ -3571,17 +3612,25 @@ function createEventCard(event) {
 
     const thumbUrl = String(item.thumbnailUrl || '').trim();
     const linkUrl = String(item.linkUrl || '').trim();
-    if (!/^https?:\/\//i.test(thumbUrl)) return;
 
-    img.onload = function(){ area.style.display = 'block'; };
-    img.onerror = function(){ area.style.display = 'none'; img.removeAttribute('src'); };
+    if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
+
     img.src = thumbUrl;
-    link.href = /^https?:\/\//i.test(linkUrl) ? linkUrl : thumbUrl;
+    // 이미지 클릭 시 시트6 F열 관련링크로 이동
+    if (/^https?:\/\//i.test(linkUrl)) {
+      link.href = linkUrl;
+    } else {
+      link.href = thumbUrl;
+    }
+    img.onerror = function(){
+      area.style.display = 'none';
+      img.removeAttribute('src');
+    };
+    area.style.display = 'block';
   }
 
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
-    if (!item) return;
     const catEl = document.getElementById('newsDetailCategory');
     catEl.innerText = normalizeNewsCategory(item.category);
     catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
@@ -3589,19 +3638,9 @@ function createEventCard(event) {
     document.getElementById('newsDetailDate').innerText = `등록일: ${item.date}`;
     document.getElementById('newsDetailContent').innerText = item.content;
 
-    const linkArea = document.getElementById('newsDetailLinkArea');
-    if (item.linkUrl && /^https?:\/\//i.test(item.linkUrl)) {
-      linkArea.style.display = 'block';
-      const linkEl = document.getElementById('newsDetailLink');
-      linkEl.href = item.linkUrl;
-      linkEl.target = '_blank';
-      linkEl.rel = 'noopener noreferrer';
-      document.getElementById('newsDetailLinkUrl').innerText = item.linkUrl;
-    } else {
-      linkArea.style.display = 'none';
-    }
-
+    // G열 썸네일을 상세보기 최하단에 배치하고, 클릭하면 F열 URL로 연결
     setNewsDetailThumbnail(item);
+
     document.getElementById('newsDetailScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsDetailOpen: true }, "", "");
