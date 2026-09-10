@@ -2963,15 +2963,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
   }
 
-  function renderSchedules() {
+  function function renderSchedules() {
     const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
     const currentFilteredData = getFilteredData();
 
     if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; return;
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; 
+      return;
     }
 
+    // 1. 이벤트 분류 (기존 로직 유지, 단 'pastEvents'는 필요 시 분리 보관)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -2981,59 +2983,30 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    const header = document.createElement('div'); header.className = 'schedule-section-header';
-    const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
-    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
+    // --- 여기서부터 변경됨: 타이틀, 부제목, 토글 버튼 생성 로직 완전 삭제 ---
     
-    let titleText = "";
-    if (isPastMonthView) {
-        titleText = "<지난 일정>";
-    } else if (todayEvents.length > 0) {
-        titleText = "<오늘 일정>";
-    } else {
-        titleText = "<예정 일정>";
-    }
-    titleEl.innerText = titleText;
-    titleWrapper.appendChild(titleEl);
-
-    if (todayEvents.length > 0 && !isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정."; titleWrapper.appendChild(subtitleEl);
-    } else if (isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
-    }
-    header.appendChild(titleWrapper);
-
-    if (!isPastMonthView && pastEvents.length > 0) {
-      const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
-      header.appendChild(pastBtn);
-    }
-    
-    scheduleContainer.appendChild(header);
+    // 2. 일정을 담을 단일 리스트 래퍼 생성
+    const listWrapper = document.createElement('div'); 
+    listWrapper.className = 'schedule-list-wrapper';
 
     if (isPastMonthView) {
-        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-        scheduleContainer.appendChild(pastList);
+        // 지난 달 달력을 볼 때는 지난 일정만 표시
+        pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
-        if (pastEvents.length > 0) {
-          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
-          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-          scheduleContainer.appendChild(pastList);
-        }
-
-        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
+        // 현재 달 달력을 볼 때는 '오늘 일정'과 '예정 일정'만 바로 이어서 표시 (지난 일정은 숨김/제거)
+        // 만약 이번 달의 '지난 일정'도 항상 보이게 하려면 아래 todayEvents 위쪽에 pastEvents 루프를 추가하세요.
         const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-        else {
-          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        
+        if (!hasUpcoming) {
+            listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
+        } else {
+            todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+            futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         }
-        scheduleContainer.appendChild(upcomingList);
     }
+    
+    // 3. 컨테이너에 리스트 추가
+    scheduleContainer.appendChild(listWrapper);
   }
   
   // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
