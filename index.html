@@ -318,8 +318,8 @@
   .banner-heading {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 7px;
+    gap: 7px;
+    margin-bottom: 4px;
   }
   .banner-kicker {
     display: inline-flex;
@@ -1909,6 +1909,37 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
+<style id="schedule-spacing-final-fix">
+
+  /* 2026-09-10 일정 제목 간격 통일
+     - 그라데이션 ↔ 지난/오늘/예정 일정 제목
+     - 일정 제목 ↔ 아래 일정 목록
+     두 간격을 동일하게 맞춤 */
+  .schedule-container{
+    gap:0 !important;
+    padding-top:0 !important;
+  }
+
+  .schedule-container::before{
+    margin:0 auto 6px auto !important;
+  }
+
+  .schedule-section-header{
+    margin-top:0 !important;
+    margin-bottom:6px !important;
+    padding:0 5px !important;
+    width:100% !important;
+  }
+
+  .schedule-list-wrapper{
+    gap:8px !important;
+  }
+
+  /* 지난 일정 목록이 열렸을 때도 제목-목록 간격 동일 */
+  #pastScheduleList{
+    margin-top:0 !important;
+  }
+</style>
 </head>
 <body>
 
