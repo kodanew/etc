@@ -1369,50 +1369,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-phone{font-size:.61rem !important;}
   }
 
-<!-- ✨ 1. 회원소식 목록 페이지 ✨ -->
-<div class="fullscreen-screen" id="newsScreen">
-  <div class="staff-mobile-header">
-    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">회원소식</div>
-  </div>
-  <div class="fullscreen-tabs" id="newsTabs">
-    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
-    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
-    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
-    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
-  </div>
-  <div class="fullscreen-content" style="padding-top: 15px;">
-    <div class="schedule-list-wrapper" id="newsList"></div>
-  </div>
-</div>
-
-<!-- ✨ 2. 회원소식 상세보기 페이지 (팝업 아님) ✨ -->
-<div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
-  <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
-    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">소식 상세보기</div>
-  </div>
-  <div class="fullscreen-content" style="padding: 24px 20px; text-align: left;">
-    <div id="newsDetailCategory" style="font-size: 0.85rem; font-weight: 800; color: #3182ce; margin-bottom: 6px;"></div>
-    <div id="newsDetailTitle" style="font-size: 1.35rem; font-weight: 800; color: #1a202c; line-height: 1.4; margin-bottom: 10px; word-break: keep-all;"></div>
-    <div id="newsDetailDate" style="font-size: 0.85rem; color: #718096; margin-bottom: 24px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;"></div>
-    
-    <div id="newsDetailContent" style="font-size: 1rem; line-height: 1.65; color: #2d3748; white-space: pre-wrap; margin-bottom: 40px; word-break: keep-all;"></div>
-    
-    <!-- URL 썸네일 노출 영역 -->
-    <div id="newsDetailLinkArea" style="display: none; padding-top: 20px; border-top: 2px dashed #e2e8f0;">
-      <div style="font-size: 0.9rem; font-weight: 800; margin-bottom: 12px; color: #4a5568;">🔗 관련 링크 (클릭 시 이동)</div>
-      <a id="newsDetailLink" href="#" target="_blank" style="display: block; text-decoration: none; border: 1px solid #cbd5e0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
-        <img id="newsDetailLinkThumb" src="" style="width: 100%; height: 180px; object-fit: cover; display: none; background: #f7fafc;" alt="링크 썸네일">
-        <div style="padding: 14px; background: #f7fafc;">
-          <div id="newsDetailLinkUrl" style="font-size: 0.85rem; color: #2b6cb0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div>
-        </div>
-      </a>
-    </div>
-  </div>
-</div>
-
   /* ===== 임직원 미리보기 한 줄 정보 ===== */
   #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
   #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
@@ -2009,7 +1965,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 <style id="today-header-spacing-fix">
-  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
+  /* 1. 헤더 내부 높션을 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
   .schedule-section-header {
     align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
     padding-bottom: 0px !important;   
@@ -2289,6 +2245,55 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </div>
   </div>
 </div>
+
+
+<!-- ============================================== -->
+<!-- 💡 복원된 회원소식 HTML 코드 위치 (style 밖으로 뺌) 💡 -->
+<!-- ✨ 1. 회원소식 목록 페이지 ✨ -->
+<div class="fullscreen-screen" id="newsScreen">
+  <div class="staff-mobile-header">
+    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">회원소식</div>
+  </div>
+  <div class="fullscreen-tabs" id="newsTabs">
+    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
+    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
+    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
+    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
+    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
+  </div>
+  <div class="fullscreen-content" style="padding-top: 15px;">
+    <div class="schedule-list-wrapper" id="newsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 2. 회원소식 상세보기 페이지 (팝업 아님) ✨ -->
+<div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
+  <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
+    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">소식 상세보기</div>
+  </div>
+  <div class="fullscreen-content" style="padding: 24px 20px; text-align: left;">
+    <div id="newsDetailCategory" style="font-size: 0.85rem; font-weight: 800; color: #3182ce; margin-bottom: 6px;"></div>
+    <div id="newsDetailTitle" style="font-size: 1.35rem; font-weight: 800; color: #1a202c; line-height: 1.4; margin-bottom: 10px; word-break: keep-all;"></div>
+    <div id="newsDetailDate" style="font-size: 0.85rem; color: #718096; margin-bottom: 24px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;"></div>
+    
+    <div id="newsDetailContent" style="font-size: 1rem; line-height: 1.65; color: #2d3748; white-space: pre-wrap; margin-bottom: 40px; word-break: keep-all;"></div>
+    
+    <!-- URL 썸네일 노출 영역 -->
+    <div id="newsDetailLinkArea" style="display: none; padding-top: 20px; border-top: 2px dashed #e2e8f0;">
+      <div style="font-size: 0.9rem; font-weight: 800; margin-bottom: 12px; color: #4a5568;">🔗 관련 링크 (클릭 시 이동)</div>
+      <a id="newsDetailLink" href="#" target="_blank" style="display: block; text-decoration: none; border: 1px solid #cbd5e0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <img id="newsDetailLinkThumb" src="" style="width: 100%; height: 180px; object-fit: cover; display: none; background: #f7fafc;" alt="링크 썸네일">
+        <div style="padding: 14px; background: #f7fafc;">
+          <div id="newsDetailLinkUrl" style="font-size: 0.85rem; color: #2b6cb0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- ============================================== -->
+
 
 <script>
   // 기본 시트 정보
