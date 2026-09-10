@@ -319,7 +319,7 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 9px;
+    margin-bottom: 4px;
   }
   .banner-kicker {
     display: inline-flex;
@@ -360,7 +360,7 @@
   .banner-event-line2 {
     display:block;
     width:100%;
-    margin-top:4px;
+    margin-top:3px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -410,15 +410,15 @@
     cursor:pointer;
     backdrop-filter:blur(6px);
   }
-  .banner-pause-btn.paused { background:#fff!important; color:transparent!important; border:0!important; box-shadow:none!important; }
+  .banner-pause-btn.paused { background:#fff; color:#0756c9; }
 
-  /* 상단 메뉴바 (6개 버튼을 위해 3열 2줄 레이아웃으로 변경) */
+  /* 상단 메뉴바 */
   .quick-menu-container,
   .sub-menu-container {
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap: 12px 6px; /* 버튼 간격을 넓혀 터치 최적화 */
-    padding: 5px 12px 14px;
+    grid-template-columns:repeat(5,1fr);
+    gap:4px;
+    padding:0 8px 9px;
     width:100%;
     box-sizing:border-box;
     align-items:start;
@@ -458,11 +458,13 @@
   .quick-btn:hover .quick-icon { transform:translateY(-2px); box-shadow:0 8px 18px rgba(22,52,95,.12); }
   .quick-label {
     margin-top:6px;
-    font-size:.7rem;
+    font-size:.66rem;
     font-weight:750;
     line-height:1.15;
     white-space:normal;
   }
+  .sub-menu-container { padding-top:1px; padding-bottom:10px; }
+  .sub-menu-container .quick-btn { min-height:78px; }
 
   /* 일정 리스트 영역 */
   .schedule-container {
@@ -479,7 +481,7 @@
     justify-content: space-between;
     align-items: baseline;
     padding: 5px 5px 10px 5px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 0px;
     width: 100%;
     row-gap: 4px;
@@ -851,7 +853,6 @@
   .association-more{font-size:1.4rem;color:#1769d2;}
   .association-preview{font-size:.78rem;line-height:1.55;color:#64748b;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
   @media(min-width:700px){.association-news-grid{grid-template-columns:repeat(3,1fr);align-items:stretch}.association-news-card{min-height:210px}}
-  
 .fullscreen-screen {
     position: fixed;
     top: 0;
@@ -925,6 +926,104 @@
   .fullscreen-content {
     padding: 10px 15px 30px 15px;
     flex-grow: 1;
+  }
+
+  /* ===== 준비중 버튼 ===== */
+  .quick-btn-soon { opacity: 0.55; }
+  .quick-btn-soon .quick-icon-soon { background:#eef1f5; box-shadow:none; }
+  .quick-btn-soon:active { opacity: 0.4; }
+
+  /* ===== 회원소식 카드/뱃지 ===== */
+  .news-badge {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .news-card { display:flex; flex-direction:column; gap:6px; }
+  .news-card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .news-card-date { font-size:0.68rem; color: var(--text-muted); font-weight:700; flex-shrink:0; }
+  .news-card-title { font-size:0.85rem; font-weight:750; line-height:1.4; color: var(--text-dark); word-break: keep-all; }
+
+  /* ===== 회원소식 상세 페이지 ===== */
+  .news-detail-title {
+    margin-top: 10px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+  .news-detail-date {
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+  .news-detail-body {
+    margin-top: 14px;
+    font-size: 0.86rem;
+    line-height: 1.75;
+    color: var(--text-dark);
+    white-space: normal;
+    word-break: keep-all;
+  }
+  .news-link-preview { margin-top: 22px; }
+  .news-link-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .news-link-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(22,52,95,.06);
+  }
+  .news-link-card:active { background:#f8fafc; }
+  .news-link-thumb {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    background: #eef1f5;
+    display: block;
+  }
+  .news-link-info { padding: 10px 12px; }
+  .news-link-title {
+    font-size: 0.82rem;
+    font-weight: 750;
+    color: var(--text-dark);
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+  .news-link-desc {
+    margin-top: 4px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-link-url {
+    margin-top: 6px;
+    font-size: 0.68rem;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+  .news-link-loading {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 12px 2px;
   }
 
   /* 이미지(JPG) 뷰어 */
@@ -1092,7 +1191,7 @@
     display: none;
   }
 
-  /* 직원현황 및 회원소식 컴팩트 카드형 디자인 */
+  /* 직원현황 컴팩트 카드형 디자인 */
   #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
   #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
   #staffList .day-event-item-title { font-size:.82rem !important; line-height:1.25 !important; }
@@ -1114,7 +1213,7 @@
   .calendar-refresh-btn:active { transform:rotate(-35deg) scale(.94); }
   .association-card-head h3 { font-size:1.08rem; }
   .association-preview { font-size:.84rem; }
-  #staffTabs .month-tab, #newsTabs .month-tab { font-size:.9rem; padding:8px 15px; }
+  #staffTabs .month-tab { font-size:.9rem; padding:8px 15px; }
   #staffList .day-event-item-title { font-size:.88rem; }
 
 
@@ -1153,7 +1252,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .logout-btn{min-height:0!important;height:auto!important;line-height:1.2!important;padding:4px 8px!important;font-size:.72rem!important;border-radius:7px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;}
 .banner-dot{min-height:0!important;width:7px!important;height:7px!important;min-width:7px!important;max-width:7px!important;padding:0!important;flex:0 0 7px!important;}
 .banner-dot.active{width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;flex-basis:8px!important;}
-.banner-pause-btn{min-height:0!important;width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;padding:0!important;line-height:8px!important;flex:0 0 8px!important;border:0!important;border-radius:50%!important;background:rgba(255,255,255,.42)!important;color:transparent!important;font-size:0!important;box-shadow:none!important;backdrop-filter:none!important;}
+.banner-pause-btn{min-height:0!important;width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;padding:0!important;line-height:24px!important;flex:0 0 26px!important;border-radius:50%!important;font-size:.66rem!important;}
 .banner-dots{right:45px!important;bottom:8px!important;height:10px!important;}
 .schedule-banner-slide{padding-bottom:22px!important;}
 .schedule-container{gap:7px!important;padding-bottom:24px!important;}
@@ -1172,7 +1271,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .event-title{font-size:.9rem!important;}
   .event-date{font-size:.82rem!important;}
   .event-location{font-size:.72rem!important;}
-  .banner-pause-btn{width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;flex-basis:8px!important;line-height:8px!important;}
+  .banner-pause-btn{width:24px!important;height:24px!important;min-width:24px!important;max-width:24px!important;flex-basis:24px!important;line-height:22px!important;}
   .banner-dots{right:41px!important;}
 }
 
@@ -1194,6 +1293,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .association-coming-soon .association-card-title h3{color:#94a3b8!important;}
 .association-coming-soon .association-card-icon{background:#eef2f7!important;filter:grayscale(.2)!important;}
 .association-preview,.association-card-head{display:none!important;}
+
 
 /* 2026-09-09 mobile polish: calendar + association news */
 .cal-header{
@@ -1256,204 +1356,529 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 /* 일정 제목과 목록 사이를 컴팩트하게 */
 .schedule-container{padding-top:0!important;gap:5px!important;}
-.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:2px!important;}
+.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
 
-/* 풀스크린 공통 디자인 (임직원현황, 회원소식 등) */
-#staffScreen, #newsScreen, #newsDetailScreen {
-  display:none; position:fixed; inset:0; z-index:1500;
-  overflow-y:auto; -webkit-overflow-scrolling:touch;
-  background:#f4f7fb; padding:0 0 18px; box-sizing:border-box;
-  align-items:center!important; justify-content:flex-start!important;
-  width:100vw!important; max-width:none!important;
-  flex-direction:column!important; overflow-x:hidden!important;
-}
-#staffScreen .staff-mobile-header,
-#newsScreen .staff-mobile-header,
-#newsDetailScreen .staff-mobile-header,
-#staffScreen .fullscreen-tabs,
-#newsScreen .fullscreen-tabs,
-#staffScreen .fullscreen-content,
-#newsScreen .fullscreen-content,
-#newsDetailScreen .fullscreen-content {
-  width:min(430px, calc(100% - 20px))!important;
-  max-width:430px!important; margin-left:auto!important; margin-right:auto!important;
-  box-sizing:border-box!important;
-}
-.staff-mobile-header {
-  position:relative!important; flex:0 0 54px!important; height:54px!important; min-height:54px!important;
-  background:#fff; border-bottom:1px solid #edf2f7; box-shadow:0 3px 14px rgba(25,67,110,.055);
-  display:flex!important; align-items:center!important; padding:0 15px!important; width:100%;
-}
-.fullscreen-back-btn{
-  width:42px; height:42px; min-height:42px; padding:0;
-  display:flex; align-items:center; justify-content:center;
-  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
-  font-size:1.55rem; font-weight:700; line-height:1; position:relative!important; z-index:3!important;
-}
-.fullscreen-title{
-  display:block; color:#173f70; font-size:1.12rem; font-weight:850; letter-spacing:-.045em; white-space:nowrap;
-  position:absolute!important; left:50%!important; top:50%!important; transform:translate(-50%,-50%)!important; margin:0!important; text-align:center!important; z-index:2!important;
-}
-
-#staffScreen .fullscreen-tabs,
-#newsScreen .fullscreen-tabs {
-  display:grid!important; grid-template-columns:repeat(5,minmax(0,1fr))!important; gap:5px!important; padding:7px 0!important;
-  flex:0 0 54px!important; height:54px!important; min-height:54px!important; margin:0!important; overflow:visible!important;
-}
-.month-tab{
-  min-width:0; width:100%; height:40px!important; min-height:40px!important; padding:0 2px!important; margin:0!important;
-  display:flex!important; align-items:center!important; justify-content:center!important;
-  border:1px solid #dce6f2; border-radius:15px; background:#fff;
-  color:#5d7089; font-size:.88rem; font-weight:850; letter-spacing:-.055em;
-  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
-}
-.month-tab.active{
-  color:#fff; border-color:#1769d2; background:linear-gradient(135deg,#1769d2,#3182ce); box-shadow:0 5px 13px rgba(23,105,210,.18);
-}
-.fullscreen-content{
-  flex:1 1 auto!important; min-height:0!important; padding:8px 0 30px!important; overflow-y:auto!important;
-}
-
-/* KODA 임직원현황 전용 검색 */
-#staffScreen .staff-search-wrap{position:relative;margin:0 0 11px;width:100%;box-sizing:border-box;}
-#staffScreen .staff-search{
-  width:100%; height:46px; box-sizing:border-box; border:1px solid #dce6f2;
-  border-radius:14px; background:#fff; padding:0 42px 0 42px;
-  color:#1d3858; font-size:.86rem; font-weight:650; outline:none;
-  box-shadow:0 3px 11px rgba(24,71,120,.045);
-}
-#staffScreen .staff-search:focus{border-color:#6fa4df;box-shadow:0 0 0 3px rgba(23,105,210,.08);}
-#staffScreen .staff-search::placeholder{color:#9aaabd;font-weight:600;}
-#staffScreen .staff-search-icon{
-  position:absolute;left:15px;top:50%;transform:translateY(-50%);
-  color:#1769d2;font-size:1.05rem;pointer-events:none;
-}
-#staffScreen .staff-search-clear{
-  display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);
-  width:30px;height:30px;border:0;border-radius:50%;background:#f0f4f8;color:#718096;
-  font-size:.9rem;line-height:30px;padding:0;
-}
-#staffScreen .staff-search-clear.show{display:block;}
-
-#staffList, #newsList {
-  width:100%; box-sizing:border-box;
-}
-
-#staffList .day-event-item{
-  min-width:0; min-height:94px !important; box-sizing:border-box;
-  padding:13px 11px !important; border:1px solid #e2eaf4 !important;
-  border-radius:15px !important; background:#fff; box-shadow:0 4px 12px rgba(28,70,120,.055);
-}
-#staffList .day-event-item:active{transform:scale(.985);background:#f8fbff;}
-
-/* 회원소식 스타일 목록 및 상세 */
-#newsList { display:flex; flex-direction:column; gap:10px; }
-.news-card-item {
-   background: #fff; border: 1px solid #e2eaf4; border-radius: 12px; padding: 15px;
-   box-shadow: 0 4px 12px rgba(28,70,120,.05); cursor: pointer; text-align: left; width: 100%; box-sizing: border-box;
-}
-.news-card-item:active { transform: scale(0.98); background: #f8fbff; }
-.news-card-cat { display: inline-block; font-size: 0.72rem; font-weight: 800; background: #edf5ff; padding: 4px 8px; border-radius: 6px; color: #1769d2; margin-bottom: 8px; }
-.news-card-title { font-size: 1.05rem; font-weight: 800; color: #173f70; margin-bottom: 6px; line-height: 1.35; word-break: keep-all; }
-.news-card-date { font-size: 0.78rem; font-weight: 600; color: #8a9aaf; }
-
-#newsDetailScreen .fullscreen-content { padding: 20px 15px 40px; background: #fff; border-radius: 0 0 16px 16px; min-height: 100vh; }
-.news-detail-cat { display: inline-block; font-size: 0.75rem; font-weight: 800; background: #edf5ff; color: #1769d2; padding: 4px 8px; border-radius: 6px; margin-bottom: 8px; }
-.news-detail-title { font-size: 1.25rem; font-weight: 850; color: #173f70; line-height: 1.45; margin-bottom: 12px; word-break: keep-all; }
-.news-detail-date { font-size: 0.85rem; color: #8a9aaf; margin-bottom: 25px; border-bottom: 1px solid #edf2f7; padding-bottom: 15px; font-weight: 600; }
-.news-detail-body { font-size: 0.98rem; color: #334155; line-height: 1.65; white-space: pre-wrap; margin-bottom: 40px; word-break: keep-all; }
-
-/* 썸네일 미리보기 컴포넌트 */
-.news-link-preview { display: block; border: 1.5px solid #e2eaf4; border-radius: 12px; overflow: hidden; text-decoration: none; background: #fafcff; transition: transform 0.15s; }
-.news-link-preview:active { transform: scale(0.98); }
-.news-link-preview img { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid #e2eaf4; background:#f4f7fb; }
-.news-link-info { padding: 14px 16px; }
-.news-link-title { font-size: 0.9rem; font-weight: 800; color: #173f70; margin-bottom: 4px; display:flex; align-items:center; gap:6px; }
-.news-link-url { font-size: 0.75rem; font-weight: 600; color: #64748b; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
-@media(max-width:360px){
-  #staffScreen .staff-mobile-header, #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header,
-  #staffScreen .fullscreen-tabs, #newsScreen .fullscreen-tabs,
-  #staffScreen .fullscreen-content, #newsScreen .fullscreen-content, #newsDetailScreen .fullscreen-content{
-    width:calc(100% - 14px)!important;
+/* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
+  /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
+  #staffScreen{
+    display:none; position:fixed; inset:0; z-index:1500;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
   }
-  .staff-mobile-header{height:52px!important;min-height:52px!important;}
-  #staffScreen .fullscreen-tabs, #newsScreen .fullscreen-tabs{padding:5px 0!important; flex-basis:50px!important; height:50px!important; min-height:50px!important; gap:3px!important;}
-  .month-tab{height:38px!important;min-height:38px!important;font-size:.77rem!important;}
-  .fullscreen-content{padding:7px 0 25px!important;}
-  .news-card-title { font-size: 0.95rem; }
-  .news-detail-title { font-size: 1.15rem; }
-}
+  #staffScreen::after{content:'';display:block;min-height:18px;}
+  #staffScreen .staff-mobile-header,
+  #staffScreen .fullscreen-tabs,
+  #staffScreen .fullscreen-content{
+    width:100%; max-width:430px; margin-left:auto; margin-right:auto;
+  }
+  #staffScreen .staff-mobile-header{
+    height:76px; position:sticky; top:0; z-index:30;
+    background:#fff; border-bottom:1px solid #edf2f7;
+    box-shadow:0 3px 14px rgba(25,67,110,.055);
+    display:grid; grid-template-columns:54px minmax(0,1fr) 72px;
+    align-items:center; padding:0 16px; box-sizing:border-box;
+  }
+  #staffScreen .fullscreen-back-btn{
+    width:42px; height:42px; min-height:42px; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+    font-size:1.55rem; font-weight:700; line-height:1;
+  }
+  #staffScreen .fullscreen-title{
+    display:block; text-align:center; color:#173f70;
+    font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
+    white-space:nowrap;
+  }
+  #staffScreen .staff-date-weather,
+  #staffScreen .staff-header-logo{display:none;}
+  #staffScreen .fullscreen-tabs{
+    display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px; padding:12px 0 0; box-sizing:border-box;
+  }
+  #staffScreen .month-tab{
+    min-width:0; width:100%; height:56px; min-height:56px; padding:0 2px;
+    border:1px solid #dce6f2; border-radius:15px; background:#fff;
+    color:#5d7089; font-size:.88rem; font-weight:850; letter-spacing:-.055em;
+    box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
+  }
+  #staffScreen .month-tab.active{
+    color:#fff; border-color:#1769d2;
+    background:linear-gradient(135deg,#1769d2,#3182ce);
+    box-shadow:0 5px 13px rgba(23,105,210,.18);
+  }
+  #staffScreen .fullscreen-content{box-sizing:border-box;padding:15px 0 26px;}
+  #staffScreen .staff-content-heading{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+    margin:2px 4px 10px;
+  }
+  #staffScreen .staff-content-title{font-size:1.02rem;font-weight:850;color:#183b63;letter-spacing:-.04em;}
+  #staffScreen .staff-content-count{font-size:.7rem;font-weight:750;color:#8a9aaf;white-space:nowrap;}
+  #staffScreen .staff-search-wrap{position:relative;margin:0 0 11px;}
+  #staffScreen .staff-search{
+    width:100%; height:46px; box-sizing:border-box; border:1px solid #dce6f2;
+    border-radius:14px; background:#fff; padding:0 42px 0 42px;
+    color:#1d3858; font-size:.86rem; font-weight:650; outline:none;
+    box-shadow:0 3px 11px rgba(24,71,120,.045);
+  }
+  #staffScreen .staff-search:focus{border-color:#6fa4df;box-shadow:0 0 0 3px rgba(23,105,210,.08);}
+  #staffScreen .staff-search::placeholder{color:#9aaabd;font-weight:600;}
+  #staffScreen .staff-search-icon{
+    position:absolute;left:15px;top:50%;transform:translateY(-50%);
+    color:#1769d2;font-size:1.05rem;pointer-events:none;
+  }
+  #staffScreen .staff-search-clear{
+    display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border:0;border-radius:50%;background:#f0f4f8;color:#718096;
+    font-size:.9rem;line-height:30px;padding:0;
+  }
+  #staffScreen .staff-search-clear.show{display:block;}
+  #staffList{
+    display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px; width:100%; box-sizing:border-box;
+  }
+  #staffList .day-event-item{
+    min-width:0; min-height:94px !important; box-sizing:border-box;
+    padding:13px 11px !important; border:1px solid #e2eaf4 !important;
+    border-radius:15px !important; background:#fff;
+    box-shadow:0 4px 12px rgba(28,70,120,.055);
+  }
+  #staffList .day-event-item:active{transform:scale(.985);background:#f8fbff;}
+  #staffList .day-event-item-title{display:flex;align-items:center;min-width:0;font-size:.86rem !important;line-height:1.3 !important;color:#17385f;white-space:nowrap;overflow:hidden;}
+  #staffList .day-event-item-title strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1rem;}
+  #staffList .day-event-item-meta{margin-top:6px !important;color:#657a96;font-size:.72rem !important;line-height:1.3 !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-phone{margin-top:5px;color:#9aaabd;font-size:.67rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-badge{flex-shrink:0;font-size:.57rem !important;font-weight:800;padding:2px 5px !important;margin-right:5px !important;border-radius:999px;background:#edf5ff;color:#1769d2;}
+  #staffList .staff-badge.executive{background:#e8f1ff;color:#0756c9;}
+  #staffScreen .loading-msg,#staffScreen .no-data{
+    grid-column:1 / -1;padding:30px 12px;text-align:center;color:#7a8da7;font-size:.78rem;background:#fff;border-radius:15px;border:1px solid #e2eaf4;
+  }
+  @media(max-width:360px){
+    #staffScreen{padding:0 6px 14px;}
+    #staffScreen .staff-mobile-header{height:68px;padding:0 10px;grid-template-columns:48px minmax(0,1fr) 64px;}
+    #staffScreen .fullscreen-back-btn{width:40px;height:40px;min-height:40px;border-radius:13px;}
+    #staffScreen .fullscreen-title{font-size:1rem;}
+    #staffScreen .fullscreen-tabs{gap:5px;padding-top:9px;}
+    #staffScreen .month-tab{height:50px;min-height:50px;font-size:.84rem;border-radius:13px;}
+    #staffScreen .fullscreen-content{padding-top:13px;}
+    #staffList{gap:6px;}
+    #staffList .day-event-item{min-height:88px !important;padding:11px 8px !important;border-radius:13px !important;}
+    #staffList .day-event-item-title strong{font-size:.9rem;}
+    #staffList .day-event-item-meta{font-size:.64rem !important;}
+    #staffList .staff-phone{font-size:.61rem !important;}
+  }
 
-/* 임직원 미리보기: 이름 아래 전화번호, 오른쪽 소속·직위 */
-#staffList .staff-main-line{
-  display:grid!important; grid-template-columns:auto minmax(0,1fr)!important; align-items:start!important; column-gap:6px!important; min-width:0!important;
-}
-#staffList .staff-info-block{ min-width:0!important; display:flex!important; flex-direction:column!important; align-items:flex-start!important; }
-#staffList .staff-name-role{
-  min-width:0!important; width:100%!important; display:flex!important; align-items:baseline!important; gap:6px!important; white-space:nowrap!important; overflow:hidden!important;
-}
-#staffList .staff-name-role strong{
-  flex:0 0 auto!important; max-width:38%!important; overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important; color:#1769d2!important; font-size:.91rem!important; font-weight:850!important;
-}
-#staffList .staff-name-role .staff-org-role{
-  flex:1 1 auto!important; min-width:0!important; overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important; padding-top:0!important; line-height:1.2!important; color:#47698f!important; font-size:.67rem!important; font-weight:700!important;
-}
-#staffList .staff-info-block .staff-phone{ margin:2px 0 0!important; line-height:1.05!important; color:#8298b1!important; font-size:.66rem!important; font-weight:650!important; white-space:nowrap!important;}
-#staffList .day-event-item.staff-card-compact{ min-height:0!important; height:auto!important; padding:7px 10px!important; margin-bottom:5px!important;}
-#staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;font-size:.57rem!important;font-weight:800;padding:2px 5px!important;margin-right:5px!important;border-radius:999px;background:#edf5ff;color:#1769d2;}
+  /* ===== 임직원 미리보기 한 줄 정보 ===== */
+  #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
+  #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
+  #staffList .staff-main-line{display:flex !important;align-items:baseline !important;gap:4px !important;min-width:0 !important;overflow:hidden !important;white-space:nowrap !important;}
+  #staffList .staff-main-line .staff-badge{margin-right:1px !important;}
+  #staffList .staff-main-line strong{flex:0 0 auto !important;max-width:38% !important;color:#1769d2 !important;font-size:.9rem !important;font-weight:850 !important;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-org-role{flex:1 1 auto;min-width:0;color:#47698f;font-size:.67rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #staffList .staff-phone{margin-top:7px !important;color:#98aabd;font-size:.68rem !important;}
+  @media(max-width:360px){
+    #staffList .staff-main-line{gap:3px !important;}
+    #staffList .staff-main-line strong{font-size:.82rem !important;max-width:34% !important;}
+    #staffList .staff-org-role{font-size:.61rem !important;}
+    #staffList .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
+  }
 
-/* 메인 첫 화면 좌측 브랜드 장식 완전 제거 */
-.app-container > .header .header-left-brand{display:none!important;}
-.app-container > .header::before{display:none!important;}
-.app-container > .header::after{
+
+  /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
+  .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
+  .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
+  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;}
+  .app-container > .header .brand-line{width:86px;height:1.5px;margin-top:3px;background:linear-gradient(90deg,#1769d2,#c7ddf3 78%,transparent);}
+  .app-container > .header .city-silhouette{display:flex;align-items:flex-end;gap:2px;height:10px;margin-top:0;width:108px;opacity:.5;}
+  .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
+  .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
+  @media(max-width:360px){.app-container > .header .header-left-brand{left:24px}.app-container > .header .brand-title-ko{font-size:.68rem}.app-container > .header .brand-title-en{font-size:.35rem}.app-container > .header .city-silhouette{width:92px;transform:scale(.9);transform-origin:left bottom}}
+
+
+  /* 임직원 미리보기: 이름 아래 전화번호, 오른쪽 소속·직위 */
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
+  }
+
+  /* ===== 첫 페이지 헤더 새 디자인 ===== */
+  .app-container > .header{
+    position:relative; height:78px; box-sizing:border-box;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:8px 18px 5px !important; background:#fff;
+    border-bottom:0;
+  }
+  .app-container > .header::after{
     content:''; position:absolute; left:18px; right:18px; bottom:0; height:1px;
     background:linear-gradient(90deg,transparent,#dce8f5 18%,#dce8f5 82%,transparent);
-}
+  }
+  .app-container > .header::before{
+    content:''; position:absolute; left:18px; top:18px; width:3px; height:38px;
+    border-radius:3px; background:linear-gradient(180deg,#1769d2,#9cc4e9);
+  }
+  .app-container > .header .header-left-brand{
+    position:absolute; left:29px; top:13px; display:flex; flex-direction:column;
+    align-items:flex-start; gap:0; pointer-events:none;
+  }
+  .app-container > .header .brand-kicker{
+    color:#1769d2; font-size:.42rem; font-weight:900; letter-spacing:.22em; line-height:1.1;
+  }
+  .app-container > .header .brand-title{
+    color:#173f70; font-size:.72rem; font-weight:900; letter-spacing:.11em; line-height:1.15;
+  }
+  .app-container > .header .brand-subtitle{
+    color:#8aa0b8; font-size:.39rem; font-weight:800; letter-spacing:.075em; line-height:1.25; margin-top:2px;
+  }
+  .app-container > .header .brand-line{
+    width:52px; height:2px; margin-top:5px; border-radius:2px; background:linear-gradient(90deg,#1769d2,#c7ddf3);
+  }
+  .app-container > .header img{
+    grid-column:2; height:43px; max-width:150px; width:auto; object-fit:contain;
+  }
+  .app-container > .header .header-right{
+    position:static; grid-column:3; justify-self:end; transform:none;
+    display:flex; align-items:center; gap:5px;
+  }
+  .app-container > .header .install-btn{
+    display:none; border:0; background:transparent; color:#1769d2;
+    padding:0 2px; font-size:.66rem; font-weight:850; line-height:1.2;
+    letter-spacing:-.03em; cursor:pointer;
+  }
+  .app-container > .header .header-right{
+    flex-direction:column; align-items:flex-end; justify-content:center;
+    gap:2px; padding-top:9px;
+  }
+  .app-container > .header .logout-btn{transform:none !important;}
+  .app-container > .header .logout-btn{
+    border:0 !important; background:transparent !important; color:#73849a !important;
+    padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important;
+    letter-spacing:-.03em;
+    transform:translateY(10px);
+  }
+  .app-container > .today-weather-bar{
+    width:calc(100% - 36px); margin:0 18px 3px; padding:7px 0 0;
+  }
+  .app-container > .today-weather-bar .today-date{font-size:1.16rem;font-weight:850;color:#173f70;}
+  .app-container > .today-weather-bar .today-weekday{font-size:.88rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather{font-size:.82rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather-icon{font-size:1.15rem;}
+  .app-container > .today-weather-bar .today-weather-temp{font-size:.98rem;color:#173f70;font-weight:850;}
+  @media(max-width:360px){
+    .app-container > .header{height:70px;padding:7px 13px 4px !important;}
+    .app-container > .header::before{left:13px;top:16px;height:34px;}
+    .app-container > .header .header-left-brand{left:22px;top:12px;}
+    .app-container > .header .brand-kicker{font-size:.36rem;}
+    .app-container > .header .brand-title{font-size:.61rem;}
+    .app-container > .header .brand-subtitle{font-size:.33rem;}
+    .app-container > .header .brand-line{width:44px;margin-top:4px;}
+    .app-container > .header::after{left:13px;right:13px;}
+    .app-container > .header img{height:38px;max-width:128px;}
+    .app-container > .header .logout-btn{font-size:.68rem !important;}
+    .app-container > .today-weather-bar{width:calc(100% - 26px);margin:0 13px 8px;padding-top:7px;}
+    .app-container > .today-weather-bar .today-date{font-size:1rem;}
+    .app-container > .today-weather-bar .today-weekday{font-size:.76rem;}
+    .app-container > .today-weather-bar .today-weather{font-size:.7rem;}
+  }
 
-.app-container > .header{
-  position:relative; height:78px; box-sizing:border-box;
-  display:flex; justify-content:center; align-items:center;
-  padding:8px 18px 5px !important; background:#fff; border-bottom:0;
-}
-.app-container > .header img{
-  height:43px; max-width:150px; width:auto; object-fit:contain;
-}
-.app-container > .header .header-right{
-  position:absolute; right:18px; top:50%; transform:translateY(-50%);
-  display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:2px;
-}
-.app-container > .header .logout-btn{
-  border:0 !important; background:transparent !important; color:#73849a !important;
-  padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important; letter-spacing:-.03em;
-}
-.app-container > .header .install-btn{
-  display:none; border:0; background:transparent; color:#1769d2; padding:0 2px; font-size:.66rem; font-weight:850; line-height:1.2; letter-spacing:-.03em; cursor:pointer;
-}
 
+  /* 최종 요청 반영 */
+  .app-container > .header .header-right{
+    flex-direction:column!important; align-items:flex-end!important; justify-content:center!important;
+    gap:1px!important; padding-top:7px!important;
+  }
+  .app-container > .header .logout-btn{transform:translateY(7px)!important;}
+  .app-container > .header .install-btn{order:1!important;}
+  .app-container > .header .logout-btn{order:2!important;}
+  .app-container > .header .header-left-brand{top:10px!important;}
+  .app-container > .header .brand-title-ko{display:block!important;color:#173f70!important;font-size:.72rem!important;font-weight:900!important;letter-spacing:-.055em!important;line-height:1.18!important;}
+  .app-container > .header .brand-title-en{display:block!important;color:#1769d2!important;font-size:.39rem!important;font-weight:900!important;letter-spacing:.065em!important;line-height:1.2!important;white-space:nowrap!important;}
+  .app-container > .header .brand-line{width:88px!important;height:1.5px!important;margin-top:3px!important;}
+  .app-container > .header .city-silhouette{display:flex!important;align-items:flex-end!important;gap:2px!important;height:10px!important;margin-top:0!important;width:108px!important;opacity:.48!important;}
+  .app-container > .header .city-silhouette i{display:block!important;background:linear-gradient(180deg,#b8cee5,#e2ebf5)!important;border-radius:1px 1px 0 0!important;}
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+    .app-container > .header .brand-title-ko{font-size:.68rem!important;}
+    .app-container > .header .brand-title-en{font-size:.35rem!important;}
+    .app-container > .header .city-silhouette{width:92px!important;transform:scale(.9);transform-origin:left bottom;}
+    .app-container > .header .logout-btn{transform:translateY(5px)!important;}
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
+  }
+
+</style>
+
+<style id="final-staff-header-fixes">
+/* 최종 UI 보정 */
+.app-container > .header .header-left-brand{
+  top:18px!important;
+  left:29px!important;
+  gap:1px!important;
+}
+.app-container > .header .brand-title-ko{
+  line-height:1.15!important;
+}
+.app-container > .header .brand-title-en{
+  line-height:1.05!important;
+  letter-spacing:.055em!important;
+  font-size:.36rem!important;
+}
+.app-container > .header .brand-line{margin-top:3px!important;}
+.app-container > .header .city-silhouette{
+  position:absolute!important;
+  left:-2px!important;
+  top:27px!important;
+  width:112px!important;
+  height:20px!important;
+  margin:0!important;
+  opacity:.22!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+.app-container > .header .header-left-brand > .brand-title-ko,
+.app-container > .header .header-left-brand > .brand-title-en,
+.app-container > .header .header-left-brand > .brand-line{position:relative;z-index:2;}
+
+#staffScreen .staff-content-heading{display:none!important;}
+#staffScreen .fullscreen-tabs{display:grid!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;visibility:visible!important;opacity:1!important;}
+#staffList .staff-main-line{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:start!important;
+  column-gap:6px!important;
+  min-width:0!important;
+}
+#staffList .staff-info-block{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+}
+#staffList .staff-name-role{
+  min-width:0!important; width:100%!important;
+  display:flex!important; align-items:baseline!important; gap:6px!important;
+  white-space:nowrap!important; overflow:hidden!important;
+}
+#staffList .staff-name-role strong{
+  flex:0 0 auto!important; max-width:38%!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+}
+#staffList .staff-name-role .staff-org-role{
+  flex:1 1 auto!important; min-width:0!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+  padding-top:0!important; line-height:1.2!important;
+}
+#staffList .staff-info-block .staff-phone{
+  margin:2px 0 0!important; line-height:1.05!important;
+}
+#staffList .day-event-item.staff-card-compact{
+  min-height:0!important; height:auto!important;
+  padding:7px 10px!important;
+  margin-bottom:5px!important;
+}
 @media(max-width:360px){
-  .app-container > .header{height:70px;padding:7px 13px 4px !important;}
-  .app-container > .header img{height:38px;max-width:128px;}
-  .app-container > .header .logout-btn{font-size:.68rem !important;}
-  .app-container > .header .header-right{right:13px;}
+  .app-container > .header .header-left-brand{left:25px!important;top:18px!important;}
+  .app-container > .header .brand-title-ko{font-size:.66rem!important;}
+  .app-container > .header .brand-title-en{font-size:.33rem!important;}
+  #staffList .staff-name-role{gap:4px!important;}
+}
+</style>
+<style id="koda-final-overlap-fix">
+/* 최종 헤더/임직원 탭 고정 보정 */
+.app-container > .header .header-left-brand{left:29px!important;top:10px!important;align-items:flex-start!important;gap:0!important;}
+.app-container > .header .brand-title-ko{font-size:.72rem!important;line-height:1.15!important;}
+.app-container > .header .brand-title-en{font-size:.44rem!important;line-height:1.08!important;letter-spacing:.045em!important;margin:0!important;display:block!important;}
+.app-container > .header .brand-line{display:none!important;}
+.app-container > .header .city-silhouette{margin-top:2px!important;}
+
+/* 임직원현황: 헤더 → 5개 탭 → 검색창 순서와 간격을 절대 고정 */
+#staffScreen{display:none;flex-direction:column!important;overflow:hidden!important;}
+#staffScreen .staff-mobile-header{position:relative!important;flex:0 0 auto!important;height:54px!important;min-height:54px!important;display:flex!important;align-items:center!important;padding:0 15px!important;}
+#staffScreen #staffTabs{position:relative!important;top:auto!important;left:auto!important;right:auto!important;flex:0 0 54px!important;height:54px!important;min-height:54px!important;width:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;padding:7px 10px!important;margin:0!important;overflow:visible!important;transform:none!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;height:40px!important;min-height:40px!important;margin:0!important;padding:0 2px!important;align-items:center!important;justify-content:center!important;transform:none!important;}
+#staffScreen .fullscreen-content{position:relative!important;top:auto!important;flex:1 1 auto!important;min-height:0!important;padding:8px 15px 30px!important;margin:0!important;overflow-y:auto!important;transform:none!important;}
+#staffScreen .staff-search-wrap{position:relative!important;top:auto!important;margin:0 0 10px!important;transform:none!important;}
+#staffScreen .staff-search{transform:none!important;}
+#staffScreen .staff-mobile-header + #staffTabs + .fullscreen-content{margin-top:0!important;}
+@media(max-width:360px){
+ .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+ .app-container > .header .brand-title-en{font-size:.39rem!important;}
+ #staffScreen .staff-mobile-header{height:52px!important;min-height:52px!important;}
+ #staffScreen #staffTabs{flex-basis:50px!important;height:50px!important;min-height:50px!important;padding:5px 7px!important;gap:3px!important;}
+ #staffScreen #staffTabs .month-tab{height:40px!important;min-height:40px!important;font-size:.77rem!important;}
+ #staffScreen .fullscreen-content{padding:7px 10px 25px!important;}
+}
+</style>
+<style id="koda-final-layout-fix-20260909">
+/* 1) 메인 첫 화면 좌측 브랜드 장식 완전 제거 */
+.app-container > .header .header-left-brand{display:none!important;}
+.app-container > .header::before{display:none!important;}
+
+/* 2) 임직원현황: 화면 전체를 기준으로 버튼/검색/명단을 정확히 가운데 정렬 */
+#staffScreen{
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100vw!important;
+  max-width:none!important;
+  padding:0 0 18px!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header,
+#staffScreen #staffTabs,
+#staffScreen .fullscreen-content{
+  width:min(430px, calc(100% - 20px))!important;
+  max-width:430px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+}
+#staffScreen #staffTabs{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+  padding:7px 0!important;
+}
+#staffScreen .fullscreen-content{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  padding:8px 0 30px!important;
+  overflow-y:auto!important;
+}
+#staffScreen .staff-search-wrap,
+#staffScreen #staffList{
+  width:100%!important;
+  box-sizing:border-box!important;
 }
 
-/* 일정 배너 텍스트 영역 컴팩트 */
-.schedule-banner{ min-height:88px!important; height:88px!important; margin-bottom:10px!important; }
-.schedule-banner-track, .schedule-banner-slide{ min-height:88px!important; height:88px!important; }
-.schedule-banner-slide{ padding:9px 15px 14px!important; justify-content:center!important; }
-.banner-heading{ display:flex!important; align-items:center!important; gap:7px!important; margin-bottom:2px!important; min-height:20px!important; height:20px!important; white-space:nowrap!important; overflow:hidden!important; }
-.banner-kicker{ flex:0 0 auto!important; min-height:20px!important; height:20px!important; padding:0 8px!important; font-size:.60rem!important; line-height:20px!important; }
-.banner-meta{ display:block!important; min-width:0!important; overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important; color:rgba(255,255,255,.88)!important; font-size:.76rem!important; line-height:1.2!important; font-weight:650!important; letter-spacing:-.025em!important; }
-.banner-event-line2{ margin-top:1px!important; font-size:1.02rem!important; line-height:1.25!important; }
+/* 카테고리 버튼을 눌러도 페이지가 위로 끌려 올라가지 않도록 고정 */
+#staffScreen .fullscreen-tabs,
+#staffScreen .month-tab,
+#staffScreen .fullscreen-back-btn{
+  transform:none!important;
+  scroll-margin-top:0!important;
+}
+@media(max-width:360px){
+  #staffScreen .staff-mobile-header,
+  #staffScreen #staffTabs,
+  #staffScreen .fullscreen-content{
+    width:calc(100% - 14px)!important;
+  }
+  #staffScreen #staffTabs{padding:5px 0!important;}
+  #staffScreen .fullscreen-content{padding:7px 0 25px!important;}
+}
+</style>
+
+<style id="koda-banner-and-staff-title-final-fix">
+
+/* 임직원현황 제목: 화면 전체 기준 정중앙 */
+#staffScreen .staff-mobile-header{
+  position:relative!important;
+}
+#staffScreen .fullscreen-title{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:max-content!important;
+  margin:0!important;
+  text-align:center!important;
+  z-index:2!important;
+}
+#staffScreen .fullscreen-back-btn{
+  position:relative!important;
+  z-index:3!important;
+}
+
+/* 일정 배너: 텍스트 영역에 맞춘 컴팩트 레이아웃 */
+.schedule-banner{
+  min-height:88px!important;
+  height:88px!important;
+  margin-bottom:10px!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  min-height:88px!important;
+  height:88px!important;
+}
+.schedule-banner-slide{
+  padding:10px 15px 18px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  display:flex!important;
+  align-items:center!important;
+  gap:3px!important;
+  margin-bottom:5px!important;
+  min-height:21px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+.banner-kicker{
+  flex:0 0 auto!important;
+  min-height:20px!important;
+  height:20px!important;
+  padding:0 8px!important;
+  font-size:.60rem!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  display:block!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:rgba(255,255,255,.88)!important;
+  font-size:.76rem!important;
+  line-height:1.3!important;
+  font-weight:650!important;
+  letter-spacing:-.025em!important;
+}
+.banner-event-line2{
+  margin-top:0!important;
+  font-size:1.02rem!important;
+  line-height:1.3!important;
+}
 .schedule-banner::before{width:90px!important;height:90px!important;right:-30px!important;top:-45px!important;}
 .schedule-banner::after{width:58px!important;height:58px!important;left:-28px!important;bottom:-34px!important;}
-.schedule-banner .banner-event{ line-height:1.25!important; }
 
 @media(max-width:360px){
-  .schedule-banner, .schedule-banner-track, .schedule-banner-slide{ min-height:84px!important; height:84px!important; }
-  .schedule-banner-slide{padding:8px 12px 12px!important;}
-  .banner-heading{gap:6px!important;margin-bottom:1px!important;}
+  .schedule-banner,
+  .schedule-banner-track,
+  .schedule-banner-slide{
+    min-height:84px!important;
+    height:84px!important;
+  }
+  .schedule-banner-slide{padding:9px 12px 16px!important;}
+  .banner-heading{gap:6px!important;margin-bottom:4px!important;}
   .banner-kicker{font-size:.56rem!important;padding:0 7px!important;}
   .banner-meta{font-size:.69rem!important;}
   .banner-event-line2{font-size:.94rem!important;}
@@ -1461,12 +1886,242 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 </style>
 
+<style id="koda-banner-spacing-final-fix">
+/* 배너: 기존처럼 정보와 행사명 사이를 촘촘하게 */
+.schedule-banner{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-slide{
+  padding:9px 15px 14px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  gap:7px!important;
+  margin-bottom:2px!important;
+  min-height:20px!important;
+  height:20px!important;
+  align-items:center!important;
+}
+.banner-kicker{
+  height:20px!important;
+  min-height:20px!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  font-size:.76rem!important;
+  line-height:1.2!important;
+}
+.banner-event-line2{
+  margin-top:1px!important;
+  font-size:1.02rem!important;
+  line-height:1.25!important;
+}
+
+/* 배너의 실제 텍스트 높이만큼만 여백을 유지 */
+.schedule-banner .banner-event{
+  line-height:1.25!important;
+}
+
+@media(max-width:360px){
+  .schedule-banner-slide{
+    padding:8px 12px 12px!important;
+  }
+  .banner-heading{
+    margin-bottom:1px!important;
+  }
+  .banner-meta{
+    font-size:.69rem!important;
+  }
+  .banner-event-line2{
+    font-size:.94rem!important;
+  }
+}
+</style>
+
+<!-- 🔥 새로 추가/수정된 사용자 맞춤 스타일 🔥 -->
+<style id="custom-modifications-applied">
+  /* 1. <오늘 일정> 라인과 목록 간격 축소 */
+  .schedule-section-header {
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+  }
+  .schedule-container {
+    gap: 1px !important;
+    padding-top: 5px !important; 
+  }
+  #pastScheduleList {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
+  /* 2. 5개 버튼아이콘과 <오늘 일정> 사이 그라데이션 라인 */
+  .schedule-container::before {
+    content: '';
+    display: block;
+    width: 94%;
+    height: 0.5px;
+    margin: 0 auto 15px auto;
+    background: linear-gradient(90deg, transparent, #a0aec0, transparent);
+  }
+
+  /* 3. 배너 안 Pause 기호 수정 및 위치 조정 */
+  .banner-pause-btn {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+    flex-basis: 14px !important;
+    font-size: 0.65rem !important;
+    line-height: 14px !important;
+    right: 22px !important; /* 동그라미들 바로 옆에 위치 */
+    bottom: 5.5px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    padding: 0 !important;
+  }
+  .banner-pause-btn.paused {
+    background: transparent !important;
+    color: #ffffff !important;
+  }
+  .banner-dots {
+    right: 38px !important; /* Pause 버튼 옆으로 점들 위치 이동 */
+  }
+  @media(max-width:360px){
+    .banner-pause-btn { right: 18px !important; }
+    .banner-dots { right: 34px !important; }
+  }
+
+  /* 4. 관심일정 터치 시 활성화 배경 */
+  .active-bookmark .quick-icon {
+    background-color: #e6f2ff !important;
+    border-color: #cce0ff !important;
+  }
+</style>
+
+<style id="layout-spacing-fixes">
+  /* 1. <지난 일정>, <예정 일정>, <오늘 일정> 과 아래 목록 사이의 간격을 동일하게 맞춤 */
+  .schedule-section-header {
+    padding-bottom: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  .schedule-list-wrapper {
+    margin-top: 0 !important;
+  }
+  
+  /* 만약 .schedule-container의 gap 때문에 간격이 달라진다면 일관되게 고정 */
+  .schedule-container {
+    gap: 0 !important; 
+  }
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px !important; /* 목록 카드들 사이의 간격 유지 */
+  }
+
+  /* 2. 배너 내부 "배지/일시/장소" 와 "행사명" 사이의 줄간격 축소 */
+  .banner-heading {
+    margin-bottom: 0px !important; /* 기존 2~5px 이었던 하단 여백 제거 */
+    min-height: 18px !important;
+  }
+  .banner-event-line2 {
+    margin-top: 0px !important; /* 행사명 위쪽 여백 제거 */
+    line-height: 0.85 !important; /* 줄간격(높이) 미세 축소 */
+  }
+
+  /* 모바일 화면에서도 좁혀진 줄간격 유지 */
+  @media(max-width:360px) {
+    .banner-heading {
+      margin-bottom: 0px !important; 
+    }
+    .banner-event-line2 {
+      margin-top: 0px !important;
+    }
+  }
+</style>
+
+<style id="past-schedule-spacing-fix">
+  /* 지난 달력 이동 시 나오는 <지난 일정> 타이틀과 목록 사이의 간격 조정 */
+  .schedule-section-header + .schedule-list-wrapper {
+    margin-top: 4px !important; /* 위와 동일한 값으로 맞추시면 깔끔합니다 */
+  }
+</style>
+
+<style id="upcoming-schedule-spacing-fix">
+  /* <예정 일정> 및 <오늘 일정> 타이틀 아래 본 일정 목록과의 간격 조정 */
+  #scheduleContainer > .schedule-list-wrapper:last-child {
+    margin-top: 4px !important; /* 숫자를 줄이면 간격이 좁아지고, 늘리면 넓어집니다 (예: 0px ~ 10px) */
+  }
+</style>
+
+<style id="today-header-spacing-fix">
+  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
+  .schedule-section-header {
+    align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
+    padding-bottom: 0px !important;   
+    margin-bottom: 2px !important; /* 필요시 이 값을 0px로 줄이시면 더 바짝 붙습니다 */
+  }
+  
+  /* 2. "지난 일정 보기" 버튼이 차지하는 잉여 투명 공간 압축 */
+  .past-schedule-btn {
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin-bottom: 2px !important; /* 글씨 하단 선 시각적 맞춤용 */
+  }
+  
+  /* 3. 부제목의 텍스트 줄간격 압축 */
+  .schedule-section-subtitle {
+    line-height: 1.1 !important;
+  }
+</style>
+
+<style id="card-today-badge-style">
+  /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
+  .card-today-badge {
+    position: absolute;
+    bottom: 0px;  /* 바닥 테두리에 완전 밀착 (기존 12px) */
+    right: 0px;   /* 오른쪽 테두리에 완전 밀착 (기존 12px) */
+    background-color: #e53e3e; 
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 3px 7px;
+    
+    /* 카드 모서리 둥글기(10px)와 자연스럽게 이어지도록 반경 설정 (좌측상단 우측상단 우측하단 좌측하단) */
+    border-radius: 8px 0 8px 0; 
+    
+    z-index: 5;
+    line-height: 1.1;
+    pointer-events: none; 
+    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); /* 안쪽으로 살짝 그림자 */
+  }
+  
+  /* 모바일 화면 맞춤 미세조정 */
+  @media(max-width:360px) {
+    .card-today-badge {
+      bottom: 0px;
+      right: 0px;
+      font-size: 0.5rem;
+      padding: 2px 5px;
+      border-radius: 6px 0 10px 0; /* 모바일 카드 모서리에 맞춤 */
+    }
+  }
+</style>
+
 </head>
 <body>
 
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고" class="login-logo" onerror="this.style.display='none'">
+    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고" class="login-logo">
     <div class="login-title">KODA 일정 안내</div>
     <div class="login-subtitle">등록된 회원만 이용하실 수 있습니다.<br>이름과 핸드폰 번호를 입력해주세요.</div>
 
@@ -1518,10 +2173,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </div>
   </div>
 
-  <!-- ✨ 빠른 메뉴버튼 영역 (총 6개) ✨ -->
   <div class="quick-menu-container">
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
-      <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA" onerror="this.src='https://via.placeholder.com/50?text=K'"></span><span class="quick-label">홈페이지</span>
+      <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">홈페이지</span>
     </a>
     <button class="quick-btn" onclick="openStaffScreen()">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">임직원현황</span>
@@ -1535,16 +2189,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#1267d6"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
     </button>
-    <!-- 새롭게 추가된 6번째 버튼 -->
+  </div>
+
+  <div class="sub-menu-container">
     <button class="quick-btn" onclick="openNewsScreen()">
-      <span class="quick-icon">
-        <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="5" y="8" width="42" height="36" rx="8" fill="#F5A623"/>
-          <rect x="12" y="16" width="28" height="4" rx="2" fill="#fff"/>
-          <rect x="12" y="24" width="28" height="4" rx="2" fill="#fff"/>
-          <rect x="12" y="32" width="16" height="4" rx="2" fill="#fff"/>
-        </svg>
-      </span><span class="quick-label">회원소식</span>
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="6" y="10" width="40" height="30" rx="8" fill="#1267d6"/><path d="M14 19h24M14 26h16" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="38" cy="35" r="9.5" fill="#ffb020"/><path d="M38 30.5v5.2l3.6 2.1" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">회원소식</span>
+    </button>
+    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
+      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
+      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
+      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn quick-btn-soon" onclick="showComingSoon()">
+      <span class="quick-icon quick-icon-soon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="7" width="38" height="38" rx="12" fill="#e2e8f0"/><circle cx="26" cy="26" r="13" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M26 18v9l6.5 3.8" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">준비중</span>
     </button>
   </div>
 
@@ -1578,7 +2239,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-content">
-    <div class="staff-search-wrap">
+<div class="staff-search-wrap">
       <span class="staff-search-icon" aria-hidden="true">⌕</span>
       <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
@@ -1586,37 +2247,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="day-event-list" id="staffList"></div>
   </div>
 </div>
-
-<!-- ✨ 회원소식 목록 전용 페이지 ✨ -->
-<div class="fullscreen-screen" id="newsScreen">
-  <div class="staff-mobile-header">
-    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">회원소식</div>
-  </div>
-
-  <div class="fullscreen-tabs" id="newsTabs">
-    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
-    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
-    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
-    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
-  </div>
-
-  <div class="fullscreen-content">
-    <div id="newsList"></div>
-  </div>
-</div>
-
-<!-- ✨ 회원소식 상세보기 전용 페이지 ✨ -->
-<div class="fullscreen-screen" id="newsDetailScreen">
-  <div class="staff-mobile-header">
-    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">상세보기</div>
-  </div>
-  <div class="fullscreen-content" id="newsDetailContent">
-  </div>
-</div>
-
 
 <!-- ✨ 직원 상세정보 모달 ✨ -->
 <div class="modal-overlay" id="staffDetailModal" onclick="closeStaffDetailModalOnOutsideClick(event)">
@@ -1659,6 +2289,46 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <a href="#" class="action-btn btn-sms" id="staffBtnSms">💬 문자발송</a>
       <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉️ 이메일</a>
     </div>
+  </div>
+</div>
+
+<!-- ✨ 회원소식 목록 화면 ✨ -->
+<div class="fullscreen-screen" id="newsScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">← 뒤로</button>
+    <div class="fullscreen-title">회원소식</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+
+  <div class="fullscreen-tabs" id="newsTabs">
+    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
+    <button class="month-tab" data-cat="분양일정" onclick="filterNews('분양일정')">분양일정</button>
+    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
+    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
+    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
+  </div>
+
+  <div class="fullscreen-content">
+    <div class="day-event-list" id="newsList">
+      <div class="loading-msg">회원소식을 불러오는 중입니다...⏳</div>
+    </div>
+  </div>
+</div>
+
+<!-- ✨ 회원소식 상세 페이지 (팝업이 아닌 실제 화면 전환) ✨ -->
+<div class="fullscreen-screen" id="newsDetailScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">← 뒤로</button>
+    <div class="fullscreen-title">회원소식</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+
+  <div class="fullscreen-content">
+    <div id="newsDetailBadge"></div>
+    <div class="news-detail-title" id="newsDetailTitle"></div>
+    <div class="news-detail-date" id="newsDetailDate"></div>
+    <div class="news-detail-body" id="newsDetailBody"></div>
+    <div class="news-link-preview" id="newsLinkPreview" style="display:none;"></div>
   </div>
 </div>
 
@@ -1716,7 +2386,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   let scheduleData = [];
   let staffData = [];
-  let newsData = [];
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -1937,141 +2606,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.body.style.overflow = 'hidden';
   }
 
-
-  // ===== ✨ 회원소식 (시트6) 데이터 연동 로직 ✨ =====
-  function parseNewsCSV(csv) {
-    const rows = splitCSV(csv);
-    const dataArr = [];
-    if (rows.length < 2) return dataArr;
-
-    for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      if (r.length < 3 || !r[0]) continue; 
-      
-      dataArr.push({
-        date: r[0] ? r[0].trim() : "",
-        category: r[1] ? r[1].trim() : "기타",
-        title: r[2] ? r[2].trim() : "",
-        content: r[3] ? r[3].trim() : "",
-        url: r[4] ? r[4].trim() : ""
-      });
-    }
-    return dataArr;
-  }
-
-  async function loadNewsData() {
-    const list = document.getElementById('newsList');
-    list.innerHTML = `<div class="loading-msg">회원소식을 불러오는 중입니다...⏳</div>`;
-    try {
-      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      newsData = parseNewsCSV(await response.text());
-      filterNews('전체');
-    } catch (error) {
-      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
-    }
-  }
-
-  window.filterNews = function(category) {
-    const tabs = document.querySelectorAll('#newsTabs .month-tab');
-    tabs.forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.cat === category);
-    });
-    
-    const list = document.getElementById('newsList');
-    list.innerHTML = '';
-    
-    let filtered = (category === '전체') ? [...newsData] : newsData.filter(item => item.category === category);
-    
-    // 작성일자(date) 기준 내림차순(최신순) 정렬
-    filtered.sort((a, b) => {
-      const dateA = new Date(a.date.replace(/\./g, '-')) || new Date('1970-01-01');
-      const dateB = new Date(b.date.replace(/\./g, '-')) || new Date('1970-01-01');
-      return dateB - dateA;
-    });
-    
-    if (!filtered.length) {
-      list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
-      return;
-    }
-    
-    filtered.forEach(item => {
-      const idx = newsData.indexOf(item);
-      const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'news-card-item';
-      card.onclick = () => openNewsDetail(idx);
-      card.innerHTML = `
-        <div class="news-card-cat">${item.category}</div>
-        <div class="news-card-title">${item.title}</div>
-        <div class="news-card-date">${item.date}</div>
-      `;
-      list.appendChild(card);
-    });
-    
-    const contentArea = document.getElementById('newsScreen').querySelector('.fullscreen-content');
-    if(contentArea) contentArea.scrollTop = 0;
-  };
-
-  window.openNewsScreen = function() {
-    const screen = document.getElementById('newsScreen');
-    screen.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    history.pushState({ newsOpen: true }, "", "");
-    if (newsData.length === 0) {
-      loadNewsData();
-    } else {
-      filterNews('전체');
-    }
-  };
-
-  window.closeNewsScreen = function(goBack=true) { 
-    document.getElementById('newsScreen').style.display = 'none'; 
-    if(goBack) history.back(); 
-  };
-
-  window.openNewsDetail = function(index) {
-    const item = newsData[index];
-    const contentDiv = document.getElementById('newsDetailContent');
-    
-    let linkHtml = '';
-    if (item.url && item.url.trim() !== '') {
-      let linkUrl = item.url.trim();
-      if (!linkUrl.startsWith('http')) linkUrl = 'https://' + linkUrl;
-      
-      // 실제 웹사이트의 썸네일을 불러오기 위해 오픈 API 사용
-      let thumbnailImgSrc = `https://image.thum.io/get/width/600/crop/800/${linkUrl}`;
-      
-      linkHtml = `
-        <a href="${linkUrl}" target="_blank" class="news-link-preview">
-          <img src="${thumbnailImgSrc}" alt="관련 링크 썸네일" onerror="this.style.display='none'">
-          <div class="news-link-info">
-            <div class="news-link-title">관련 링크 바로가기 🔗</div>
-            <div class="news-link-url">${linkUrl}</div>
-          </div>
-        </a>
-      `;
-    }
-    
-    contentDiv.innerHTML = `
-      <div class="news-detail-cat">${item.category}</div>
-      <div class="news-detail-title">${item.title}</div>
-      <div class="news-detail-date">등록일: ${item.date}</div>
-      <div class="news-detail-body">${item.content}</div>
-      ${linkHtml}
-    `;
-    
-    const screen = document.getElementById('newsDetailScreen');
-    screen.style.display = 'flex';
-    screen.querySelector('.fullscreen-content').scrollTop = 0;
-    history.pushState({ newsDetailOpen: true }, "", "");
-  };
-
-  window.closeNewsDetailScreen = function(goBack=true) { 
-    document.getElementById('newsDetailScreen').style.display = 'none'; 
-    if(goBack) history.back(); 
-  };
-
-
   // ===== ✨ 시트4 KODA 직원현황 로직 ✨ =====
   function parseStaffCSV(csv) {
     const rows = splitCSV(csv);
@@ -2129,6 +2663,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let currentStaffCategory = '전체';
 
   window.filterStaff = function(category) {
+    // 분류 버튼은 항상 유지하고, 선택된 버튼만 활성화합니다.
     const validCategories = ['전체','사무국','7대 임원','회원사','ARP'];
     if (!validCategories.includes(category)) category = '전체';
     currentStaffCategory = category;
@@ -2142,12 +2677,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value='';
     const clear=document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
+    // 버튼 클릭 시 브라우저의 자동 포커스/스크롤 이동을 차단합니다.
     if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-    
-    renderStaffList(category);
-    
-    const staffContent = document.getElementById('staffScreen').querySelector('.fullscreen-content');
+    const staffScreen = document.getElementById('staffScreen');
+    const staffContent = staffScreen?.querySelector('.fullscreen-content');
+    if(staffScreen) staffScreen.scrollTop = 0;
     if(staffContent) staffContent.scrollTop = 0;
+    renderStaffList(category);
+    requestAnimationFrame(()=>{
+      if(staffScreen) staffScreen.scrollTop = 0;
+      if(staffContent) staffContent.scrollTop = 0;
+    });
   }
 
   function renderStaffList(categoryFilter) {
@@ -2161,7 +2701,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
         return hay.includes(q);
       });
     }
-    
+    const countEl=document.getElementById('staffResultCount');
+    if(countEl) countEl.textContent=`${filteredData.length}명`;
     if(!filteredData.length){list.innerHTML=`<div class="no-data">${q?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
     filteredData.forEach(item=>{
       const indexInOriginal=staffData.indexOf(item);
@@ -2177,9 +2718,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.openStaffScreen = function() {
     const staffScreenEl = document.getElementById('staffScreen');
     staffScreenEl.style.display = 'flex';
+    staffScreenEl.scrollTop = 0;
+    const staffContentEl = staffScreenEl.querySelector('.fullscreen-content');
+    if(staffContentEl) staffContentEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    
+    // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
     currentStaffCategory = '전체';
     const staffTabs = document.querySelectorAll('#staffTabs .month-tab');
     staffTabs.forEach(btn => {
@@ -2187,8 +2731,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
       btn.style.display = 'flex';
       btn.classList.toggle('active', btn.dataset.cat === '전체');
     });
-    
-    if (staffData.length === 0) loadStaffData(); else filterStaff('전체');
+    const search = document.getElementById('staffSearchInput');
+    if(search) search.value = '';
+    const clear = document.getElementById('staffSearchClear');
+    if(clear) clear.classList.remove('show');
+    if (staffData.length === 0) loadStaffData(); else renderStaffList('전체');
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -2248,6 +2795,239 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
 
+  // ===== 시트6 회원소식 연동 부분 =====
+  let newsData = [];
+  let currentNewsCategory = '전체';
+  let currentNewsIndex = null;
+
+  const NEWS_CATEGORY_BADGE = {
+    '분양일정': { bg: '#eef5ff', color: '#1267d6' },
+    '결혼':     { bg: '#fff1f6', color: '#d6336c' },
+    '부고':     { bg: '#f1f3f5', color: '#495057' },
+    '기타':     { bg: '#f6f2ff', color: '#7048e8' }
+  };
+
+  // "26.09.09" 같은 날짜 문자열을 Date 객체로 변환 (정렬용)
+  function parseNewsDateToObj(dateStr) {
+    const m = String(dateStr || '').trim().match(/(\d{2,4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
+    if (!m) return null;
+    let y = parseInt(m[1], 10);
+    if (y < 100) y += 2000;
+    const mo = parseInt(m[2], 10);
+    const d = parseInt(m[3], 10);
+    const obj = new Date(y, mo - 1, d);
+    return isNaN(obj.getTime()) ? null : obj;
+  }
+
+  // 시트의 실제 구분값을 화면에 보여줄 4개 탭(분양일정/결혼/부고/기타) 중 하나로 매핑
+  function normalizeNewsCategory(raw) {
+    const v = String(raw || '').trim();
+    if (!v) return '기타';
+    if (v.includes('결혼')) return '결혼';
+    if (v.includes('부고')) return '부고';
+    if (v.includes('분양') || v.includes('견본주택') || v.includes('견본') || v.includes('오픈') || v.includes('청약')) return '분양일정';
+    return '기타';
+  }
+
+  function parseNewsCSV(csv) {
+    const rows = splitCSV(csv);
+    const dataArr = [];
+    if (rows.length < 2) return dataArr;
+
+    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
+    let idx = {
+      cat: headers.indexOf("구분"),
+      date: headers.indexOf("작성일자"),
+      title: headers.indexOf("제목"),
+      content: headers.indexOf("내용"),
+      link: headers.indexOf("관련링크")
+    };
+    // 헤더를 인식하지 못하는 경우, 시트6 실제 열 순서(구분/작성일자/제목/내용/관련링크=B~F열)를 그대로 사용
+    if (idx.title === -1) idx = { cat: 1, date: 2, title: 3, content: 4, link: 5 };
+
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (!r || r.length <= idx.title || !r[idx.title]) continue;
+      const rawDate = idx.date !== -1 && r[idx.date] ? r[idx.date].trim() : '';
+      const rawCat = idx.cat !== -1 && r[idx.cat] ? r[idx.cat].trim() : '';
+      dataArr.push({
+        id: `news_${i}_${rawDate}`,
+        rawCategory: rawCat,
+        category: normalizeNewsCategory(rawCat),
+        date: rawDate,
+        dateObj: parseNewsDateToObj(rawDate),
+        title: idx.title !== -1 && r[idx.title] ? r[idx.title].trim() : '제목 없음',
+        content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : '',
+        link: idx.link !== -1 && r[idx.link] ? r[idx.link].trim() : ''
+      });
+    }
+    // 작성일자 최신순(내림차순) 정렬
+    dataArr.sort((a, b) => {
+      const at = a.dateObj ? a.dateObj.getTime() : -Infinity;
+      const bt = b.dateObj ? b.dateObj.getTime() : -Infinity;
+      return bt - at;
+    });
+    return dataArr;
+  }
+
+  async function loadNewsData() {
+    const list = document.getElementById('newsList');
+    if (list) list.innerHTML = `<div class="loading-msg">회원소식을 불러오는 중입니다...⏳</div>`;
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      newsData = parseNewsCSV(await response.text());
+      renderNewsList(currentNewsCategory);
+    } catch (error) {
+      if (list) list.innerHTML = `<div class="no-data">회원소식을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  function renderNewsList(categoryFilter) {
+    const list = document.getElementById('newsList'); if (!list) return; list.innerHTML = '';
+    const filteredData = (categoryFilter === '전체') ? [...newsData] : newsData.filter(item => item.category === categoryFilter);
+
+    if (!filteredData.length) {
+      list.innerHTML = `<div class="no-data">등록된 회원소식이 없습니다.</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const indexInOriginal = newsData.indexOf(item);
+      const badge = NEWS_CATEGORY_BADGE[item.category] || NEWS_CATEGORY_BADGE['기타'];
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'day-event-item news-card';
+      card.innerHTML = `
+        <div class="news-card-top">
+          <span class="news-badge" style="background:${badge.bg};color:${badge.color};">${item.category}</span>
+          <span class="news-card-date">${item.date || ''}</span>
+        </div>
+        <div class="news-card-title">${escapeNewsHtml(item.title)}</div>
+      `;
+      card.onclick = () => openNewsDetail(indexInOriginal);
+      list.appendChild(card);
+    });
+  }
+
+  window.filterNews = function(category) {
+    const validCategories = ['전체', '분양일정', '결혼', '부고', '기타'];
+    if (!validCategories.includes(category)) category = '전체';
+    currentNewsCategory = category;
+    document.querySelectorAll('#newsTabs .month-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === category);
+    });
+    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
+    renderNewsList(category);
+    const newsScreen = document.getElementById('newsScreen');
+    if (newsScreen) newsScreen.scrollTop = 0;
+  };
+
+  window.openNewsScreen = function() {
+    const screen = document.getElementById('newsScreen');
+    screen.style.display = 'flex';
+    screen.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsOpen: true }, "", "");
+
+    currentNewsCategory = '전체';
+    document.querySelectorAll('#newsTabs .month-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === '전체'));
+
+    if (newsData.length === 0) loadNewsData(); else renderNewsList('전체');
+  };
+
+  window.closeNewsScreen = function(goBack = true) {
+    document.getElementById('newsScreen').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    if (goBack) history.back();
+  };
+
+  function escapeNewsHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function linkifyNewsContent(text) {
+    const escaped = escapeNewsHtml(text).replace(/\n/g, '<br>');
+    return escaped.replace(/(https?:\/\/[^\s<]+)/g, url => `<a href="${url}" target="_blank" rel="noopener" style="color:#1267d6;word-break:break-all;">${url}</a>`);
+  }
+
+  window.openNewsDetail = function(index) {
+    currentNewsIndex = index;
+    const item = newsData[index];
+    if (!item) return;
+
+    const badge = NEWS_CATEGORY_BADGE[item.category] || NEWS_CATEGORY_BADGE['기타'];
+    document.getElementById('newsDetailBadge').innerHTML = `<span class="news-badge" style="background:${badge.bg};color:${badge.color};">${item.category}</span>`;
+    document.getElementById('newsDetailTitle').innerText = item.title;
+    document.getElementById('newsDetailDate').innerText = item.date || '';
+    document.getElementById('newsDetailBody').innerHTML = linkifyNewsContent(item.content);
+
+    const previewEl = document.getElementById('newsLinkPreview');
+    previewEl.style.display = 'none';
+    previewEl.innerHTML = '';
+    if (item.link) {
+      previewEl.style.display = 'block';
+      previewEl.innerHTML = `<div class="news-link-label">관련 링크</div><div class="news-link-loading">링크 미리보기를 불러오는 중입니다...⏳</div>`;
+      loadNewsLinkPreview(item.link, previewEl);
+    }
+
+    const detailScreen = document.getElementById('newsDetailScreen');
+    detailScreen.style.display = 'flex';
+    detailScreen.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsDetailOpen: true }, "", "");
+  };
+
+  window.closeNewsDetailScreen = function(goBack = true) {
+    document.getElementById('newsDetailScreen').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    if (goBack) history.back();
+  };
+
+  // 관련 링크(F열) URL을 실제 썸네일이 포함된 카드로 렌더링
+  async function loadNewsLinkPreview(url, containerEl) {
+    try {
+      const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=false`;
+      const res = await fetch(apiUrl);
+      const json = await res.json();
+      if (json.status !== 'success' || !json.data) throw new Error('no preview data');
+
+      const data = json.data;
+      const imgUrl = (data.image && data.image.url) || (data.screenshot && data.screenshot.url) || (data.logo && data.logo.url) || '';
+      const siteTitle = data.title || url;
+      const siteDesc = data.description || '';
+      let publisher = data.publisher || '';
+      if (!publisher) { try { publisher = new URL(url).hostname; } catch (e) { publisher = url; } }
+
+      containerEl.innerHTML = `
+        <div class="news-link-label">관련 링크</div>
+        <a href="${url}" target="_blank" rel="noopener" class="news-link-card">
+          ${imgUrl ? `<img src="${imgUrl}" alt="" class="news-link-thumb" loading="lazy">` : ''}
+          <div class="news-link-info">
+            <div class="news-link-title">${escapeNewsHtml(siteTitle)}</div>
+            ${siteDesc ? `<div class="news-link-desc">${escapeNewsHtml(siteDesc)}</div>` : ''}
+            <div class="news-link-url">${escapeNewsHtml(publisher)}</div>
+          </div>
+        </a>
+      `;
+    } catch (err) {
+      let publisher = url;
+      try { publisher = new URL(url).hostname; } catch (e) {}
+      containerEl.innerHTML = `
+        <div class="news-link-label">관련 링크</div>
+        <a href="${url}" target="_blank" rel="noopener" class="news-link-card">
+          <div class="news-link-info">
+            <div class="news-link-title">${escapeNewsHtml(publisher)}</div>
+            <div class="news-link-url">${escapeNewsHtml(url)}</div>
+          </div>
+        </a>
+      `;
+    }
+  }
+
+  // 준비중 버튼 안내
+  window.showComingSoon = function() {
+    alert('준비 중인 서비스입니다. 곧 만나보실 수 있어요! 🙏');
+  };
 
   window.toggleBookmark = function(event, id) {
     event.stopPropagation(); 
@@ -2560,7 +3340,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-  function createEventCard(event) {
+function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -2570,7 +3350,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
+    // 💡 오늘 일정인 경우 우측 하단에 들어갈 뱃지 태그 추가
+    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
+
     card.innerHTML = `
+      ${todayBadgeHtml}
       <div class="card-actions">
         <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -2612,9 +3396,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const currentFilteredData = getFilteredData();
 
     if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; return;
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; 
+      return;
     }
 
+    // 1. 이벤트 분류 (오늘, 예정, 지난 일정)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -2624,62 +3410,47 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    const header = document.createElement('div'); header.className = 'schedule-section-header';
-    const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
-    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
-    
-    let titleText = "";
-    if (isPastMonthView) {
-        titleText = "<지난 일정>";
-    } else if (todayEvents.length > 0) {
-        titleText = "<오늘 일정>";
-    } else {
-        titleText = "<예정 일정>";
-    }
-    titleEl.innerText = titleText;
-    titleWrapper.appendChild(titleEl);
-
-    if (todayEvents.length > 0 && !isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
-    } else if (isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
-    }
-    header.appendChild(titleWrapper);
-
-    if (!isPastMonthView && pastEvents.length > 0) {
-      const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
-      header.appendChild(pastBtn);
-    }
-    
-    scheduleContainer.appendChild(header);
+    // 2. 일정을 담을 단일 리스트 래퍼 생성
+    const listWrapper = document.createElement('div'); 
+    listWrapper.className = 'schedule-list-wrapper';
 
     if (isPastMonthView) {
-        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-        scheduleContainer.appendChild(pastList);
+        // 지난 달 달력을 볼 때는 바로 지난 일정들만 나열
+        pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
+        // 이번 달(또는 미래) 달력을 볼 때의 정렬 순서
+        
+        // ① 오늘의 일정 (가장 맨 위에 배치)
+        todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ② 예정 일정 (오늘 이후부터 이번 달 마지막 날까지)
+        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ③ 지나간 일정 (검은 점선 아래에 배치)
         if (pastEvents.length > 0) {
-          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
-          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-          scheduleContainer.appendChild(pastList);
+            // 앞에 오늘이나 예정 일정이 있을 경우에만 구분선을 그어줌
+            if (todayEvents.length > 0 || futureEvents.length > 0) {
+                const divider = document.createElement('div');
+                divider.style.borderTop = '1.5px dashed #1a202c'; // 검은 점선 스타일
+                divider.style.margin = '15px 5px'; // 점선 위아래 간격
+                divider.style.opacity = '0.5'; // 점선이 너무 진하지 않게 약간 투명도 적용
+                listWrapper.appendChild(divider);
+            }
+            // 점선 아래로 지난 일정들 추가
+            pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         }
 
-        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
-        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-        else {
-          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        // 혹시라도 데이터가 아무것도 표시되지 않을 때의 예외 처리
+        if (todayEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0) {
+            listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
         }
-        scheduleContainer.appendChild(upcomingList);
     }
+    
+    // 3. 컨테이너에 최종 리스트 추가
+    scheduleContainer.appendChild(listWrapper);
   }
   
-  // 뒤로가기 상태 관리 (회원소식 목록 및 상세 추가)
+  // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
@@ -2688,11 +3459,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     hideModalDOM();
     document.body.style.overflow = 'auto';
 
+    // 뒤로 이동한 목적지 상태만 다시 표시
     if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
     else if (st.newsOpen) document.getElementById('newsScreen').style.display='flex';
-    else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display='flex';
+    else if (st.newsDetailOpen) { document.getElementById('newsScreen').style.display='flex'; document.getElementById('newsDetailScreen').style.display='flex'; }
 
     if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen) {
       document.body.style.overflow='hidden';
