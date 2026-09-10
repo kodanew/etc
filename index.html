@@ -1985,6 +1985,35 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
+<style id="card-today-badge-style">
+  /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
+  .card-today-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: #e53e3e; /* 기존 빨간 테두리와 같은 색상 */
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 4px;
+    z-index: 5;
+    line-height: 1;
+    pointer-events: none; /* 뱃지를 눌러도 아래에 있는 카드가 터치되도록 설정 */
+    box-shadow: 0 2px 5px rgba(229, 62, 62, 0.25); /* 살짝 그림자 추가 */
+  }
+  
+  /* 모바일 화면 맞춤 미세조정 */
+  @media(max-width:360px) {
+    .card-today-badge {
+      bottom: 9px;
+      right: 9px;
+      font-size: 0.5rem;
+      padding: 2px 4px;
+    }
+  }
+</style>
+
 </head>
 <body>
 
@@ -2917,7 +2946,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-  function createEventCard(event) {
+function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -2927,7 +2956,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
+    // 💡 오늘 일정인 경우 우측 하단에 들어갈 뱃지 태그 추가
+    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
+
     card.innerHTML = `
+      ${todayBadgeHtml}
       <div class="card-actions">
         <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
           <svg viewBox="0 0 24 24" fill="currentColor">
