@@ -2973,7 +2973,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       return;
     }
 
-    // 1. 이벤트 분류 (기존 로직 유지, 단 'pastEvents'는 필요 시 분리 보관)
+    // 1. 이벤트 분류 (오늘, 예정, 지난 일정)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -2983,29 +2983,43 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    // --- 여기서부터 변경됨: 타이틀, 부제목, 토글 버튼 생성 로직 완전 삭제 ---
-    
     // 2. 일정을 담을 단일 리스트 래퍼 생성
     const listWrapper = document.createElement('div'); 
     listWrapper.className = 'schedule-list-wrapper';
 
     if (isPastMonthView) {
-        // 지난 달 달력을 볼 때는 지난 일정만 표시
+        // 지난 달 달력을 볼 때는 바로 지난 일정들만 나열
         pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
-        // 현재 달 달력을 볼 때는 '오늘 일정'과 '예정 일정'만 바로 이어서 표시 (지난 일정은 숨김/제거)
-        // 만약 이번 달의 '지난 일정'도 항상 보이게 하려면 아래 todayEvents 위쪽에 pastEvents 루프를 추가하세요.
-        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+        // 이번 달(또는 미래) 달력을 볼 때의 정렬 순서
         
-        if (!hasUpcoming) {
+        // ① 오늘의 일정 (가장 맨 위에 배치)
+        todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ② 예정 일정 (오늘 이후부터 이번 달 마지막 날까지)
+        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ③ 지나간 일정 (검은 점선 아래에 배치)
+        if (pastEvents.length > 0) {
+            // 앞에 오늘이나 예정 일정이 있을 경우에만 구분선을 그어줌
+            if (todayEvents.length > 0 || futureEvents.length > 0) {
+                const divider = document.createElement('div');
+                divider.style.borderTop = '1.5px dashed #1a202c'; // 검은 점선 스타일
+                divider.style.margin = '15px 5px'; // 점선 위아래 간격
+                divider.style.opacity = '0.5'; // 점선이 너무 진하지 않게 약간 투명도 적용
+                listWrapper.appendChild(divider);
+            }
+            // 점선 아래로 지난 일정들 추가
+            pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        }
+
+        // 혹시라도 데이터가 아무것도 표시되지 않을 때의 예외 처리
+        if (todayEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0) {
             listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-        } else {
-            todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-            futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         }
     }
     
-    // 3. 컨테이너에 리스트 추가
+    // 3. 컨테이너에 최종 리스트 추가
     scheduleContainer.appendChild(listWrapper);
   }
   
