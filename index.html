@@ -318,8 +318,8 @@
   .banner-heading {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    margin-bottom: 9px;
+    gap: 8px;
+    margin-bottom: 7px;
   }
   .banner-kicker {
     display: inline-flex;
@@ -1850,7 +1850,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <style id="custom-modifications-applied">
   /* 1. <오늘 일정> 라인과 목록 간격 축소 */
   .schedule-section-header {
-    padding-bottom: 1px !important;
+    padding-bottom: 0px !important;
     margin-bottom: 0px !important;
   }
   .schedule-container {
@@ -2922,7 +2922,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     if (todayEvents.length > 0 && !isPastMonthView) {
       const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
+      subtitleEl.innerText = "오늘 일정부터 이후 일정."; titleWrapper.appendChild(subtitleEl);
     } else if (isPastMonthView) {
       const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
       subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
