@@ -1964,6 +1964,27 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
+<style id="today-header-spacing-fix">
+  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
+  .schedule-section-header {
+    align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
+    padding-bottom: 0px !important;   
+    margin-bottom: 2px !important; /* 필요시 이 값을 0px로 줄이시면 더 바짝 붙습니다 */
+  }
+  
+  /* 2. "지난 일정 보기" 버튼이 차지하는 잉여 투명 공간 압축 */
+  .past-schedule-btn {
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin-bottom: 2px !important; /* 글씨 하단 선 시각적 맞춤용 */
+  }
+  
+  /* 3. 부제목의 텍스트 줄간격 압축 */
+  .schedule-section-subtitle {
+    line-height: 1.1 !important;
+  }
+</style>
+
 </head>
 <body>
 
