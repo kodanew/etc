@@ -1950,6 +1950,20 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 
+<style id="past-schedule-spacing-fix">
+  /* 지난 달력 이동 시 나오는 <지난 일정> 타이틀과 목록 사이의 간격 조정 */
+  .schedule-section-header + .schedule-list-wrapper {
+    margin-top: 4px !important; /* 위와 동일한 값으로 맞추시면 깔끔합니다 */
+  }
+</style>
+
+<style id="upcoming-schedule-spacing-fix">
+  /* <예정 일정> 및 <오늘 일정> 타이틀 아래 본 일정 목록과의 간격 조정 */
+  #scheduleContainer > .schedule-list-wrapper:last-child {
+    margin-top: 4px !important; /* 숫자를 줄이면 간격이 좁아지고, 늘리면 넓어집니다 (예: 0px ~ 10px) */
+  }
+</style>
+
 </head>
 <body>
 
