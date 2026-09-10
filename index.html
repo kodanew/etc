@@ -480,9 +480,8 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    padding: 5px 5px 10px 5px;
-    margin-top: 5px;
-    margin-bottom: 0px;
+    padding: 0 5px;
+    margin: 0;
     width: 100%;
     row-gap: 4px;
   }
@@ -530,10 +529,11 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    margin: 0;
   }
   #pastScheduleList {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+    margin: 0;
+    padding: 0 0 15px 0;
     border-bottom: 1px dashed var(--border-color);
   }
 
@@ -1157,7 +1157,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .banner-pause-btn{min-height:0!important;width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;padding:0!important;line-height:24px!important;flex:0 0 26px!important;border-radius:50%!important;font-size:.66rem!important;}
 .banner-dots{right:45px!important;bottom:8px!important;height:10px!important;}
 .schedule-banner-slide{padding-bottom:22px!important;}
-.schedule-container{gap:7px!important;padding-bottom:24px!important;}
+.schedule-container {
+    padding: 0 10px 30px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
 .event-card{padding:0!important;}
 .event-header{padding:9px 58px 9px 12px!important;}
 .event-meta{gap:4px!important;margin-bottom:3px!important;}
@@ -1257,8 +1263,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 
 /* 일정 제목과 목록 사이를 컴팩트하게 */
-.schedule-container{padding-top:0!important;gap:5px!important;}
-.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
+.schedule-container {
+    padding: 0 10px 30px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+.schedule-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 5px;
+    margin: 0;
+    width: 100%;
+    row-gap: 4px;
+  }
 
 /* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
   /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
@@ -1847,100 +1868,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 <!-- 🔥 새로 추가/수정된 사용자 맞춤 스타일 🔥 -->
-<style id="custom-modifications-applied">
-  /* 1. <오늘 일정> 라인과 목록 간격 축소 */
-  .schedule-section-header {
-    padding-bottom: 0px !important;
-    margin-bottom: 0px !important;
-  }
-  .schedule-container {
-    gap: 1px !important;
-    padding-top: 5px !important; 
-  }
-  #pastScheduleList {
-    margin-bottom: 5px !important;
-    padding-bottom: 5px !important;
-  }
 
-  /* 2. 5개 버튼아이콘과 <오늘 일정> 사이 그라데이션 라인 */
-  .schedule-container::before {
-    content: '';
-    display: block;
-    width: 94%;
-    height: 0.5px;
-    margin: 0 auto 3px auto;
-    background: linear-gradient(90deg, transparent, #a0aec0, transparent);
-  }
-
-  /* 3. 배너 안 Pause 기호 수정 및 위치 조정 */
-  .banner-pause-btn {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    width: 14px !important;
-    height: 14px !important;
-    min-width: 14px !important;
-    max-width: 14px !important;
-    flex-basis: 14px !important;
-    font-size: 0.65rem !important;
-    line-height: 14px !important;
-    right: 22px !important; /* 동그라미들 바로 옆에 위치 */
-    bottom: 5.5px !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-    padding: 0 !important;
-  }
-  .banner-pause-btn.paused {
-    background: transparent !important;
-    color: #ffffff !important;
-  }
-  .banner-dots {
-    right: 38px !important; /* Pause 버튼 옆으로 점들 위치 이동 */
-  }
-  @media(max-width:360px){
-    .banner-pause-btn { right: 18px !important; }
-    .banner-dots { right: 34px !important; }
-  }
-
-  /* 4. 관심일정 터치 시 활성화 배경 */
-  .active-bookmark .quick-icon {
-    background-color: #e6f2ff !important;
-    border-color: #cce0ff !important;
-  }
-</style>
-
-<style id="schedule-spacing-clean">
-/* 일정 제목 간격 통일 - 단일 기준 */
-.schedule-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  padding-top: 0 !important;
+<style id="schedule-spacing-canonical">
+/* 일정 영역 간격 기준: 그라데이션 ↔ 제목 ↔ 목록 모두 8px */
+.schedule-container{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+  padding-top:0 !important;
 }
-
-.schedule-container::before {
-  margin: 0 auto 8px auto !important;
+.schedule-container::before{
+  margin:0 auto !important;
 }
-
-.schedule-section-header {
-  margin: 0 0 8px 0 !important;
-  padding: 0 5px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+.schedule-section-header{
+  margin:0 !important;
+  padding:0 5px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
 }
-
-.schedule-list-wrapper {
-  margin-top: 0 !important;
-  gap: 8px !important;
+.schedule-list-wrapper{
+  margin:0 !important;
+  gap:8px !important;
 }
-
-#pastScheduleList {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
+#pastScheduleList{
+  margin:0 !important;
+  padding-top:0 !important;
 }
 </style>
-
 </head>
 <body>
 
