@@ -2446,6 +2446,44 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 <style id="member-company-and-profile-final">
+/* ===== 회원사 5단계 필터 / 세로형 카드 / 프로필 ===== */
+#staffScreen .member-filter-tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
+#staffScreen .member-filter-btn{height:38px;min-height:38px;padding:0 3px;border-radius:10px;font-size:.68rem;}
+#staffScreen .member-region-tabs{display:none;flex-wrap:wrap;gap:5px;margin-top:7px;padding:7px;background:#f7faff;border:1px solid #e4edf7;border-radius:12px;}
+#staffScreen .member-region-btn{flex:1 0 calc(20% - 5px);min-width:48px;height:31px;border:1px solid #dce6f2;border-radius:9px;background:#fff;color:#6d8097;font-size:.65rem;font-weight:850;}
+#staffScreen .member-region-btn.active{background:#1769d2;color:#fff;border-color:#1769d2;box-shadow:0 3px 8px rgba(23,105,210,.12);}
+#staffScreen .member-company-row{grid-template-columns:auto 38px minmax(0,1fr) 16px!important;min-height:72px!important;gap:8px!important;padding:9px 5px!important;}
+#staffScreen .member-company-row .member-avatar{width:38px;height:38px;background:#eef6ff;color:#2777cf;border-radius:12px;}
+#staffScreen .member-company-row .staff-person-info strong{font-size:.82rem;}
+#staffScreen .member-company-row .staff-person-info span{font-size:.63rem;}
+#staffScreen .member-company-row .staff-person-info small{display:none!important;}
+#staffScreen .member-status-badge{grid-column:1;grid-row:1;display:inline-flex;align-items:center;justify-content:center;height:23px;min-width:43px;padding:0 7px;border-radius:999px;background:#edf5ff;color:#1769d2;border:1px solid #cfe2f7;font-size:.56rem;font-weight:900;white-space:nowrap;}
+#staffScreen .member-company-row .member-avatar{grid-column:2;grid-row:1;}
+#staffScreen .member-company-row .staff-person-info{grid-column:3;grid-row:1;}
+#staffScreen .member-company-row .staff-person-chevron{grid-column:4;grid-row:1;}
+#staffScreen .member-company-row .staff-person-info span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* 사무국 부서별: 휴대폰 화면에서 9:16 느낌의 세로형 카드 */
+#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;align-items:stretch;}
+#staffScreen #staffList.dept-mode .staff-team-button{aspect-ratio:9 / 14;min-height:145px;width:100%;padding:15px 9px;border:1px solid #d8e6f5;border-radius:17px;background:linear-gradient(180deg,#ffffff 0%,#f6faff 100%);box-shadow:0 6px 16px rgba(28,70,120,.065);gap:8px;}
+#staffScreen #staffList.dept-mode .staff-team-button::before{width:13px;height:13px;border-width:2px;border-radius:4px;}
+#staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.79rem;font-weight:900;line-height:1.25;word-break:keep-all;}
+#staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.61rem;font-weight:700;color:#7187a1;line-height:1.35;white-space:normal;word-break:keep-all;}
+#staffScreen #staffList.dept-mode .staff-team-button::after{content:'›';position:absolute;right:10px;bottom:8px;color:#8ba5c0;font-size:1rem;font-weight:700;}
+
+/* 7대 임원: 배지 → 이름/전화 → 소속 + 한 칸 띄운 직위 */
+#staffScreen .staff-special-role .affiliation{color:#516e8f;}
+#staffScreen .staff-special-role .position{color:#173f70;font-weight:850;}
+#staffScreen .staff-special-role .separator{color:transparent;margin:0 2px;}
+
+@media(max-width:360px){
+ #staffScreen .member-filter-btn{font-size:.62rem;padding:0 2px;}
+ #staffScreen #staffList.dept-mode{gap:8px!important;}
+ #staffScreen #staffList.dept-mode .staff-team-button{min-height:130px;aspect-ratio:9 / 14;padding:12px 7px;}
+ #staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.72rem;}
+ #staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.56rem;}
+}
+
 /* ===== 회원사 필터 ===== */
 #staffScreen .member-filter-wrap{display:none;width:100%;margin:0 0 12px;}
 #staffScreen .member-filter-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;width:100%;}
@@ -2504,6 +2542,42 @@ button,.nav-btn,.action-btn{min-height:44px;}
  #staffScreen .staff-detail-modal-content{width:calc(100% - 20px)!important;padding:17px 14px 14px!important;}
  #staffScreen .staff-profile-avatar{width:52px;height:52px;flex-basis:52px;}
  #staffScreen .staff-profile-name{font-size:.98rem;}
+}
+</style>
+
+<style id="staff-final-ui-20260914">
+/* 최종 임직원/회원사 UI 우선순위 */
+#staffScreen .member-filter-tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important;width:100%!important;}
+#staffScreen .member-filter-btn{height:38px!important;min-height:38px!important;padding:0 2px!important;font-size:.68rem!important;border-radius:10px!important;}
+#staffScreen .member-region-tabs{display:none;flex-wrap:wrap;gap:5px;margin-top:7px;padding:7px;background:#f7faff;border:1px solid #e4edf7;border-radius:12px;}
+#staffScreen .member-region-btn{flex:1 0 calc(20% - 5px)!important;min-width:48px!important;height:31px!important;border:1px solid #dce6f2!important;border-radius:9px!important;background:#fff!important;color:#6d8097!important;font-size:.65rem!important;font-weight:850!important;}
+#staffScreen .member-region-btn.active{background:#1769d2!important;color:#fff!important;border-color:#1769d2!important;}
+#staffScreen .member-company-row{grid-template-columns:auto 38px minmax(0,1fr) 16px!important;min-height:72px!important;gap:8px!important;padding:9px 5px!important;}
+#staffScreen .member-company-row .member-status-badge{grid-column:1!important;grid-row:1!important;}
+#staffScreen .member-company-row .member-avatar{grid-column:2!important;grid-row:1!important;width:38px!important;height:38px!important;}
+#staffScreen .member-company-row .staff-person-info{grid-column:3!important;grid-row:1!important;min-width:0!important;}
+#staffScreen .member-company-row .staff-person-chevron{grid-column:4!important;grid-row:1!important;}
+#staffScreen .member-company-row .staff-person-info strong{font-size:.82rem!important;}
+#staffScreen .member-company-row .staff-person-info span{font-size:.63rem!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .member-company-row .staff-person-info small{display:none!important;}
+
+#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;align-items:stretch!important;}
+#staffScreen #staffList.dept-mode .staff-team-button{position:relative!important;aspect-ratio:9 / 14!important;min-height:145px!important;height:auto!important;width:100%!important;padding:15px 9px!important;border:1px solid #d8e6f5!important;border-radius:17px!important;background:linear-gradient(180deg,#ffffff 0%,#f6faff 100%)!important;box-shadow:0 6px 16px rgba(28,70,120,.065)!important;gap:8px!important;}
+#staffScreen #staffList.dept-mode .staff-team-button::before{content:''!important;display:block!important;width:13px!important;height:13px!important;border:2px solid #6ea5df!important;border-radius:4px!important;filter:none!important;}
+#staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.79rem!important;font-weight:900!important;line-height:1.25!important;text-align:center!important;word-break:keep-all!important;}
+#staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.61rem!important;font-weight:700!important;color:#7187a1!important;line-height:1.35!important;white-space:normal!important;word-break:keep-all!important;}
+#staffScreen #staffList.dept-mode .staff-team-button::after{content:'›'!important;position:absolute!important;right:10px!important;bottom:8px!important;color:#8ba5c0!important;font-size:1rem!important;font-weight:700!important;background:none!important;width:auto!important;height:auto!important;}
+
+#staffScreen .staff-special-role .affiliation{color:#516e8f!important;}
+#staffScreen .staff-special-role .position{color:#173f70!important;font-weight:850!important;}
+#staffScreen .staff-special-role .separator{display:none!important;}
+
+@media(max-width:360px){
+ #staffScreen .member-filter-btn{font-size:.62rem!important;padding:0 1px!important;}
+ #staffScreen #staffList.dept-mode{gap:8px!important;}
+ #staffScreen #staffList.dept-mode .staff-team-button{min-height:130px!important;aspect-ratio:9 / 14!important;padding:12px 7px!important;}
+ #staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.72rem!important;}
+ #staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.56rem!important;}
 }
 </style>
 </head>
@@ -2654,7 +2728,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     <div class="member-filter-wrap" id="memberFilterWrap" style="display:none;">
       <div class="member-filter-tabs" id="memberFilterTabs">
-        <button type="button" class="member-filter-btn active" data-filter="정회원" onclick="filterMemberCompanies('정회원')">정회원</button>
+        <button type="button" class="member-filter-btn active" data-filter="전체" onclick="filterMemberCompanies('전체')">전체</button>
+        <button type="button" class="member-filter-btn" data-filter="정회원" onclick="filterMemberCompanies('정회원')">정회원</button>
         <button type="button" class="member-filter-btn" data-filter="준회원" onclick="filterMemberCompanies('준회원')">준회원</button>
         <button type="button" class="member-filter-btn" data-filter="지역별" onclick="filterMemberCompanies('지역별')">지역별</button>
         <button type="button" class="member-filter-btn" data-filter="가입일자" onclick="filterMemberCompanies('가입일자')">가입일자</button>
@@ -2703,7 +2778,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <a href="#" class="action-btn btn-sms" id="staffBtnSms">▣&nbsp; 문자하기</a>
       <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉&nbsp; 이메일 보내기</a>
     </div>
-    <div class="staff-info-section-title">소속 정보</div>
+    <div class="staff-info-section-title" id="staffDetailSectionTitle">소속 정보</div>
     <div class="staff-info-table">
       <div class="staff-info-row"><span class="staff-info-label" id="staffDetailLabel1">부서/팀</span><span class="staff-info-value" id="staffDetailAffiliation">-</span></div>
       <div class="staff-info-row"><span class="staff-info-label" id="staffDetailLabel2">직책</span><span class="staff-info-value" id="staffDetailPosition">-</span></div>
@@ -3099,8 +3174,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   let currentStaffCategory = '전체';
   let currentStaffView = 'list';
-  let currentMemberFilter = '정회원';
+  let currentMemberFilter = '전체';
   let currentMemberRegion = '';
+  let currentMemberYear = '';
   let currentDetailType = 'staff';
 
   // 사무국에서 사용하는 실제 6개 팀 순서
@@ -3259,32 +3335,70 @@ button,.nav-btn,.action-btn{min-height:44px;}
       if(!response.ok)throw new Error('sheet7');
       memberCompanyData=parseMemberCompanyCSV(await response.text());
       memberDataLoaded=true;
-      currentMemberFilter='정회원'; currentMemberRegion='';
-      renderMemberFilterUI(); renderMemberCompanies('정회원');
+      currentMemberFilter='전체'; currentMemberRegion=''; currentMemberYear='';
+      renderMemberFilterUI(); renderMemberCompanies('전체');
     }catch(error){
       if(list) list.innerHTML='<div class="no-data">회원사 데이터를 불러오지 못했습니다. 시트7 공개 설정을 확인해주세요.</div>';
     }
+  }
+  function getMemberJoinYears(){
+    const years=[...new Set(memberCompanyData.map(x=>{const m=String(x.joinDate||'').match(/(20\d{2})/);return m?m[1]:'';}).filter(Boolean))];
+    years.sort((a,b)=>Number(b)-Number(a));
+    return [...years,'기타'];
   }
   function renderMemberFilterUI(){
     const wrap=document.getElementById('memberFilterWrap'); if(!wrap)return;
     wrap.style.display='block';
     document.querySelectorAll('#memberFilterTabs .member-filter-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===currentMemberFilter));
-    const regionBox=document.getElementById('memberRegionTabs'); if(!regionBox)return;
-    if(currentMemberFilter!=='지역별'){regionBox.innerHTML='';regionBox.style.display='none';return;}
-    regionBox.style.display='flex';
-    regionBox.innerHTML=MEMBER_REGION_ORDER.map(r=>`<button type="button" class="member-region-btn${currentMemberRegion===r?' active':''}" onclick="selectMemberRegion('${r}')">${r}</button>`).join('');
+    const box=document.getElementById('memberRegionTabs'); if(!box)return;
+    box.innerHTML=''; box.style.display='none';
+
+    if(currentMemberFilter==='지역별'){
+      box.style.display='flex';
+      const regions=['전국',...MEMBER_REGION_ORDER];
+      box.innerHTML=regions.map(r=>`<button type="button" class="member-region-btn${(r==='전국'&&!currentMemberRegion)||(r===currentMemberRegion)?' active':''}" onclick="selectMemberRegion('${r}')">${r}</button>`).join('');
+      return;
+    }
+    if(currentMemberFilter==='가입일자'){
+      box.style.display='flex';
+      const years=getMemberJoinYears();
+      box.innerHTML=years.map(y=>`<button type="button" class="member-region-btn${currentMemberYear===y?' active':''}" onclick="selectMemberJoinYear('${y}')">${y}</button>`).join('');
+    }
   }
-  window.selectMemberRegion=function(region){ currentMemberRegion=region; currentMemberFilter='지역별'; renderMemberFilterUI(); renderMemberCompanies('지역별'); };
+  window.selectMemberRegion=function(region){
+    currentMemberFilter='지역별';
+    currentMemberRegion=region==='전국'?'':region;
+    currentMemberYear='';
+    renderMemberFilterUI(); renderMemberCompanies('지역별');
+  };
+  window.selectMemberJoinYear=function(year){
+    currentMemberFilter='가입일자';
+    currentMemberYear=year;
+    currentMemberRegion='';
+    renderMemberFilterUI(); renderMemberCompanies('가입일자');
+  };
   window.filterMemberCompanies=function(filter){
-    currentMemberFilter=filter; if(filter!=='지역별')currentMemberRegion='';
-    renderMemberFilterUI(); renderMemberCompanies(filter);
+    currentMemberFilter=filter;
+    currentMemberRegion='';
+    currentMemberYear='';
+    renderMemberFilterUI();
+    if(filter==='가입일자'){
+      const list=document.getElementById('staffList');
+      if(list){list.style.display='flex';list.classList.remove('dept-mode');list.innerHTML='<div class="no-data" style="grid-column:1/-1;">위에서 가입연도를 선택해주세요.</div>';}
+      return;
+    }
+    renderMemberCompanies(filter);
   };
   function getFilteredMemberCompanies(filter){
     const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
     let data=[...memberCompanyData];
     if(filter==='정회원'||filter==='준회원') data=data.filter(x=>x.membership===filter);
     else if(filter==='지역별'&&currentMemberRegion) data=data.filter(x=>x.region===currentMemberRegion);
-    if(q)data=data.filter(x=>[x.company,x.ceo,x.region,x.membership,x.joinDate,x.address].join(' ').toLowerCase().includes(q));
+    else if(filter==='가입일자'&&currentMemberYear){
+      if(currentMemberYear==='기타') data=data.filter(x=>!(String(x.joinDate||'').match(/20\d{2}/)));
+      else data=data.filter(x=>String(x.joinDate||'').includes(currentMemberYear));
+    }
+    if(q)data=data.filter(x=>[x.company,x.ceo,x.region,x.membership].join(' ').toLowerCase().includes(q));
     return data;
   }
   function memberAvatarSvg(){return '<svg viewBox="0 0 52 52" aria-hidden="true"><rect x="12" y="14" width="28" height="27" rx="4" fill="currentColor"/><path d="M17 14V9h18v5M18 21h4m4 0h4m4 0h-4M18 28h4m4 0h4m4 0h-4M18 35h4m4 0h4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';}
@@ -3293,32 +3407,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const org=document.getElementById('staffOrgView'); if(org){org.style.display='none';org.innerHTML='';}
     showStaffViewTabs(false);
     list.classList.remove('dept-mode'); list.style.display='flex'; list.innerHTML='';
-    const data=getFilteredMemberCompanies(filter); const countEl=document.getElementById('staffResultCount'); if(countEl)countEl.textContent=`${data.length}개사`;
+    const data=getFilteredMemberCompanies(filter);
+    const countEl=document.getElementById('staffResultCount'); if(countEl)countEl.textContent=`${data.length}개사`;
     if(!data.length){list.innerHTML='<div class="no-data">조건에 맞는 회원사가 없습니다.</div>';return;}
-    if(filter==='가입일자'){
-      data.sort((a,b)=>String(b.joinDate).localeCompare(String(a.joinDate)));
-      let last='';
-      data.forEach(item=>{
-        const year=(String(item.joinDate).match(/(20\d{2})/)||[])[1]||'기타';
-        if(year!==last){last=year;const h=document.createElement('div');h.className='staff-group-heading';h.textContent=year==='기타'?'가입일 미기재':`${year}년`;list.appendChild(h);}
-        appendMemberCompanyRow(item,list);
-      });
-      return;
-    }
     data.sort((a,b)=>(a.company||'').localeCompare(b.company||'','ko'));
     data.forEach(item=>appendMemberCompanyRow(item,list));
   }
   function appendMemberCompanyRow(item,list){
     const index=memberCompanyData.indexOf(item);
     const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row member-company-row';
-    btn.innerHTML=`<span class="staff-person-avatar member-avatar">${memberAvatarSvg()}</span><span class="staff-person-info"><strong>${item.company||'-'}</strong><span>${item.ceo?`대표 ${item.ceo}`:''}${item.ceo&&item.region?'  ·  ':''}${item.region||''}</span>${item.joinDate?`<small>${item.joinDate}</small>`:''}</span><span class="member-status-badge">${item.membership}</span><span class="staff-person-chevron">›</span>`;
+    btn.innerHTML=`<span class="member-status-badge">${item.membership||'기타'}</span><span class="staff-person-avatar member-avatar">${memberAvatarSvg()}</span><span class="staff-person-info"><strong>${item.company||'-'}</strong><span>${item.ceo?`대표 ${item.ceo}`:'대표자 미기재'}${item.region?`  ·  ${item.region}`:''}</span></span><span class="staff-person-chevron">›</span>`;
     btn.onclick=()=>openMemberCompanyDetail(index); list.appendChild(btn);
   }
   window.openMemberCompanyDetail=function(index){
     const m=memberCompanyData[index]; if(!m)return;
     currentDetailType='member';
     document.getElementById('staffProfileName').innerText=m.company||'-';
-    document.getElementById('staffProfileRole').innerText=[m.ceo?`대표 ${m.ceo}`:'',m.membership,m.region].filter(Boolean).join('  ·  ');
+    document.getElementById('staffProfileRole').innerText=[m.ceo?`대표 ${m.ceo}`:'대표자 미기재',m.membership,m.region].filter(Boolean).join('  |  ');
     document.getElementById('staffDetailPhoneTop').innerText=m.phone||'연락처 없음';
     document.getElementById('staffDetailEmailTop').innerText=m.email||'이메일 없음';
     document.getElementById('staffDetailAffiliation').innerText=m.membership||'-';
@@ -3328,11 +3433,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('staffDetailEmail').innerText=m.email||'-';
     document.getElementById('staffDetailNote').innerText=m.address||'-';
     document.getElementById('staffDetailKoda').innerText=m.membership||'-';
-    const labels=['회원구분','지역','대표자','연락처','이메일','주소']; labels.forEach((t,i)=>{const el=document.getElementById('staffDetailLabel'+(i+1));if(el)el.innerText=t;});
-    document.getElementById('staffDetailLabel6').innerText='주소';
-    document.getElementById('staffDetailNoteRow').style.display='flex';
+    const sectionTitle=document.getElementById('staffDetailSectionTitle'); if(sectionTitle)sectionTitle.innerText='회원 정보';
+    const labels=['회원구분','지역','대표자','연락처','이메일','주소'];
+    labels.forEach((t,i)=>{const el=document.getElementById('staffDetailLabel'+(i+1));if(el)el.innerText=t;});
+    document.getElementById('staffDetailNoteRow').style.display=m.address?'flex':'none';
     const call=document.getElementById('staffBtnCall'), sms=document.getElementById('staffBtnSms'), email=document.getElementById('staffBtnEmail');
-    const phone=(m.phone||'').replace(/[^0-9]/g,''); call.style.display=phone?'block':'none'; sms.style.display=phone?'block':'none'; email.style.display=m.email?'block':'none';
+    const phone=(m.phone||'').replace(/[^0-9]/g,'');
+    call.style.display=phone?'block':'none'; sms.style.display=phone?'block':'none'; email.style.display=m.email?'block':'none';
     if(phone){call.href=`tel:${phone}`;sms.href=`sms:${phone}`;} if(m.email)email.href=`mailto:${m.email}`;
     document.getElementById('staffDetailModal').style.display='flex'; history.pushState({staffDetailOpen:true},'', '');
   };
@@ -3347,7 +3454,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(staffScreen) staffScreen.scrollTop=0; if(content) content.scrollTop=0;
     const memberWrap=document.getElementById('memberFilterWrap'); if(memberWrap) memberWrap.style.display=category==='회원사'?'block':'none';
     if(category==='회원사'){
-      showStaffViewTabs(false); currentStaffView='list'; currentMemberFilter='정회원'; currentMemberRegion=''; renderMemberFilterUI();
+      showStaffViewTabs(false); currentStaffView='list'; currentMemberFilter='전체'; currentMemberRegion=''; currentMemberYear=''; renderMemberFilterUI();
       const org=document.getElementById('staffOrgView'); if(org){org.style.display='none';org.innerHTML='';}
       if(!memberDataLoaded) loadMemberCompanyData(); else renderMemberCompanies(currentMemberFilter);
       return;
@@ -3461,8 +3568,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const index=staffData.indexOf(item);
     const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row staff-special-row';
     const koda=(item.name==='김한모' && String(item.category||'').includes('7대 임원')) ? '협회장' : (cleanOfficeText(item.koda||'')||'-');
-    const pos=cleanOfficeText(item.position||'')||'-';
-    btn.innerHTML=`<span class="staff-koda-badge">${koda}</span><span class="staff-special-name"><strong>${cleanOfficeText(item.name)||'-'}</strong>${item.phone?`<small class="staff-special-phone">${item.phone}</small>`:''}</span><span class="staff-special-role"><span class="position">${pos}</span></span><span class="staff-person-chevron">›</span>`;
+    const affiliation=cleanOfficeText(item.affiliation||'');
+    const pos=cleanOfficeText(item.position||'');
+    const roleText=[affiliation,pos].filter(Boolean).join(' ');
+    btn.innerHTML=`<span class="staff-koda-badge">${koda}</span><span class="staff-special-name"><strong>${cleanOfficeText(item.name)||'-'}</strong>${item.phone?`<small class="staff-special-phone">${item.phone}</small>`:''}</span><span class="staff-special-role"><span class="affiliation">${roleText||'-'}</span></span><span class="staff-person-chevron">›</span>`;
     btn.onclick=()=>openStaffDetailModal(index);
     list.appendChild(btn);
   }
@@ -3522,7 +3631,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     history.pushState({ staffOpen: true }, "", "");
     currentStaffCategory = '전체';
     currentStaffView = 'list';
-    currentMemberFilter = '정회원'; currentMemberRegion = '';
+    currentMemberFilter = '전체'; currentMemberRegion = ''; currentMemberYear = '';
     currentDetailType = 'staff';
     const memberWrap=document.getElementById('memberFilterWrap'); if(memberWrap) memberWrap.style.display='none';
     showStaffViewTabs(false);
@@ -3562,6 +3671,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.openStaffDetailModal = function(index) {
     const staff = staffData[index]; if(!staff)return;
     currentDetailType='staff';
+    const sectionTitle=document.getElementById('staffDetailSectionTitle'); if(sectionTitle)sectionTitle.innerText='소속 정보';
     document.getElementById('staffProfileName').innerText=staff.name||'-';
     const isOfficeDetail=String(staff.category||'').replace(/\s+/g,'')==='사무국';
     const affiliation=isOfficeDetail?(normalizeDepartment(staff.team||staff.department||'')||'-'):(staff.affiliation||'-');
