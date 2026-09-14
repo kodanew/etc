@@ -729,7 +729,7 @@
     color: #3182ce;
   }
 
-  /* 회원소식 목록/상세용 뱃지 (임직원현황 뱃지와 동일한 디자인 언어) */
+  /* 협회공지 목록/상세용 뱃지 (임직원현황 뱃지와 동일한 디자인 언어) */
   .news-badge {
     display: inline-block;
     vertical-align: middle;
@@ -2058,7 +2058,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <style id="news-screen-staff-style-match">
 /* ============================================================
-   회원소식(newsScreen / newsDetailScreen) 화면을
+   협회공지(newsScreen / newsDetailScreen) 화면을
    KODA 임직원현황(staffScreen)과 동일한 디자인 언어로 통일
    ============================================================ */
 
@@ -2170,7 +2170,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
 <style id="final-news-menu-fix">
-  /* 회원소식 5개 카테고리 버튼: 화면 전체 폭을 정확히 5등분 */
+  /* 협회공지 5개 카테고리 버튼: 화면 전체 폭을 정확히 5등분 */
   #newsScreen #newsTabs{
     width:100%!important;
     max-width:none!important;
@@ -2194,7 +2194,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     justify-content:center!important;
   }
 
-  /* 회원소식 아이콘: 다른 퀵메뉴와 동일한 흰색 배경 */
+  /* 협회공지 아이콘: 다른 퀵메뉴와 동일한 흰색 배경 */
   .news-quick-icon svg{
     width:31px!important;
     height:31px!important;
@@ -2208,7 +2208,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
 <style id="final-news-ui-fix">
-  /* 회원소식 5개 카테고리가 어떤 모바일 폭에서도 한 줄에 모두 들어오도록 고정 */
+  /* 협회공지 5개 카테고리가 어떤 모바일 폭에서도 한 줄에 모두 들어오도록 고정 */
   #newsScreen #newsTabs{
     width:100%!important;
     max-width:430px!important;
@@ -2237,7 +2237,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #newsScreen #newsTabs .month-tab{padding:7px 1px!important;font-size:10px!important;}
   }
 
-  /* 회원소식 상세보기: 시트6 G열 썸네일을 화면 최하단에 표시 */
+  /* 협회공지 상세보기: 시트6 G열 썸네일을 화면 최하단에 표시 */
   #newsDetailThumbnailArea{
     display:none;
     margin-top:28px;
@@ -2345,7 +2345,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
         </svg>
       </span>
-      <span class="quick-label">회원소식</span>
+      <span class="quick-label">협회공지</span>
     </button>
     <button class="quick-btn" style="opacity:0.5; cursor:default;">
       <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
@@ -2495,8 +2495,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
 <!-- ============================================== -->
-<!-- 💡 복원된 회원소식 HTML 코드 위치 (style 밖으로 뺌) 💡 -->
-<!-- ✨ 1. 회원소식 목록 페이지 ✨ -->
+<!-- 💡 복원된 협회공지 HTML 코드 위치 (style 밖으로 뺌) 💡 -->
+<!-- ✨ 1. 협회공지 목록 페이지 ✨ -->
 <div class="fullscreen-screen" id="newsScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
@@ -2514,7 +2514,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
-<!-- ✨ 2. 회원소식 상세보기 페이지 (팝업 아님) ✨ -->
+<!-- ✨ 2. 협회공지 상세보기 페이지 (팝업 아님) ✨ -->
 <div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
   <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
     <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
@@ -2530,7 +2530,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <!-- 시트6 G열 썸네일: 상세보기 화면의 가장 아래에 표시되며 클릭 시 F열 관련링크로 이동 -->
     <div id="newsDetailThumbnailArea">
       <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
-        <img id="newsDetailThumbnail" src="" alt="회원소식 썸네일 이미지">
+        <img id="newsDetailThumbnail" src="" alt="협회공지 썸네일 이미지">
       </a>
     </div>
   </div>
@@ -3494,7 +3494,7 @@ function createEventCard(event) {
     else if (endX - startX > 50) changeMonth(-1);
   }, {passive: true});
 
-// 시트6 (회원소식) URL 상수 정의
+// 시트6 (협회공지) URL 상수 정의
   const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1026643170&single=true&output=csv";
   let newsData = [];
   let currentNewsCategory = '전체';
