@@ -111,6 +111,48 @@
     gap: 6px;
   }
 
+  /* 새글 알림 벨 아이콘 (일정 카드의 별/공유 아이콘과 동일한 형태) */
+  .header-left {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  .notify-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #cbd5e0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .notify-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+  .notify-btn:active {
+    color: #718096;
+  }
+  .notify-dot {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--today-color);
+    border: 1.5px solid #fff;
+  }
+
   .install-btn {
     top: 25px;
     background-color: transparent;
@@ -2287,6 +2329,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
+    <div class="header-left">
+      <button type="button" id="newsNotifyBtn" class="notify-btn" onclick="openNewsScreen()" aria-label="협회공지 새글 알림" title="협회공지 새글 알림">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notify-dot" id="newsNotifyDot"></span>
+      </button>
+    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -3044,6 +3095,36 @@ button,.nav-btn,.action-btn{min-height:44px;}
     } catch (error) {
       document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
+    // 첫 화면 진입 시 협회공지 새글 여부를 미리 확인해 벨 아이콘에 표시
+    refreshNewsNotificationState();
+  }
+
+  // ===== ✨ 협회공지 새글 알림 벨 로직 ✨ =====
+  function newsFingerprint(item) {
+    return item ? `${item.date}|${item.title}` : '';
+  }
+
+  function updateNewsNotificationDot() {
+    const dot = document.getElementById('newsNotifyDot');
+    if (!dot) return;
+    const latestKey = newsFingerprint(newsData[0]);
+    const seenKey = localStorage.getItem('koda_news_seen') || '';
+    dot.style.display = (latestKey && latestKey !== seenKey) ? 'block' : 'none';
+  }
+
+  window.markNewsAsSeen = function() {
+    if (newsData[0]) localStorage.setItem('koda_news_seen', newsFingerprint(newsData[0]));
+    updateNewsNotificationDot();
+  };
+
+  async function refreshNewsNotificationState() {
+    if (newsData.length === 0) {
+      try {
+        const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+        newsData = parseNewsCSV(await response.text());
+      } catch (error) { return; }
+    }
+    updateNewsNotificationDot();
   }
 
   // ===== ✨ 모던 일정 배너 캐러셀 =====
@@ -3552,6 +3633,7 @@ function createEventCard(event) {
       const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       newsData = parseNewsCSV(await response.text());
       filterNews('전체');
+      updateNewsNotificationDot();
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
@@ -3618,7 +3700,8 @@ function createEventCard(event) {
     newsScreenEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsOpen: true }, "", "");
-    if (newsData.length === 0) loadNewsData(); else filterNews('전체');
+    if (newsData.length === 0) { loadNewsData().then(markNewsAsSeen); }
+    else { filterNews('전체'); markNewsAsSeen(); }
   };
 
   window.closeNewsScreen = function() { history.back(); };
@@ -3667,6 +3750,25 @@ function createEventCard(event) {
       img.removeAttribute('src');
     };
     area.style.display = 'block';
+  }
+
+  // 협회공지 상세 본문의 HTML 이스케이프 + URL 자동 링크 변환
+  // (이 함수가 누락되어 있어 상세보기 진입 시 오류가 발생, 상세화면으로 넘어가지 않던 문제를 해결)
+  function escapeNewsHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function linkifyNewsContent(content) {
+    const escaped = escapeNewsHtml(content);
+    const urlRegex = /(https?:\/\/[^\s<]+)/g;
+    return escaped.replace(urlRegex, (url) => {
+      const cleanUrl = url.replace(/[.,)]+$/, '');
+      const trail = url.slice(cleanUrl.length);
+      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>${trail}`;
+    });
   }
 
   window.openNewsDetailScreen = function(index) {
