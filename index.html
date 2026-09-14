@@ -2504,7 +2504,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="기타" onclick="filterNews('협회소식')">협회소식</button>
+    <button class="month-tab" data-cat="협회소식" onclick="filterNews('협회소식')">협회소식</button>
     <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
     <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
     <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
@@ -3635,6 +3635,17 @@ function createEventCard(event) {
     const linkUrl = String(item.linkUrl || '').trim();
 
     if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
+
+   // ✨ 추가된 부분: 구글 드라이브 일반 공유 링크를 직접 이미지 링크로 변환
+    let driveMatch = thumbUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      thumbUrl = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    } else {
+      let idMatch = thumbUrl.match(/id=([a-zA-Z0-9_-]+)/);
+      if (thumbUrl.includes('drive.google.com') && idMatch) {
+        thumbUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+      }
+    }
 
     img.src = thumbUrl;
     // 이미지 클릭 시 시트6 F열 관련링크로 이동
