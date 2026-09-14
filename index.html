@@ -2356,34 +2356,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     background:#f7fafc;
   }
 </style>
-<style id="koda-staff-vertical-org-and-profile-final">
-/* ===== KODA 임직원현황 최종 모바일 스타일 ===== */
-#staffScreen #staffOrgView{display:none;width:100%;overflow:visible!important;padding:0 0 18px!important;}
-#staffScreen .staff-org-tree{width:100%;box-sizing:border-box;padding:4px 2px 12px;}
-#staffScreen .staff-org-node{appearance:none;-webkit-appearance:none;width:100%;border:1px solid #d5e3f2;background:#fff;border-radius:14px;box-sizing:border-box;text-align:center;color:#173f70;box-shadow:0 4px 12px rgba(28,70,120,.055);padding:10px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;}
-#staffScreen .staff-org-node.root{max-width:210px;margin:0 auto;padding:12px 10px;background:linear-gradient(135deg,#1769d2,#3182ce);border-color:#1769d2;color:#fff;box-shadow:0 7px 17px rgba(23,105,210,.16);}
-#staffScreen .staff-org-node.section-node{max-width:205px;margin:0 auto;background:#edf5ff;border-color:#b8d0e8;color:#1769d2;padding:10px 9px;}
-#staffScreen .staff-org-node.team{min-height:74px;padding:9px 7px;text-align:center;align-items:center;position:relative;background:#fff;border-radius:12px;box-shadow:0 3px 9px rgba(28,70,120,.045);}
-#staffScreen .staff-org-node.team::after{content:'›';position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1rem;color:#1769d2;}
-#staffScreen .staff-org-node.team::before{content:'📁';font-size:1.05rem;line-height:1;margin-bottom:4px;filter:saturate(.8);}
-#staffScreen .staff-org-node-title{font-size:.79rem;font-weight:850;line-height:1.22;letter-spacing:-.035em;word-break:keep-all;}
-#staffScreen .staff-org-node.root .staff-org-node-title{font-size:.98rem;}
-#staffScreen .staff-org-node.section-node .staff-org-node-title{font-size:.84rem;}
-#staffScreen .staff-org-node-sub{margin-top:3px;font-size:.6rem;font-weight:700;color:#7b8fa8;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-#staffScreen .staff-org-node.root .staff-org-node-sub{color:#e6f0ff;}
-#staffScreen .staff-org-node.section-node .staff-org-node-sub{color:#6d86a2;}
-#staffScreen .staff-org-main-branches{position:relative;margin-top:19px;padding-top:1px;}
-#staffScreen .staff-org-main-branches::before{content:'';position:absolute;left:50%;top:-19px;bottom:38px;width:2px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;z-index:0;}
-#staffScreen .staff-org-branch{position:relative;padding:0 0 17px;z-index:1;}
-#staffScreen .staff-org-branch::before{content:'';position:absolute;left:50%;top:-19px;width:2px;height:19px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;}
-#staffScreen .staff-org-team-list{position:relative;margin:11px 2px 0;padding:10px 2px 2px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
-#staffScreen .staff-org-team-list::before{content:'';position:absolute;left:25%;right:25%;top:0;height:2px;background:#d0deed;border-radius:2px;}
-#staffScreen .staff-org-team-list .staff-org-node.team::before{content:'📁';position:static;width:auto;height:auto;background:none;transform:none;}
-#staffScreen .staff-org-team-list .staff-org-node.team:nth-child(odd)::after{right:5px;}
-#staffScreen .staff-org-guide{margin:3px 2px 0;padding:8px 10px;border-radius:10px;background:#f8fbff;color:#8b9db2;text-align:center;font-size:.61rem;font-weight:650;}
-#staffScreen .staff-org-node.team:active{transform:scale(.985);background:#f7fbff;}
+<style id="koda-staff-redesign-20260915">
+/* ============================================================
+   KODA 임직원현황 재설계 — 사무국 조직도 / 부서별 카드 / 상세정보
+   ============================================================ */
 
-/* 이름순/직책순 직원 리스트 */
+/* ---------- 공통: 이름순·직책순 리스트 (유지) ---------- */
 #staffScreen #staffList{display:flex!important;flex-direction:column!important;gap:0!important;width:100%;}
 #staffScreen .staff-alpha-heading{padding:8px 8px 5px;color:#6f829b;font-size:.69rem;font-weight:850;line-height:1;background:#f4f8fc;border-radius:8px;margin:5px 0 3px;}
 #staffScreen .staff-group-heading{display:flex;align-items:center;gap:7px;margin:7px 0 3px;padding:9px 10px 7px;background:#f4f8fc;border-radius:9px;color:#1769d2;font-size:.72rem;font-weight:900;}
@@ -2399,7 +2377,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 #staffScreen .staff-person-info small{font-size:.61rem;color:#8fa2b6;font-weight:650;line-height:1.2;margin-top:2px;}
 #staffScreen .staff-person-chevron{font-size:1.2rem;color:#7e9abb;font-weight:400;padding:0 2px;}
 
-/* 7대 임원/사무국: G열 KODA 뱃지 + 이름 + 오른쪽 소속/직위 + 이름 아래 전화번호 */
+/* 7대 임원 특수 행 (유지) */
 #staffScreen .staff-special-row{grid-template-columns:auto minmax(0,1fr) minmax(0,1.35fr) auto;min-height:70px;}
 #staffScreen .staff-koda-badge{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:23px;padding:0 7px;border-radius:999px;background:#eaf3ff;color:#1769d2;border:1px solid #cfe2f7;font-size:.59rem;font-weight:900;white-space:nowrap;box-sizing:border-box;}
 #staffScreen .staff-special-name{min-width:0;display:flex;flex-direction:column;gap:2px;}
@@ -2407,180 +2385,153 @@ button,.nav-btn,.action-btn{min-height:44px;}
 #staffScreen .staff-special-phone{font-size:.61rem;color:#8fa2b6;font-weight:650;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 #staffScreen .staff-special-role{min-width:0;text-align:left;color:#5e7896;font-size:.67rem;font-weight:750;line-height:1.3;white-space:normal;word-break:keep-all;}
 #staffScreen .staff-special-role .affiliation{color:#516e8f;}
-#staffScreen .staff-special-role .position{color:#7d91a8;}
-#staffScreen .staff-special-role .separator{color:#b3c1cf;margin:0 3px;}
+#staffScreen .staff-special-role .position{color:#173f70;font-weight:850;}
+#staffScreen .staff-special-role .separator{display:none;}
 
-/* 사무국 부서별: 2행 3열, 작은 파일탐색기형 카드 */
-#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;align-items:stretch;}
-#staffScreen .staff-team-button{min-height:92px;width:100%;padding:9px 5px;border:1px solid #d6e3f0;border-radius:13px;background:linear-gradient(180deg,#fff,#f7fbff);box-shadow:0 3px 10px rgba(28,70,120,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#173f70;cursor:pointer;position:relative;}
-#staffScreen .staff-team-button::before{content:'📁';font-size:1.15rem;line-height:1;}
-#staffScreen .staff-team-button:active{transform:scale(.985);background:#f3f8fe;}
-#staffScreen .staff-team-button-name{font-size:.67rem;font-weight:900;line-height:1.2;text-align:center;word-break:keep-all;}
-#staffScreen .staff-team-button-leader{font-size:.54rem;font-weight:650;color:#7187a1;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-#staffScreen .staff-team-modal-content{max-width:380px;width:calc(100% - 30px);}
-#staffScreen .staff-team-modal-list{display:flex;flex-direction:column;gap:7px;max-height:55vh;overflow:auto;}
-#staffScreen .staff-team-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border:1px solid #e1e9f2;border-radius:12px;background:#fff;text-align:left;}
-#staffScreen .staff-team-row-name{font-size:.86rem;font-weight:850;color:#173f70;}
-#staffScreen .staff-team-row-position{font-size:.72rem;font-weight:700;color:#7187a1;white-space:nowrap;}
-#staffScreen .staff-team-empty{padding:25px 10px;text-align:center;color:#8a9bb0;font-size:.8rem;}
-#staffScreen .staff-office-dept{margin-top:3px;color:#1769d2;font-size:.61rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-@media(max-width:390px){
-  #staffScreen .staff-person-row{grid-template-columns:auto minmax(0,1fr) minmax(0,1.15fr) auto;gap:6px;padding-left:4px;padding-right:4px;}
-  #staffScreen .staff-koda-badge{min-width:43px;font-size:.56rem;padding:0 5px;}
-  #staffScreen .staff-special-name strong{font-size:.84rem;}
-  #staffScreen .staff-special-role{font-size:.62rem;}
-  #staffScreen #staffList.dept-mode{gap:7px!important;}
-  #staffScreen .staff-team-button{min-height:86px;padding:7px 3px;}
-  #staffScreen .staff-team-button-name{font-size:.61rem;}
-  #staffScreen .staff-team-button-leader{font-size:.5rem;}
-}
-@media(max-width:360px){
-  #staffScreen .staff-org-node.team{min-height:68px;}
-  #staffScreen .staff-org-node-title{font-size:.73rem;}
-  #staffScreen .staff-org-node-sub{font-size:.55rem;}
-  #staffScreen .staff-person-row{min-height:64px;}
-  #staffScreen .staff-person-avatar{width:35px;height:35px;flex-basis:35px;border-radius:10px;}
-  #staffScreen .staff-special-row{min-height:66px;}
-  #staffScreen .staff-special-role{font-size:.59rem;}
-  #staffScreen .staff-special-name strong{font-size:.81rem;}
-}
-</style>
-<style id="member-company-and-profile-final">
-/* ===== 회원사 5단계 필터 / 세로형 카드 / 프로필 ===== */
-#staffScreen .member-filter-tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
-#staffScreen .member-filter-btn{height:38px;min-height:38px;padding:0 3px;border-radius:10px;font-size:.68rem;}
+/* 회원사 목록 행 (유지) */
+#staffScreen .member-company-row{display:grid;grid-template-columns:auto 38px minmax(0,1fr) 16px;min-height:72px;align-items:center;gap:8px;padding:9px 5px;border-bottom:1px solid #edf2f7;background:#fff;}
+#staffScreen .member-company-row .member-avatar{width:38px;height:38px;}
+#staffScreen .member-filter-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:100%;}
+#staffScreen .member-filter-btn{height:38px;min-height:38px;padding:0 2px;font-size:.68rem;border-radius:10px;}
 #staffScreen .member-region-tabs{display:none;flex-wrap:wrap;gap:5px;margin-top:7px;padding:7px;background:#f7faff;border:1px solid #e4edf7;border-radius:12px;}
 #staffScreen .member-region-btn{flex:1 0 calc(20% - 5px);min-width:48px;height:31px;border:1px solid #dce6f2;border-radius:9px;background:#fff;color:#6d8097;font-size:.65rem;font-weight:850;}
-#staffScreen .member-region-btn.active{background:#1769d2;color:#fff;border-color:#1769d2;box-shadow:0 3px 8px rgba(23,105,210,.12);}
-#staffScreen .member-company-row{grid-template-columns:auto 38px minmax(0,1fr) 16px!important;min-height:72px!important;gap:8px!important;padding:9px 5px!important;}
-#staffScreen .member-company-row .member-avatar{width:38px;height:38px;background:#eef6ff;color:#2777cf;border-radius:12px;}
-#staffScreen .member-company-row .staff-person-info strong{font-size:.82rem;}
-#staffScreen .member-company-row .staff-person-info span{font-size:.63rem;}
-#staffScreen .member-company-row .staff-person-info small{display:none!important;}
-#staffScreen .member-status-badge{grid-column:1;grid-row:1;display:inline-flex;align-items:center;justify-content:center;height:23px;min-width:43px;padding:0 7px;border-radius:999px;background:#edf5ff;color:#1769d2;border:1px solid #cfe2f7;font-size:.56rem;font-weight:900;white-space:nowrap;}
-#staffScreen .member-company-row .member-avatar{grid-column:2;grid-row:1;}
-#staffScreen .member-company-row .staff-person-info{grid-column:3;grid-row:1;}
-#staffScreen .member-company-row .staff-person-chevron{grid-column:4;grid-row:1;}
-#staffScreen .member-company-row .staff-person-info span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-/* 사무국 부서별: 휴대폰 화면에서 9:16 느낌의 세로형 카드 */
-#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;align-items:stretch;}
-#staffScreen #staffList.dept-mode .staff-team-button{aspect-ratio:9 / 14;min-height:145px;width:100%;padding:15px 9px;border:1px solid #d8e6f5;border-radius:17px;background:linear-gradient(180deg,#ffffff 0%,#f6faff 100%);box-shadow:0 6px 16px rgba(28,70,120,.065);gap:8px;}
-#staffScreen #staffList.dept-mode .staff-team-button::before{width:13px;height:13px;border-width:2px;border-radius:4px;}
-#staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.79rem;font-weight:900;line-height:1.25;word-break:keep-all;}
-#staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.61rem;font-weight:700;color:#7187a1;line-height:1.35;white-space:normal;word-break:keep-all;}
-#staffScreen #staffList.dept-mode .staff-team-button::after{content:'›';position:absolute;right:10px;bottom:8px;color:#8ba5c0;font-size:1rem;font-weight:700;}
-
-/* 7대 임원: 배지 → 이름/전화 → 소속 + 한 칸 띄운 직위 */
-#staffScreen .staff-special-role .affiliation{color:#516e8f;}
-#staffScreen .staff-special-role .position{color:#173f70;font-weight:850;}
-#staffScreen .staff-special-role .separator{color:transparent;margin:0 2px;}
-
-@media(max-width:360px){
- #staffScreen .member-filter-btn{font-size:.62rem;padding:0 2px;}
- #staffScreen #staffList.dept-mode{gap:8px!important;}
- #staffScreen #staffList.dept-mode .staff-team-button{min-height:130px;aspect-ratio:9 / 14;padding:12px 7px;}
- #staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.72rem;}
- #staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.56rem;}
-}
-
-/* ===== 회원사 필터 ===== */
-#staffScreen .member-filter-wrap{display:none;width:100%;margin:0 0 12px;}
-#staffScreen .member-filter-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;width:100%;}
-#staffScreen .member-filter-btn{height:38px;min-height:38px;border:1px solid #dce6f2;border-radius:11px;background:#fff;color:#5d7089;font-size:.76rem;font-weight:850;white-space:nowrap;cursor:pointer;}
-#staffScreen .member-filter-btn.active{color:#1769d2;border-color:#9fc4ea;background:#edf5ff;box-shadow:0 3px 10px rgba(23,105,210,.08);}
-#staffScreen .member-region-tabs{display:none;flex-wrap:wrap;gap:5px;margin-top:7px;padding:7px;background:#f7faff;border:1px solid #e4edf7;border-radius:12px;}
-#staffScreen .member-region-btn{flex:1 0 calc(20% - 5px);min-width:48px;height:30px;border:1px solid #dce6f2;border-radius:9px;background:#fff;color:#6d8097;font-size:.65rem;font-weight:800;}
 #staffScreen .member-region-btn.active{background:#1769d2;color:#fff;border-color:#1769d2;}
-#staffScreen .member-company-row{grid-template-columns:38px minmax(0,1fr) auto 16px!important;min-height:70px!important;gap:8px!important;padding:9px 5px!important;}
-#staffScreen .member-company-row .member-avatar{width:38px;height:38px;background:#eef6ff;color:#2777cf;border-radius:12px;}
-#staffScreen .member-company-row .member-avatar svg{width:25px;height:25px;}
-#staffScreen .member-company-row .staff-person-info strong{font-size:.86rem;}
-#staffScreen .member-company-row .staff-person-info span{font-size:.64rem;}
-#staffScreen .member-company-row .staff-person-info small{font-size:.59rem;}
-#staffScreen .member-status-badge{display:inline-flex;align-items:center;justify-content:center;height:23px;padding:0 7px;border-radius:999px;background:#edf5ff;color:#1769d2;border:1px solid #cfe2f7;font-size:.57rem;font-weight:900;white-space:nowrap;}
 
-/* ===== 사무국 조직도: 폴더 이모티콘 제거 + 컴퓨터 파일트리 스타일 ===== */
-#staffScreen .staff-org-tree{padding:5px 4px 14px!important;}
-#staffScreen .staff-team-button::before{content:''!important;display:block;width:9px;height:9px;border:2px solid #6ea5df;border-radius:2px;filter:none!important;box-sizing:border-box;}
-#staffScreen .staff-special-name strong{color:#1769d2!important;}
-#staffScreen .staff-org-node{box-shadow:0 3px 10px rgba(28,70,120,.045)!important;}
-#staffScreen .staff-org-node.team{display:grid!important;grid-template-columns:16px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;text-align:left!important;min-height:58px!important;padding:9px 12px 9px 10px!important;border-radius:10px!important;background:#fff!important;}
-#staffScreen .staff-org-node.team::before{content:''!important;display:block!important;grid-column:1;grid-row:1 / span 2;width:9px;height:9px;border:2px solid #6ea5df;border-radius:2px;margin:0!important;filter:none!important;box-sizing:border-box;}
-#staffScreen .staff-org-node.team::after{content:'›';grid-column:3;grid-row:1 / span 2;position:static!important;transform:none!important;font-size:1rem;color:#1769d2;}
-#staffScreen .staff-org-node.team .staff-org-node-title{grid-column:2;grid-row:1;font-size:.78rem!important;}
-#staffScreen .staff-org-node.team .staff-org-node-sub{grid-column:2;grid-row:2;margin-top:2px!important;text-align:left;}
-#staffScreen .staff-org-team-list{grid-template-columns:1fr!important;gap:6px!important;margin:9px 2px 0!important;padding:8px 2px 2px 22px!important;}
-#staffScreen .staff-org-team-list::before{left:10px!important;right:auto!important;top:0!important;bottom:12px!important;width:1px!important;height:auto!important;background:#cbdced!important;}
-#staffScreen .staff-org-team-list .staff-org-node.team{position:relative;}
-#staffScreen .staff-org-team-list .staff-org-node.team::after{right:auto!important;position:absolute!important;left:-12px!important;top:50%!important;width:12px;height:1px;background:#cbdced;color:transparent;transform:none!important;}
-#staffScreen .staff-org-branch{padding-bottom:15px!important;}
-#staffScreen .staff-org-guide{background:#f8fbff!important;border:1px solid #e5eef8!important;}
+/* ============================================================
+   1) 사무국 조직도 (Org Chart)
+   ============================================================ */
+#staffScreen #staffOrgView{display:none;width:100%;padding:4px 0 20px;}
+#staffScreen .staff-org-tree{width:100%;box-sizing:border-box;padding:2px 2px 6px;}
+#staffScreen .staff-org-node{appearance:none;-webkit-appearance:none;border:0;box-sizing:border-box;font-family:inherit;cursor:pointer;text-align:left;color:#173f70;}
 
-/* ===== 첨부 이미지와 같은 인원 상세보기 ===== */
-#staffScreen .staff-detail-modal-content{max-width:390px!important;width:calc(100% - 28px)!important;padding:20px 17px 16px!important;border-radius:18px!important;}
-#staffScreen .staff-profile-head{display:flex;align-items:center;gap:12px;padding:2px 2px 12px;border-bottom:1px solid #edf2f7;}
-#staffScreen .staff-profile-avatar{width:58px;height:58px;flex:0 0 58px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f1ff;color:#3f8cdd;}
-#staffScreen .staff-profile-avatar svg{width:39px;height:39px;}
-#staffScreen .staff-profile-name{font-size:1.05rem;font-weight:900;color:#173f70;line-height:1.2;}
-#staffScreen .staff-profile-role{margin-top:5px;font-size:.72rem;font-weight:750;color:#7187a1;line-height:1.25;}
-#staffScreen .staff-profile-contact{padding:11px 2px 5px;display:flex;flex-direction:column;gap:7px;}
-#staffScreen .staff-contact-line{display:flex;align-items:center;gap:9px;color:#536e8f;font-size:.75rem;font-weight:700;word-break:break-all;}
-#staffScreen .staff-contact-icon{width:20px;text-align:center;color:#315f91;font-size:1rem;font-weight:800;}
-#staffScreen .staff-detail-actions{display:flex!important;flex-direction:column!important;gap:7px!important;margin:9px 0 16px!important;padding:0!important;border:0!important;}
-#staffScreen .staff-detail-actions .action-btn{width:100%;height:39px;min-height:39px;padding:9px 12px!important;border-radius:10px!important;font-size:.76rem!important;font-weight:800!important;box-shadow:none!important;text-align:center;}
-#staffScreen .staff-detail-actions .btn-call{background:#1769d2!important;color:#fff!important;}
-#staffScreen .staff-detail-actions .btn-sms,#staffScreen .staff-detail-actions .btn-email{background:#fff!important;color:#1769d2!important;border:1px solid #1769d2!important;}
-#staffScreen .staff-info-section-title{font-size:.88rem;font-weight:900;color:#173f70;margin:2px 0 7px;padding-top:10px;border-top:1px solid #edf2f7;}
-#staffScreen .staff-info-table{border-top:1px solid #e7edf5;}
-#staffScreen .staff-info-row{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;padding:8px 0;border-bottom:1px solid #edf2f7;font-size:.7rem;line-height:1.35;}
-#staffScreen .staff-info-label{color:#7d91a8;font-weight:700;}
-#staffScreen .staff-info-value{color:#425d7b;font-weight:700;word-break:break-all;}
+/* 사무국(최상위 루트) */
+#staffScreen .staff-org-node.root{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:min(100%,220px);margin:0 auto 18px;padding:14px 14px;text-align:center;
+  border-radius:14px;background:linear-gradient(135deg,#1360c4,#1f80e6);color:#fff;
+  box-shadow:0 10px 20px rgba(19,96,196,.22);cursor:default;
+}
+#staffScreen .staff-org-node.root .staff-org-node-title{font-size:1rem;font-weight:900;letter-spacing:-.02em;}
+#staffScreen .staff-org-node.root .staff-org-node-sub{margin-top:4px;font-size:.68rem;font-weight:700;color:#dcebff;}
+
+#staffScreen .staff-org-main-branches{position:relative;}
+#staffScreen .staff-org-main-branches::before{content:'';position:absolute;left:6px;top:-18px;height:18px;width:2px;background:#c9d9ec;border-radius:2px;}
+
+/* 실 단위(기획운영실/정책연구실) */
+#staffScreen .staff-org-branch{position:relative;margin:0 0 16px;padding-left:18px;}
+#staffScreen .staff-org-branch:last-child{margin-bottom:0;}
+#staffScreen .staff-org-branch + .staff-org-branch::before{content:'';position:absolute;left:6px;top:-16px;height:16px;width:2px;background:#c9d9ec;border-radius:2px;}
+#staffScreen .staff-org-node.section-node{
+  display:flex;flex-direction:column;width:100%;padding:12px 14px;text-align:left;
+  border-radius:12px;background:linear-gradient(135deg,#2f7fe0,#4a95ec);color:#fff;cursor:default;
+  box-shadow:0 6px 14px rgba(47,127,224,.18);
+}
+#staffScreen .staff-org-node.section-node .staff-org-node-title{font-size:.88rem;font-weight:900;}
+#staffScreen .staff-org-node.section-node .staff-org-node-sub{margin-top:3px;font-size:.63rem;font-weight:700;color:#eaf3ff;}
+
+/* 팀 목록: 좌측 세로 레일 + 가로 가지로 연결된 팀 카드 */
+#staffScreen .staff-org-team-list{position:relative;margin:10px 0 0;padding:2px 0 2px 20px;display:flex;flex-direction:column;gap:8px;}
+#staffScreen .staff-org-team-list::before{content:'';position:absolute;left:6px;top:-12px;bottom:16px;width:2px;background:#cddced;border-radius:2px;}
+#staffScreen .staff-org-node.team{
+  position:relative;display:block;width:100%;min-height:56px;
+  padding:10px 34px 10px 12px;
+  border:1px solid #dfe9f5;border-radius:12px;background:#fff;
+  box-shadow:0 2px 8px rgba(28,70,120,.05);
+}
+#staffScreen .staff-org-node.team::before{content:'';position:absolute;left:-14px;top:50%;width:14px;height:2px;background:#cddced;}
+#staffScreen .staff-org-node.team::after{content:'›';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.2rem;font-weight:700;color:#1769d2;}
+#staffScreen .staff-org-node.team:active{transform:scale(.985);background:#f7fbff;}
+#staffScreen .staff-org-node.team .staff-org-node-title{display:block;font-size:.8rem;font-weight:900;color:#173f70;}
+#staffScreen .staff-org-node.team .staff-org-node-sub{display:block;margin-top:3px;font-size:.65rem;font-weight:700;color:#7187a1;}
+
+#staffScreen .staff-org-guide{margin:14px 2px 0;padding:9px 10px;border-radius:10px;background:#f8fbff;border:1px solid #e5eef8;color:#8b9db2;text-align:center;font-size:.62rem;font-weight:650;}
+
+/* ============================================================
+   2) 부서별 팀 카드 (Department Cards)
+   ============================================================ */
+#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;}
+#staffScreen #staffList.dept-mode .staff-team-button{
+  position:relative;aspect-ratio:1/1;min-height:0;height:auto;width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  padding:16px 10px;border:1px solid #dfe9f5;border-radius:16px;
+  background:#fff;box-shadow:0 4px 14px rgba(28,70,120,.06);color:#173f70;cursor:pointer;
+}
+#staffScreen #staffList.dept-mode .staff-team-button::before,
+#staffScreen #staffList.dept-mode .staff-team-button::after{content:none;display:none;}
+#staffScreen #staffList.dept-mode .staff-team-button:active{transform:scale(.98);background:#f7fbff;}
+#staffScreen .staff-team-icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eaf3ff;color:#2e82d6;}
+#staffScreen .staff-team-icon svg{width:26px;height:26px;display:block;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+1) .staff-team-icon{background:#eaf3ff;color:#2f7fe0;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+2) .staff-team-icon{background:#eaf9f6;color:#1fae94;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+3) .staff-team-icon{background:#eefaf0;color:#2fa85c;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+4) .staff-team-icon{background:#f4eefc;color:#8a4fe0;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+5) .staff-team-icon{background:#fdeef4;color:#e0508f;}
+#staffScreen #staffList.dept-mode .staff-team-button:nth-child(6n+6) .staff-team-icon{background:#fff3e8;color:#e0821f;}
+#staffScreen .staff-team-button-name{font-size:.82rem;font-weight:900;color:#173f70;line-height:1.25;text-align:center;word-break:keep-all;}
+#staffScreen .staff-team-button-count{font-size:.68rem;color:#7187a1;font-weight:750;line-height:1.2;}
+#staffScreen .staff-team-button-leader{display:none;}
+
+/* 팀별 인원 팝업 모달 */
+#staffScreen .staff-team-modal-content{max-width:380px;width:calc(100% - 30px);}
+#staffScreen .staff-team-modal-header{margin-bottom:14px;}
+#staffScreen .staff-team-modal-header .modal-title{font-size:1.05rem;font-weight:900;color:#173f70;margin-bottom:3px;}
+#staffScreen .staff-team-modal-leader{font-size:.75rem;font-weight:700;color:#7187a1;}
+#staffScreen .staff-team-modal-list{display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow:auto;margin-bottom:14px;}
+#staffScreen .staff-team-row{width:100%;display:flex;align-items:center;gap:11px;padding:10px 11px;border:1px solid #e6edf5;border-radius:13px;background:#fff;text-align:left;}
+#staffScreen .staff-team-row:active{background:#f7fbff;}
+#staffScreen .staff-team-row-avatar{flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#eaf3ff;color:#2e82d6;display:flex;align-items:center;justify-content:center;}
+#staffScreen .staff-team-row-avatar svg{width:24px;height:24px;display:block;}
+#staffScreen .staff-team-row-text{min-width:0;display:flex;flex-direction:column;gap:1px;}
+#staffScreen .staff-team-row-name{font-size:.85rem;font-weight:850;color:#173f70;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .staff-team-row-position{font-size:.68rem;font-weight:700;color:#7187a1;}
+#staffScreen .staff-team-row-chevron{margin-left:auto;flex:0 0 auto;font-size:1.1rem;color:#9db3cb;}
+#staffScreen .staff-team-empty{padding:25px 10px;text-align:center;color:#8a9bb0;font-size:.8rem;}
+#staffScreen .staff-team-modal-close{width:100%;height:46px;border:0;border-radius:12px;background:#eef4fb;color:#3d5b80;font-size:.85rem;font-weight:800;cursor:pointer;}
+#staffScreen .staff-team-modal-close:active{background:#e3ecf7;}
+
+/* ============================================================
+   3) 인원 상세정보 화면 (Staff Detail Modal)
+   ============================================================ */
+#staffScreen .staff-detail-modal-content{max-width:390px;width:calc(100% - 26px);padding:20px 17px 18px;border-radius:18px;}
+#staffScreen .staff-profile-head{display:flex;align-items:center;gap:13px;padding:2px 2px 14px;border-bottom:1px solid #edf2f7;}
+#staffScreen .staff-profile-avatar{width:66px;height:66px;flex:0 0 66px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e7f1ff;color:#3f8cdd;}
+#staffScreen .staff-profile-avatar svg{width:44px;height:44px;}
+#staffScreen .staff-profile-name{font-size:1.08rem;font-weight:900;color:#173f70;line-height:1.2;}
+#staffScreen .staff-profile-role{margin-top:5px;font-size:.74rem;font-weight:750;color:#7187a1;line-height:1.3;}
+#staffScreen .staff-profile-contact{padding:13px 2px 4px;display:flex;flex-direction:column;gap:9px;}
+#staffScreen .staff-contact-line{display:flex;align-items:center;gap:9px;color:#3b587c;font-size:.78rem;font-weight:700;word-break:break-all;}
+#staffScreen .staff-contact-icon{flex:0 0 20px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:#1769d2;}
+#staffScreen .staff-contact-icon svg{width:19px;height:19px;display:block;}
+#staffScreen .staff-detail-note-box{margin:6px 0 16px;padding:13px 14px;border-radius:11px;background:#f2f8fe;color:#91a4b8;font-size:.68rem;line-height:1.5;}
+#staffScreen .staff-detail-note-box strong{color:#425e7b;font-size:.7rem;margin-right:4px;}
+#staffScreen .staff-detail-actions{display:flex;flex-direction:column;gap:8px;margin:0 0 16px;}
+#staffScreen .staff-detail-actions .action-btn{width:100%;height:44px;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0;border-radius:12px;font-size:.8rem;font-weight:850;box-shadow:none;}
+#staffScreen .staff-detail-actions .action-btn svg{width:19px;height:19px;display:block;}
+#staffScreen .staff-detail-actions .btn-call{background:#1769d2;border:1px solid #1769d2;color:#fff;}
+#staffScreen .staff-detail-actions .btn-sms,
+#staffScreen .staff-detail-actions .btn-email{background:#fff;border:1.5px solid #5b9bea;color:#1769d2;}
+#staffScreen .staff-info-section-title{font-size:.92rem;font-weight:900;color:#173f70;margin:0 0 8px;padding-top:12px;border-top:1px solid #edf2f7;}
+#staffScreen .staff-info-table{border-top:0;}
+#staffScreen .staff-info-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:9px 2px;border-bottom:1px solid #edf2f7;font-size:.71rem;line-height:1.4;}
+#staffScreen .staff-info-label{color:#7d91a8;font-weight:750;}
+#staffScreen .staff-info-value{color:#3b587c;font-weight:700;word-break:break-all;}
+
 @media(max-width:360px){
- #staffScreen .member-filter-btn{font-size:.7rem;height:36px;min-height:36px;}
- #staffScreen .member-region-btn{min-width:43px;font-size:.61rem;}
- #staffScreen .staff-detail-modal-content{width:calc(100% - 20px)!important;padding:17px 14px 14px!important;}
- #staffScreen .staff-profile-avatar{width:52px;height:52px;flex-basis:52px;}
- #staffScreen .staff-profile-name{font-size:.98rem;}
+  #staffScreen .staff-org-node.root{padding:12px 12px;}
+  #staffScreen .staff-org-node.section-node{padding:10px 12px;}
+  #staffScreen .staff-org-node.team{padding:9px 30px 9px 10px;min-height:52px;}
+  #staffScreen #staffList.dept-mode{gap:9px!important;}
+  #staffScreen #staffList.dept-mode .staff-team-button{padding:13px 8px;}
+  #staffScreen .staff-team-icon{width:40px;height:40px;}
+  #staffScreen .staff-team-icon svg{width:22px;height:22px;}
+  #staffScreen .staff-team-button-name{font-size:.75rem;}
+  #staffScreen .staff-detail-modal-content{width:calc(100% - 18px);padding:17px 14px 15px;}
+  #staffScreen .staff-profile-avatar{width:58px;height:58px;flex-basis:58px;}
+  #staffScreen .staff-profile-name{font-size:1rem;}
 }
 </style>
 
-<style id="staff-final-ui-20260914">
-/* 최종 임직원/회원사 UI 우선순위 */
-#staffScreen .member-filter-tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important;width:100%!important;}
-#staffScreen .member-filter-btn{height:38px!important;min-height:38px!important;padding:0 2px!important;font-size:.68rem!important;border-radius:10px!important;}
-#staffScreen .member-region-tabs{display:none;flex-wrap:wrap;gap:5px;margin-top:7px;padding:7px;background:#f7faff;border:1px solid #e4edf7;border-radius:12px;}
-#staffScreen .member-region-btn{flex:1 0 calc(20% - 5px)!important;min-width:48px!important;height:31px!important;border:1px solid #dce6f2!important;border-radius:9px!important;background:#fff!important;color:#6d8097!important;font-size:.65rem!important;font-weight:850!important;}
-#staffScreen .member-region-btn.active{background:#1769d2!important;color:#fff!important;border-color:#1769d2!important;}
-#staffScreen .member-company-row{grid-template-columns:auto 38px minmax(0,1fr) 16px!important;min-height:72px!important;gap:8px!important;padding:9px 5px!important;}
-#staffScreen .member-company-row .member-status-badge{grid-column:1!important;grid-row:1!important;}
-#staffScreen .member-company-row .member-avatar{grid-column:2!important;grid-row:1!important;width:38px!important;height:38px!important;}
-#staffScreen .member-company-row .staff-person-info{grid-column:3!important;grid-row:1!important;min-width:0!important;}
-#staffScreen .member-company-row .staff-person-chevron{grid-column:4!important;grid-row:1!important;}
-#staffScreen .member-company-row .staff-person-info strong{font-size:.82rem!important;}
-#staffScreen .member-company-row .staff-person-info span{font-size:.63rem!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#staffScreen .member-company-row .staff-person-info small{display:none!important;}
-
-#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;align-items:stretch!important;}
-#staffScreen #staffList.dept-mode .staff-team-button{position:relative!important;aspect-ratio:9 / 14!important;min-height:145px!important;height:auto!important;width:100%!important;padding:15px 9px!important;border:1px solid #d8e6f5!important;border-radius:17px!important;background:linear-gradient(180deg,#ffffff 0%,#f6faff 100%)!important;box-shadow:0 6px 16px rgba(28,70,120,.065)!important;gap:8px!important;}
-#staffScreen #staffList.dept-mode .staff-team-button::before{content:''!important;display:block!important;width:13px!important;height:13px!important;border:2px solid #6ea5df!important;border-radius:4px!important;filter:none!important;}
-#staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.79rem!important;font-weight:900!important;line-height:1.25!important;text-align:center!important;word-break:keep-all!important;}
-#staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.61rem!important;font-weight:700!important;color:#7187a1!important;line-height:1.35!important;white-space:normal!important;word-break:keep-all!important;}
-#staffScreen #staffList.dept-mode .staff-team-button::after{content:'›'!important;position:absolute!important;right:10px!important;bottom:8px!important;color:#8ba5c0!important;font-size:1rem!important;font-weight:700!important;background:none!important;width:auto!important;height:auto!important;}
-
-#staffScreen .staff-special-role .affiliation{color:#516e8f!important;}
-#staffScreen .staff-special-role .position{color:#173f70!important;font-weight:850!important;}
-#staffScreen .staff-special-role .separator{display:none!important;}
-
-@media(max-width:360px){
- #staffScreen .member-filter-btn{font-size:.62rem!important;padding:0 1px!important;}
- #staffScreen #staffList.dept-mode{gap:8px!important;}
- #staffScreen #staffList.dept-mode .staff-team-button{min-height:130px!important;aspect-ratio:9 / 14!important;padding:12px 7px!important;}
- #staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.72rem!important;}
- #staffScreen #staffList.dept-mode .staff-team-button-leader{font-size:.56rem!important;}
-}
-</style>
-\n<style id="user-requested-staff-member-final-20260914">\n/* ===== 2026-09-14 첨부 이미지 기준 최종 디자인 ===== */\n#staffScreen .member-company-row{\n  grid-template-columns:auto minmax(0,1fr) 18px!important;\n  min-height:58px!important; padding:8px 4px!important; gap:9px!important;\n  border-bottom:1px solid #edf2f7!important; background:#fff!important;\n}\n#staffScreen .member-company-row .member-status-badge{grid-column:1!important;grid-row:1!important;align-self:center!important;height:23px!important;min-width:42px!important;}\n#staffScreen .member-company-row .member-avatar{display:none!important;}\n#staffScreen .member-company-row .member-company-text{grid-column:2!important;grid-row:1!important;min-width:0!important;display:flex!important;align-items:baseline!important;gap:0!important;overflow:hidden!important;text-align:left!important;}\n#staffScreen .member-company-row .member-company-text strong{font-size:.78rem!important;font-weight:900!important;color:#173f70!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:58%!important;}\n#staffScreen .member-company-row .member-company-text span{font-size:.67rem!important;color:#7187a1!important;font-weight:750!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin-left:7px!important;}\n#staffScreen .member-company-row .member-company-text i{font-style:normal!important;color:#b4c2d1!important;margin:0 6px!important;}\n#staffScreen .member-company-row .staff-person-chevron{grid-column:3!important;grid-row:1!important;font-size:1.05rem!important;color:#6d98c7!important;}\n\n/* 부서별: 첨부 2번처럼 2열 카드 + 원형 아이콘 + 팀명 + 인원 */\n#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px 10px!important;}\n#staffScreen #staffList.dept-mode .staff-team-button{\n  position:relative!important; aspect-ratio:1.16 / 1!important; min-height:0!important; height:auto!important;\n  padding:15px 8px!important; border:1px solid #dbe7f4!important; border-radius:13px!important;\n  background:#fff!important; box-shadow:0 1px 4px rgba(36,91,145,.035)!important; gap:7px!important;\n}\n#staffScreen #staffList.dept-mode .staff-team-button::before{display:none!important;content:none!important;}\n#staffScreen #staffList.dept-mode .staff-team-button::after{display:none!important;content:none!important;}\n#staffScreen .staff-team-icon{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eef7ff;color:#3d9ae9;margin-bottom:2px;}\n#staffScreen .staff-team-icon svg{width:26px;height:26px;display:block;}\n#staffScreen #staffList.dept-mode .staff-team-button:nth-child(3n+2) .staff-team-icon{background:#eef8ff;}\n#staffScreen #staffList.dept-mode .staff-team-button:nth-child(3n+3) .staff-team-icon{background:#eefafb;color:#22b8b2;}\n#staffScreen #staffList.dept-mode .staff-team-button:nth-child(4n) .staff-team-icon{background:#f5efff;color:#9a67ef;}\n#staffScreen #staffList.dept-mode .staff-team-button-name{font-size:.76rem!important;font-weight:900!important;color:#173f70!important;line-height:1.25!important;}\n#staffScreen #staffList.dept-mode .staff-team-button-count{font-size:.65rem!important;color:#7187a1!important;font-weight:750!important;line-height:1.2!important;}\n#staffScreen #staffList.dept-mode .staff-team-button-leader{display:none!important;}\n\n/* 조직도: 첨부 3번처럼 좌측 세로 트리 */\n#staffScreen #staffOrgView{padding:0!important;overflow:hidden!important;}\n#staffScreen .staff-org-tree{padding:4px 0 12px 8px!important;background:#fff!important;}\n#staffScreen .staff-org-node.root{width:180px!important;max-width:180px!important;margin:0!important;min-height:67px!important;padding:10px 8px!important;border-radius:10px!important;background:linear-gradient(135deg,#0f5ac8,#176edc)!important;color:#fff!important;border:0!important;box-shadow:none!important;}\n#staffScreen .staff-org-node.root .staff-org-node-title{font-size:.82rem!important;font-weight:900!important;}\n#staffScreen .staff-org-node.root .staff-org-node-sub{font-size:.61rem!important;font-weight:700!important;margin-top:3px!important;color:#fff!important;}\n#staffScreen .staff-org-main-branches{margin-top:0!important;padding:0 0 0 31px!important;}\n#staffScreen .staff-org-main-branches::before{left:0!important;top:0!important;bottom:58px!important;width:1px!important;background:#c9d9eb!important;transform:none!important;}\n#staffScreen .staff-org-branch{padding:0 0 14px!important;}\n#staffScreen .staff-org-branch::before{left:0!important;top:0!important;width:31px!important;height:1px!important;background:#c9d9eb!important;transform:none!important;}\n#staffScreen .staff-org-node.section-node{width:188px!important;max-width:188px!important;margin:0 0 0 -15px!important;min-height:57px!important;padding:9px 8px!important;border:0!important;border-radius:10px!important;background:linear-gradient(135deg,#2d82e7,#3288e5)!important;color:#fff!important;box-shadow:none!important;}\n#staffScreen .staff-org-node.section-node .staff-org-node-title{font-size:.78rem!important;font-weight:900!important;color:#fff!important;}\n#staffScreen .staff-org-node.section-node .staff-org-node-sub{font-size:.6rem!important;color:#fff!important;font-weight:700!important;}\n#staffScreen .staff-org-team-list{display:flex!important;flex-direction:column!important;gap:6px!important;margin:11px 0 0 -1px!important;padding:0 0 0 31px!important;}\n#staffScreen .staff-org-team-list::before{left:0!important;right:auto!important;top:0!important;bottom:28px!important;width:1px!important;height:auto!important;background:#c9d9eb!important;}\n#staffScreen .staff-org-node.team{display:grid!important;grid-template-columns:40px minmax(0,1fr) 18px!important;grid-template-rows:auto auto!important;min-height:68px!important;width:calc(100% - 4px)!important;padding:8px 10px!important;border:1px solid #d7e6f5!important;border-radius:10px!important;background:#fff!important;box-shadow:none!important;text-align:left!important;align-items:center!important;}\n#staffScreen .staff-org-node.team::before{content:''!important;grid-column:1!important;grid-row:1 / span 2!important;width:36px!important;height:36px!important;border:0!important;border-radius:50%!important;background:#eaf4ff!important;margin:0!important;box-sizing:border-box!important;}\n#staffScreen .staff-org-node.team::after{content:'›'!important;grid-column:3!important;grid-row:1 / span 2!important;position:static!important;width:auto!important;height:auto!important;background:none!important;color:#1769d2!important;font-size:1.15rem!important;transform:none!important;}\n#staffScreen .staff-org-node.team .staff-org-node-title{grid-column:2!important;grid-row:1!important;font-size:.73rem!important;font-weight:900!important;color:#173f70!important;text-align:left!important;}\n#staffScreen .staff-org-node.team .staff-org-node-sub{grid-column:2!important;grid-row:2!important;font-size:.59rem!important;color:#7187a1!important;margin-top:2px!important;text-align:left!important;}\n#staffScreen .staff-org-guide{display:none!important;}\n\n/* 상세보기: 첨부 1번처럼 흰색 카드 / 상단 프로필 / 연락처 / 비고 / 버튼 / 소속정보 */\n#staffScreen .staff-detail-modal-content{max-width:390px!important;width:calc(100% - 24px)!important;padding:18px 13px 18px!important;border-radius:15px!important;background:#fff!important;box-shadow:0 16px 45px rgba(25,53,90,.18)!important;}\n#staffScreen .staff-detail-modal-content .modal-close{top:9px!important;right:10px!important;width:28px!important;height:28px!important;font-size:1.65rem!important;color:#52708f!important;font-weight:300!important;}\n#staffScreen .staff-profile-head{border:0!important;padding:3px 2px 10px!important;gap:13px!important;}\n#staffScreen .staff-profile-avatar{width:74px!important;height:74px!important;flex:0 0 74px!important;border-radius:50%!important;background:#e7f1ff!important;color:#4c92dd!important;}\n#staffScreen .staff-profile-avatar svg{width:52px!important;height:52px!important;}\n#staffScreen .staff-profile-name{font-size:1.03rem!important;color:#173f70!important;font-weight:900!important;}\n#staffScreen .staff-profile-role{font-size:.69rem!important;color:#7187a1!important;margin-top:5px!important;font-weight:750!important;}\n#staffScreen .staff-profile-contact{padding:8px 4px 8px!important;gap:8px!important;}\n#staffScreen .staff-contact-line{gap:9px!important;font-size:.73rem!important;color:#526f90!important;font-weight:700!important;}\n#staffScreen .staff-contact-icon{width:20px!important;height:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;color:#486888!important;}\n#staffScreen .staff-contact-icon svg{width:19px!important;height:19px!important;display:block!important;}\n#staffScreen .staff-detail-note-box{display:block!important;margin:5px 0 18px!important;padding:14px 14px!important;border-radius:11px!important;background:#f2f8fe!important;color:#91a4b8!important;font-size:.66rem!important;line-height:1.45!important;}\n#staffScreen .staff-detail-note-box strong{color:#425e7b!important;font-size:.69rem!important;margin-right:3px!important;}\n#staffScreen .staff-detail-actions{gap:8px!important;margin:0 0 18px!important;}\n#staffScreen .staff-detail-actions .action-btn{height:43px!important;min-height:43px!important;border-radius:11px!important;font-size:.75rem!important;font-weight:850!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;}\n#staffScreen .staff-detail-actions .action-btn svg{width:20px!important;height:20px!important;display:block!important;}\n#staffScreen .staff-detail-actions .btn-call{background:#1769d2!important;border:1px solid #1769d2!important;color:#fff!important;}\n#staffScreen .staff-detail-actions .btn-sms,#staffScreen .staff-detail-actions .btn-email{background:#fff!important;border:1.5px solid #5b9bea!important;color:#1769d2!important;}\n#staffScreen .staff-info-section-title{font-size:.9rem!important;color:#173f70!important;margin:0!important;padding:12px 3px 9px!important;border-top:1px solid #edf2f7!important;}\n#staffScreen .staff-info-table{border-top:0!important;}\n#staffScreen .staff-info-row{grid-template-columns:82px minmax(0,1fr)!important;gap:8px!important;padding:8px 4px!important;border-bottom:1px solid #edf2f7!important;font-size:.68rem!important;}\n#staffScreen .staff-info-label{color:#7187a1!important;font-weight:750!important;}\n#staffScreen .staff-info-value{color:#526f8d!important;font-weight:700!important;}\n#staffScreen .staff-detail-modal-content #staffDetailNoteRow{display:none!important;}\n@media(max-width:360px){\n #staffScreen #staffList.dept-mode{gap:9px 7px!important;}\n #staffScreen #staffList.dept-mode .staff-team-button{aspect-ratio:1.13/1!important;padding:12px 5px!important;}\n #staffScreen .staff-team-icon{width:41px;height:41px;}\n #staffScreen .staff-team-icon svg{width:24px;height:24px;}\n #staffScreen .staff-team-button-name{font-size:.7rem!important;}\n #staffScreen .staff-team-button-count{font-size:.61rem!important;}\n}\n</style>\n</head>
+</head>
 <body>
 
 <div class="login-screen" id="loginScreen">
@@ -2751,8 +2702,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="modal-overlay" id="staffTeamModal" onclick="closeStaffTeamModalOnOutsideClick(event)">
       <div class="modal-content staff-team-modal-content">
         <button class="modal-close" onclick="closeStaffTeamModal()">×</button>
-        <div class="modal-title" id="staffTeamModalTitle" style="margin-bottom:12px;font-size:1.08rem;"></div>
+        <div class="staff-team-modal-header">
+          <div class="modal-title" id="staffTeamModalTitle"></div>
+          <div class="staff-team-modal-leader" id="staffTeamModalLeader"></div>
+        </div>
         <div id="staffTeamModalList" class="staff-team-modal-list"></div>
+        <button type="button" class="staff-team-modal-close" onclick="closeStaffTeamModal()">닫기</button>
       </div>
     </div>
   </div>
@@ -3285,7 +3240,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const policyLeader=office.find(x=>/실장/.test(String(x.position||''))&&/정책/.test(String(x.team||x.department||x.affiliation||'')));
     const wrap=document.createElement('div'); wrap.className='staff-org-tree';
     const node=(type,title,sub,click)=>{const e=document.createElement('button');e.type='button';e.className='staff-org-node '+type;if(click)e.onclick=click;e.innerHTML=`<span class="staff-org-node-title">${title}</span>${sub?`<span class="staff-org-node-sub">${sub}</span>`:''}`;return e;};
-    const team=(name)=>{const m=groups.get(name)||[];return node('team',name,`${getTeamLeader(m)||'팀원'} · ${m.length}명`,()=>openStaffTeamModal(name));};
+    const team=(name)=>{const m=groups.get(name)||[];return node('team',name,`${getTeamLeader(m)||'팀원'} (${m.length}명)`,()=>openStaffTeamModal(name));};
     wrap.appendChild(node('root','사무국',director?cleanOfficeText(director.name)+' '+cleanOfficeText(director.position):''));
     const branches=document.createElement('div');branches.className='staff-org-main-branches';wrap.appendChild(branches);
     const planning=document.createElement('section');planning.className='staff-org-branch planning';planning.appendChild(node('section-node','기획운영실',planningLeader?cleanOfficeText(planningLeader.name)+' '+cleanOfficeText(planningLeader.position):''));
@@ -3623,16 +3578,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.openStaffTeamModal=function(teamName){
     const modal=document.getElementById('staffTeamModal');
     const title=document.getElementById('staffTeamModalTitle');
+    const leaderEl=document.getElementById('staffTeamModalLeader');
     const box=document.getElementById('staffTeamModalList');
     if(!modal||!title||!box)return;
     const members=(getTeamGroups().get(teamName)||[]).slice().sort((a,b)=>getPositionRank(a.position)-getPositionRank(b.position)||(a.name||'').localeCompare(b.name||'','ko'));
-    title.textContent=teamName;
+    title.textContent=`${teamName} (${members.length}명)`;
+    if(leaderEl){
+      const leader=members.find(x=>/팀장/.test(String(x.position||'')))||members.find(x=>/파트장/.test(String(x.position||'')));
+      leaderEl.textContent=leader?`${cleanOfficeText(leader.name)} ${cleanOfficeText(leader.position)}`:'';
+    }
     box.innerHTML='';
     if(!members.length){box.innerHTML='<div class="staff-team-empty">등록된 직원이 없습니다.</div>';}
     members.forEach(member=>{
       const idx=staffData.indexOf(member);
       const row=document.createElement('button');row.type='button';row.className='staff-team-row';
-      row.innerHTML=`<span class="staff-team-row-name">${cleanOfficeText(member.name)||'-'}</span><span class="staff-team-row-position">${cleanOfficeText(member.position)||'-'}</span>`;
+      row.innerHTML=`<span class="staff-team-row-avatar" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="17" r="8" fill="currentColor"/><path d="M12 43c1.5-8.8 6.3-13.5 14-13.5S38.5 34.2 40 43" fill="currentColor"/></svg></span><span class="staff-team-row-text"><span class="staff-team-row-name">${cleanOfficeText(member.name)||'-'}</span><span class="staff-team-row-position">${cleanOfficeText(member.position)||'-'}</span></span><span class="staff-team-row-chevron">›</span>`;
       row.onclick=()=>{closeStaffTeamModal();openStaffDetailModal(idx);};
       box.appendChild(row);
     });
