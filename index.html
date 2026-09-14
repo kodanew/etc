@@ -1414,68 +1414,28 @@ button,.nav-btn,.action-btn{min-height:44px;}
     font-size:.9rem;line-height:30px;padding:0;
   }
   #staffScreen .staff-search-clear.show{display:block;}
-  /* 사무국 하위 보기 전환 버튼 (조직도/이름순/직책순/부서별) */
-  #staffScreen .staff-subtabs{
-    display:none;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:6px; margin:0 0 12px; box-sizing:border-box;
-  }
-  #staffScreen .staff-subtab{
-    min-width:0; height:38px; padding:0 3px;
-    border:1px solid #dce6f2; border-radius:11px; background:#fff;
-    color:#5d7089; font-size:.74rem; font-weight:800; letter-spacing:-.03em;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    box-shadow:0 2px 7px rgba(24,71,120,.045);
-  }
-  #staffScreen .staff-subtab.active{
-    color:#fff; border-color:#1769d2;
-    background:linear-gradient(135deg,#1769d2,#3182ce);
-    box-shadow:0 4px 10px rgba(23,105,210,.18);
-  }
-  #staffScreen .staff-dept-heading{
-    grid-column:1 / -1;
-    margin:14px 2px 2px; padding-bottom:5px;
-    border-bottom:2px solid #dce6f2;
-    color:#173f70; font-size:.82rem; font-weight:850; letter-spacing:-.03em;
-  }
-  #staffScreen .staff-dept-heading:first-child{margin-top:2px;}
 
-  /* 사무국 조직도 (모바일 세로형) */
-  #staffScreen .staff-orgchart{
-    display:none; width:100%; box-sizing:border-box; padding:2px 2px 10px;
-  }
-  #staffScreen .org-note{
-    margin:0 2px 14px; padding:10px 12px;
-    background:#eef5ff; border:1px solid #cfe1f7; border-radius:12px;
-    color:#3d6291; font-size:.72rem; font-weight:650; line-height:1.5;
-  }
-  #staffScreen .org-node{ border-radius:14px; padding:10px 8px; text-align:center; box-sizing:border-box; }
-  #staffScreen .org-node-title{ line-height:1.25; }
-  #staffScreen .org-node-sub{ line-height:1.25; }
-  #staffScreen .org-root{
-    background:linear-gradient(135deg,#1769d2,#3182ce); color:#fff; margin:0 2px;
-    box-shadow:0 6px 16px rgba(23,105,210,.25);
-  }
-  #staffScreen .org-root .org-node-title{ color:#fff; font-size:1rem; font-weight:900; letter-spacing:.06em; }
-  #staffScreen .org-root .org-node-sub{ color:#dbeaff; font-size:.74rem; font-weight:700; margin-top:3px; }
-  #staffScreen .org-trunk{ width:2px; height:16px; background:#b9d3f2; margin:0 auto; }
-  #staffScreen .org-level-2{ display:flex; flex-direction:column; gap:14px; }
-  #staffScreen .org-node-lvl2{ background:#e8f1ff; border:1.5px solid #1769d2; margin:0 2px; }
-  #staffScreen .org-node-lvl2 .org-node-title{ color:#0756c9; font-size:.92rem; font-weight:850; }
-  #staffScreen .org-node-lvl2 .org-node-sub{ color:#3d6291; font-size:.7rem; font-weight:700; margin-top:2px; }
-  #staffScreen .org-branch-line{ width:2px; height:12px; background:#c7dbf3; margin:0 auto; }
-  #staffScreen .org-children{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; padding:0 2px; }
-  #staffScreen .org-node-leaf{ background:#fff; border:1px solid #e2eaf4; box-shadow:0 3px 9px rgba(28,70,120,.05); }
-  #staffScreen .org-node-leaf .org-node-title{ color:#17385f; font-size:.78rem; font-weight:800; letter-spacing:-.02em; }
-  #staffScreen .org-node-leaf .org-node-sub{ color:#8298b1; font-size:.66rem; font-weight:650; margin-top:3px; }
-  @media(max-width:360px){
-    #staffScreen .org-children{ gap:5px; }
-    #staffScreen .org-node-leaf{ padding:8px 5px; }
-    #staffScreen .org-node-leaf .org-node-title{ font-size:.72rem; }
-    #staffScreen .org-node-leaf .org-node-sub{ font-size:.62rem; }
-    #staffScreen .staff-subtab{ font-size:.68rem; height:35px; }
-  }
-
+  /* ===== 임직원현황 보기 방식 4종 ===== */
+  .staff-view-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 14px;width:100%;}
+  .staff-view-btn{height:42px;min-height:42px;padding:0 4px;border-radius:12px;border:1px solid #dce6f2;background:#fff;color:#5d7089;font-size:.78rem;font-weight:800;cursor:pointer;box-shadow:0 3px 9px rgba(24,71,120,.045);}
+  .staff-view-btn.active{color:#fff;border-color:#1769d2;background:linear-gradient(135deg,#1769d2,#3182ce);box-shadow:0 5px 13px rgba(23,105,210,.16);}
+  .staff-view-btn:active{transform:scale(.98);}
+  #staffOrgView{display:none;width:100%;padding:2px 0 12px;}
+  .org-chart{width:100%;display:flex;flex-direction:column;align-items:center;}
+  .org-box{width:100%;max-width:280px;background:#fff;border:1px solid #d8e3f0;border-radius:14px;padding:11px 12px;text-align:center;box-shadow:0 4px 12px rgba(28,70,120,.055);}
+  .org-box.root{border-color:#b8cee8;background:linear-gradient(135deg,#f7fbff,#fff);}
+  .org-name{font-size:.84rem;font-weight:850;color:#173f70;line-height:1.3;}
+  .org-leader{margin-top:4px;font-size:.68rem;font-weight:650;color:#7a8da5;line-height:1.3;}
+  .org-line{width:1px;height:13px;background:#c7d6e8;}
+  .org-section{width:100%;margin-top:2px;}
+  .org-branch-title{margin:0 0 7px;padding:8px 10px;border-radius:10px;background:#edf5ff;color:#1769d2;font-size:.72rem;font-weight:850;text-align:center;}
+  .org-grid{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  .org-grid .org-box{max-width:none;padding:10px 7px;}
+  .org-grid .org-name{font-size:.75rem;}
+  .org-grid .org-leader{font-size:.62rem;}
+  .staff-dept-heading{grid-column:1/-1;margin:5px 0 -2px;padding:8px 10px;border-radius:10px;background:#edf5ff;color:#1769d2;font-size:.76rem;font-weight:850;}
+  #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+  @media(max-width:360px){.staff-view-tabs{gap:4px;margin-top:8px}.staff-view-btn{font-size:.73rem;height:40px;min-height:40px}.org-grid{gap:7px}.org-grid .org-name{font-size:.71rem}}
   #staffList{
     display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr));
     gap:9px; width:100%; box-sizing:border-box;
@@ -2513,19 +2473,41 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-content">
-<div class="staff-search-wrap" id="staffSearchWrap">
+<div class="staff-search-wrap">
       <span class="staff-search-icon" aria-hidden="true">⌕</span>
       <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
     </div>
-    <div class="staff-subtabs" id="staffSubTabs">
-      <button type="button" class="staff-subtab" data-view="조직도" onclick="setStaffOfficeView('조직도')">조직도</button>
-      <button type="button" class="staff-subtab active" data-view="이름순" onclick="setStaffOfficeView('이름순')">이름순</button>
-      <button type="button" class="staff-subtab" data-view="직책순" onclick="setStaffOfficeView('직책순')">직책순</button>
-      <button type="button" class="staff-subtab" data-view="부서별" onclick="setStaffOfficeView('부서별')">부서별</button>
+
+    <div class="staff-view-tabs" id="staffViewTabs">
+      <button type="button" class="staff-view-btn active" data-view="org" onclick="changeStaffView('org')">조직도</button>
+      <button type="button" class="staff-view-btn" data-view="name" onclick="changeStaffView('name')">이름순</button>
+      <button type="button" class="staff-view-btn" data-view="position" onclick="changeStaffView('position')">직책순</button>
+      <button type="button" class="staff-view-btn" data-view="dept" onclick="changeStaffView('dept')">부서별</button>
+    </div>
+
+    <div id="staffOrgView">
+      <div class="org-chart">
+        <div class="org-box root"><div class="org-name">사무국</div><div class="org-leader">박영필 전무</div></div>
+        <div class="org-line"></div>
+        <div class="org-section">
+          <div class="org-branch-title">기획운영실 · 김상홍 부장(실장)</div>
+          <div class="org-grid">
+            <div class="org-box"><div class="org-name">기획홍보팀</div><div class="org-leader">김종현</div></div>
+            <div class="org-box"><div class="org-name">회원지원팀</div><div class="org-leader">장예슬</div></div>
+            <div class="org-box"><div class="org-name">경영지원팀</div><div class="org-leader">오나은</div></div>
+            <div class="org-box"><div class="org-name">법정업무팀(교육)</div><div class="org-leader">김시라</div></div>
+            <div class="org-box"><div class="org-name">법정업무팀(위탁)</div><div class="org-leader">김지영</div></div>
+          </div>
+        </div>
+        <div class="org-line"></div>
+        <div class="org-section">
+          <div class="org-branch-title">정책연구실 · 이진 연구위원(실장)</div>
+          <div class="org-grid"><div class="org-box"><div class="org-name">정책팀</div><div class="org-leader">박재영</div></div></div>
+        </div>
+      </div>
     </div>
     <div class="day-event-list" id="staffList"></div>
-    <div class="staff-orgchart" id="staffOrgChart"></div>
   </div>
 </div>
 
@@ -2940,236 +2922,83 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       staffData = parseStaffCSV(await response.text());
       filterStaff('전체');
+      changeStaffView(currentStaffView);
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
   let currentStaffCategory = '전체';
-  // 사무국 전용 하위 보기 상태 (조직도 / 이름순 / 직책순 / 부서별)
-  let staffOfficeView = '이름순';
-  const STAFF_OFFICE_VIEWS = ['조직도','이름순','직책순','부서별'];
+  let currentStaffView = 'org';
 
-  function updateStaffSubTabButtons() {
-    document.querySelectorAll('#staffSubTabs .staff-subtab').forEach(btn=>{
-      btn.classList.toggle('active', btn.dataset.view === staffOfficeView);
-    });
+  function getPositionRank(position) {
+    const p=String(position||'').replace(/\s+/g,'');
+    if(p.includes('전무')) return 1;
+    if(p.includes('실장')) return 2;
+    if(p.includes('팀장')) return 3;
+    if(p.includes('파트장')) return 4;
+    if(p.includes('대리')) return 5;
+    return 50;
   }
-
-  // 사무국 탭 진입/이탈 시 하위 보기(조직도/서브탭) 표시 상태를 정리합니다.
-  function resetStaffOfficeView(category) {
-    const subTabs = document.getElementById('staffSubTabs');
-    const orgChart = document.getElementById('staffOrgChart');
-    const searchWrap = document.getElementById('staffSearchWrap');
-    const list = document.getElementById('staffList');
-    if (category === '사무국') {
-      staffOfficeView = '이름순';
-      updateStaffSubTabButtons();
-      if (subTabs) subTabs.style.display = 'grid';
-      if (orgChart) orgChart.style.display = 'none';
-      if (searchWrap) searchWrap.style.display = '';
-      if (list) list.style.display = '';
-    } else {
-      if (subTabs) subTabs.style.display = 'none';
-      if (orgChart) orgChart.style.display = 'none';
-      if (searchWrap) searchWrap.style.display = '';
-      if (list) list.style.display = '';
-    }
+  function normalizeDepartment(value) {
+    const v=String(value||'').replace(/\s+/g,'');
+    if(v.includes('기획홍보')) return '기획홍보팀';
+    if(v.includes('경영지원')) return '경영지원팀';
+    if(v.includes('회원지원')) return '회원지원팀';
+    if(v.includes('법정업무')&&v.includes('위탁')) return '법정업무팀(위탁)';
+    if(v.includes('법정업무')&&v.includes('교육')) return '법정업무팀(교육)';
+    if(v.includes('정책')) return '정책팀';
+    return String(value||'').trim()||'부서 미지정';
   }
-
-  window.setStaffOfficeView = function(view) {
-    if (!STAFF_OFFICE_VIEWS.includes(view)) return;
-    staffOfficeView = view;
-    updateStaffSubTabButtons();
-    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-
-    const list = document.getElementById('staffList');
-    const orgChart = document.getElementById('staffOrgChart');
-    const searchWrap = document.getElementById('staffSearchWrap');
-
-    if (view === '조직도') {
-      if (list) list.style.display = 'none';
-      if (searchWrap) searchWrap.style.display = 'none';
-      if (orgChart) { orgChart.style.display = 'block'; renderStaffOrgChart(); }
-    } else {
-      if (orgChart) orgChart.style.display = 'none';
-      if (searchWrap) searchWrap.style.display = '';
-      if (list) list.style.display = '';
-      renderStaffList('사무국');
-    }
+  function updateStaffViewButtons(view){document.querySelectorAll('#staffViewTabs .staff-view-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===view));}
+  window.changeStaffView=function(view){
+    if(!['org','name','position','dept'].includes(view)) view='org';
+    currentStaffView=view; updateStaffViewButtons(view);
+    const org=document.getElementById('staffOrgView'), list=document.getElementById('staffList');
+    if(org) org.style.display=view==='org'?'block':'none';
+    if(list) list.style.display=view==='org'?'none':'grid';
+    if(view!=='org') renderStaffList(currentStaffCategory);
   };
-
-  window.filterStaff = function(category) {
-    // 분류 버튼은 항상 유지하고, 선택된 버튼만 활성화합니다.
-    const validCategories = ['전체','사무국','7대 임원','회원사','ARP'];
-    if (!validCategories.includes(category)) category = '전체';
-    currentStaffCategory = category;
-    const tabs = document.querySelectorAll('#staffTabs .month-tab');
-    tabs.forEach(btn => {
-      btn.hidden = false;
-      btn.style.display = 'flex';
-      btn.classList.toggle('active', btn.dataset.cat === category);
-    });
-    const search=document.getElementById('staffSearchInput');
-    if(search) search.value='';
-    const clear=document.getElementById('staffSearchClear');
-    if(clear) clear.classList.remove('show');
-    // 버튼 클릭 시 브라우저의 자동 포커스/스크롤 이동을 차단합니다.
-    if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
-    const staffScreen = document.getElementById('staffScreen');
-    const staffContent = staffScreen?.querySelector('.fullscreen-content');
-    if(staffScreen) staffScreen.scrollTop = 0;
-    if(staffContent) staffContent.scrollTop = 0;
-    resetStaffOfficeView(category);
-    renderStaffList(category);
-    requestAnimationFrame(()=>{
-      if(staffScreen) staffScreen.scrollTop = 0;
-      if(staffContent) staffContent.scrollTop = 0;
-    });
-  }
-
-  // 직책순 정렬 기준: 전무 > 실장 > 팀장 > 파트장 > 대리 (그 외 직책은 대리 뒤, 가나다순)
-  const STAFF_POSITION_RANK_ORDER = ['전무','실장','팀장','파트장','대리'];
-  function staffPositionRank(position) {
-    const p = String(position || '');
-    for (let i = 0; i < STAFF_POSITION_RANK_ORDER.length; i++) {
-      if (p.includes(STAFF_POSITION_RANK_ORDER[i])) return i;
-    }
-    return STAFF_POSITION_RANK_ORDER.length;
-  }
-
-  function sortOfficeStaff(data, view) {
-    const arr = [...data];
-    if (view === '직책순') {
-      arr.sort((a, b) => {
-        const ra = staffPositionRank(a.position), rb = staffPositionRank(b.position);
-        if (ra !== rb) return ra - rb;
-        return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
-      });
-    } else {
-      // 이름순(가나다) 기본 정렬
-      arr.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
-    }
-    return arr;
-  }
-
-  // 부서별 그룹 순서: 기획홍보팀, 경영지원팀, 회원지원팀, 법정업무(위탁)팀, 법정업무(교육)팀, 정책팀
-  const STAFF_DEPT_GROUPS = ['기획홍보팀','경영지원팀','회원지원팀','법정업무팀(위탁)','법정업무팀(교육)','정책팀'];
-  const STAFF_DEPT_ETC_LABEL = '기타(실장·임원)';
-  function normalizeDeptLabel(dept) {
-    const d = String(dept || '').replace(/\s+/g, '');
-    if (!d) return '';
-    for (const g of STAFF_DEPT_GROUPS) {
-      if (d.includes(g.replace(/\s+/g, ''))) return g;
-    }
-    if (d.includes('법정업무')) {
-      if (d.includes('교육')) return '법정업무팀(교육)';
-      if (d.includes('위탁')) return '법정업무팀(위탁)';
-    }
-    return '';
-  }
-
-  function buildStaffCard(item, indexInOriginal) {
-    const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
-    const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
-    const kodaLabel=item.koda || '';
-    const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
-    btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
-    btn.onclick=()=>openStaffDetailModal(indexInOriginal);
-    return btn;
-  }
-
-  function renderStaffGroupedByDept(data, list) {
-    const groups = {};
-    STAFF_DEPT_GROUPS.forEach(g => { groups[g] = []; });
-    groups[STAFF_DEPT_ETC_LABEL] = [];
-    data.forEach(item => {
-      const label = normalizeDeptLabel(item.department) || STAFF_DEPT_ETC_LABEL;
-      if (!groups[label]) groups[label] = [];
-      groups[label].push(item);
-    });
-    const orderedLabels = [STAFF_DEPT_ETC_LABEL, ...STAFF_DEPT_GROUPS];
-    let rendered = 0;
-    orderedLabels.forEach(label => {
-      const members = groups[label];
-      if (!members || !members.length) return;
-      members.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
-      const heading = document.createElement('div');
-      heading.className = 'staff-dept-heading';
-      heading.textContent = `${label} · ${members.length}명`;
-      list.appendChild(heading);
-      members.forEach(item => {
-        list.appendChild(buildStaffCard(item, staffData.indexOf(item)));
-      });
-      rendered += members.length;
-    });
-    return rendered;
-  }
-
-  function renderStaffList(categoryFilter) {
-    const list=document.getElementById('staffList'); if(!list) return; list.innerHTML='';
-    const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
+  window.filterStaff=function(category){
+    const valid=['전체','사무국','7대 임원','회원사','ARP']; if(!valid.includes(category)) category='전체';
+    currentStaffCategory=category;
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn=>{btn.hidden=false;btn.style.display='flex';btn.classList.toggle('active',btn.dataset.cat===category);});
+    const search=document.getElementById('staffSearchInput'); if(search) search.value='';
+    const clear=document.getElementById('staffSearchClear'); if(clear) clear.classList.remove('show');
+    if(document.activeElement&&typeof document.activeElement.blur==='function') document.activeElement.blur();
+    const staffScreen=document.getElementById('staffScreen'), content=staffScreen?.querySelector('.fullscreen-content');
+    if(staffScreen) staffScreen.scrollTop=0; if(content) content.scrollTop=0;
+    if(currentStaffView==='org') changeStaffView('org'); else renderStaffList(category);
+  };
+  function getFilteredStaffData(categoryFilter){
+    const norm=v=>String(v||'').replace(/\s+/g,'').toUpperCase();
     const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
-    let filteredData=(categoryFilter==='전체') ? [...staffData] : staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
-    if(q){
-      filteredData=filteredData.filter(item=>{
-        const hay=[item.name,item.affiliation,item.position,item.department,item.phone].filter(Boolean).join(' ').toLowerCase();
-        return hay.includes(q);
-      });
-    }
-    if (categoryFilter === '사무국') {
-      filteredData = sortOfficeStaff(filteredData, staffOfficeView);
-    }
-    const countEl=document.getElementById('staffResultCount');
-    if(countEl) countEl.textContent=`${filteredData.length}명`;
-    if(!filteredData.length){list.innerHTML=`<div class="no-data">${q?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
-    if (categoryFilter === '사무국' && staffOfficeView === '부서별') {
-      renderStaffGroupedByDept(filteredData, list);
-      return;
-    }
-    filteredData.forEach(item=>{
-      list.appendChild(buildStaffCard(item, staffData.indexOf(item)));
-    });
+    let data=categoryFilter==='전체'?[...staffData]:staffData.filter(item=>norm(item.category)===norm(categoryFilter));
+    if(q)data=data.filter(item=>[item.name,item.affiliation,item.position,item.department,item.koda,item.phone].filter(Boolean).join(' ').toLowerCase().includes(q));
+    return data;
   }
-
-  // 사무국 조직도 (모바일 세로형) — 부서명과 팀장/파트장 성함만 간단히 표시
-  function renderStaffOrgChart() {
-    const el = document.getElementById('staffOrgChart');
-    if (!el) return;
-    el.innerHTML = `
-      <div class="org-note">부서명과 팀장(파트장) 성함만 표시됩니다. 상세 연락처는 목록·검색에서 확인해 주세요.</div>
-      <div class="org-node org-root">
-        <div class="org-node-title">사 무 국</div>
-        <div class="org-node-sub">박영빈 전무 · 사무국 업무총괄</div>
-      </div>
-      <div class="org-trunk"></div>
-      <div class="org-level-2">
-        <div class="org-branch">
-          <div class="org-node org-node-lvl2">
-            <div class="org-node-title">기획운영실</div>
-            <div class="org-node-sub">김상용 실장</div>
-          </div>
-          <div class="org-branch-line"></div>
-          <div class="org-children">
-            <div class="org-node org-node-leaf"><div class="org-node-title">기획홍보팀</div><div class="org-node-sub">김동현 팀장</div></div>
-            <div class="org-node org-node-leaf"><div class="org-node-title">경영지원팀</div><div class="org-node-sub">오나은 팀장</div></div>
-            <div class="org-node org-node-leaf"><div class="org-node-title">회원지원팀</div><div class="org-node-sub">상애솔 팀장</div></div>
-            <div class="org-node org-node-leaf"><div class="org-node-title">법정업무팀(교육)</div><div class="org-node-sub">김시라 파트장</div></div>
-            <div class="org-node org-node-leaf"><div class="org-node-title">법정업무팀(위탁)</div><div class="org-node-sub">김지영 파트장</div></div>
-          </div>
-        </div>
-        <div class="org-branch">
-          <div class="org-node org-node-lvl2">
-            <div class="org-node-title">정책연구실</div>
-            <div class="org-node-sub">이진 실장</div>
-          </div>
-          <div class="org-branch-line"></div>
-          <div class="org-children">
-            <div class="org-node org-node-leaf"><div class="org-node-title">정책팀</div><div class="org-node-sub">박과영 팀장</div></div>
-          </div>
-        </div>
-      </div>
-    `;
+  function renderStaffList(categoryFilter){
+    const list=document.getElementById('staffList'); if(!list)return;
+    if(currentStaffView==='org'){list.innerHTML='';list.style.display='none';return;}
+    list.style.display='grid'; list.classList.toggle('dept-mode',currentStaffView==='dept'); list.innerHTML='';
+    let data=getFilteredStaffData(categoryFilter);
+    const countEl=document.getElementById('staffResultCount'); if(countEl) countEl.textContent=`${data.length}명`;
+    if(!data.length){list.innerHTML=`<div class="no-data">${(document.getElementById('staffSearchInput')?.value||'').trim()?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
+    if(currentStaffView==='name') data.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+    if(currentStaffView==='position') data.sort((a,b)=>getPositionRank(a.position)-getPositionRank(b.position)||(a.name||'').localeCompare(b.name||'','ko'));
+    const appendCard=item=>{
+      const index=staffData.indexOf(item), btn=document.createElement('button'); btn.type='button';btn.className='day-event-item staff-card-compact';
+      const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
+      const role=[item.affiliation,item.position].filter(Boolean).join(' ');
+      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${item.koda||''}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${role||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
+      btn.onclick=()=>openStaffDetailModal(index);list.appendChild(btn);
+    };
+    if(currentStaffView==='dept'){
+      const order=['기획홍보팀','경영지원팀','회원지원팀','법정업무팀(위탁)','법정업무팀(교육)','정책팀']; const groups=new Map();
+      data.forEach(item=>{const d=normalizeDepartment(item.department||item.affiliation);if(!groups.has(d))groups.set(d,[]);groups.get(d).push(item);});
+      const ordered=[...order.filter(d=>groups.has(d)),...groups.keys()].filter((d,i,a)=>a.indexOf(d)===i);
+      ordered.forEach(d=>{const h=document.createElement('div');h.className='staff-dept-heading';h.textContent=d;list.appendChild(h);groups.get(d).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).forEach(appendCard);});
+    }else data.forEach(appendCard);
   }
 
   window.openStaffScreen = function() {
@@ -3180,8 +3009,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(staffContentEl) staffContentEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
+    // 임직원현황에 들어올 때마다 반드시 '전체' + '조직도'로 시작합니다.
     currentStaffCategory = '전체';
+    currentStaffView = 'org';
+    updateStaffViewButtons('org');
+    const orgView = document.getElementById('staffOrgView');
+    const staffListView = document.getElementById('staffList');
+    if(orgView) orgView.style.display = 'block';
+    if(staffListView) { staffListView.style.display = 'none'; staffListView.classList.remove('dept-mode'); }
     const staffTabs = document.querySelectorAll('#staffTabs .month-tab');
     staffTabs.forEach(btn => {
       btn.hidden = false;
@@ -3192,7 +3027,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value = '';
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
-    resetStaffOfficeView('전체');
     if (staffData.length === 0) loadStaffData(); else renderStaffList('전체');
   };
 
