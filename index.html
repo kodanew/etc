@@ -1568,6 +1568,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-org-role{font-size:.59rem!important;}
   }
 
+
+#newsDetailContent a{color:#2563eb;text-decoration:underline;word-break:break-all}
+#newsDetailThumbnailLink{display:block}
+#newsDetailThumbnail{display:block;max-width:100%;height:auto}
+
 </style>
 
 <style id="final-staff-header-fixes">
@@ -3671,7 +3676,7 @@ function createEventCard(event) {
     catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
     document.getElementById('newsDetailTitle').innerText = item.title;
     document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
-    document.getElementById('newsDetailContent').innerText = item.content;
+    document.getElementById('newsDetailContent').innerHTML = linkifyNewsContent(item.content);
 
     // G열 썸네일을 상세보기 최하단에 배치하고, 클릭하면 F열 URL로 연결
     setNewsDetailThumbnail(item);
