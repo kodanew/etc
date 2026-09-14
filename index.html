@@ -1465,8 +1465,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen .staff-team-button-name{font-size:.86rem;font-weight:850;line-height:1.25;}
   #staffScreen .staff-team-button-leader{font-size:.66rem;font-weight:650;color:#7187a1;line-height:1.25;}
   #staffScreen #staffList:has(.staff-team-button){grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
-  #staffScreen .staff-org-svg{width:100%;height:auto;display:block;background:linear-gradient(180deg,#f8fbff 0%,#fff 100%);border:1px solid #dce7f3;border-radius:20px;box-shadow:0 5px 16px rgba(28,70,120,.055);}
+  #staffScreen #staffOrgView{overflow-x:auto;overflow-y:hidden;padding:4px 0 14px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+  #staffScreen .staff-org-svg{width:820px;min-width:820px;height:auto;display:block;background:linear-gradient(180deg,#f8fbff 0%,#fff 100%);border:1px solid #dce7f3;border-radius:20px;box-shadow:0 7px 20px rgba(28,70,120,.07);}
   #staffScreen .staff-org-svg-card:hover rect{fill:#f4f9ff;}
+  #staffScreen .staff-org-svg-card:active{opacity:.86;}
+  #staffScreen #staffOrgView::before{content:'← 좌우로 조직도 보기 →';display:block;text-align:center;color:#91a4bb;font-size:.66rem;font-weight:700;margin:0 0 6px;}
   #staffScreen .staff-team-modal-content{max-width:380px;width:calc(100% - 30px);}
   #staffScreen .staff-team-modal-list{display:flex;flex-direction:column;gap:7px;max-height:55vh;overflow:auto;}
   #staffScreen .staff-team-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border:1px solid #e1e9f2;border-radius:12px;background:#fff;text-align:left;}
@@ -2898,12 +2901,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
       affil: headers.indexOf("소속"),
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
+      team: headers.findIndex(h => h.includes("팀")),
       koda: headers.indexOf("KODA"),
       phone: headers.indexOf("연락처"),
       email: headers.indexOf("이메일"),
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, koda: 6, phone: 7, email: 8, note: 9 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, team: 5, koda: 6, phone: 7, email: 8, note: 9 };
+    // 시트4 기준 F열(인덱스 5)이 팀/부서입니다. 헤더가 없어도 F열을 우선 사용합니다.
+    if (idx.team === -1) idx.team = 5;
     // 시트4의 G열이 KODA입니다. 헤더가 인식되지 않는 경우에도 G열(인덱스 6)을 사용합니다.
     if (idx.koda === -1) idx.koda = 6;
 
@@ -2917,6 +2923,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
         affiliation: idx.affil !== -1 && r[idx.affil] ? r[idx.affil].trim() : "",
         position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
+        team: idx.team !== -1 && r[idx.team] ? r[idx.team].trim() : "",
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
         phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
@@ -2984,7 +2991,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function getTeamGroups(){
     const groups=new Map(STAFF_TEAM_ORDER.map(d=>[d,[]]));
     getOfficeData().forEach(item=>{
-      const d=normalizeDepartment(item.department||item.affiliation);
+      // 사무국 팀 분류는 시트4 F열(team)을 기준으로 합니다.
+      const rawTeam=item.team || item.department || '';
+      const d=normalizeDepartment(rawTeam);
       if(!groups.has(d)) groups.set(d,[]);
       groups.get(d).push(item);
     });
@@ -3026,60 +3035,39 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const office=getOfficeData();
     const groups=getTeamGroups();
     const director=office.find(x=>/전무/.test(String(x.position||''))) || office[0];
-    const planning=office.find(x=>/기획운영실/.test(String(x.department||'')) && /실장|부장/.test(String(x.position||'')))
-      || office.find(x=>/실장/.test(String(x.position||'')) && /정책/.test(String(x.department||''))===false);
-    const policy=office.find(x=>/정책연구실/.test(String(x.department||'')) && /실장|연구위원/.test(String(x.position||'')))
-      || office.find(x=>/정책/.test(String(x.department||'')) && /실장/.test(String(x.position||'')));
-
+    const planning=office.find(x=>/기획운영실/.test(String(x.team||x.department||''))) || office.find(x=>/기획운영실/.test(String(x.affiliation||'')));
+    const policy=office.find(x=>/정책연구실/.test(String(x.team||x.department||''))) || office.find(x=>/정책연구실/.test(String(x.affiliation||'')));
     const svgNS='http://www.w3.org/2000/svg';
     const svg=document.createElementNS(svgNS,'svg');
-    svg.setAttribute('viewBox','0 0 360 690');
-    svg.setAttribute('class','staff-org-svg');
-    svg.setAttribute('role','img');
-    svg.setAttribute('aria-label','KODA 사무국 조직도');
-
-    function rect(x,y,w,h,fill,stroke,rx){const e=document.createElementNS(svgNS,'rect'); e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('width',w);e.setAttribute('height',h);e.setAttribute('rx',rx||14);e.setAttribute('fill',fill);e.setAttribute('stroke',stroke);e.setAttribute('stroke-width','1.2');return e;}
-    function text(x,y,s,size,weight,fill,anchor='middle'){const e=document.createElementNS(svgNS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('font-size',size);e.setAttribute('font-weight',weight);e.setAttribute('fill',fill);e.setAttribute('text-anchor',anchor);e.setAttribute('font-family','Arial, Noto Sans KR, sans-serif');e.textContent=s;return e;}
-    function line(x1,y1,x2,y2){const e=document.createElementNS(svgNS,'line');e.setAttribute('x1',x1);e.setAttribute('y1',y1);e.setAttribute('x2',x2);e.setAttribute('y2',y2);e.setAttribute('stroke','#b9cee5');e.setAttribute('stroke-width','2');return e;}
-    function card(x,y,w,h,title,sub,click){
-      const g=document.createElementNS(svgNS,'g');
-      g.classList.add('staff-org-svg-card');
-      if(click){g.style.cursor='pointer';g.addEventListener('click',click);}
-      g.appendChild(rect(x,y,w,h,'#ffffff','#cbdced',14));
-      g.appendChild(text(x+w/2,y+25,title,13,850,'#173f70'));
-      if(sub) g.appendChild(text(x+w/2,y+46,sub,10,650,'#7187a1'));
-      return g;
-    }
-
-    svg.appendChild(rect(55,18,250,66,'#edf5ff','#9fc0e3',18));
-    svg.appendChild(text(180,45,'사무국',18,850,'#1769d2'));
-    svg.appendChild(text(180,66,director?cleanOfficeText(director.name)+' '+cleanOfficeText(director.position):'','11',700,'#607996'));
-    svg.appendChild(line(180,84,180,104));
-
-    svg.appendChild(rect(35,104,290,55,'#f7fbff','#bcd1e7',15));
-    svg.appendChild(text(180,128,'기획운영실',15,850,'#173f70'));
-    svg.appendChild(text(180,147,planning?cleanOfficeText(planning.name)+' '+cleanOfficeText(planning.position):'',10,700,'#7187a1'));
-
-    const teamXs=[8,127,246], teamW=106, y1=184, y2=286;
+    svg.setAttribute('viewBox','0 0 820 620');
+    svg.setAttribute('class','staff-org-svg staff-org-svg-horizontal');
+    svg.setAttribute('role','img'); svg.setAttribute('aria-label','KODA 사무국 조직도');
+    function rect(x,y,w,h,fill,stroke,rx){const e=document.createElementNS(svgNS,'rect');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('width',w);e.setAttribute('height',h);e.setAttribute('rx',rx||16);e.setAttribute('fill',fill);e.setAttribute('stroke',stroke);e.setAttribute('stroke-width','1.3');return e;}
+    function text(x,y,s,size,weight,fill,anchor='middle'){const e=document.createElementNS(svgNS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('font-size',size);e.setAttribute('font-weight',weight);e.setAttribute('fill',fill);e.setAttribute('text-anchor',anchor);e.setAttribute('font-family','Arial, Noto Sans KR, sans-serif');e.textContent=s||'';return e;}
+    function path(d,dashed=false){const e=document.createElementNS(svgNS,'path');e.setAttribute('d',d);e.setAttribute('fill','none');e.setAttribute('stroke',dashed?'#c8d8e9':'#a9c3df');e.setAttribute('stroke-width',dashed?'1.7':'2.2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');if(dashed)e.setAttribute('stroke-dasharray','5 5');return e;}
+    function card(x,y,w,h,title,sub,opts={}){const g=document.createElementNS(svgNS,'g');g.classList.add('staff-org-svg-card');if(opts.click){g.style.cursor='pointer';g.addEventListener('click',opts.click);}g.appendChild(rect(x,y,w,h,opts.fill||'#fff',opts.stroke||'#cbdced',opts.rx||16));g.appendChild(text(x+w/2,y+27,title,opts.titleSize||13,850,opts.titleColor||'#173f70'));if(sub)g.appendChild(text(x+w/2,y+49,sub,opts.subSize||9.5,650,'#7187a1'));if(opts.badge){const bw=30,bh=17,bx=x+w-bw-9,by=y+9;g.appendChild(rect(bx,by,bw,bh,'#edf5ff','#d4e5f8',8));g.appendChild(text(bx+bw/2,by+12,opts.badge,8,800,'#1769d2'));}return g;}
+    // 사무국을 왼쪽에 두고 오른쪽으로 조직이 확장되는 구조
+    svg.appendChild(rect(18,260,168,92,'#edf5ff','#9fc0e3',20));
+    svg.appendChild(text(102,295,'사무국',20,900,'#1769d2'));
+    svg.appendChild(text(102,321,director?cleanOfficeText(director.name)+' '+cleanOfficeText(director.position):'',10.5,700,'#607996'));
+    svg.appendChild(text(102,339,'Office',8.5,700,'#9aaabd'));
+    // 사무국 → 기획운영실 / 정책연구실
+    svg.appendChild(path('M186 306 H218 V146 H248'));
+    svg.appendChild(path('M218 306 V466 H248'));
+    svg.appendChild(card(248,100,190,92,'기획운영실',planning?cleanOfficeText(planning.name)+' '+cleanOfficeText(planning.position):'',{fill:'#f7fbff',stroke:'#b8d0e8',titleSize:14,subSize:9.5}));
+    // 기획운영실 → 5개 팀
     const firstTeams=['기획홍보팀','경영지원팀','회원지원팀','법정업무팀(위탁)','법정업무팀(교육)'];
-    svg.appendChild(line(180,159,180,174));
-    svg.appendChild(line(61,174,299,174));
-    teamXs.forEach(x=>svg.appendChild(line(x+teamW/2,174,x+teamW/2,184)));
-    firstTeams.forEach((d,i)=>{
-      const row=i<3?0:1, col=i<3?i:i-3, x=row===0?teamXs[col]:teamXs[col+1], y=row===0?y1:y2;
-      const members=groups.get(d)||[];
-      svg.appendChild(card(x,y,teamW,76,d,getTeamLeader(members),()=>openStaffTeamModal(d)));
-    });
-
-    svg.appendChild(line(180,362,180,382));
-    svg.appendChild(rect(35,382,290,55,'#f7fbff','#bcd1e7',15));
-    svg.appendChild(text(180,406,'정책연구실',15,850,'#173f70'));
-    svg.appendChild(text(180,425,policy?cleanOfficeText(policy.name)+' '+cleanOfficeText(policy.position):'',10,700,'#7187a1'));
-    svg.appendChild(line(180,437,180,454));
+    const teamX=488,teamW=300,teamH=62,startY=34,gap=15,planningMidY=146;
+    const firstCenter=startY+teamH/2,lastCenter=startY+4*(teamH+gap)+teamH/2;
+    svg.appendChild(path(`M438 ${planningMidY} H458 V${firstCenter}`));
+    svg.appendChild(path(`M458 ${firstCenter} V${lastCenter}`));
+    firstTeams.forEach((d,i)=>{const y=startY+i*(teamH+gap),cy=y+teamH/2;svg.appendChild(path(`M458 ${cy} H488`));const members=groups.get(d)||[];svg.appendChild(card(teamX,y,teamW,teamH,d,`${getTeamLeader(members)||'팀원'} · ${members.length}명`,{click:()=>openStaffTeamModal(d),fill:'#fff',stroke:'#d4e2f0',titleSize:12.2,subSize:9.2,badge:String(members.length)+'명'}));});
+    // 정책연구실 → 정책팀
+    svg.appendChild(card(248,420,190,92,'정책연구실',policy?cleanOfficeText(policy.name)+' '+cleanOfficeText(policy.position):'',{fill:'#f7fbff',stroke:'#b8d0e8',titleSize:14,subSize:9.5}));
+    svg.appendChild(path('M438 466 H488'));
     const policyMembers=groups.get('정책팀')||[];
-    svg.appendChild(card(72,454,216,76,'정책팀',getTeamLeader(policyMembers),()=>openStaffTeamModal('정책팀')));
-
-    svg.appendChild(text(180,570,'팀을 누르면 해당 팀 직원 목록을 확인할 수 있습니다.',10,650,'#8a9bb0'));
+    svg.appendChild(card(488,435,300,62,'정책팀',`${getTeamLeader(policyMembers)||'팀원'} · ${policyMembers.length}명`,{click:()=>openStaffTeamModal('정책팀'),fill:'#fff',stroke:'#d4e2f0',titleSize:12.5,subSize:9.2,badge:String(policyMembers.length)+'명'}));
+    svg.appendChild(text(18,592,'※ 팀을 누르면 시트4 F열 기준 해당 팀의 구성원이 팝업으로 표시됩니다.',10,650,'#8a9bb0','start'));
     root.appendChild(svg);
   }
 
@@ -3146,7 +3134,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const isOffice=categoryFilter==='사무국';
       const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
       const role=[isOffice?cleanOfficeText(item.position):item.affiliation,item.position && !isOffice?item.position:''].filter(Boolean).join(' ');
-      const dept=isOffice?normalizeDepartment(item.department||item.affiliation):'';
+      const dept=isOffice?normalizeDepartment(item.team||item.department||''):'';
       btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${item.koda||''}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${role||'-'}</span></div>${isOffice&&dept?`<div class="staff-office-dept">${dept}</div>`:''}<div class="staff-phone">${item.phone||''}</div></div></div>`;
       btn.onclick=()=>openStaffDetailModal(index);list.appendChild(btn);
     };
@@ -3237,7 +3225,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const staff = staffData[index];
     
     document.getElementById('staffDetailName').innerText = staff.name || '-';
-    document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
+    const isOfficeDetail = String(staff.category||'').replace(/\s+/g,'') === '사무국';
+    // 사무국은 시트4 E열의 '협회' 소속값을 노출하지 않고 F열 팀명을 사용합니다.
+    document.getElementById('staffDetailAffiliation').innerText = isOfficeDetail ? (normalizeDepartment(staff.team || staff.department || '') || '-') : (staff.affiliation || '-');
     document.getElementById('staffDetailPosition').innerText = staff.position || '-';
     document.getElementById('staffDetailKoda').innerText = staff.koda || '-'; 
     document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
