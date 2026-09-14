@@ -83,52 +83,6 @@
     max-width: 55%;
     object-fit: contain;
   }
-
-  /* 새글 알림 종 */
-  .news-alert-bell{
-    position:absolute;
-    left:14px;
-    top:50%;
-    transform:translateY(-50%);
-    width:40px;
-    height:40px;
-    min-height:40px;
-    padding:0;
-    border:0;
-    background:transparent;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    z-index:20;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .news-alert-bell-icon{
-    display:block;
-    font-size:24px;
-    line-height:1;
-    filter:grayscale(1);
-    opacity:.78;
-    transform:translateY(1px);
-  }
-  .news-alert-bell:active .news-alert-bell-icon{
-    transform:translateY(2px) scale(.94);
-    opacity:.62;
-  }
-  .news-alert-dot{
-    position:absolute;
-    top:7px;
-    right:5px;
-    width:9px;
-    height:9px;
-    min-width:9px;
-    border-radius:50%;
-    background:#e53e3e;
-    border:2px solid #fff;
-    box-sizing:border-box;
-    display:none;
-  }
-  .news-alert-dot.show{display:block;}
   
   .refresh-btn {
     position: absolute;
@@ -155,6 +109,48 @@
     display: flex;
     align-items: center;
     gap: 6px;
+  }
+
+  /* 새글 알림 벨 아이콘 (일정 카드의 별/공유 아이콘과 동일한 형태) */
+  .header-left {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  .notify-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #cbd5e0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .notify-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+  .notify-btn:active {
+    color: #718096;
+  }
+  .notify-dot {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--today-color);
+    border: 1.5px solid #fff;
   }
 
   .install-btn {
@@ -1532,21 +1528,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .app-container > .header img{
     grid-column:2; height:43px; max-width:150px; width:auto; object-fit:contain;
   }
-  
-  .app-container > .header .news-alert-bell{
-    left:10px!important;
-    width:38px!important;
-    height:38px!important;
-    min-height:38px!important;
-  }
-  .app-container > .header .news-alert-bell-icon{
-    font-size:23px!important;
-  }
-  .app-container > .header .news-alert-dot{
-    top:6px!important;
-    right:4px!important;
-  }
-.app-container > .header .header-right{
+  .app-container > .header .header-right{
     position:static; grid-column:3; justify-self:end; transform:none;
     display:flex; align-items:center; gap:5px;
   }
@@ -2347,11 +2329,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <button type="button" class="news-alert-bell" id="newsAlertBell"
-            onclick="openNewsScreen()" aria-label="새글 알림 및 협회공지">
-      <span class="news-alert-bell-icon" aria-hidden="true">🔔</span>
-      <span class="news-alert-dot" id="newsAlertDot" aria-hidden="true"></span>
-    </button>
+    <div class="header-left">
+      <button type="button" id="newsNotifyBtn" class="notify-btn" onclick="openNewsScreen()" aria-label="협회공지 새글 알림" title="협회공지 새글 알림">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notify-dot" id="newsNotifyDot"></span>
+      </button>
+    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -2412,6 +2398,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-icon"><svg viewBox="0 0 64 44" aria-hidden="true"><rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/><path d="M27 12.5 46 22 27 31.5z" fill="#fff"/></svg></span><span class="quick-label">KODA-TV</span>
     </a>
   </div>
+<!-- 기존 퀵메뉴 컨테이너 끝나는 부분 아래에 추가 -->
   <div class="sub-menu-container">
     <button class="quick-btn" style="opacity:0.5; cursor:default;">
       <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
@@ -2813,7 +2800,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
     loadData();
-    loadNewsNotification();
   }
 
   window.logoutUser = function() {
@@ -3109,6 +3095,36 @@ button,.nav-btn,.action-btn{min-height:44px;}
     } catch (error) {
       document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
+    // 첫 화면 진입 시 협회공지 새글 여부를 미리 확인해 벨 아이콘에 표시
+    refreshNewsNotificationState();
+  }
+
+  // ===== ✨ 협회공지 새글 알림 벨 로직 ✨ =====
+  function newsFingerprint(item) {
+    return item ? `${item.date}|${item.title}` : '';
+  }
+
+  function updateNewsNotificationDot() {
+    const dot = document.getElementById('newsNotifyDot');
+    if (!dot) return;
+    const latestKey = newsFingerprint(newsData[0]);
+    const seenKey = localStorage.getItem('koda_news_seen') || '';
+    dot.style.display = (latestKey && latestKey !== seenKey) ? 'block' : 'none';
+  }
+
+  window.markNewsAsSeen = function() {
+    if (newsData[0]) localStorage.setItem('koda_news_seen', newsFingerprint(newsData[0]));
+    updateNewsNotificationDot();
+  };
+
+  async function refreshNewsNotificationState() {
+    if (newsData.length === 0) {
+      try {
+        const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+        newsData = parseNewsCSV(await response.text());
+      } catch (error) { return; }
+    }
+    updateNewsNotificationDot();
   }
 
   // ===== ✨ 모던 일정 배너 캐러셀 =====
@@ -3610,48 +3626,6 @@ function createEventCard(event) {
     return dataArr;
   }
 
-
-  // ===== 🔔 협회공지 새글 알림 =====
-  const NEWS_LAST_READ_KEY = 'koda_news_last_read_key_v1';
-
-  function getNewsItemKey(item) {
-    return [
-      normalizeNewsCategory(item?.category || ''),
-      String(item?.date || '').trim(),
-      String(item?.title || '').trim()
-    ].join('|');
-  }
-
-  function setNewsAlert(hasNew) {
-    const dot = document.getElementById('newsAlertDot');
-    if (dot) dot.classList.toggle('show', !!hasNew);
-  }
-
-  function markNewsAsRead() {
-    if (!Array.isArray(newsData) || newsData.length === 0) return;
-    const newestKey = getNewsItemKey(newsData[0]);
-    if (newestKey) {
-      localStorage.setItem(NEWS_LAST_READ_KEY, newestKey);
-      setNewsAlert(false);
-    }
-  }
-
-  async function loadNewsNotification() {
-    try {
-      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      const latestNews = parseNewsCSV(await response.text());
-      if (!latestNews.length) {
-        setNewsAlert(false);
-        return;
-      }
-      const newestKey = getNewsItemKey(latestNews[0]);
-      const lastReadKey = localStorage.getItem(NEWS_LAST_READ_KEY) || '';
-      setNewsAlert(!!newestKey && newestKey !== lastReadKey);
-    } catch (error) {
-      // 새글 알림 오류가 앱 전체 작동을 막지 않도록 조용히 무시
-    }
-  }
-
   async function loadNewsData() {
     const list = document.getElementById('newsList');
     list.innerHTML = `<div class="loading-msg">협회 소식을 불러오는 중입니다...⏳</div>`;
@@ -3659,6 +3633,7 @@ function createEventCard(event) {
       const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       newsData = parseNewsCSV(await response.text());
       filterNews('전체');
+      updateNewsNotificationDot();
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
@@ -3725,12 +3700,8 @@ function createEventCard(event) {
     newsScreenEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsOpen: true }, "", "");
-    if (newsData.length === 0) {
-      loadNewsData().then(() => markNewsAsRead());
-    } else {
-      filterNews('전체');
-      markNewsAsRead();
-    }
+    if (newsData.length === 0) { loadNewsData().then(markNewsAsSeen); }
+    else { filterNews('전체'); markNewsAsSeen(); }
   };
 
   window.closeNewsScreen = function() { history.back(); };
@@ -3748,7 +3719,7 @@ function createEventCard(event) {
     link.removeAttribute('href');
     link.style.pointerEvents = 'none';
 
-    let thumbUrl = String(item.thumbnailUrl || '').trim();
+    const thumbUrl = String(item.thumbnailUrl || '').trim();
     const linkUrl = String(item.linkUrl || '').trim();
 
     if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
@@ -3781,6 +3752,25 @@ function createEventCard(event) {
     area.style.display = 'block';
   }
 
+  // 협회공지 상세 본문의 HTML 이스케이프 + URL 자동 링크 변환
+  // (이 함수가 누락되어 있어 상세보기 진입 시 오류가 발생, 상세화면으로 넘어가지 않던 문제를 해결)
+  function escapeNewsHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function linkifyNewsContent(content) {
+    const escaped = escapeNewsHtml(content);
+    const urlRegex = /(https?:\/\/[^\s<]+)/g;
+    return escaped.replace(urlRegex, (url) => {
+      const cleanUrl = url.replace(/[.,)]+$/, '');
+      const trail = url.slice(cleanUrl.length);
+      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>${trail}`;
+    });
+  }
+
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
     const catEl = document.getElementById('newsDetailCategory');
@@ -3801,6 +3791,8 @@ function createEventCard(event) {
   initAuth();
 
 </script>
+
+
 
 </body>
 </html>
