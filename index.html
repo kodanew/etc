@@ -1298,7 +1298,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .schedule-container{padding-top:0!important;gap:5px!important;}
 .schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
 
-/* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
+/* 협회공지: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
   /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
   #staffScreen{
     display:none; position:fixed; inset:0; z-index:1500;
@@ -2500,14 +2500,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="newsScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">회원소식</div>
+    <div class="fullscreen-title">협회공지</div>
   </div>
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
+    <button class="month-tab" data-cat="기타" onclick="filterNews('협회소식')">협회소식</button>
     <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
     <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
     <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
-    <button class="month-tab" data-cat="기타" onclick="filterNews('기타')">기타</button>
   </div>
   <div class="fullscreen-content" style="padding-top: 15px;">
     <div class="day-event-list" id="newsList"></div>
@@ -3542,7 +3542,7 @@ function createEventCard(event) {
 
   async function loadNewsData() {
     const list = document.getElementById('newsList');
-    list.innerHTML = `<div class="loading-msg">회원 소식을 불러오는 중입니다...⏳</div>`;
+    list.innerHTML = `<div class="loading-msg">협회 소식을 불러오는 중입니다...⏳</div>`;
     try {
       const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       newsData = parseNewsCSV(await response.text());
