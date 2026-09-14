@@ -2357,14 +2357,93 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 </style>
 <style id="koda-staff-vertical-org-and-profile-final">
-#staffScreen #staffOrgView{display:none;width:100%;overflow:visible!important;padding:0 0 18px!important;}#staffScreen #staffOrgView::before{display:none!important;}
-#staffScreen .staff-org-tree{width:100%;box-sizing:border-box;padding:4px 2px 12px;}#staffScreen .staff-org-node{appearance:none;-webkit-appearance:none;width:100%;border:1px solid #d5e3f2;background:#fff;border-radius:16px;box-sizing:border-box;text-align:center;color:#173f70;box-shadow:0 5px 15px rgba(28,70,120,.055);padding:13px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;}
-#staffScreen .staff-org-node.root{max-width:240px;margin:0 auto;padding:15px 12px;background:linear-gradient(135deg,#1769d2,#3182ce);border-color:#1769d2;color:#fff;box-shadow:0 8px 20px rgba(23,105,210,.18);}#staffScreen .staff-org-node.section-node{max-width:235px;margin:0 auto;background:#edf5ff;border-color:#b8d0e8;color:#1769d2;padding:12px 10px;}#staffScreen .staff-org-node.team{min-height:66px;padding:10px 34px 10px 12px;text-align:left;align-items:flex-start;position:relative;background:#fff;}#staffScreen .staff-org-node.team::after{content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:1.35rem;color:#1769d2;}
-#staffScreen .staff-org-node-title{font-size:.88rem;font-weight:850;line-height:1.25;letter-spacing:-.02em;}#staffScreen .staff-org-node.root .staff-org-node-title{font-size:1.05rem;}#staffScreen .staff-org-node.section-node .staff-org-node-title{font-size:.9rem;}#staffScreen .staff-org-node-sub{margin-top:4px;font-size:.68rem;font-weight:700;color:#7b8fa8;line-height:1.25;}#staffScreen .staff-org-node.root .staff-org-node-sub{color:#e6f0ff;}#staffScreen .staff-org-node.section-node .staff-org-node-sub{color:#6d86a2;}
-#staffScreen .staff-org-main-branches{position:relative;margin-top:24px;padding-top:1px;}#staffScreen .staff-org-main-branches::before{content:'';position:absolute;left:50%;top:-24px;bottom:34px;width:2px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;z-index:0;}#staffScreen .staff-org-branch{position:relative;padding:0 0 20px;z-index:1;}#staffScreen .staff-org-branch::before{content:'';position:absolute;left:50%;top:-24px;width:2px;height:24px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;}#staffScreen .staff-org-branch.planning::before{top:-25px;height:25px;}#staffScreen .staff-org-branch.policy::before{top:-24px;height:24px;}#staffScreen .staff-org-team-list{position:relative;margin:12px 4px 0 18px;padding-left:16px;display:flex;flex-direction:column;gap:8px;}#staffScreen .staff-org-team-list::before{content:'';position:absolute;left:0;top:13px;bottom:13px;width:2px;background:#d0deed;border-radius:2px;}#staffScreen .staff-org-team-list .staff-org-node.team::before{content:'';position:absolute;left:-16px;top:50%;width:16px;height:2px;background:#d0deed;}#staffScreen .staff-org-guide{margin:5px 2px 0;padding:9px 10px;border-radius:10px;background:#f8fbff;color:#8b9db2;text-align:center;font-size:.64rem;font-weight:650;}#staffScreen .staff-org-node.team:active{transform:scale(.985);background:#f7fbff;}
-#staffScreen #staffList{display:flex!important;flex-direction:column!important;gap:0!important;width:100%;}#staffScreen .staff-alpha-heading{padding:9px 8px 5px;color:#6f829b;font-size:.7rem;font-weight:850;line-height:1;background:#f4f8fc;border-radius:8px;margin:5px 0 4px;}#staffScreen .staff-person-row{width:100%;min-height:68px;display:flex;align-items:center;gap:11px;padding:10px 7px;border:0;border-bottom:1px solid #edf2f7;background:#fff;text-align:left;font-family:inherit;cursor:pointer;box-sizing:border-box;}#staffScreen .staff-person-row:active{background:#f7fbff;}#staffScreen .staff-person-avatar{width:42px;height:42px;flex:0 0 42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eaf3ff;color:#4b8fdf;}#staffScreen .staff-person-avatar svg{width:29px;height:29px;display:block;}#staffScreen .staff-person-avatar.executive{background:#edf7ff;color:#2e82d6;}#staffScreen .staff-person-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px;}#staffScreen .staff-person-info strong{font-size:.9rem;color:#173f70;font-weight:850;line-height:1.25;}#staffScreen .staff-person-info span{font-size:.68rem;color:#7187a1;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}#staffScreen .staff-person-info small{font-size:.62rem;color:#9aabbd;font-weight:600;line-height:1.2;}#staffScreen .staff-person-chevron{font-size:1.35rem;color:#7e9abb;font-weight:400;padding:0 3px;}
-#staffDetailModal .staff-profile-head{display:flex;align-items:center;gap:12px;padding:4px 2px 16px;margin-bottom:3px;border-bottom:1px solid #edf2f7;}#staffDetailModal .staff-profile-avatar{width:58px;height:58px;flex:0 0 58px;border-radius:50%;background:#eaf3ff;color:#4b8fdf;display:flex;align-items:center;justify-content:center;}#staffDetailModal .staff-profile-avatar svg{width:38px;height:38px;}#staffDetailModal .staff-profile-name{font-size:1.18rem;font-weight:900;color:#173f70;line-height:1.2;}#staffDetailModal .staff-profile-role{margin-top:5px;font-size:.72rem;font-weight:700;color:#7890aa;line-height:1.3;}#staffDetailModal .modal-detail-row{border-bottom:1px solid #eef2f6;padding:9px 0;}#staffDetailModal .action-btn-group{margin-top:14px;gap:7px;}#staffDetailModal .action-btn{border-radius:11px!important;min-height:42px!important;}
-@media(max-width:360px){#staffScreen .staff-org-node.team{min-height:62px;padding:9px 31px 9px 10px;}#staffScreen .staff-person-row{min-height:64px;gap:9px;}#staffScreen .staff-person-avatar{width:39px;height:39px;flex-basis:39px;}#staffScreen .staff-person-info strong{font-size:.84rem;}}
+/* ===== KODA 임직원현황 최종 모바일 스타일 ===== */
+#staffScreen #staffOrgView{display:none;width:100%;overflow:visible!important;padding:0 0 18px!important;}
+#staffScreen .staff-org-tree{width:100%;box-sizing:border-box;padding:4px 2px 12px;}
+#staffScreen .staff-org-node{appearance:none;-webkit-appearance:none;width:100%;border:1px solid #d5e3f2;background:#fff;border-radius:14px;box-sizing:border-box;text-align:center;color:#173f70;box-shadow:0 4px 12px rgba(28,70,120,.055);padding:10px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;}
+#staffScreen .staff-org-node.root{max-width:210px;margin:0 auto;padding:12px 10px;background:linear-gradient(135deg,#1769d2,#3182ce);border-color:#1769d2;color:#fff;box-shadow:0 7px 17px rgba(23,105,210,.16);}
+#staffScreen .staff-org-node.section-node{max-width:205px;margin:0 auto;background:#edf5ff;border-color:#b8d0e8;color:#1769d2;padding:10px 9px;}
+#staffScreen .staff-org-node.team{min-height:74px;padding:9px 7px;text-align:center;align-items:center;position:relative;background:#fff;border-radius:12px;box-shadow:0 3px 9px rgba(28,70,120,.045);}
+#staffScreen .staff-org-node.team::after{content:'›';position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1rem;color:#1769d2;}
+#staffScreen .staff-org-node.team::before{content:'📁';font-size:1.05rem;line-height:1;margin-bottom:4px;filter:saturate(.8);}
+#staffScreen .staff-org-node-title{font-size:.79rem;font-weight:850;line-height:1.22;letter-spacing:-.035em;word-break:keep-all;}
+#staffScreen .staff-org-node.root .staff-org-node-title{font-size:.98rem;}
+#staffScreen .staff-org-node.section-node .staff-org-node-title{font-size:.84rem;}
+#staffScreen .staff-org-node-sub{margin-top:3px;font-size:.6rem;font-weight:700;color:#7b8fa8;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+#staffScreen .staff-org-node.root .staff-org-node-sub{color:#e6f0ff;}
+#staffScreen .staff-org-node.section-node .staff-org-node-sub{color:#6d86a2;}
+#staffScreen .staff-org-main-branches{position:relative;margin-top:19px;padding-top:1px;}
+#staffScreen .staff-org-main-branches::before{content:'';position:absolute;left:50%;top:-19px;bottom:38px;width:2px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;z-index:0;}
+#staffScreen .staff-org-branch{position:relative;padding:0 0 17px;z-index:1;}
+#staffScreen .staff-org-branch::before{content:'';position:absolute;left:50%;top:-19px;width:2px;height:19px;background:#c8d9eb;transform:translateX(-50%);border-radius:2px;}
+#staffScreen .staff-org-team-list{position:relative;margin:11px 2px 0;padding:10px 2px 2px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+#staffScreen .staff-org-team-list::before{content:'';position:absolute;left:25%;right:25%;top:0;height:2px;background:#d0deed;border-radius:2px;}
+#staffScreen .staff-org-team-list .staff-org-node.team::before{content:'📁';position:static;width:auto;height:auto;background:none;transform:none;}
+#staffScreen .staff-org-team-list .staff-org-node.team:nth-child(odd)::after{right:5px;}
+#staffScreen .staff-org-guide{margin:3px 2px 0;padding:8px 10px;border-radius:10px;background:#f8fbff;color:#8b9db2;text-align:center;font-size:.61rem;font-weight:650;}
+#staffScreen .staff-org-node.team:active{transform:scale(.985);background:#f7fbff;}
+
+/* 이름순/직책순 직원 리스트 */
+#staffScreen #staffList{display:flex!important;flex-direction:column!important;gap:0!important;width:100%;}
+#staffScreen .staff-alpha-heading{padding:8px 8px 5px;color:#6f829b;font-size:.69rem;font-weight:850;line-height:1;background:#f4f8fc;border-radius:8px;margin:5px 0 3px;}
+#staffScreen .staff-group-heading{display:flex;align-items:center;gap:7px;margin:7px 0 3px;padding:9px 10px 7px;background:#f4f8fc;border-radius:9px;color:#1769d2;font-size:.72rem;font-weight:900;}
+#staffScreen .staff-group-heading::before{content:'';width:3px;height:14px;border-radius:3px;background:#1769d2;}
+#staffScreen .staff-person-row{width:100%;min-height:67px;display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.25fr) auto;align-items:center;gap:8px;padding:9px 6px;border:0;border-bottom:1px solid #edf2f7;background:#fff;text-align:left;font-family:inherit;cursor:pointer;box-sizing:border-box;}
+#staffScreen .staff-person-row:active{background:#f7fbff;}
+#staffScreen .staff-person-avatar{width:38px;height:38px;flex:0 0 38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#eaf3ff;color:#4b8fdf;}
+#staffScreen .staff-person-avatar svg{width:25px;height:25px;display:block;}
+#staffScreen .staff-person-avatar.executive{background:#edf7ff;color:#2e82d6;}
+#staffScreen .staff-person-info{min-width:0;display:flex;flex-direction:column;gap:2px;}
+#staffScreen .staff-person-info strong{font-size:.87rem;color:#173f70;font-weight:850;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .staff-person-info span{font-size:.66rem;color:#7187a1;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .staff-person-info small{font-size:.61rem;color:#8fa2b6;font-weight:650;line-height:1.2;margin-top:2px;}
+#staffScreen .staff-person-chevron{font-size:1.2rem;color:#7e9abb;font-weight:400;padding:0 2px;}
+
+/* 7대 임원/사무국: G열 KODA 뱃지 + 이름 + 오른쪽 소속/직위 + 이름 아래 전화번호 */
+#staffScreen .staff-special-row{grid-template-columns:auto minmax(0,1fr) minmax(0,1.35fr) auto;min-height:70px;}
+#staffScreen .staff-koda-badge{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:23px;padding:0 7px;border-radius:999px;background:#eaf3ff;color:#1769d2;border:1px solid #cfe2f7;font-size:.59rem;font-weight:900;white-space:nowrap;box-sizing:border-box;}
+#staffScreen .staff-special-name{min-width:0;display:flex;flex-direction:column;gap:2px;}
+#staffScreen .staff-special-name strong{font-size:.9rem;color:#173f70;font-weight:900;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .staff-special-phone{font-size:.61rem;color:#8fa2b6;font-weight:650;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#staffScreen .staff-special-role{min-width:0;text-align:left;color:#5e7896;font-size:.67rem;font-weight:750;line-height:1.3;white-space:normal;word-break:keep-all;}
+#staffScreen .staff-special-role .affiliation{color:#516e8f;}
+#staffScreen .staff-special-role .position{color:#7d91a8;}
+#staffScreen .staff-special-role .separator{color:#b3c1cf;margin:0 3px;}
+
+/* 사무국 부서별: 2행 3열, 작은 파일탐색기형 카드 */
+#staffScreen #staffList.dept-mode{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;align-items:stretch;}
+#staffScreen .staff-team-button{min-height:92px;width:100%;padding:9px 5px;border:1px solid #d6e3f0;border-radius:13px;background:linear-gradient(180deg,#fff,#f7fbff);box-shadow:0 3px 10px rgba(28,70,120,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#173f70;cursor:pointer;position:relative;}
+#staffScreen .staff-team-button::before{content:'📁';font-size:1.15rem;line-height:1;}
+#staffScreen .staff-team-button:active{transform:scale(.985);background:#f3f8fe;}
+#staffScreen .staff-team-button-name{font-size:.67rem;font-weight:900;line-height:1.2;text-align:center;word-break:keep-all;}
+#staffScreen .staff-team-button-leader{font-size:.54rem;font-weight:650;color:#7187a1;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+#staffScreen .staff-team-modal-content{max-width:380px;width:calc(100% - 30px);}
+#staffScreen .staff-team-modal-list{display:flex;flex-direction:column;gap:7px;max-height:55vh;overflow:auto;}
+#staffScreen .staff-team-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border:1px solid #e1e9f2;border-radius:12px;background:#fff;text-align:left;}
+#staffScreen .staff-team-row-name{font-size:.86rem;font-weight:850;color:#173f70;}
+#staffScreen .staff-team-row-position{font-size:.72rem;font-weight:700;color:#7187a1;white-space:nowrap;}
+#staffScreen .staff-team-empty{padding:25px 10px;text-align:center;color:#8a9bb0;font-size:.8rem;}
+#staffScreen .staff-office-dept{margin-top:3px;color:#1769d2;font-size:.61rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media(max-width:390px){
+  #staffScreen .staff-person-row{grid-template-columns:auto minmax(0,1fr) minmax(0,1.15fr) auto;gap:6px;padding-left:4px;padding-right:4px;}
+  #staffScreen .staff-koda-badge{min-width:43px;font-size:.56rem;padding:0 5px;}
+  #staffScreen .staff-special-name strong{font-size:.84rem;}
+  #staffScreen .staff-special-role{font-size:.62rem;}
+  #staffScreen #staffList.dept-mode{gap:7px!important;}
+  #staffScreen .staff-team-button{min-height:86px;padding:7px 3px;}
+  #staffScreen .staff-team-button-name{font-size:.61rem;}
+  #staffScreen .staff-team-button-leader{font-size:.5rem;}
+}
+@media(max-width:360px){
+  #staffScreen .staff-org-node.team{min-height:68px;}
+  #staffScreen .staff-org-node-title{font-size:.73rem;}
+  #staffScreen .staff-org-node-sub{font-size:.55rem;}
+  #staffScreen .staff-person-row{min-height:64px;}
+  #staffScreen .staff-person-avatar{width:35px;height:35px;flex-basis:35px;border-radius:10px;}
+  #staffScreen .staff-special-row{min-height:66px;}
+  #staffScreen .staff-special-role{font-size:.59rem;}
+  #staffScreen .staff-special-name strong{font-size:.81rem;}
+}
 </style>
 </head>
 <body>
@@ -3110,21 +3189,103 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   function renderStaffList(categoryFilter){
-    const list=document.getElementById('staffList');if(!list)return;list.style.display='flex';list.classList.remove('dept-mode');list.innerHTML='';
-    let data=getFilteredStaffData(categoryFilter);const countEl=document.getElementById('staffResultCount');if(countEl)countEl.textContent=`${data.length}명`;
-    if(!data.length){list.innerHTML=`<div class="no-data">${(document.getElementById('staffSearchInput')?.value||'').trim()?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
-    if(currentStaffView==='position')data.sort((a,b)=>getPositionRank(a.position)-getPositionRank(b.position)||(a.name||'').localeCompare(b.name||'','ko'));else data.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+    const list=document.getElementById('staffList');
+    if(!list)return;
+    list.style.display='flex';
+    list.classList.remove('dept-mode');
+    list.innerHTML='';
+    let data=getFilteredStaffData(categoryFilter);
+    const countEl=document.getElementById('staffResultCount');
+    if(countEl)countEl.textContent=`${data.length}명`;
+    if(!data.length){
+      list.innerHTML=`<div class="no-data">${(document.getElementById('staffSearchInput')?.value||'').trim()?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;
+      return;
+    }
+
+    const isOffice=categoryFilter==='사무국';
+    const isExecutive=categoryFilter==='7대 임원';
+
+    // 7대 임원은 G열(KODA)의 직책별로 묶고, 각 그룹 안에서는 가나다순
+    if(isExecutive){
+      const executiveOrder=['협회장','수석부회장','부회장','이사'];
+      const normalizeKoda=v=>String(v||'').replace(/\s+/g,'').trim();
+      data.sort((a,b)=>{
+        const ai=executiveOrder.indexOf(normalizeKoda(a.koda));
+        const bi=executiveOrder.indexOf(normalizeKoda(b.koda));
+        return (ai<0?999:ai)-(bi<0?999:bi) || (a.name||'').localeCompare(b.name||'','ko');
+      });
+      let lastGroup='';
+      data.forEach(item=>{
+        const group=normalizeKoda(item.koda)||'기타';
+        if(group!==lastGroup){
+          lastGroup=group;
+          const h=document.createElement('div');h.className='staff-group-heading';h.textContent=group;list.appendChild(h);
+        }
+        const index=staffData.indexOf(item);
+        const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row staff-special-row';
+        const aff=cleanOfficeText(item.affiliation||'')||'-';
+        const pos=cleanOfficeText(item.position||'');
+        btn.innerHTML=`<span class="staff-koda-badge">${cleanOfficeText(item.koda)||'-'}</span><span class="staff-special-name"><strong>${cleanOfficeText(item.name)||'-'}</strong>${item.phone?`<small class="staff-special-phone">${item.phone}</small>`:''}</span><span class="staff-special-role"><span class="affiliation">${aff}</span>${pos?`<span class="separator">·</span><span class="position">${pos}</span>`:''}</span><span class="staff-person-chevron">›</span>`;
+        btn.onclick=()=>openStaffDetailModal(index);
+        list.appendChild(btn);
+      });
+      return;
+    }
+
+    // 사무국 직책순은 지정된 직책 그룹으로 묶고, 그룹 안에서는 가나다순
+    if(isOffice && currentStaffView==='position'){
+      const positionOrder=['임원','실장','팀장','대리','연구원'];
+      const getOfficePositionGroup=p=>{
+        const v=String(p||'').replace(/\s+/g,'');
+        if(v.includes('전무')) return '임원';
+        if(v.includes('실장')) return '실장';
+        if(v.includes('팀장')||v.includes('파트장')) return '팀장';
+        if(v.includes('대리')) return '대리';
+        if(v.includes('연구원')) return '연구원';
+        return '기타';
+      };
+      data.sort((a,b)=>{
+        const ai=positionOrder.indexOf(getOfficePositionGroup(a.position));
+        const bi=positionOrder.indexOf(getOfficePositionGroup(b.position));
+        return (ai<0?999:ai)-(bi<0?999:bi) || (a.name||'').localeCompare(b.name||'','ko');
+      });
+      let lastGroup='';
+      data.forEach(item=>{
+        const group=getOfficePositionGroup(item.position);
+        if(group!==lastGroup){lastGroup=group;const h=document.createElement('div');h.className='staff-group-heading';h.textContent=group;list.appendChild(h);}
+        appendOfficeRow(item,list);
+      });
+      return;
+    }
+
+    // 사무국 이름순: 가나다 자음 기준, 그 외 일반 목록도 이름순
+    data.sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
     let lastInitial='';
     data.forEach(item=>{
-      const index=staffData.indexOf(item),initial=getKoreanInitial(item.name);
+      const initial=getKoreanInitial(item.name);
       if(initial!==lastInitial){lastInitial=initial;const h=document.createElement('div');h.className='staff-alpha-heading';h.textContent=initial;list.appendChild(h);}
-      const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row';
-      const office=categoryFilter==='사무국';const aff=office?normalizeDepartment(item.team||item.department||''):cleanOfficeText(item.affiliation||'');
-      const role=office?cleanOfficeText(item.position||''):[cleanOfficeText(item.affiliation||''),cleanOfficeText(item.position||'')].filter(Boolean).join(' · ');
-      const meta=office?aff:role;
-      btn.innerHTML=`<span class="staff-person-avatar${item.category&&item.category.includes('임원')?' executive':''}" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="17" r="8" fill="currentColor"/><path d="M12 43c1.5-8.8 6.3-13.5 14-13.5S38.5 34.2 40 43" fill="currentColor"/></svg></span><span class="staff-person-info"><strong>${cleanOfficeText(item.name)||'-'}</strong><span>${meta||'-'}</span>${item.phone?`<small>${item.phone}</small>`:''}</span><span class="staff-person-chevron">›</span>`;
-      btn.onclick=()=>openStaffDetailModal(index);list.appendChild(btn);
+      if(isOffice) appendOfficeRow(item,list);
+      else appendStandardStaffRow(item,list);
     });
+  }
+
+  function appendOfficeRow(item,list){
+    const index=staffData.indexOf(item);
+    const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row staff-special-row';
+    const koda=cleanOfficeText(item.koda||'')||'-';
+    const pos=cleanOfficeText(item.position||'')||'-';
+    btn.innerHTML=`<span class="staff-koda-badge">${koda}</span><span class="staff-special-name"><strong>${cleanOfficeText(item.name)||'-'}</strong>${item.phone?`<small class="staff-special-phone">${item.phone}</small>`:''}</span><span class="staff-special-role"><span class="position">${pos}</span></span><span class="staff-person-chevron">›</span>`;
+    btn.onclick=()=>openStaffDetailModal(index);
+    list.appendChild(btn);
+  }
+
+  function appendStandardStaffRow(item,list){
+    const index=staffData.indexOf(item);
+    const btn=document.createElement('button');btn.type='button';btn.className='staff-person-row';
+    const role=[cleanOfficeText(item.affiliation||''),cleanOfficeText(item.position||'')].filter(Boolean).join(' · ');
+    btn.innerHTML=`<span class="staff-person-avatar${item.category&&item.category.includes('임원')?' executive':''}" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="17" r="8" fill="currentColor"/><path d="M12 43c1.5-8.8 6.3-13.5 14-13.5S38.5 34.2 40 43" fill="currentColor"/></svg></span><span class="staff-person-info"><strong>${cleanOfficeText(item.name)||'-'}</strong><span>${role||'-'}</span>${item.phone?`<small>${item.phone}</small>`:''}</span><span></span><span class="staff-person-chevron">›</span>`;
+    btn.onclick=()=>openStaffDetailModal(index);
+    list.appendChild(btn);
   }
 
   function renderDepartmentButtons(){
@@ -3133,7 +3294,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(org)org.style.display='none';
     if(!list)return;
     list.style.display='grid';
-    list.classList.remove('dept-mode');
+    list.classList.add('dept-mode');
     list.innerHTML='';
     const groups=getTeamGroups();
     STAFF_TEAM_ORDER.forEach(d=>{
