@@ -1634,7 +1634,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList.member-company-list .member-group-title .staff-badge{margin:0 !important;}
   #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:1fr;gap:8px;}
 
-</style>
+
+  /* 임직원현황 탭 인원수: 본문보다 한 포인트 작게 */
+  #staffTabs .month-tab .tab-count{font-size:.78em;font-weight:700;opacity:.9;margin-left:2px;}
+  /* 사무국도 7대 임원처럼 이름 왼쪽에 KODA 뱃지 복원 */
+  #staffList.executive-list .office-badge-group .staff-main-line{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;}
+  #staffList.executive-list .office-badge-group .staff-main-line > .staff-badge{display:inline-block!important;}
+''</style>
 
 <style id="final-staff-header-fixes">
 /* 최종 UI 보정 */
@@ -2564,11 +2570,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
-    <button class="month-tab active" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
-    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
-    <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
-    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
-    <button class="month-tab" data-cat="등록사" onclick="filterStaff('등록사')">등록사</button>
+    <button class="month-tab active" data-cat="사무국" onclick="filterStaff('사무국')">사무국 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="등록사" onclick="filterStaff('등록사')">등록사 <em class="tab-count">(0)</em></button>
   </div>
 
   <div class="fullscreen-content">
@@ -3076,14 +3082,31 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return String(text || '').replace(/협회/g, '').replace(/\s{2,}/g, ' ').trim();
   }
 
+  function updateStaffTabCounts() {
+    const counts = {
+      '사무국': staffData.filter(item => normalizeStaffText(item.category) === '사무국').length,
+      '7대 임원': staffData.filter(item => normalizeStaffText(item.category) === '7대 임원').length,
+      '회원사': memberCompanyData.length,
+      'ARP': staffData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
+      '등록사': 0
+    };
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      const cat = btn.dataset.cat;
+      const em = btn.querySelector('.tab-count');
+      if (em) em.textContent = `(${counts[cat] ?? 0})`;
+    });
+  }
+
   function renderMemberCompanyList() {
+    updateStaffTabCounts();
     const list = document.getElementById('staffList');
     if (!list) return;
     list.classList.add('member-company-list');
     list.classList.remove('executive-list');
     if (!list.dataset.memberClickBound) {
       list.dataset.memberClickBound = '1';
-      list.addEventListener('click', (e) => {
+      list.addEventListener('pointerup', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
         const card = e.target.closest('.member-company-card');
         if (!card) return;
         const index = Number(card.dataset.memberIndex);
@@ -3199,6 +3222,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       memberCompanyData = data;
       memberCompanyLoaded = true;
       saveMemberCompanyCache(data);
+      updateStaffTabCounts();
       if (currentStaffCategory === '회원사') renderMemberCompanyList();
     } catch (error) {
       // 캐시가 있다면 오류가 나도 기존 목록은 유지합니다.
@@ -3226,6 +3250,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
 
     if (categoryFilter === '등록사') {
+      updateStaffTabCounts();
       const countEl = document.getElementById('staffResultCount');
       if (countEl) countEl.textContent = '0명';
       list.innerHTML = `<div class="no-data">등록사 정보를 준비 중입니다.</div>`;
@@ -3285,6 +3310,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           const orgRole = [affiliation, position].filter(Boolean).join(' ');
           btn.innerHTML = `
             <div class="staff-main-line">
+              <span class="staff-badge">${item.koda || ''}</span>
               <div class="staff-info-block">
                 <div class="staff-name-role">
                   <strong>${item.name || '-'}</strong>
@@ -3402,6 +3428,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const rowsEl = document.getElementById('memberCompanyDetailRows');
     if (!modal || !title || !rowsEl) return;
 
+    // 모달을 먼저 즉시 표시해 클릭 후 체감 반응을 빠르게 합니다.
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if (rowsEl) rowsEl.innerHTML = '<div class="loading-msg" style="padding:8px 0">상세정보를 표시하는 중...</div>';
+
     // 시트7 B~L(11개 열)을 원본 순서 그대로 상세보기로 표시합니다.
     const fallbackLabels = ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열','가입일자','비고'];
     const labels = Array.isArray(item.headers) ? item.headers : [];
@@ -3415,8 +3446,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const companyText = document.createTextNode(item.company || '-');
     title.appendChild(companyText);
 
-    rowsEl.innerHTML = '';
-    for (let i = 0; i < 11; i++) {
+    requestAnimationFrame(() => {
+      rowsEl.innerHTML = '';
+      for (let i = 0; i < 11; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
       const label = document.createElement('span');
@@ -3427,12 +3459,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       value.textContent = (values[i] ?? '').toString().trim() || '-';
       row.appendChild(label);
       row.appendChild(value);
-      rowsEl.appendChild(row);
-    }
-
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    history.pushState({ memberCompanyDetailOpen:true }, '', '');
+        rowsEl.appendChild(row);
+      }
+      history.pushState({ memberCompanyDetailOpen:true }, '', '');
+    });
   };
 
   window.closeMemberCompanyDetailModal = function(goBack=true) {
