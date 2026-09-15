@@ -2326,6 +2326,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList.member-company-list .member-company-head .staff-badge{
     flex:0 0 auto; margin:0 !important;
   }
+  #staffList.member-company-list .member-company-slash{
+    flex:0 0 auto;color:#000;font-weight:600;
+  }
+  #staffList.member-company-list .member-company-representative-inline{
+    flex:0 1 auto;min-width:0;color:#000;font-size:.76rem;font-weight:700;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
   #staffList.member-company-list .member-company-head strong{
     min-width:0;flex:0 1 auto;color:#1769d2;font-size:.9rem;font-weight:850;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
@@ -2385,6 +2392,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList.member-company-list .member-company-head strong{font-size:.82rem;}
     #staffList.member-company-list .member-company-join{font-size:.59rem;}
     #staffList.member-company-list .member-company-representative{font-size:.68rem;}
+    #staffList.member-company-list .member-company-representative-inline{font-size:.64rem;}
     #staffList.member-company-list .member-company-address-row{font-size:.59rem;}
     #staffList.executive-list .executive-group-cards{gap:6px;}
     #staffList.executive-list .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
@@ -3023,6 +3031,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (t.includes('수석부회장')) return 2;
     if (t.includes('부회장')) return 3;
     if (t.includes('이사')) return 4;
+    if (t.includes('감사')) return 5;
     return 99;
   }
 
@@ -3060,15 +3069,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
           <div class="member-company-head">
             <span class="staff-badge">${item.category || '-'}</span>
             <strong>${item.company || '-'}</strong>
-            ${item.joinDate ? `<span class="member-company-join">/ ${item.joinDate}</span>` : ''}
+            <span class="member-company-slash">/</span>
+            <span class="member-company-representative-inline">${item.representative || '-'}</span>
+            ${item.joinDate ? `<span class="member-company-slash">/</span><span class="member-company-join">${item.joinDate}</span>` : ''}
           </div>
-          <div class="member-company-representative">${item.representative || '-'}</div>
           <div class="member-company-address-row">
             <span class="member-company-address">${item.address || '-'}</span>
             ${item.phone ? `<span class="member-company-phone">/ ${item.phone}</span>` : ''}
           </div>
         </div>`;
-      btn.onclick = () => openMemberCompanyDetailModal(item);
+      btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openMemberCompanyDetailModal(item); };
       list.appendChild(btn);
     });
   }
@@ -3152,7 +3162,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
         { key:'협회장', rank:1 },
         { key:'수석부회장', rank:2 },
         { key:'부회장', rank:3 },
-        { key:'이사', rank:4 }
+        { key:'이사', rank:4 },
+        { key:'감사', rank:5 }
       ];
       const groups = [];
       badgeOrder.forEach(b => {
@@ -3237,28 +3248,45 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   window.openMemberCompanyDetailModal = function(item) {
+    if (!item) return;
     const modal = document.getElementById('memberCompanyDetailModal');
     const title = document.getElementById('memberCompanyDetailTitle');
     const rowsEl = document.getElementById('memberCompanyDetailRows');
     if (!modal || !title || !rowsEl) return;
-    title.innerHTML = `<span class="staff-badge member-detail-badge">${item.category || '-'}</span>${item.company || '-'}`;
+
+    // 시트7 B~L(11개 열)을 원본 순서 그대로 상세보기로 표시합니다.
+    const fallbackLabels = ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열','가입일자','비고'];
+    const labels = Array.isArray(item.headers) ? item.headers : [];
+    const values = Array.isArray(item.all) ? item.all : [];
+
+    title.innerHTML = '';
+    const badge = document.createElement('span');
+    badge.className = 'staff-badge member-detail-badge';
+    badge.textContent = item.category || '-';
+    title.appendChild(badge);
+    const companyText = document.createTextNode(item.company || '-');
+    title.appendChild(companyText);
+
     rowsEl.innerHTML = '';
-    const labels = item.headers || ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열','가입일자','비고'];
-    const values = item.all || [];
     for (let i = 0; i < 11; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
       const label = document.createElement('span');
       label.className = 'member-detail-label';
-      label.textContent = labels[i] || `${String.fromCharCode(66+i)}열`;
+      label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
       const value = document.createElement('span');
       value.className = 'member-detail-value';
-      value.textContent = values[i] || '-';
-      row.appendChild(label); row.appendChild(value); rowsEl.appendChild(row);
+      value.textContent = (values[i] ?? '').toString().trim() || '-';
+      row.appendChild(label);
+      row.appendChild(value);
+      rowsEl.appendChild(row);
     }
+
     modal.style.display = 'flex';
-    history.pushState({ memberCompanyDetailOpen:true }, "", "");
+    document.body.style.overflow = 'hidden';
+    history.pushState({ memberCompanyDetailOpen:true }, '', '');
   };
+
   window.closeMemberCompanyDetailModal = function(goBack=true) {
     const modal=document.getElementById('memberCompanyDetailModal');
     if(modal) modal.style.display='none';
