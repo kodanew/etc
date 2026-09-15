@@ -1615,6 +1615,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
 #newsDetailThumbnailLink{display:block}
 #newsDetailThumbnail{display:block;max-width:100%;height:auto}
 
+
+  /* 사무국/회원사 그룹 구분선 및 뱃지 수량 */
+  #staffList.executive-list .executive-group-title em,
+  #staffList.member-company-list .member-group-title em{
+    font-style:normal;font-weight:800;opacity:.9;
+  }
+  #staffList.member-company-list{display:block !important;}
+  #staffList.member-company-list .member-badge-group{margin-bottom:12px;}
+  #staffList.member-company-list .member-badge-group:last-child{margin-bottom:0;}
+  #staffList.member-company-list .member-group-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.member-company-list .member-group-title::after{
+    content:"";flex:1;height:1px;background:#d9e6f4;
+  }
+  #staffList.member-company-list .member-group-title .staff-badge{margin:0 !important;}
+  #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:1fr;gap:8px;}
+
 </style>
 
 <style id="final-staff-header-fixes">
@@ -3061,6 +3080,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const list = document.getElementById('staffList');
     if (!list) return;
     list.classList.add('member-company-list');
+    list.classList.remove('executive-list');
     if (!list.dataset.memberClickBound) {
       list.dataset.memberClickBound = '1';
       list.addEventListener('click', (e) => {
@@ -3071,7 +3091,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
         if (item) openMemberCompanyDetailModal(item);
       });
     }
-    list.classList.remove('executive-list');
 
     const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
     let filtered = [...memberCompanyData];
@@ -3088,26 +3107,49 @@ button,.nav-btn,.action-btn{min-height:44px;}
       return;
     }
 
-    filtered.forEach(item => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'day-event-item staff-card-compact member-company-card';
-      btn.innerHTML = `
-        <div class="member-company-main">
-          <div class="member-company-head">
-            <span class="staff-badge">${item.category || '-'}</span>
-            <strong>${item.company || '-'}</strong>
-            <span class="member-company-slash">/</span>
-            <span class="member-company-representative-inline">${item.representative || '-'}</span>
-            ${item.joinDate ? `<span class="member-company-slash">/</span><span class="member-company-join">${item.joinDate}</span>` : ''}
-          </div>
-          <div class="member-company-address-row">
-            <span class="member-company-address">${item.address || '-'}</span>
-            ${item.phone ? `<span class="member-company-phone">/ ${item.phone}</span>` : ''}
-          </div>
-        </div>`;
-      btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
-      list.appendChild(btn);
+    // 회원사는 정회원 → 준회원 순으로 뱃지별 구분선을 만듭니다.
+    const categoryOrder = ['정회원', '준회원'];
+    const groups = [];
+    categoryOrder.forEach(label => {
+      const items = filtered.filter(item => normalizeStaffText(item.category) === normalizeStaffText(label));
+      if (items.length) groups.push({ label, items });
+    });
+    const others = filtered.filter(item => !categoryOrder.some(label => normalizeStaffText(item.category) === normalizeStaffText(label)));
+    if (others.length) groups.push({ label:'기타', items:others });
+
+    groups.forEach(group => {
+      const section = document.createElement('section');
+      section.className = 'member-badge-group';
+      const title = document.createElement('div');
+      title.className = 'member-group-title';
+      title.innerHTML = `<span class="staff-badge">${group.label} <em>(${group.items.length})</em></span>`;
+      section.appendChild(title);
+
+      const cards = document.createElement('div');
+      cards.className = 'member-group-cards';
+      group.items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day-event-item staff-card-compact member-company-card';
+        btn.innerHTML = `
+          <div class="member-company-main">
+            <div class="member-company-head">
+              <span class="staff-badge">${item.category || '-'}</span>
+              <strong>${item.company || '-'}</strong>
+              <span class="member-company-slash">/</span>
+              <span class="member-company-representative-inline">${item.representative || '-'}</span>
+              ${item.joinDate ? `<span class="member-company-slash">/</span><span class="member-company-join">${item.joinDate}</span>` : ''}
+            </div>
+            <div class="member-company-address-row">
+              <span class="member-company-address">${item.address || '-'}</span>
+              ${item.phone ? `<span class="member-company-phone"> / ${item.phone}</span>` : ''}
+            </div>
+          </div>`;
+        btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
+        cards.appendChild(btn);
+      });
+      section.appendChild(cards);
+      list.appendChild(section);
     });
   }
 
@@ -3208,6 +3250,58 @@ button,.nav-btn,.action-btn{min-height:44px;}
       return;
     }
 
+    // 사무국은 직급별 6개 그룹으로 나누고, 각 그룹 안에서는 이름 가나다순으로 정렬합니다.
+    if (categoryFilter === '사무국') {
+      list.classList.add('executive-list');
+      const officeGroups = [
+        { label:'전무', match:['전무'] },
+        { label:'기획운영실장, 정책연구실장', match:['기획운영실장','정책연구실장'] },
+        { label:'팀장', match:['팀장'] },
+        { label:'파트장', match:['파트장'] },
+        { label:'대리', match:['대리'] },
+        { label:'책임연구원', match:['책임연구원'] }
+      ];
+      officeGroups.forEach(group => {
+        const items = filteredData.filter(item => {
+          const pos = stripAssociationWord(item.position || '');
+          return group.match.some(m => normalizeStaffText(pos).includes(normalizeStaffText(m)));
+        }).sort((a,b) => String(a.name||'').localeCompare(String(b.name||''), 'ko'));
+        if (!items.length) return;
+        const section = document.createElement('section');
+        section.className = 'executive-badge-group office-badge-group';
+        const title = document.createElement('div');
+        title.className = 'executive-group-title';
+        title.innerHTML = `<span class="staff-badge">${group.label} <em>(${items.length})</em></span>`;
+        section.appendChild(title);
+        const cards = document.createElement('div');
+        cards.className = 'executive-group-cards';
+        items.forEach(item => {
+          const indexInOriginal = staffData.indexOf(item);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'day-event-item staff-card-compact';
+          const affiliation = stripAssociationWord(item.affiliation);
+          const position = stripAssociationWord(item.position);
+          const orgRole = [affiliation, position].filter(Boolean).join(' ');
+          btn.innerHTML = `
+            <div class="staff-main-line">
+              <div class="staff-info-block">
+                <div class="staff-name-role">
+                  <strong>${item.name || '-'}</strong>
+                  <span class="staff-org-role">${orgRole || '-'}</span>
+                </div>
+                <div class="staff-phone">${item.phone || ''}</div>
+              </div>
+            </div>`;
+          btn.onclick = () => openStaffDetailModal(indexInOriginal);
+          cards.appendChild(btn);
+        });
+        section.appendChild(cards);
+        list.appendChild(section);
+      });
+      return;
+    }
+
     // 7대 임원은 KODA 뱃지별 그룹으로 나누고, 각 그룹 안에서는 2열로 배치합니다.
     if (categoryFilter === '7대 임원') {
       list.classList.add('executive-list');
@@ -3232,7 +3326,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
         section.className = 'executive-badge-group';
         const title = document.createElement('div');
         title.className = 'executive-group-title';
-        title.innerHTML = `<span class="staff-badge executive">${group.label}</span>`;
+        title.innerHTML = `<span class="staff-badge executive">${group.label} <em>(${group.items.length})</em></span>`;
         section.appendChild(title);
 
         const cards = document.createElement('div');
