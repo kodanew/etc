@@ -2307,6 +2307,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
     font-weight:650 !important;
   }
 
+  /* ARP / ARPY 기수 바로가기 */
+  #arpCohortFilters{display:none;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 12px;}
+  #arpCohortFilters.show{display:grid;}
+  #arpCohortFilters .arp-cohort-btn{
+    appearance:none;border:1px solid #d7e4f3;background:#f7fbff;color:#315b8d;
+    border-radius:9px;height:34px;padding:0 4px;font-size:.72rem;font-weight:800;cursor:pointer;
+  }
+  #arpCohortFilters .arp-cohort-btn:hover,#arpCohortFilters .arp-cohort-btn:active{background:#eaf3ff;border-color:#a9c9ed;}
+  #staffList.arp-list{display:block !important;}
+  #staffList.arp-list .arp-cohort-group{margin:2px 0 13px;scroll-margin-top:12px;}
+  #staffList.arp-list .arp-cohort-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.arp-list .arp-cohort-title::after{content:"";flex:1;height:1px;background:#d9e6f4;}
+  #staffList.arp-list .arp-cohort-title .staff-badge{margin:0 !important;}
+  #staffList.arp-list .arp-cohort-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  #staffList.arp-list .arp-cohort-cards .staff-card-compact{width:100% !important;min-width:0;box-sizing:border-box;}
+  @media(max-width:520px){#arpCohortFilters{gap:5px;}#arpCohortFilters .arp-cohort-btn{height:32px;font-size:.68rem;}#staffList.arp-list .arp-cohort-cards{gap:6px;}}
+
   #staffList.executive-list{display:block !important;}
   #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
   #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
@@ -2968,7 +2987,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       '사무국': staffData.filter(item => normalizeStaffText(item.category) === '사무국').length,
       '7대 임원': staffData.filter(item => { const c = normalizeStaffText(item.category).replace(/\s/g,''); return c === '7대임원' || executiveBadgeRank(item.koda) < 99; }).length,
       '회원사': memberCompanyData.length,
-      'ARP': staffData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
+      'ARP': arpData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
       'ARPY': arpData.filter(item => normalizeStaffText(item.category) === 'ARPY').length
     };
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
@@ -3177,10 +3196,48 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
   }
 
+  function setupArpCohortFilters(categoryFilter) {
+    const wrap = document.getElementById('arpCohortFilters');
+    if (!wrap) return;
+    const isArp = categoryFilter === 'ARP' || categoryFilter === 'ARPY';
+    wrap.classList.toggle('show', isArp);
+    if (!isArp) { wrap.innerHTML = ''; return; }
+    wrap.innerHTML = '';
+    for (let i = 1; i <= 12; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'arp-cohort-btn';
+      btn.textContent = `${i}기`;
+      btn.dataset.cohort = String(i);
+      btn.addEventListener('click', () => scrollToArpCohort(i));
+      wrap.appendChild(btn);
+    }
+  }
+
+  function cohortNumber(value) {
+    const m = String(value || '').match(/(\d{1,2})/);
+    return m ? Number(m[1]) : 99;
+  }
+
+  function scrollToArpCohort(cohort) {
+    const target = document.getElementById(`arp-cohort-${cohort}`);
+    if (!target) return;
+    const screen = document.getElementById('staffScreen');
+    const content = screen?.querySelector('.fullscreen-content');
+    if (content) {
+      const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - 8;
+      content.scrollTo({top: Math.max(0, top), behavior:'smooth'});
+    } else {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
   function renderArpList(categoryFilter) {
     const list = document.getElementById('staffList');
     if (!list) return;
+    setupArpCohortFilters(categoryFilter);
     list.classList.remove('member-company-list','executive-list');
+    list.classList.add('arp-list');
     const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
     let filtered = arpData.filter(item =>
       normalizeStaffText(item.category) === normalizeStaffText(categoryFilter)
@@ -3197,24 +3254,55 @@ button,.nav-btn,.action-btn{min-height:44px;}
       list.innerHTML = `<div class="no-data">${arpLoaded ? (q ? '검색 결과가 없습니다.' : '해당되는 인원이 없습니다.') : 'Sheet8 정보를 불러오는 중입니다.'}</div>`;
       return;
     }
+
+    // 기수 숫자순으로 정렬하고, 같은 기수 안에서는 가나다순으로 표시
+    filtered.sort((a,b) => {
+      const ca = cohortNumber(a.cohort), cb = cohortNumber(b.cohort);
+      if (ca !== cb) return ca - cb;
+      return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
+    });
+
     list.innerHTML = '';
+    const groups = new Map();
     filtered.forEach(item => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'day-event-item staff-card-compact';
-      btn.innerHTML = `
-        <div class="staff-main-line">
-          <span class="staff-badge executive">${item.cohort || '-'}</span>
-          <div class="staff-info-block">
-            <div class="staff-name-role">
-              <strong>${item.name || '-'}</strong>
-              <span class="staff-org-role">${[item.affiliation,item.position].filter(Boolean).join(' ') || '-'}</span>
+      const n = cohortNumber(item.cohort);
+      const key = n >= 1 && n <= 12 ? n : 'etc';
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    });
+
+    [...groups.keys()].sort((a,b) => a === 'etc' ? 1 : b === 'etc' ? -1 : a-b).forEach(cohort => {
+      const items = groups.get(cohort);
+      const group = document.createElement('section');
+      group.className = 'arp-cohort-group';
+      group.id = cohort === 'etc' ? 'arp-cohort-etc' : `arp-cohort-${cohort}`;
+      const title = document.createElement('div');
+      title.className = 'arp-cohort-title';
+      const label = cohort === 'etc' ? '기타' : `${cohort}기`;
+      title.innerHTML = `<span class="staff-badge executive">${label} <em>(${items.length})</em></span>`;
+      group.appendChild(title);
+      const cards = document.createElement('div');
+      cards.className = 'arp-cohort-cards';
+      items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day-event-item staff-card-compact';
+        btn.innerHTML = `
+          <div class="staff-main-line">
+            <span class="staff-badge executive">${item.cohort || '-'}</span>
+            <div class="staff-info-block">
+              <div class="staff-name-role">
+                <strong>${item.name || '-'}</strong>
+                <span class="staff-org-role">${[item.affiliation,item.position].filter(Boolean).join(' ') || '-'}</span>
+              </div>
+              <div class="staff-phone">${item.phone || ''}</div>
             </div>
-            <div class="staff-phone">${item.phone || ''}</div>
-          </div>
-        </div>`;
-      btn.onclick = () => openArpDetailModal(item);
-      list.appendChild(btn);
+          </div>`;
+        btn.onclick = () => openArpDetailModal(item);
+        cards.appendChild(btn);
+      });
+      group.appendChild(cards);
+      list.appendChild(group);
     });
   }
 
@@ -3470,6 +3558,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
     if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
+    if (!arpLoaded && !arpLoading) loadArpData();
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
