@@ -1592,7 +1592,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     content:"";flex:1;height:1px;background:#d9e6f4;
   }
   #staffList.member-company-list .member-group-title .staff-badge{margin:0 !important;}
-  #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:1fr;gap:8px;}
 
 
   /* 임직원현황 탭 인원수: 본문보다 한 포인트 작게 */
@@ -2322,7 +2322,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     min-width:0;flex:0 1 auto;color:#1769d2;font-size:.9rem;font-weight:850;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  #staffList.member-company-list .member-company-region{font-size:.72rem;color:#555;white-space:nowrap;}
+  #staffList.member-company-list .member-company-region-inline{flex:0 1 auto;min-width:0;color:#47698f;font-size:.76rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   #staffList.member-company-list .member-company-join{
     flex:0 0 auto;color:#7d91a9;font-size:.67rem;font-weight:650;white-space:nowrap;
   }
@@ -2365,9 +2365,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   @media(max-width:360px){
     #staffList.member-company-list{gap:6px !important;}
-    #staffList.member-company-list .member-group-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
     #staffList.member-company-list .member-company-head strong{font-size:.82rem;}
-    #staffList.member-company-list .member-company-region{font-size:.72rem;color:#555;white-space:nowrap;}
+    #staffList.member-company-list .member-company-region-inline{flex:0 1 auto;min-width:0;color:#47698f;font-size:.76rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   #staffList.member-company-list .member-company-join{font-size:.59rem;}
     #staffList.member-company-list .member-company-representative{font-size:.68rem;}
     #staffList.member-company-list .member-company-representative-inline{font-size:.64rem;}
@@ -3036,7 +3035,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function updateStaffTabCounts() {
     const counts = {
       '사무국': staffData.filter(item => normalizeStaffText(item.category) === '사무국').length,
-      '7대 임원': staffData.filter(item => normalizeStaffText(item.category) === '7대 임원').length,
+      '7대 임원': staffData.filter(item => { const c = normalizeStaffText(item.category).replace(/\s/g,''); return c === '7대임원' || executiveBadgeRank(item.koda) < 99; }).length,
       '회원사': memberCompanyData.length,
       'ARP': staffData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
       '등록사': 0
@@ -3112,7 +3111,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
               <span class="member-company-slash">/</span>
               <span class="member-company-representative-inline">${item.representative || '-'}</span>
               <span class="member-company-slash">/</span>
-              <span class="member-company-region">${item.region || '-'}</span>
+              <span class="member-company-region-inline">${item.region || '-'}</span>
             </div>
           </div>`;
         btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
@@ -3157,7 +3156,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           company,
           category: (r[2] || '').trim(),        // C
           representative: (r[7] || '').trim(), // H 지정대표자
-          region: (r[5] || '').trim(),        // F 광역시도
+          region: (r[5] || '').trim(),         // F 광역시도
           joinDate: (r[8] || '').trim(),       // I 가입일자
           all: r.slice(1, 9).map(v => (v || '').trim()),
           headers: headers.slice(1, 9).map(v => (v || '').trim())
