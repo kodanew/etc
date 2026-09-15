@@ -2327,10 +2327,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     flex:0 0 auto; margin:0 !important;
   }
   #staffList.member-company-list .member-company-slash{
-    flex:0 0 auto;color:#000;font-weight:600;
+    flex:0 0 auto;color:#47698f;font-weight:700;
   }
   #staffList.member-company-list .member-company-representative-inline{
-    flex:0 1 auto;min-width:0;color:#000;font-size:.76rem;font-weight:700;
+    flex:0 1 auto;min-width:0;color:#47698f;font-size:.76rem;font-weight:700;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
   #staffList.member-company-list .member-company-head strong{
@@ -2348,10 +2348,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     color:#000;font-size:.67rem;font-weight:600;line-height:1.3;
   }
   #staffList.member-company-list .member-company-address{
-    min-width:0;flex:1 1 auto;color:#000;white-space:normal;word-break:keep-all;
+    min-width:0;flex:1 1 auto;color:#47698f;white-space:normal;word-break:keep-all;
   }
   #staffList.member-company-list .member-company-phone{
-    flex:0 0 auto;color:#000;white-space:nowrap;font-weight:600;
+    flex:0 0 auto;color:#47698f;white-space:nowrap;font-weight:600;
   }
 
   /* 7대 임원: KODA 뱃지별 구분 + 기존처럼 2열 카드 + 카드 안 뱃지 복원 */
@@ -2545,11 +2545,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
-    <button class="month-tab active" data-cat="전체" onclick="filterStaff('전체')">전체</button>
-    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
+    <button class="month-tab active" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
     <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
     <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
     <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
+    <button class="month-tab" data-cat="등록사" onclick="filterStaff('등록사')">등록사</button>
   </div>
 
   <div class="fullscreen-content">
@@ -2717,6 +2717,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let staffData = [];
   let memberCompanyData = [];
   let memberCompanyLoading = false;
+  let memberCompanyLoaded = false;
+  const MEMBER_COMPANIES_CACHE_KEY = 'koda_member_companies_cache_v2';
+
+  function loadMemberCompanyCache() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(MEMBER_COMPANIES_CACHE_KEY) || 'null');
+      if (Array.isArray(cached) && cached.length) {
+        memberCompanyData = cached;
+        memberCompanyLoaded = true;
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function saveMemberCompanyCache(data) {
+    try { localStorage.setItem(MEMBER_COMPANIES_CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -2985,18 +3003,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
     try {
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       staffData = parseStaffCSV(await response.text());
-      filterStaff('전체');
+      filterStaff('사무국');
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
-  let currentStaffCategory = '전체';
+  let currentStaffCategory = '사무국';
 
   window.filterStaff = function(category) {
     // 분류 버튼은 항상 유지하고, 선택된 버튼만 활성화합니다.
-    const validCategories = ['전체','사무국','7대 임원','회원사','ARP'];
-    if (!validCategories.includes(category)) category = '전체';
+    const validCategories = ['사무국','7대 임원','회원사','ARP','등록사'];
+    if (!validCategories.includes(category)) category = '사무국';
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
@@ -3043,6 +3061,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const list = document.getElementById('staffList');
     if (!list) return;
     list.classList.add('member-company-list');
+    if (!list.dataset.memberClickBound) {
+      list.dataset.memberClickBound = '1';
+      list.addEventListener('click', (e) => {
+        const card = e.target.closest('.member-company-card');
+        if (!card) return;
+        const index = Number(card.dataset.memberIndex);
+        const item = memberCompanyData[index];
+        if (item) openMemberCompanyDetailModal(item);
+      });
+    }
     list.classList.remove('executive-list');
 
     const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
@@ -3078,44 +3106,63 @@ button,.nav-btn,.action-btn{min-height:44px;}
             ${item.phone ? `<span class="member-company-phone">/ ${item.phone}</span>` : ''}
           </div>
         </div>`;
-      btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openMemberCompanyDetailModal(item); };
+      btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
       list.appendChild(btn);
     });
   }
 
-  async function loadMemberCompanyData() {
+  async function loadMemberCompanyData(forceRefresh = false) {
     if (memberCompanyLoading) return;
+
+    // 캐시가 있으면 회원사 화면을 즉시 먼저 보여주고, 뒤에서 최신 데이터를 갱신합니다.
+    if (!forceRefresh && !memberCompanyLoaded) loadMemberCompanyCache();
+    if (memberCompanyData.length && !forceRefresh) {
+      if (currentStaffCategory === '회원사') renderMemberCompanyList();
+      // 첫 화면 반응을 막지 않도록 최신 데이터는 백그라운드에서 갱신합니다.
+      setTimeout(() => loadMemberCompanyData(true), 0);
+      return;
+    }
+
     memberCompanyLoading = true;
     const list = document.getElementById('staffList');
-    if (list && currentStaffCategory === '회원사') list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
+    if (list && currentStaffCategory === '회원사' && !memberCompanyData.length) {
+      list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
+    }
     try {
-      const response = await fetch(MEMBER_COMPANIES_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      // 최초 요청은 브라우저/중간 캐시를 활용하고, 이후 강제 갱신만 cache-busting 합니다.
+      const url = forceRefresh
+        ? MEMBER_COMPANIES_SHEET_CSV_URL + '&t=' + Date.now()
+        : MEMBER_COMPANIES_SHEET_CSV_URL;
+      const response = await fetch(url, { cache: forceRefresh ? 'no-store' : 'default' });
       if (!response.ok) throw new Error('Sheet7 CSV response error');
       const csv = await response.text();
       const rows = splitCSV(csv);
       const data = [];
       const headers = rows[0] || [];
-      // 시트7 B~L 전체를 보존해 상세보기에서 모두 표현합니다.
       for (let i = 1; i < rows.length; i++) {
         const r = rows[i] || [];
         const company = (r[1] || '').trim(); // B
         if (!company) continue;
         data.push({
           company,
-          category: (r[2] || '').trim(),       // C
-          representative: (r[3] || '').trim(),// D
-          phone: (r[6] || '').trim(),          // G
-          address: (r[5] || '').trim(),        // F
-          joinDate: (r[10] || '').trim(),      // K
+          category: (r[2] || '').trim(),        // C
+          representative: (r[3] || '').trim(), // D
+          phone: (r[6] || '').trim(),           // G
+          address: (r[5] || '').trim(),         // F
+          joinDate: (r[10] || '').trim(),       // K
           all: r.slice(1, 12).map(v => (v || '').trim()),
           headers: headers.slice(1, 12).map(v => (v || '').trim())
         });
       }
       memberCompanyData = data;
-      renderMemberCompanyList();
+      memberCompanyLoaded = true;
+      saveMemberCompanyCache(data);
+      if (currentStaffCategory === '회원사') renderMemberCompanyList();
     } catch (error) {
-      memberCompanyData = [];
-      if (list && currentStaffCategory === '회원사') list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
+      // 캐시가 있다면 오류가 나도 기존 목록은 유지합니다.
+      if (!memberCompanyData.length && list && currentStaffCategory === '회원사') {
+        list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
+      }
     } finally {
       memberCompanyLoading = false;
     }
@@ -3129,15 +3176,22 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     // 회원사는 시트7을 별도로 사용합니다.
     if (categoryFilter === '회원사') {
+      if (!memberCompanyData.length) loadMemberCompanyCache();
       renderMemberCompanyList();
-      if (memberCompanyData.length === 0 && !memberCompanyLoading) loadMemberCompanyData();
+      if (!memberCompanyLoaded && !memberCompanyLoading) loadMemberCompanyData();
+      else if (memberCompanyData.length && !memberCompanyLoading) loadMemberCompanyData();
+      return;
+    }
+
+    if (categoryFilter === '등록사') {
+      const countEl = document.getElementById('staffResultCount');
+      if (countEl) countEl.textContent = '0명';
+      list.innerHTML = `<div class="no-data">등록사 정보를 준비 중입니다.</div>`;
       return;
     }
 
     const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
-    let filteredData = (categoryFilter === '전체')
-      ? [...staffData]
-      : staffData.filter(item => normalizeStaffText(item.category) === normalizeStaffText(categoryFilter));
+    let filteredData = staffData.filter(item => normalizeStaffText(item.category) === normalizeStaffText(categoryFilter));
 
     if (q) {
       filteredData = filteredData.filter(item => {
@@ -3304,19 +3358,19 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(staffContentEl) staffContentEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
-    currentStaffCategory = '전체';
+    // 임직원현황에 들어오면 첫 번째 탭인 '사무국'으로 시작합니다.
+    currentStaffCategory = '사무국';
     const staffTabs = document.querySelectorAll('#staffTabs .month-tab');
     staffTabs.forEach(btn => {
       btn.hidden = false;
       btn.style.display = 'flex';
-      btn.classList.toggle('active', btn.dataset.cat === '전체');
+      btn.classList.toggle('active', btn.dataset.cat === '사무국');
     });
     const search = document.getElementById('staffSearchInput');
     if(search) search.value = '';
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
-    if (staffData.length === 0) loadStaffData(); else renderStaffList('전체');
+    if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -3840,7 +3894,7 @@ function createEventCard(event) {
     // 뒤로 이동한 목적지 상태만 다시 표시
     if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
-    else if (st.memberCompanyDetailOpen) document.getElementById('memberCompanyDetailModal').style.display='flex';
+    else if (st.memberCompanyDetailOpen) { document.getElementById('memberCompanyDetailModal').style.display='flex'; document.body.style.overflow='hidden'; }
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
