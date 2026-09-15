@@ -2308,6 +2308,96 @@ button,.nav-btn,.action-btn{min-height:44px;}
     object-fit:contain;
     background:#f7fafc;
   }
+
+  /* ===== 2026-09-15 임직원현황 / 회원사 최종 디자인 ===== */
+  #staffList.executive-list,
+  #staffList.member-company-list{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+  }
+
+  #staffList.executive-list .staff-card-compact,
+  #staffList.member-company-list .staff-card-compact{
+    width:100% !important;
+    min-height:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  /* 7대 임원: 뱃지별로 위에서 아래 순서 */
+  #staffList.executive-list .staff-main-line{
+    display:flex !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+    white-space:normal !important;
+    overflow:visible !important;
+  }
+
+  #staffList.executive-list .staff-info-block{
+    flex:1 1 auto !important;
+    min-width:0 !important;
+  }
+
+  /* 회원사: 1행 1열, 회사명 / 가입일자 */
+  #staffList.member-company-list .member-company-main{
+    width:100%;
+    text-align:left;
+  }
+
+  #staffList.member-company-list .member-company-head{
+    display:flex;
+    align-items:center;
+    min-width:0;
+    gap:5px;
+    line-height:1.25;
+  }
+
+  #staffList.member-company-list .member-company-head strong{
+    min-width:0;
+    flex:0 1 auto;
+    color:#1769d2;
+    font-size:.9rem;
+    font-weight:850;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  #staffList.member-company-list .member-company-join{
+    flex:0 0 auto;
+    color:#7d91a9;
+    font-size:.67rem;
+    font-weight:650;
+    white-space:nowrap;
+  }
+
+  #staffList.member-company-list .member-company-representative{
+    margin-top:6px;
+    color:#47698f;
+    font-size:.76rem;
+    font-weight:750;
+    line-height:1.25;
+  }
+
+  #staffList.member-company-list .member-company-address{
+    margin-top:4px;
+    color:#98aabd;
+    font-size:.67rem;
+    font-weight:600;
+    line-height:1.3;
+    white-space:normal;
+    word-break:keep-all;
+  }
+
+  @media(max-width:360px){
+    #staffList.executive-list,
+    #staffList.member-company-list{gap:6px !important;}
+    #staffList.member-company-list .member-company-head strong{font-size:.82rem;}
+    #staffList.member-company-list .member-company-join{font-size:.59rem;}
+    #staffList.member-company-list .member-company-representative{font-size:.68rem;}
+    #staffList.member-company-list .member-company-address{font-size:.59rem;}
+  }
+
 </style>
 </head>
 <body>
@@ -2609,9 +2699,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
+  // 시트7 회원사 현황: B=회사명, C=회원사 구분, D=대표자, F=주소, K=가입일자
+  const MEMBER_COMPANIES_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?sheet=%EC%8B%9C%ED%8A%B87&single=true&output=csv";
 
   let scheduleData = [];
   let staffData = [];
+  let memberCompanyData = [];
+  let memberCompanyLoading = false;
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -2916,28 +3010,175 @@ button,.nav-btn,.action-btn{min-height:44px;}
     });
   }
 
+  function normalizeStaffText(v) {
+    return String(v || '').replace(/\s+/g,'').toUpperCase();
+  }
+
+  function executiveBadgeRank(v) {
+    const t = String(v || '').replace(/\s+/g,'');
+    if (t.includes('협회장')) return 1;
+    if (t.includes('수석부회장')) return 2;
+    if (t.includes('부회장')) return 3;
+    if (t.includes('이사')) return 4;
+    return 99;
+  }
+
+  function stripAssociationWord(text) {
+    return String(text || '').replace(/협회/g, '').replace(/\s{2,}/g, ' ').trim();
+  }
+
+  function renderMemberCompanyList() {
+    const list = document.getElementById('staffList');
+    if (!list) return;
+    list.classList.add('member-company-list');
+    list.classList.remove('executive-list');
+
+    const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
+    let filtered = [...memberCompanyData];
+
+    if (q) {
+      filtered = filtered.filter(item =>
+        [item.company, item.category, item.representative, item.address, item.joinDate]
+          .filter(Boolean).join(' ').toLowerCase().includes(q)
+      );
+    }
+
+    const countEl = document.getElementById('staffResultCount');
+    if (countEl) countEl.textContent = `${filtered.length}개사`;
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : '회원사 정보를 불러오는 중입니다.'}</div>`;
+      return;
+    }
+
+    filtered.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-event-item staff-card-compact member-company-card';
+      btn.innerHTML = `
+        <div class="member-company-main">
+          <div class="member-company-head">
+            <span class="staff-badge">${item.category || '-'}</span>
+            <strong>${item.company || '-'}</strong>
+            ${item.joinDate ? `<span class="member-company-join">/ ${item.joinDate}</span>` : ''}
+          </div>
+          <div class="member-company-representative">${item.representative || '-'}</div>
+          ${item.address ? `<div class="member-company-address">${item.address}</div>` : ''}
+        </div>`;
+      list.appendChild(btn);
+    });
+  }
+
+  async function loadMemberCompanyData() {
+    if (memberCompanyLoading) return;
+    memberCompanyLoading = true;
+    const list = document.getElementById('staffList');
+    if (list) list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
+
+    try {
+      const response = await fetch(MEMBER_COMPANIES_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const rows = splitCSV(await response.text());
+      const data = [];
+
+      // 시트7 고정 열: B(1)=회사명, C(2)=회원사 구분, D(3)=대표자, F(5)=주소, K(10)=가입일자
+      for (let i = 1; i < rows.length; i++) {
+        const r = rows[i] || [];
+        const company = (r[1] || '').trim();
+        if (!company) continue;
+        data.push({
+          company,
+          category: (r[2] || '').trim(),
+          representative: (r[3] || '').trim(),
+          address: (r[5] || '').trim(),
+          joinDate: (r[10] || '').trim()
+        });
+      }
+
+      memberCompanyData = data;
+      renderMemberCompanyList();
+    } catch (error) {
+      memberCompanyData = [];
+      if (list) list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
+    } finally {
+      memberCompanyLoading = false;
+    }
+  }
+
   function renderStaffList(categoryFilter) {
-    const list=document.getElementById('staffList'); if(!list) return; list.innerHTML='';
-    const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
-    const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
-    let filteredData=(categoryFilter==='전체') ? [...staffData] : staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
-    if(q){
-      filteredData=filteredData.filter(item=>{
-        const hay=[item.name,item.affiliation,item.position,item.department,item.phone].filter(Boolean).join(' ').toLowerCase();
+    const list = document.getElementById('staffList');
+    if (!list) return;
+    list.innerHTML = '';
+    list.classList.remove('member-company-list', 'executive-list');
+
+    // 회원사는 시트7을 별도로 사용
+    if (categoryFilter === '회원사') {
+      renderMemberCompanyList();
+      if (memberCompanyData.length === 0 && !memberCompanyLoading) loadMemberCompanyData();
+      return;
+    }
+
+    const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
+    let filteredData = (categoryFilter === '전체')
+      ? [...staffData]
+      : staffData.filter(item => normalizeStaffText(item.category) === normalizeStaffText(categoryFilter));
+
+    if (q) {
+      filteredData = filteredData.filter(item => {
+        const hay = [item.name, item.affiliation, item.position, item.department, item.phone].filter(Boolean).join(' ').toLowerCase();
         return hay.includes(q);
       });
     }
-    const countEl=document.getElementById('staffResultCount');
-    if(countEl) countEl.textContent=`${filteredData.length}명`;
-    if(!filteredData.length){list.innerHTML=`<div class="no-data">${q?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
-    filteredData.forEach(item=>{
-      const indexInOriginal=staffData.indexOf(item);
-      const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
-      const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
-      const kodaLabel=item.koda || '';
-      const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
-      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
-      btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
+
+    // 7대 임원은 뱃지 순서대로 세로 1열 정렬
+    if (categoryFilter === '7대 임원') {
+      filteredData.sort((a, b) => {
+        const rank = executiveBadgeRank(a.koda) - executiveBadgeRank(b.koda);
+        return rank || (staffData.indexOf(a) - staffData.indexOf(b));
+      });
+      list.classList.add('executive-list');
+    }
+
+    const countEl = document.getElementById('staffResultCount');
+    if (countEl) countEl.textContent = `${filteredData.length}명`;
+
+    if (!filteredData.length) {
+      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : '해당되는 인원이 없습니다.'}</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const indexInOriginal = staffData.indexOf(item);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-event-item staff-card-compact';
+
+      const isOffice = normalizeStaffText(item.category) === '사무국';
+      const badgeClass = String(item.category || '').includes('임원') ? 'staff-badge executive' : 'staff-badge';
+      const kodaLabel = item.koda || '';
+
+      // 사무국 직원만 '협회'라는 단어를 제거합니다.
+      let orgRole;
+      if (isOffice) {
+        const affiliation = stripAssociationWord(item.affiliation);
+        const position = stripAssociationWord(item.position);
+        orgRole = [affiliation, position].filter(Boolean).join(' ');
+      } else {
+        orgRole = [item.affiliation, item.position].filter(Boolean).join(' ');
+      }
+
+      btn.innerHTML = `
+        <div class="staff-main-line">
+          <span class="${badgeClass}">${kodaLabel}</span>
+          <div class="staff-info-block">
+            <div class="staff-name-role">
+              <strong>${item.name || '-'}</strong>
+              <span class="staff-org-role">${orgRole || '-'}</span>
+            </div>
+            <div class="staff-phone">${item.phone || ''}</div>
+          </div>
+        </div>`;
+      btn.onclick = () => openStaffDetailModal(indexInOriginal);
+      list.appendChild(btn);
     });
   }
 
