@@ -2693,6 +2693,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let memberCompanyData = [];
   let memberCompanyLoading = false;
   let memberCompanyLoaded = false;
+  let memberCompanyFetchedFresh = false; // 이번 세션에 구글시트에서 실제로 새로 받아온 적이 있는지 여부(캐시만 불러온 것과 구분)
   const MEMBER_COMPANIES_CACHE_KEY = 'koda_member_companies_cache_v2';
 
   function loadMemberCompanyCache() {
@@ -3134,12 +3135,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   async function loadMemberCompanyData(forceRefresh = false) {
     if (memberCompanyLoading) return;
 
-    // 캐시가 있으면 회원사 화면을 즉시 먼저 보여주고, 뒤에서 최신 데이터를 갱신합니다.
-    if (!forceRefresh && !memberCompanyLoaded) loadMemberCompanyCache();
-    if (memberCompanyData.length && !forceRefresh) {
-      if (currentStaffCategory === '회원사') renderMemberCompanyList();
-      return;
+    // 캐시가 있으면 회원사 화면을 즉시 먼저 보여주고, 뒤에서 최신 데이터로 갱신합니다.
+    if (!forceRefresh && !memberCompanyData.length) loadMemberCompanyCache();
+    if (memberCompanyData.length && !forceRefresh && currentStaffCategory === '회원사') {
+      renderMemberCompanyList();
     }
+    // 예전에는 캐시만 있으면 여기서 그대로 return 해버려서, 시트 열 구성이 바뀌어도
+    // (지정대표자/광역시도/가입일자 등) 기기에 저장된 옛날 캐시값이 영영 갱신되지 않는 문제가 있었습니다.
+    // 이번 세션에 아직 최신 데이터를 한 번도 받아오지 않았다면 캐시가 있어도 계속 진행해 새로 받아옵니다.
+    if (memberCompanyFetchedFresh && !forceRefresh) return;
 
     memberCompanyLoading = true;
     const list = document.getElementById('staffList');
@@ -3173,6 +3177,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       }
       memberCompanyData = data;
       memberCompanyLoaded = true;
+      memberCompanyFetchedFresh = true;
       saveMemberCompanyCache(data);
       updateStaffTabCounts();
       if (currentStaffCategory === '회원사') renderMemberCompanyList();
