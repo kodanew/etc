@@ -3151,11 +3151,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
       list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
     }
     try {
-      // 최초 요청은 브라우저/중간 캐시를 활용하고, 이후 강제 갱신만 cache-busting 합니다.
-      const url = forceRefresh
-        ? MEMBER_COMPANIES_SHEET_CSV_URL + '&t=' + Date.now()
-        : MEMBER_COMPANIES_SHEET_CSV_URL;
-      const response = await fetch(url, { cache: forceRefresh ? 'no-store' : 'default' });
+      // 예전에는 최초 요청 시 브라우저/중간 캐시를 활용했는데, 구글시트 CSV가
+      // 브라우저 HTTP 캐시에 그대로 남아 시트를 고쳐도 예전 값이 계속 나오는
+      // 문제가 있어 회원사 데이터는 항상 캐시 없이 새로 받아오도록 변경했습니다.
+      const url = MEMBER_COMPANIES_SHEET_CSV_URL + '&t=' + Date.now();
+      const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error('Sheet7 CSV response error');
       const csv = await response.text();
       const rows = splitCSV(csv);
