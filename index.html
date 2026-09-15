@@ -2315,75 +2315,81 @@ button,.nav-btn,.action-btn{min-height:44px;}
     grid-template-columns:1fr !important;
     gap:9px !important;
   }
-
   #staffList.member-company-list .staff-card-compact{
-    width:100% !important;
-    min-height:0 !important;
-    box-sizing:border-box !important;
+    width:100% !important; min-height:0 !important; box-sizing:border-box !important;
+    padding:11px 12px !important;
   }
-
-  /* 회원사: 1행 1열, 회사명 / 가입일자 */
   #staffList.member-company-list .member-company-main{width:100%;text-align:left;}
-  #staffList.member-company-list .member-company-head{display:flex;align-items:center;min-width:0;gap:5px;line-height:1.25;}
-  #staffList.member-company-list .member-company-head strong{min-width:0;flex:0 1 auto;color:#1769d2;font-size:.9rem;font-weight:850;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  #staffList.member-company-list .member-company-join{flex:0 0 auto;color:#7d91a9;font-size:.67rem;font-weight:650;white-space:nowrap;}
-  #staffList.member-company-list .member-company-representative{margin-top:6px;color:#47698f;font-size:.76rem;font-weight:750;line-height:1.25;}
-  #staffList.member-company-list .member-company-address{margin-top:4px;color:#98aabd;font-size:.67rem;font-weight:600;line-height:1.3;white-space:normal;word-break:keep-all;}
+  #staffList.member-company-list .member-company-head{
+    display:flex;align-items:baseline;min-width:0;gap:5px;line-height:1.25;
+  }
+  #staffList.member-company-list .member-company-head .staff-badge{
+    flex:0 0 auto; margin:0 !important;
+  }
+  #staffList.member-company-list .member-company-head strong{
+    min-width:0;flex:0 1 auto;color:#1769d2;font-size:.9rem;font-weight:850;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  #staffList.member-company-list .member-company-join{
+    flex:0 0 auto;color:#7d91a9;font-size:.67rem;font-weight:650;white-space:nowrap;
+  }
+  #staffList.member-company-list .member-company-representative{
+    margin-top:5px;color:#000;font-size:.76rem;font-weight:700;line-height:1.25;
+  }
+  #staffList.member-company-list .member-company-address-row{
+    margin-top:4px;display:flex;align-items:baseline;gap:4px;min-width:0;
+    color:#000;font-size:.67rem;font-weight:600;line-height:1.3;
+  }
+  #staffList.member-company-list .member-company-address{
+    min-width:0;flex:1 1 auto;color:#000;white-space:normal;word-break:keep-all;
+  }
+  #staffList.member-company-list .member-company-phone{
+    flex:0 0 auto;color:#000;white-space:nowrap;font-weight:600;
+  }
 
-  /* 7대 임원: 뱃지별 구분 + 2행 2열 카드 */
-  #staffList.executive-list{
-    display:block !important;
-  }
-  #staffList.executive-list .executive-badge-group{
-    margin-bottom:12px;
-  }
+  /* 7대 임원: KODA 뱃지별 구분 + 기존처럼 2열 카드 + 카드 안 뱃지 복원 */
+  #staffList.executive-list{display:block !important;}
+  #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
   #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
   #staffList.executive-list .executive-group-title{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin:2px 0 7px;
-    font-size:.72rem;
-    font-weight:850;
-    color:#315b8d;
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
   }
   #staffList.executive-list .executive-group-title::after{
-    content:"";
-    flex:1;
-    height:1px;
-    background:#d9e6f4;
+    content:"";flex:1;height:1px;background:#d9e6f4;
   }
-  #staffList.executive-list .executive-group-title .staff-badge{
-    margin:0 !important;
-  }
+  #staffList.executive-list .executive-group-title .staff-badge{margin:0 !important;}
   #staffList.executive-list .executive-group-cards{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
   }
   #staffList.executive-list .executive-group-cards .staff-card-compact{
-    width:100% !important;
-    min-width:0;
-    min-height:0 !important;
-    box-sizing:border-box !important;
+    width:100% !important;min-width:0;min-height:0 !important;box-sizing:border-box !important;
   }
   #staffList.executive-list .staff-main-line{
-    display:flex !important;
-    align-items:flex-start !important;
-    gap:5px !important;
-    white-space:normal !important;
-    overflow:visible !important;
+    display:grid !important;grid-template-columns:auto minmax(0,1fr) !important;
+    align-items:start !important;column-gap:5px !important;white-space:normal !important;overflow:visible !important;
   }
+  #staffList.executive-list .staff-main-line > .staff-badge{display:inline-block !important;}
   #staffList.executive-list .staff-info-block{flex:1 1 auto !important;min-width:0 !important;}
+
+  /* 회원사 상세보기 */
+  #memberCompanyDetailModal .modal-content{max-width:400px;}
+  #memberCompanyDetailModal .member-detail-title{color:#173f70;font-size:1.12rem;font-weight:850;line-height:1.35;margin-bottom:14px;padding-right:28px;}
+  #memberCompanyDetailModal .member-detail-badge{margin-right:6px;vertical-align:middle;}
+  #memberCompanyDetailModal .member-detail-row{display:flex;align-items:flex-start;margin-bottom:7px;font-size:.8rem;line-height:1.45;}
+  #memberCompanyDetailModal .member-detail-label{width:76px;flex:0 0 76px;color:#718096;font-weight:750;}
+  #memberCompanyDetailModal .member-detail-value{flex:1;min-width:0;color:#1a202c;word-break:break-all;}
 
   @media(max-width:360px){
     #staffList.member-company-list{gap:6px !important;}
     #staffList.member-company-list .member-company-head strong{font-size:.82rem;}
     #staffList.member-company-list .member-company-join{font-size:.59rem;}
     #staffList.member-company-list .member-company-representative{font-size:.68rem;}
-    #staffList.member-company-list .member-company-address{font-size:.59rem;}
+    #staffList.member-company-list .member-company-address-row{font-size:.59rem;}
     #staffList.executive-list .executive-group-cards{gap:6px;}
+    #staffList.executive-list .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
   }
+
 
 
 </style>
@@ -2589,6 +2595,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <a href="#" class="action-btn btn-sms" id="staffBtnSms">💬 문자발송</a>
       <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉️ 이메일</a>
     </div>
+  </div>
+</div>
+
+<!-- ✨ 회원사 상세정보 모달 ✨ -->
+<div class="modal-overlay" id="memberCompanyDetailModal" onclick="closeMemberCompanyDetailModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeMemberCompanyDetailModal()">×</button>
+    <div class="member-detail-title" id="memberCompanyDetailTitle"></div>
+    <div id="memberCompanyDetailRows"></div>
   </div>
 </div>
 
@@ -3023,19 +3038,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
     let filtered = [...memberCompanyData];
-
     if (q) {
       filtered = filtered.filter(item =>
-        [item.company, item.category, item.representative, item.address, item.joinDate]
+        [item.company, item.category, item.representative, item.address, item.phone, item.joinDate]
           .filter(Boolean).join(' ').toLowerCase().includes(q)
       );
     }
-
     const countEl = document.getElementById('staffResultCount');
     if (countEl) countEl.textContent = `${filtered.length}개사`;
-
     if (!filtered.length) {
-      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : '회원사 정보를 불러오는 중입니다.'}</div>`;
+      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : (memberCompanyLoading ? '회원사 정보를 불러오는 중입니다.' : '등록된 회원사가 없습니다.')}</div>`;
       return;
     }
 
@@ -3051,8 +3063,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
             ${item.joinDate ? `<span class="member-company-join">/ ${item.joinDate}</span>` : ''}
           </div>
           <div class="member-company-representative">${item.representative || '-'}</div>
-          ${item.address ? `<div class="member-company-address">${item.address}</div>` : ''}
+          <div class="member-company-address-row">
+            <span class="member-company-address">${item.address || '-'}</span>
+            ${item.phone ? `<span class="member-company-phone">/ ${item.phone}</span>` : ''}
+          </div>
         </div>`;
+      btn.onclick = () => openMemberCompanyDetailModal(item);
       list.appendChild(btn);
     });
   }
@@ -3061,32 +3077,35 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (memberCompanyLoading) return;
     memberCompanyLoading = true;
     const list = document.getElementById('staffList');
-    if (list) list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
-
+    if (list && currentStaffCategory === '회원사') list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
     try {
       const response = await fetch(MEMBER_COMPANIES_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      const rows = splitCSV(await response.text());
+      if (!response.ok) throw new Error('Sheet7 CSV response error');
+      const csv = await response.text();
+      const rows = splitCSV(csv);
       const data = [];
-
-      // 시트7 고정 열: B(1)=회사명, C(2)=회원사 구분, D(3)=대표자, F(5)=주소, K(10)=가입일자
+      const headers = rows[0] || [];
+      // 시트7 B~L 전체를 보존해 상세보기에서 모두 표현합니다.
       for (let i = 1; i < rows.length; i++) {
         const r = rows[i] || [];
-        const company = (r[1] || '').trim();
+        const company = (r[1] || '').trim(); // B
         if (!company) continue;
         data.push({
           company,
-          category: (r[2] || '').trim(),
-          representative: (r[3] || '').trim(),
-          address: (r[5] || '').trim(),
-          joinDate: (r[10] || '').trim()
+          category: (r[2] || '').trim(),       // C
+          representative: (r[3] || '').trim(),// D
+          phone: (r[6] || '').trim(),          // G
+          address: (r[5] || '').trim(),        // F
+          joinDate: (r[10] || '').trim(),      // K
+          all: r.slice(1, 12).map(v => (v || '').trim()),
+          headers: headers.slice(1, 12).map(v => (v || '').trim())
         });
       }
-
       memberCompanyData = data;
       renderMemberCompanyList();
     } catch (error) {
       memberCompanyData = [];
-      if (list) list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
+      if (list && currentStaffCategory === '회원사') list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
     } finally {
       memberCompanyLoading = false;
     }
@@ -3163,6 +3182,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           const orgRole = [item.affiliation, item.position].filter(Boolean).join(' ');
           btn.innerHTML = `
             <div class="staff-main-line">
+              <span class="staff-badge executive">${item.koda || group.label || '-'}</span>
               <div class="staff-info-block">
                 <div class="staff-name-role">
                   <strong>${item.name || '-'}</strong>
@@ -3215,6 +3235,38 @@ button,.nav-btn,.action-btn{min-height:44px;}
       list.appendChild(btn);
     });
   }
+
+  window.openMemberCompanyDetailModal = function(item) {
+    const modal = document.getElementById('memberCompanyDetailModal');
+    const title = document.getElementById('memberCompanyDetailTitle');
+    const rowsEl = document.getElementById('memberCompanyDetailRows');
+    if (!modal || !title || !rowsEl) return;
+    title.innerHTML = `<span class="staff-badge member-detail-badge">${item.category || '-'}</span>${item.company || '-'}`;
+    rowsEl.innerHTML = '';
+    const labels = item.headers || ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열','가입일자','비고'];
+    const values = item.all || [];
+    for (let i = 0; i < 11; i++) {
+      const row = document.createElement('div');
+      row.className = 'member-detail-row';
+      const label = document.createElement('span');
+      label.className = 'member-detail-label';
+      label.textContent = labels[i] || `${String.fromCharCode(66+i)}열`;
+      const value = document.createElement('span');
+      value.className = 'member-detail-value';
+      value.textContent = values[i] || '-';
+      row.appendChild(label); row.appendChild(value); rowsEl.appendChild(row);
+    }
+    modal.style.display = 'flex';
+    history.pushState({ memberCompanyDetailOpen:true }, "", "");
+  };
+  window.closeMemberCompanyDetailModal = function(goBack=true) {
+    const modal=document.getElementById('memberCompanyDetailModal');
+    if(modal) modal.style.display='none';
+    if(goBack) history.back();
+  };
+  window.closeMemberCompanyDetailModalOnOutsideClick = function(e) {
+    if(e.target.id === 'memberCompanyDetailModal') history.back();
+  };
 
   window.openStaffScreen = function() {
     const staffScreenEl = document.getElementById('staffScreen');
@@ -3752,7 +3804,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'newsScreen', 'newsDetailScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -3760,6 +3812,7 @@ function createEventCard(event) {
     // 뒤로 이동한 목적지 상태만 다시 표시
     if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
+    else if (st.memberCompanyDetailOpen) document.getElementById('memberCompanyDetailModal').style.display='flex';
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
