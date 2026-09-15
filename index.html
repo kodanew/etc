@@ -3205,8 +3205,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function setupArpCohortFilters(categoryFilter) {
     const wrap = document.getElementById('arpCohortFilters');
     if (!wrap) return;
+    // 기수 버튼은 ARP 또는 ARPY를 선택했을 때만 표시합니다.
     const isArp = categoryFilter === 'ARP' || categoryFilter === 'ARPY';
     wrap.classList.toggle('show', isArp);
+    wrap.setAttribute('aria-hidden', isArp ? 'false' : 'true');
     if (!isArp) { wrap.innerHTML = ''; return; }
 
     // ARP = 1~12기(2행×6열), ARPY = 1~6기(1행×6열)
@@ -3319,6 +3321,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function renderStaffList(categoryFilter) {
     const list = document.getElementById('staffList');
     if (!list) return;
+
+    // 기수 바로가기 버튼은 ARP/ARPY 화면에서만 표시하고,
+    // 사무국·7대 임원·회원사로 이동하면 즉시 숨깁니다.
+    setupArpCohortFilters(categoryFilter);
+
     list.innerHTML = '';
     list.classList.remove('member-company-list', 'executive-list');
 
