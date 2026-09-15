@@ -3047,6 +3047,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     });
   }
 
+  // 주소(F열) 값에서 첫번째 단어만 추출 (예: "서울특별시 강남구 ..." -> "서울특별시")
+  function firstWordOfRegion(region) {
+    const trimmed = String(region || '').trim();
+    if (!trimmed) return '-';
+    return trimmed.split(/\s+/)[0];
+  }
+
   function renderMemberCompanyList() {
     updateStaffTabCounts();
     const list = document.getElementById('staffList');
@@ -3111,7 +3118,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
               <span class="member-company-slash">/</span>
               <span class="member-company-representative-inline">${item.representative || '-'}</span>
               <span class="member-company-slash">/</span>
-              <span class="member-company-region-inline">${item.region || '-'}</span>
+              <span class="member-company-region-inline">${firstWordOfRegion(item.region)}</span>
+              <span class="member-company-slash">/</span>
+              <span class="member-company-join">${item.joinDate || '-'}</span>
             </div>
           </div>`;
         btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
