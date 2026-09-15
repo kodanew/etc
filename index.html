@@ -111,48 +111,6 @@
     gap: 6px;
   }
 
-  /* 새글 알림 벨 아이콘 (일정 카드의 별/공유 아이콘과 동일한 형태) */
-  .header-left {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-  }
-  .notify-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #cbd5e0;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .notify-btn svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-  }
-  .notify-btn:active {
-    color: #718096;
-  }
-  .notify-dot {
-    display: none;
-    position: absolute;
-    top: 3px;
-    right: 4px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--today-color);
-    border: 1.5px solid #fff;
-  }
-
   .install-btn {
     top: 25px;
     background-color: transparent;
@@ -2329,15 +2287,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <div class="header-left">
-      <button type="button" id="newsNotifyBtn" class="notify-btn" onclick="openNewsScreen()" aria-label="협회공지 새글 알림" title="협회공지 새글 알림">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-        <span class="notify-dot" id="newsNotifyDot"></span>
-      </button>
-    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -2389,17 +2338,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">협회공지</span>
     </button>
     <button class="quick-btn" onclick="openStaffScreen()">
-      <span class="quick-icon">
-  <svg viewBox="0 0 52 52" aria-hidden="true">
-    <circle cx="26" cy="17" r="7" fill="#1267d6"/>
-    <path d="M12 40
-           C12 31.5 18 27 26 27
-           C34 27 40 31.5 40 40
-           Z"
-        fill="#1267d6"/>
-  </svg>
-</span>
-<span class="quick-label">임직원현황</span>
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">임직원현황</span>
     </button>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/><path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/></svg></span><span class="quick-label">언론보도</span>
@@ -2935,7 +2874,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
       const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
       const kodaLabel=item.koda || '';
-      const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
+      const displayPosition = item.category === '사무국'
+        ? String(item.position || '').replace(/^협회\s*/, '').trim()
+        : (item.position || '');
+      const orgRole=[item.affiliation,displayPosition].filter(Boolean).join(' ');
       btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
       btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
     });
@@ -2986,7 +2928,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     
     document.getElementById('staffDetailName').innerText = staff.name || '-';
     document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
-    document.getElementById('staffDetailPosition').innerText = staff.position || '-';
+    const displayPosition = staff.category === '사무국'
+      ? String(staff.position || '').replace(/^협회\s*/, '').trim()
+      : (staff.position || '-');
+    document.getElementById('staffDetailPosition').innerText = displayPosition || '-';
     document.getElementById('staffDetailKoda').innerText = staff.koda || '-'; 
     document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
     document.getElementById('staffDetailEmail').innerText = staff.email || '-';
@@ -3105,36 +3050,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     } catch (error) {
       document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
-    // 첫 화면 진입 시 협회공지 새글 여부를 미리 확인해 벨 아이콘에 표시
-    refreshNewsNotificationState();
-  }
-
-  // ===== ✨ 협회공지 새글 알림 벨 로직 ✨ =====
-  function newsFingerprint(item) {
-    return item ? `${item.date}|${item.title}` : '';
-  }
-
-  function updateNewsNotificationDot() {
-    const dot = document.getElementById('newsNotifyDot');
-    if (!dot) return;
-    const latestKey = newsFingerprint(newsData[0]);
-    const seenKey = localStorage.getItem('koda_news_seen') || '';
-    dot.style.display = (latestKey && latestKey !== seenKey) ? 'block' : 'none';
-  }
-
-  window.markNewsAsSeen = function() {
-    if (newsData[0]) localStorage.setItem('koda_news_seen', newsFingerprint(newsData[0]));
-    updateNewsNotificationDot();
-  };
-
-  async function refreshNewsNotificationState() {
-    if (newsData.length === 0) {
-      try {
-        const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-        newsData = parseNewsCSV(await response.text());
-      } catch (error) { return; }
-    }
-    updateNewsNotificationDot();
   }
 
   // ===== ✨ 모던 일정 배너 캐러셀 =====
@@ -3643,7 +3558,6 @@ function createEventCard(event) {
       const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       newsData = parseNewsCSV(await response.text());
       filterNews('전체');
-      updateNewsNotificationDot();
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
@@ -3710,8 +3624,7 @@ function createEventCard(event) {
     newsScreenEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsOpen: true }, "", "");
-    if (newsData.length === 0) { loadNewsData().then(markNewsAsSeen); }
-    else { filterNews('전체'); markNewsAsSeen(); }
+    if (newsData.length === 0) loadNewsData(); else filterNews('전체');
   };
 
   window.closeNewsScreen = function() { history.back(); };
@@ -3760,25 +3673,6 @@ function createEventCard(event) {
       img.removeAttribute('src');
     };
     area.style.display = 'block';
-  }
-
-  // 협회공지 상세 본문의 HTML 이스케이프 + URL 자동 링크 변환
-  // (이 함수가 누락되어 있어 상세보기 진입 시 오류가 발생, 상세화면으로 넘어가지 않던 문제를 해결)
-  function escapeNewsHtml(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
-
-  function linkifyNewsContent(content) {
-    const escaped = escapeNewsHtml(content);
-    const urlRegex = /(https?:\/\/[^\s<]+)/g;
-    return escaped.replace(urlRegex, (url) => {
-      const cleanUrl = url.replace(/[.,)]+$/, '');
-      const trail = url.slice(cleanUrl.length);
-      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>${trail}`;
-    });
   }
 
   window.openNewsDetailScreen = function(index) {
