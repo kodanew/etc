@@ -110,50 +110,10 @@
     align-items: center;
     gap: 6px;
   }
-
-  /* 새글 알림 벨 아이콘 (일정 카드의 별/공유 아이콘과 동일한 형태) */
-  .header-left {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-  }
-  .notify-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #cbd5e0;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .notify-btn svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-  }
-  .notify-btn:active {
+.notify-btn:active {
     color: #718096;
   }
-  .notify-dot {
-    display: none;
-    position: absolute;
-    top: 3px;
-    right: 4px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--today-color);
-    border: 1.5px solid #fff;
-  }
-
-  .install-btn {
+.install-btn {
     top: 25px;
     background-color: transparent;
     color: #718096;
@@ -2368,18 +2328,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList.member-company-list .member-company-representative{
     margin-top:5px;color:#000;font-size:.76rem;font-weight:700;line-height:1.25;
   }
-  #staffList.member-company-list .member-company-address-row{
-    margin-top:4px;display:flex;align-items:baseline;gap:4px;min-width:0;
-    color:#000;font-size:.67rem;font-weight:600;line-height:1.3;
-  }
-  #staffList.member-company-list .member-company-address{
-    min-width:0;flex:1 1 auto;color:#47698f;white-space:normal;word-break:keep-all;
-  }
-  #staffList.member-company-list .member-company-phone{
-    flex:0 0 auto;color:#47698f;white-space:nowrap;font-weight:600;
-  }
-
-  /* 7대 임원: KODA 뱃지별 구분 + 기존처럼 2열 카드 + 카드 안 뱃지 복원 */
+/* 7대 임원: KODA 뱃지별 구분 + 기존처럼 2열 카드 + 카드 안 뱃지 복원 */
   #staffList.executive-list{display:block !important;}
   #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
   #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
@@ -2405,6 +2354,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffList.executive-list .staff-info-block{flex:1 1 auto !important;min-width:0 !important;}
 
   /* 회원사 상세보기 */
+  #memberCompanyDetailModal{z-index:2100 !important;}
   #memberCompanyDetailModal .modal-content{max-width:400px;}
   #memberCompanyDetailModal .member-detail-title{color:#173f70;font-size:1.12rem;font-weight:850;line-height:1.35;margin-bottom:14px;padding-right:28px;}
   #memberCompanyDetailModal .member-detail-badge{margin-right:6px;vertical-align:middle;}
@@ -2431,8 +2381,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 /* 회원사 최종 표시 보정 */
 #staffList.member-company-list .member-company-head{margin-bottom:0!important;}
 #staffList.member-company-list .member-company-address-row{display:block!important;margin-top:2px!important;line-height:1.3!important;}
-#staffList.member-company-list .member-company-address{display:inline!important;}
-#staffList.member-company-list .member-company-phone{display:inline!important;margin-left:0!important;}
 #staffScreen #staffTabs .tab-count{font-size:calc(.9em - 1pt)!important;font-weight:650!important;margin-left:2px!important;opacity:.82!important;}
 </style>
 </head>
@@ -2455,15 +2403,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <div class="header-left">
-      <button type="button" id="newsNotifyBtn" class="notify-btn" onclick="openNewsScreen()" aria-label="협회공지 새글 알림" title="협회공지 새글 알림">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-        <span class="notify-dot" id="newsNotifyDot"></span>
-      </button>
-    </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
@@ -2744,7 +2683,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
-  // 시트7 회원사 현황: B=회사명, C=회원사 구분, D=대표자, F=주소, K=가입일자
+  // 회원사 현황: B=법인명, C=뱃지/구분, H=지정대표자, I=가입일자
   const MEMBER_COMPANIES_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=320441592&single=true&output=csv";
 
   let scheduleData = [];
@@ -3127,7 +3066,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     let filtered = [...memberCompanyData];
     if (q) {
       filtered = filtered.filter(item =>
-        [item.company, item.category, item.representative, item.address, item.phone, item.joinDate]
+        [item.company, item.category, item.representative, item.joinDate]
           .filter(Boolean).join(' ').toLowerCase().includes(q)
       );
     }
@@ -3171,10 +3110,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
               <span class="member-company-representative-inline">${item.representative || '-'}</span>
               ${item.joinDate ? `<span class="member-company-slash">/</span><span class="member-company-join">${item.joinDate}</span>` : ''}
             </div>
-            <div class="member-company-address-row">
-              <span class="member-company-address">${item.address || '-'}</span>
-              ${item.phone ? `<span class="member-company-phone"> / ${item.phone}</span>` : ''}
-            </div>
           </div>`;
         btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
         cards.appendChild(btn);
@@ -3191,8 +3126,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (!forceRefresh && !memberCompanyLoaded) loadMemberCompanyCache();
     if (memberCompanyData.length && !forceRefresh) {
       if (currentStaffCategory === '회원사') renderMemberCompanyList();
-      // 첫 화면 반응을 막지 않도록 최신 데이터는 백그라운드에서 갱신합니다.
-      setTimeout(() => loadMemberCompanyData(true), 0);
       return;
     }
 
@@ -3219,12 +3152,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
         data.push({
           company,
           category: (r[2] || '').trim(),        // C
-          representative: (r[3] || '').trim(), // D
-          phone: (r[6] || '').trim(),           // G
-          address: (r[5] || '').trim(),         // F
-          joinDate: (r[10] || '').trim(),       // K
-          all: r.slice(1, 12).map(v => (v || '').trim()),
-          headers: headers.slice(1, 12).map(v => (v || '').trim())
+          representative: (r[7] || '').trim(), // H 지정대표자
+          joinDate: (r[8] || '').trim(),       // I 가입일자
+          all: r.slice(1, 9).map(v => (v || '').trim()),
+          headers: headers.slice(1, 9).map(v => (v || '').trim())
         });
       }
       memberCompanyData = data;
@@ -3253,7 +3184,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
       if (!memberCompanyData.length) loadMemberCompanyCache();
       renderMemberCompanyList();
       if (!memberCompanyLoaded && !memberCompanyLoading) loadMemberCompanyData();
-      else if (memberCompanyData.length && !memberCompanyLoading) loadMemberCompanyData();
       return;
     }
 
@@ -3349,7 +3279,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       ];
       const groups = [];
       badgeOrder.forEach(b => {
-        const items = filteredData.filter(item => normalizeStaffText(item.koda).includes(b.key));
+        const items = filteredData.filter(item => {
+          const k = normalizeStaffText(item.koda);
+          return b.key === '부회장' ? (k.includes('부회장') && !k.includes('수석부회장')) : k.includes(b.key);
+        });
         if (items.length) groups.push({ label:b.key, items });
       });
       const groupedOthers = filteredData.filter(item => !badgeOrder.some(b => normalizeStaffText(item.koda).includes(b.key)));
@@ -3441,10 +3374,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.body.style.overflow = 'hidden';
     if (rowsEl) rowsEl.innerHTML = '<div class="loading-msg" style="padding:8px 0">상세정보를 표시하는 중...</div>';
 
-    // 상세보기는 시트7 B~J(9개 열)만 즉시 표시합니다.
-    const fallbackLabels = ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열'];
-    const labels = Array.isArray(item.headers) ? item.headers.slice(0, 9) : [];
-    const values = Array.isArray(item.all) ? item.all.slice(0, 9) : [];
+    // 상세보기는 회원사 원본의 B~I(8개 열)만 표시합니다.
+    const fallbackLabels = ['회사명','회원사 구분','C열','D열','E열','F열','지정대표자','가입일자'];
+    const labels = Array.isArray(item.headers) ? item.headers.slice(0, 8) : [];
+    const values = Array.isArray(item.all) ? item.all.slice(0, 8) : [];
 
     title.innerHTML = '';
     const badge = document.createElement('span');
@@ -3455,7 +3388,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     title.appendChild(companyText);
 
     rowsEl.innerHTML = '';
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < 8; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
       const label = document.createElement('span');
@@ -3644,38 +3577,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     } catch (error) {
       document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
-    // 첫 화면 진입 시 협회공지 새글 여부를 미리 확인해 벨 아이콘에 표시
-    refreshNewsNotificationState();
   }
-
-  // ===== ✨ 협회공지 새글 알림 벨 로직 ✨ =====
-  function newsFingerprint(item) {
-    return item ? `${item.date}|${item.title}` : '';
-  }
-
-  function updateNewsNotificationDot() {
-    const dot = document.getElementById('newsNotifyDot');
-    if (!dot) return;
-    const latestKey = newsFingerprint(newsData[0]);
-    const seenKey = localStorage.getItem('koda_news_seen') || '';
-    dot.style.display = (latestKey && latestKey !== seenKey) ? 'block' : 'none';
-  }
-
-  window.markNewsAsSeen = function() {
-    if (newsData[0]) localStorage.setItem('koda_news_seen', newsFingerprint(newsData[0]));
-    updateNewsNotificationDot();
-  };
-
-  async function refreshNewsNotificationState() {
-    if (newsData.length === 0) {
-      try {
-        const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-        newsData = parseNewsCSV(await response.text());
-      } catch (error) { return; }
-    }
-    updateNewsNotificationDot();
-  }
-
   // ===== ✨ 모던 일정 배너 캐러셀 =====
   let currentBannerIndex = 0;
   let bannerTimer = null;
@@ -4183,7 +4085,6 @@ function createEventCard(event) {
       const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
       newsData = parseNewsCSV(await response.text());
       filterNews('전체');
-      updateNewsNotificationDot();
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
@@ -4250,8 +4151,8 @@ function createEventCard(event) {
     newsScreenEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsOpen: true }, "", "");
-    if (newsData.length === 0) { loadNewsData().then(markNewsAsSeen); }
-    else { filterNews('전체'); markNewsAsSeen(); }
+    if (newsData.length === 0) { loadNewsData(); }
+    else { filterNews('전체'); }
   };
 
   window.closeNewsScreen = function() { history.back(); };
