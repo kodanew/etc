@@ -2623,7 +2623,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div id="newsDetailTitle" class="modal-title" style="font-size: 1.25rem; margin-bottom: 8px;"></div>
     <div id="newsDetailDate" class="modal-detail-row" style="color: var(--text-muted); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color);"></div>
 
-    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 32px;"></div>
+    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 20px;"></div>
+
+    <div id="newsDetailRelatedLinkArea" style="display:none; margin: 0 0 28px; padding: 14px 15px; border: 1px solid #e4ebf3; border-radius: 10px; background: #f8fbff;">
+      <div style="font-size:.75rem; font-weight:800; color:#55718f; margin-bottom:7px;">관련링크</div>
+      <a id="newsDetailRelatedLink" href="#" target="_blank" rel="noopener noreferrer" style="display:block; color:#2563eb; text-decoration:underline; font-size:.84rem; line-height:1.5; word-break:break-all;"></a>
+    </div>
 
     <div id="newsDetailThumbnailArea">
       <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
@@ -3202,8 +3207,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const isArp = categoryFilter === 'ARP' || categoryFilter === 'ARPY';
     wrap.classList.toggle('show', isArp);
     if (!isArp) { wrap.innerHTML = ''; return; }
+
+    // ARP = 1~12기(2행×6열), ARPY = 1~6기(1행×6열)
+    const maxCohort = categoryFilter === 'ARPY' ? 6 : 12;
+    wrap.dataset.category = categoryFilter;
     wrap.innerHTML = '';
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= maxCohort; i++) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'arp-cohort-btn';
@@ -4251,11 +4260,12 @@ function createEventCard(event) {
     const list = document.getElementById('newsList');
     list.innerHTML = '';
 
-    const filteredData = category === '전체'
-      ? newsData
+    const filteredData = (category === '전체'
+      ? [...newsData]
       : newsData.filter(item => category === '견본주택'
           ? String(item.category || '').trim() === '견본주택 오픈'
-          : normalizeNewsCategory(item.category) === category);
+          : normalizeNewsCategory(item.category) === category))
+      .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date));
 
     if (filteredData.length === 0) {
       list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
@@ -4349,6 +4359,23 @@ function createEventCard(event) {
     });
   }
 
+  function setNewsDetailRelatedLink(item) {
+    const area = document.getElementById('newsDetailRelatedLinkArea');
+    const link = document.getElementById('newsDetailRelatedLink');
+    if (!area || !link) return;
+
+    const url = String(item.linkUrl || '').trim();
+    area.style.display = 'none';
+    link.removeAttribute('href');
+    link.textContent = '';
+
+    // 구글 시트6 F열 = 관련링크
+    if (!/^https?:\/\//i.test(url)) return;
+    link.href = url;
+    link.textContent = url;
+    area.style.display = 'block';
+  }
+
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
     const catEl = document.getElementById('newsDetailCategory');
@@ -4358,6 +4385,8 @@ function createEventCard(event) {
     document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
     document.getElementById('newsDetailContent').innerHTML = linkifyNewsContent(item.content);
 
+    // 본문 하단에 Sheet6 F열(관련링크)을 표시
+    setNewsDetailRelatedLink(item);
     setNewsDetailThumbnail(item);
 
     document.getElementById('newsDetailScreen').style.display = 'flex';
