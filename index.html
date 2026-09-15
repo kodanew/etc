@@ -2426,6 +2426,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
 </style>
+
+<style id="koda-member-final-fixes">
+/* 회원사 최종 표시 보정 */
+#staffList.member-company-list .member-company-head{margin-bottom:0!important;}
+#staffList.member-company-list .member-company-address-row{display:block!important;margin-top:2px!important;line-height:1.3!important;}
+#staffList.member-company-list .member-company-address{display:inline!important;}
+#staffList.member-company-list .member-company-phone{display:inline!important;margin-left:0!important;}
+#staffScreen #staffTabs .tab-count{font-size:calc(.9em - 1pt)!important;font-weight:650!important;margin-left:2px!important;opacity:.82!important;}
+</style>
 </head>
 <body>
 
@@ -3105,8 +3114,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     list.classList.remove('executive-list');
     if (!list.dataset.memberClickBound) {
       list.dataset.memberClickBound = '1';
-      list.addEventListener('pointerup', (e) => {
-        if (e.pointerType === 'mouse' && e.button !== 0) return;
+      list.addEventListener('click', (e) => {
         const card = e.target.closest('.member-company-card');
         if (!card) return;
         const index = Number(card.dataset.memberIndex);
@@ -3280,7 +3288,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       list.classList.add('executive-list');
       const officeGroups = [
         { label:'전무', match:['전무'] },
-        { label:'기획운영실장, 정책연구실장', match:['기획운영실장','정책연구실장'] },
+        { label:'실장', match:['기획운영실장','정책연구실장','실장'] },
         { label:'팀장', match:['팀장'] },
         { label:'파트장', match:['파트장'] },
         { label:'대리', match:['대리'] },
@@ -3433,10 +3441,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.body.style.overflow = 'hidden';
     if (rowsEl) rowsEl.innerHTML = '<div class="loading-msg" style="padding:8px 0">상세정보를 표시하는 중...</div>';
 
-    // 시트7 B~L(11개 열)을 원본 순서 그대로 상세보기로 표시합니다.
-    const fallbackLabels = ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열','가입일자','비고'];
-    const labels = Array.isArray(item.headers) ? item.headers : [];
-    const values = Array.isArray(item.all) ? item.all : [];
+    // 상세보기는 시트7 B~J(9개 열)만 즉시 표시합니다.
+    const fallbackLabels = ['회사명','회원사 구분','대표자명','E열','주소','전화번호','H열','I열','J열'];
+    const labels = Array.isArray(item.headers) ? item.headers.slice(0, 9) : [];
+    const values = Array.isArray(item.all) ? item.all.slice(0, 9) : [];
 
     title.innerHTML = '';
     const badge = document.createElement('span');
@@ -3446,9 +3454,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const companyText = document.createTextNode(item.company || '-');
     title.appendChild(companyText);
 
-    requestAnimationFrame(() => {
-      rowsEl.innerHTML = '';
-      for (let i = 0; i < 11; i++) {
+    rowsEl.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
       const label = document.createElement('span');
@@ -3462,7 +3469,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
         rowsEl.appendChild(row);
       }
       history.pushState({ memberCompanyDetailOpen:true }, '', '');
-    });
   };
 
   window.closeMemberCompanyDetailModal = function(goBack=true) {
