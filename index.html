@@ -2728,6 +2728,104 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #meetingTabs .month-tab { font-size:.62rem !important; padding-left:1px !important; padding-right:1px !important; }
 }
 </style>
+
+<style id="koda-business-card-ui">
+/* ===== 나의 명함 ===== */
+.app-container > .header{
+  grid-template-columns:1fr auto 1fr !important;
+}
+.app-container > .header > img{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.app-container > .header .header-left{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  justify-self:start !important;
+  display:flex !important;
+  align-items:center !important;
+  min-width:0 !important;
+  z-index:4 !important;
+}
+.app-container > .header .header-right{
+  grid-column:3 !important;
+  grid-row:1 !important;
+  position:static !important;
+  transform:none !important;
+  justify-self:end !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  z-index:4 !important;
+}
+.my-business-card-btn{
+  appearance:none;
+  border:1px solid #d9e5f3;
+  background:#f8fbff;
+  color:#1769d2;
+  border-radius:7px;
+  padding:5px 8px;
+  min-height:0 !important;
+  height:auto !important;
+  line-height:1.2;
+  font-size:.67rem;
+  font-weight:800;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+  cursor:pointer;
+  box-shadow:0 2px 7px rgba(23,105,210,.07);
+}
+.my-business-card-btn:active{transform:scale(.97);background:#edf5ff;}
+.business-card-overlay{
+  display:none; position:fixed; inset:0; z-index:2600;
+  background:rgba(8,25,48,.68);
+  padding:18px; box-sizing:border-box;
+  align-items:center; justify-content:center;
+}
+.business-card-modal{
+  position:relative; width:min(100%,430px); max-height:94vh; overflow:auto;
+  background:#f4f7fb; border-radius:18px; padding:18px 14px 15px;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+.business-card-close{
+  position:absolute; top:7px; right:8px; z-index:5; width:34px; height:34px;
+  border:0; border-radius:50%; background:rgba(255,255,255,.9); color:#60738c;
+  font-size:1.45rem; line-height:1; cursor:pointer;
+}
+.business-card-modal-title{
+  text-align:center; color:#173f70; font-size:1rem; font-weight:850;
+  margin:1px 38px 12px; letter-spacing:-.04em;
+}
+.business-card-preview-wrap{
+  width:100%; padding:0;
+}
+.business-card-preview{
+  display:block; width:100%; height:auto; aspect-ratio:1.8 / 1; object-fit:contain;
+  background:#fff; border-radius:3px; box-shadow:0 9px 24px rgba(17,49,87,.18);
+}
+.business-card-actions{
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;
+}
+.business-card-actions button{
+  min-height:44px; border:0; border-radius:10px; font-size:.78rem; font-weight:800;
+  cursor:pointer;
+}
+.business-card-save-btn{background:#1769d2;color:#fff;}
+.business-card-share-btn{background:#fff;color:#1769d2;border:1px solid #d5e2f1 !important;}
+.business-card-help{
+  margin-top:9px; text-align:center; font-size:.67rem; line-height:1.4; color:#7b8da3;
+}
+.business-card-status{
+  min-height:16px; margin-top:4px; text-align:center; font-size:.7rem; color:#1769d2; font-weight:700;
+}
+@media(max-width:360px){
+  .my-business-card-btn{font-size:.60rem;padding:4px 6px;}
+  .business-card-overlay{padding:10px;}
+  .business-card-modal{padding:15px 10px 12px;}
+}
+</style>
 </head>
 <body>
 
@@ -2749,7 +2847,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="app-container" id="appRoot">
   <div class="header">
     <div class="header-left">
-      <button type="button" id="myCardBtn" class="mycard-open-btn" onclick="openMyCardModal()">나의 명함 보기</button>
+      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함 보기</button>
     </div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
@@ -3086,35 +3184,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
-<!-- ✨ 나의 명함 보기 팝업 ✨ -->
-<div class="modal-overlay" id="myCardModal" onclick="closeMyCardModalOnOutsideClick(event)">
-  <div class="modal-content mycard-modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeMyCardModal()">×</button>
-    <div class="mycard-title">나의 명함</div>
-
-    <div class="mycard-stage">
-      <div class="biz-card" id="bizCardEl">
-        <div class="bc-logo"><img src="koda-logo-re.png" alt="KODA"></div>
-        <div class="bc-name" id="bcName">-</div>
-        <div class="bc-role" id="bcRole"></div>
-        <div class="bc-org">한국디벨로퍼협회</div>
-        <div class="bc-address">06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)</div>
-        <div class="bc-contact-row">
-          <span class="bc-phone" id="bcPhone"></span>
-          <span class="bc-dot">·</span>
-          <span class="bc-email" id="bcEmail"></span>
-        </div>
-        <div class="bc-web">www.koda.or.kr</div>
-      </div>
+<!-- ✨ 나의 명함 팝업 ✨ -->
+<div class="business-card-overlay" id="businessCardOverlay" onclick="closeMyBusinessCardOnOutside(event)">
+  <div class="business-card-modal" role="dialog" aria-modal="true" aria-labelledby="businessCardModalTitle">
+    <button type="button" class="business-card-close" onclick="closeMyBusinessCard()" aria-label="닫기">×</button>
+    <div class="business-card-modal-title" id="businessCardModalTitle">나의 명함</div>
+    <div class="business-card-preview-wrap">
+      <img id="businessCardPreview" class="business-card-preview" src="" alt="나의 KODA 명함">
     </div>
-
-    <div class="mycard-msg" id="myCardMsg"></div>
-
-    <button type="button" class="mycard-save-btn" id="myCardSaveBtn" onclick="saveMyCardImage()">📷 사진(갤러리)에 저장하기</button>
+    <div class="business-card-actions">
+      <button type="button" class="business-card-save-btn" onclick="saveMyBusinessCard()">명함 JPG 저장</button>
+      <button type="button" class="business-card-share-btn" onclick="shareMyBusinessCard()">갤러리/공유</button>
+    </div>
+    <div class="business-card-help" id="businessCardHelp">휴대폰에서는 ‘갤러리/공유’를 누른 후 사진 앱에 저장할 수 있습니다.</div>
+    <div class="business-card-status" id="businessCardStatus"></div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
   // 기본 시트 정보
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
@@ -3285,13 +3371,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let membersData = []; 
   function normalizePhone(str) { return (str || '').replace(/[^0-9]/g, ''); }
 
+  // 로그인 인증은 구글 시트4(임직원현황)를 기준으로 합니다.
+  // D열 = 이름, J열 = 연락처(핸드폰 번호)
   function parseMembersCSV(csv) {
     const rows = splitCSV(csv);
     const list = [];
     for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      const name = r[0] ? r[0].trim() : '';
-      const phone = r[1] ? normalizePhone(r[1]) : '';
+      const r = rows[i] || [];
+      const name = r[3] ? String(r[3]).trim() : '';   // D열
+      const phone = r[9] ? normalizePhone(r[9]) : ''; // J열
       if (name && phone) list.push({ name, phone });
     }
     return list;
@@ -3299,7 +3387,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   async function loadMembersData() {
     try {
-      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      // 로그인 인증용 데이터는 Sheet4를 사용합니다.
+      const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet4 CSV response error');
       membersData = parseMembersCSV(await response.text());
     } catch (error) { membersData = []; }
   }
@@ -3344,6 +3434,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
     loadData();
+    // 명함 버튼을 누르기 전에 시트4(임직원 정보)를 미리 준비합니다.
+    ensureBusinessCardStaffData().catch(()=>{});
   }
 
   window.logoutUser = function() {
@@ -3380,11 +3472,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
       koda: headers.indexOf("KODA"),
-      phone: headers.indexOf("연락처"),
-      email: headers.indexOf("이메일"),
+      phone: 7, // H열 전화번호
+      fax: 8, // I열 팩스번호
+      contact: 9, // J열 연락처
+      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 10,
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, koda: 6, phone: 7, email: 8, note: 9 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, contact: 9, email: 10, note: 11 };
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -3399,121 +3493,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
         phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
+        fax: idx.fax !== -1 && r[idx.fax] ? r[idx.fax].trim() : "",
+        contact: idx.contact !== -1 && r[idx.contact] ? r[idx.contact].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
     }
     return dataArr;
   }
-
-  /* ===== 나의 명함 보기 기능 ===== */
-  async function ensureStaffDataForCard() {
-    if (staffData.length > 0) return;
-    try {
-      const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      staffData = parseStaffCSV(await response.text());
-    } catch (error) { /* 실패 시 staffData는 빈 배열로 유지되고 호출부에서 처리 */ }
-  }
-
-  function findMyStaffRecord() {
-    const auth = JSON.parse(localStorage.getItem('koda_auth') || 'null');
-    if (!auth || !auth.name) return null;
-    const authName = String(auth.name).trim();
-    const authPhone = normalizePhone(auth.phone);
-    return staffData.find(item =>
-      String(item.name || '').trim() === authName &&
-      normalizePhone(item.phone) === authPhone
-    ) || null;
-  }
-
-  window.openMyCardModal = async function() {
-    const btn = document.getElementById('myCardBtn');
-    const saveBtn = document.getElementById('myCardSaveBtn');
-    const msgEl = document.getElementById('myCardMsg');
-
-    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
-    await ensureStaffDataForCard();
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-
-    const me = findMyStaffRecord();
-    if (!me) {
-      alert('코다피플 명단에서 일치하는 정보를 찾을 수 없습니다.\n담당자에게 정보 등록 여부를 확인해주세요.');
-      return;
-    }
-
-    document.getElementById('bcName').textContent = me.name || '-';
-    const roleParts = [me.affiliation, me.position].map(s => (s || '').trim()).filter(Boolean);
-    document.getElementById('bcRole').textContent = roleParts.join(' · ') || '';
-
-    const phoneEl = document.getElementById('bcPhone');
-    const emailEl = document.getElementById('bcEmail');
-    const dotEl = document.querySelector('#myCardModal .bc-dot');
-    phoneEl.textContent = me.phone ? `M. ${me.phone}` : '';
-    emailEl.textContent = me.email ? `E. ${me.email}` : '';
-    phoneEl.style.display = me.phone ? '' : 'none';
-    emailEl.style.display = me.email ? '' : 'none';
-    if (dotEl) dotEl.style.display = (me.phone && me.email) ? '' : 'none';
-
-    if (msgEl) { msgEl.style.display = 'none'; msgEl.textContent = ''; }
-    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '📷 사진(갤러리)에 저장하기'; }
-
-    document.getElementById('myCardModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    history.pushState({ myCardOpen: true }, "", "");
-  };
-
-  window.closeMyCardModal = function() { history.back(); };
-  window.closeMyCardModalOnOutsideClick = function(e) { if (e.target.id === 'myCardModal') history.back(); };
-
-  window.saveMyCardImage = async function() {
-    const cardEl = document.getElementById('bizCardEl');
-    const saveBtn = document.getElementById('myCardSaveBtn');
-    const msgEl = document.getElementById('myCardMsg');
-    if (!cardEl || typeof html2canvas === 'undefined') {
-      if (msgEl) { msgEl.textContent = '이미지 생성 기능을 불러오지 못했습니다. 네트워크 상태를 확인 후 다시 시도해주세요.'; msgEl.style.display = 'block'; }
-      return;
-    }
-
-    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = '이미지 생성 중...'; }
-    if (msgEl) { msgEl.style.display = 'none'; msgEl.textContent = ''; }
-
-    try {
-      const canvas = await html2canvas(cardEl, { scale: 3, backgroundColor: '#ffffff', useCORS: true });
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
-      const nameForFile = (document.getElementById('bcName').textContent || 'koda').trim().replace(/\s+/g, '');
-      const fileName = `${nameForFile}_명함.jpg`;
-
-      let shared = false;
-      try {
-        if (navigator.canShare) {
-          const blob = await (await fetch(dataUrl)).blob();
-          const file = new File([blob], fileName, { type: 'image/jpeg' });
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: fileName });
-            shared = true;
-          }
-        }
-      } catch (shareErr) { /* 공유 실패 시 다운로드로 대체 */ }
-
-      if (!shared) {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        if (msgEl) {
-          msgEl.textContent = '이미지가 저장되었습니다. 만약 새 창으로 이미지가 열렸다면, 이미지를 길게 눌러 "사진(이미지)에 저장"을 선택해주세요.';
-          msgEl.style.display = 'block';
-        }
-      }
-    } catch (err) {
-      if (msgEl) { msgEl.textContent = '이미지 저장 중 오류가 발생했습니다. 다시 시도해주세요.'; msgEl.style.display = 'block'; }
-    } finally {
-      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '📷 사진(갤러리)에 저장하기'; }
-    }
-  };
 
   async function loadStaffData() {
     const list = document.getElementById('staffList');
@@ -3526,6 +3513,213 @@ button,.nav-btn,.action-btn{min-height:44px;}
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
+
+  /* ===== 나의 명함: 로그인 사용자 ↔ 시트4(임직원현황) 일치 ===== */
+  let myBusinessCardData = null;
+  let myBusinessCardJpgDataUrl = '';
+
+  function formatBusinessCardPhone(phone) {
+    const digits = normalizePhone(phone);
+    if (digits.length === 11) return digits.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    if (digits.length === 10) return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    return String(phone || '').trim();
+  }
+
+  async function ensureBusinessCardStaffData() {
+    if (Array.isArray(staffData) && staffData.length) return staffData;
+    const response = await fetch(STAFF_SHEET_CSV_URL + '&t=' + Date.now(), {cache:'no-store'});
+    if (!response.ok) throw new Error('Sheet4 CSV response error');
+    staffData = parseStaffCSV(await response.text());
+    return staffData;
+  }
+
+  function getLoggedInAuth() {
+    try { return JSON.parse(localStorage.getItem('koda_auth') || 'null'); }
+    catch(e) { return null; }
+  }
+
+  function findMyBusinessCardData() {
+    const auth = getLoggedInAuth();
+    if (!auth) return null;
+    const authName = String(auth.name || '').trim();
+    const authPhone = normalizePhone(auth.phone || '');
+    return (staffData || []).find(item =>
+      String(item.name || '').trim() === authName &&
+      normalizePhone(item.phone || '') === authPhone
+    ) || null;
+  }
+
+  function canvasRoundRect(ctx, x, y, w, h, r) {
+    const rr = Math.min(r, w/2, h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);
+    ctx.arcTo(x+w,y,x+w,y+h,rr);
+    ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);
+    ctx.arcTo(x,y,x+w,y,rr);
+    ctx.closePath();
+  }
+
+  async function createBusinessCardJpg(data) {
+    const W = 1800, H = 1000;
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // 실제 명함과 같은 흰 바탕 + 청색 타이포그래피
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle = '#e9edf2';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(1.5,1.5,W-3,H-3);
+
+    // KODA 로고: 실제 첨부 로고 사용
+    const logo = new Image();
+    logo.src = 'koda-logo-re.png';
+    try {
+      await new Promise((resolve,reject)=>{
+        if (logo.complete && logo.naturalWidth) return resolve();
+        logo.onload=resolve; logo.onerror=reject;
+      });
+      const maxW=355, maxH=135;
+      const scale=Math.min(maxW/logo.naturalWidth, maxH/logo.naturalHeight);
+      const lw=logo.naturalWidth*scale, lh=logo.naturalHeight*scale;
+      ctx.drawImage(logo, W-lw-95, 110, lw, lh);
+    } catch(e) {
+      ctx.fillStyle='#0b4f9c'; ctx.font='700 92px Arial'; ctx.fillText('KODA',W-450,155);
+    }
+
+    const blue='#123d78';
+    const dark='#26313e';
+    const muted='#536477';
+    const name=String(data.name || '').trim();
+    const affiliation=String(data.affiliation || '').trim();
+    const position=String(data.position || '').trim();
+    const phone=formatBusinessCardPhone(data.phone);
+    const fax=formatBusinessCardPhone(data.fax);
+    const contact=formatBusinessCardPhone(data.contact);
+    const email=String(data.email || '').trim();
+
+    // KODA 로고 아래에서 이름까지의 세로 여백을 한 단계 더 확대
+    ctx.fillStyle=blue;
+    ctx.font='800 82px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
+    ctx.fillText(name,125,315);
+
+    ctx.fillStyle='#3d5d86';
+    ctx.font='600 39px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
+    ctx.fillText([affiliation,position].filter(Boolean).join(' | '),128,385);
+
+    ctx.fillStyle=blue;
+    ctx.font='800 48px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
+    ctx.fillText('한국디벨로퍼협회',128,495);
+
+    ctx.fillStyle=dark;
+    ctx.font='500 34px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
+    ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,560);
+
+    // Sheet4 H열(전화번호) / I열(팩스번호) / J열(연락처)를 명함의 T/F/M에 표시
+    const officePhone = phone;
+    const officeFax = fax;
+
+    ctx.fillStyle=blue;
+    ctx.font='800 34px Arial, "Malgun Gothic", sans-serif';
+    ctx.fillText('T.',128,665);
+    ctx.fillText('F.',128,730);
+    ctx.fillText('M.',505,665);
+    ctx.fillText('E.',505,730);
+
+    ctx.fillStyle=dark;
+    ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
+    ctx.fillText(officePhone || '-',175,665);
+    ctx.fillText(officeFax || '-',175,730);
+    ctx.fillText(contact || '-',552,665);
+    ctx.fillText(email || '-',552,730);
+
+    ctx.fillStyle=blue;
+    ctx.font='800 38px Arial, "Malgun Gothic", sans-serif';
+    ctx.fillText('www.koda.or.kr',128,800);
+
+    // 샘플 명함처럼 하단은 충분한 여백을 유지
+    return canvas.toDataURL('image/jpeg',0.94);
+  }
+
+  window.openMyBusinessCard = async function() {
+    const overlay=document.getElementById('businessCardOverlay');
+    const preview=document.getElementById('businessCardPreview');
+    const status=document.getElementById('businessCardStatus');
+    if(!overlay || !preview) return;
+    overlay.style.display='flex';
+    document.body.style.overflow='hidden';
+    status.textContent='내 명함 정보를 확인하는 중입니다...';
+    preview.removeAttribute('src');
+    myBusinessCardJpgDataUrl='';
+
+    try {
+      await ensureBusinessCardStaffData();
+      const data=findMyBusinessCardData();
+      if(!data) {
+        status.textContent='로그인한 이름·전화번호와 시트4 정보가 일치하는 명함 정보를 찾지 못했습니다.';
+        return;
+      }
+      myBusinessCardData=data;
+      myBusinessCardJpgDataUrl=await createBusinessCardJpg(data);
+      preview.src=myBusinessCardJpgDataUrl;
+      status.textContent='';
+    } catch(e) {
+      status.textContent='명함 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      console.error('business card error',e);
+    }
+  };
+
+  window.closeMyBusinessCard = function() {
+    const overlay=document.getElementById('businessCardOverlay');
+    if(overlay) overlay.style.display='none';
+    document.body.style.overflow='auto';
+  };
+
+  window.closeMyBusinessCardOnOutside = function(event) {
+    if(event.target && event.target.id==='businessCardOverlay') closeMyBusinessCard();
+  };
+
+  function businessCardFilename() {
+    const name=String(myBusinessCardData?.name || 'KODA').replace(/[^가-힣a-zA-Z0-9_-]/g,'');
+    return `${name || 'KODA'}_명함.jpg`;
+  }
+
+  window.saveMyBusinessCard = function() {
+    if(!myBusinessCardJpgDataUrl) return;
+    const a=document.createElement('a');
+    a.href=myBusinessCardJpgDataUrl;
+    a.download=businessCardFilename();
+    document.body.appendChild(a); a.click(); a.remove();
+    const status=document.getElementById('businessCardStatus');
+    if(status) status.textContent='명함 JPG 저장을 시작했습니다.';
+  };
+
+  window.shareMyBusinessCard = async function() {
+    if(!myBusinessCardJpgDataUrl) return;
+    const status=document.getElementById('businessCardStatus');
+    try {
+      const blob=await (await fetch(myBusinessCardJpgDataUrl)).blob();
+      const file=new File([blob],businessCardFilename(),{type:'image/jpeg'});
+      if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+        await navigator.share({title:'KODA 나의 명함',text:'한국디벨로퍼협회 나의 명함',files:[file]});
+        if(status) status.textContent='공유 화면에서 사진 앱/갤러리로 저장할 수 있습니다.';
+        return;
+      }
+    } catch(e) {
+      if(e && e.name==='AbortError') return;
+    }
+    // Web Share가 지원되지 않는 기기에서는 JPG를 새 탭에서 열어 저장할 수 있도록 fallback
+    const win=window.open('','_blank');
+    if(win){
+      win.document.write(`<title>${businessCardFilename()}</title><meta name="viewport" content="width=device-width,initial-scale=1"><img src="${myBusinessCardJpgDataUrl}" style="max-width:100%;height:auto;display:block;margin:auto">`);
+      win.document.close();
+    } else {
+      saveMyBusinessCard();
+    }
+    if(status) status.textContent='이미지를 길게 눌러 사진/갤러리에 저장해주세요.';
+  };
 
   let currentStaffCategory = '사무국';
 
@@ -4242,7 +4436,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     rows.innerHTML='';
     [
       ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
-      ['KODA',staff.koda],['연락처',staff.phone],['이메일',staff.email],['비고',staff.note]
+      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['연락처',staff.contact],['이메일',staff.email],['비고',staff.note]
     ].forEach(([label,value])=>{
       const row=document.createElement('div'); row.className='modal-detail-row';
       const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
@@ -4674,7 +4868,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'myCardModal'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -4686,9 +4880,8 @@ function createEventCard(event) {
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
       else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
-      else if (st.myCardOpen) document.getElementById('myCardModal').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.myCardOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -5250,83 +5443,5 @@ function createEventCard(event) {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-}
-</style>
-<style id="mycard-feature-styles">
-/* ===== 헤더 왼쪽: 나의 명함 보기 버튼 ===== */
-.app-container > .header{ grid-template-columns:1fr auto 1fr !important; }
-.app-container > .header .header-left{
-  grid-column:1 !important; justify-self:start !important;
-  display:flex !important; align-items:center !important;
-}
-.app-container > .header .mycard-open-btn{
-  background:transparent; color:#1769d2; border:1px solid #cfe0f5;
-  padding:6px 9px; border-radius:8px; font-size:.66rem; font-weight:750;
-  letter-spacing:-.02em; cursor:pointer; white-space:nowrap;
-}
-.app-container > .header .mycard-open-btn:active{ background:#eef5ff; }
-@media(max-width:360px){
-  .app-container > .header .mycard-open-btn{ font-size:.58rem; padding:5px 7px; border-radius:7px; }
-}
-
-/* ===== 나의 명함 팝업 ===== */
-.mycard-modal-content{ max-width:380px; text-align:center; }
-.mycard-title{ font-size:1.05rem; font-weight:800; color:#173f70; margin-bottom:14px; }
-.mycard-stage{
-  display:flex; justify-content:center; margin:0 0 16px;
-  background:#eef2f7; border-radius:12px; padding:20px 12px;
-}
-
-.biz-card{
-  position:relative;
-  width:320px; height:182px;
-  background:#ffffff;
-  border-radius:6px;
-  box-shadow:0 6px 18px rgba(20,40,80,.18);
-  padding:20px 20px 15px;
-  box-sizing:border-box;
-  text-align:left;
-  font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
-  display:flex; flex-direction:column;
-  flex-shrink:0;
-}
-.biz-card .bc-logo{ position:absolute; top:16px; right:18px; }
-.biz-card .bc-logo img{ height:20px; width:auto; display:block; }
-.biz-card .bc-name{
-  font-size:1.28rem; font-weight:800; color:#1a2a63; letter-spacing:-.02em;
-  margin-top:2px; line-height:1.25;
-}
-.biz-card .bc-role{
-  font-size:.66rem; font-weight:650; color:#5b6b85; margin-top:5px; line-height:1.3;
-}
-.biz-card .bc-org{
-  font-size:.78rem; font-weight:800; color:#17356e; margin-top:12px; line-height:1.3;
-}
-.biz-card .bc-address{
-  font-size:.6rem; font-weight:600; color:#5b6b85; margin-top:4px; line-height:1.35;
-}
-.biz-card .bc-contact-row{
-  font-size:.63rem; font-weight:700; color:#293b5f; margin-top:8px;
-  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
-}
-.biz-card .bc-dot{ color:#aab6c8; }
-.biz-card .bc-web{
-  font-size:.66rem; font-weight:800; color:#17356e; margin-top:auto; padding-top:8px;
-}
-
-.mycard-msg{
-  font-size:.7rem; color:#e53e3e; line-height:1.5; margin:0 0 10px; display:none;
-}
-.mycard-save-btn{
-  width:100%; padding:12px; border:none; border-radius:10px;
-  background:linear-gradient(135deg,#1769d2,#0f4fa8); color:#fff;
-  font-size:.86rem; font-weight:800; cursor:pointer;
-}
-.mycard-save-btn:active{ opacity:.85; }
-.mycard-save-btn:disabled{ opacity:.6; cursor:default; }
-
-@media(max-width:360px){
-  .biz-card{ width:288px; height:166px; padding:16px 16px 12px; }
-  .biz-card .bc-name{ font-size:1.14rem; }
 }
 </style>
