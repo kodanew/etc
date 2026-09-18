@@ -68,7 +68,10 @@
 
   /* 헤더 영역 */
   .header {
-    background-color: transparent;
+    background:
+      radial-gradient(ellipse at 18% 30%, rgba(115, 170, 225, 0.16) 0%, rgba(115, 170, 225, 0) 46%),
+      radial-gradient(ellipse at 82% 68%, rgba(180, 195, 210, 0.18) 0%, rgba(180, 195, 210, 0) 48%),
+      linear-gradient(135deg, #f7fafc 0%, #edf3f8 45%, #f9fbfd 100%);
     padding: 10px 12px;
     text-align: center;
     display: flex;
@@ -76,6 +79,48 @@
     align-items: center;
     position: relative;
     width: 100%;
+    min-height: 46px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(103, 143, 177, 0.16);
+  }
+
+  /* 헤더 전체에 은은한 푸른 물결/실버 은하수 느낌 */
+  .header::before {
+    content: "";
+    position: absolute;
+    left: -18%;
+    top: -75%;
+    width: 136%;
+    height: 210%;
+    border-radius: 50%;
+    background:
+      linear-gradient(105deg,
+        transparent 35%,
+        rgba(87, 148, 205, 0.08) 43%,
+        rgba(255, 255, 255, 0.32) 48%,
+        rgba(112, 164, 210, 0.10) 53%,
+        transparent 62%);
+    transform: rotate(-5deg);
+    pointer-events: none;
+  }
+
+  .header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 14% 42%, rgba(255,255,255,.72) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 31% 68%, rgba(104,151,193,.22) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 67% 25%, rgba(255,255,255,.75) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 86% 58%, rgba(104,151,193,.18) 0 1px, transparent 1.5px);
+    opacity: .65;
+    pointer-events: none;
+  }
+
+  .header > * {
+    position: relative;
+    z-index: 1;
   }
   .header img {
     height: 26px; 
@@ -2806,14 +2851,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
   background:#fff; border-radius:3px; box-shadow:0 9px 24px rgba(17,49,87,.18);
 }
 .business-card-actions{
-  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:12px;
 }
 .business-card-actions button{
-  min-height:44px; border:0; border-radius:10px; font-size:.78rem; font-weight:800;
-  cursor:pointer;
+  min-height:44px; border:0; border-radius:10px; font-size:.76rem; font-weight:800;
+  cursor:pointer; white-space:nowrap;
 }
 .business-card-save-btn{background:#1769d2;color:#fff;}
 .business-card-share-btn{background:#fff;color:#1769d2;border:1px solid #d5e2f1 !important;}
+.business-card-qr-btn{background:#eef5ff;color:#1769d2;border:1px solid #bcd4f2 !important;}
+.business-card-qr-area{
+  margin-top:12px; padding:13px 10px 11px; background:#fff; border:1px solid #dce7f3;
+  border-radius:12px; text-align:center;
+}
+.business-card-qr-title{font-size:.74rem;font-weight:800;color:#31577f;margin-bottom:9px;}
+#businessCardQR{display:flex;justify-content:center;align-items:center;min-height:160px;}
+#businessCardQR img,#businessCardQR canvas{display:block!important;width:160px!important;height:160px!important;}
+.business-card-qr-url-help{margin-top:8px;font-size:.64rem;color:#7b8da3;line-height:1.35;}
 .business-card-help{
   margin-top:9px; text-align:center; font-size:.67rem; line-height:1.4; color:#7b8da3;
 }
@@ -2824,6 +2878,256 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .my-business-card-btn{font-size:.60rem;padding:4px 6px;}
   .business-card-overlay{padding:10px;}
   .business-card-modal{padding:15px 10px 12px;}
+  .business-card-actions{grid-template-columns:1fr 1fr 1fr;gap:5px;}
+  .business-card-actions button{font-size:.67rem;padding:0 3px;}
+  #businessCardQR{min-height:145px;}
+  #businessCardQR img,#businessCardQR canvas{width:145px!important;height:145px!important;}
+}
+</style>
+
+
+<style id="koda-final-button-layout">
+/* ===== 최종 버튼 배치/스타일 ===== */
+.app-container > .header{
+  display:grid !important;
+  grid-template-columns:1fr auto 1fr !important;
+  align-items:center !important;
+  justify-content:initial !important;
+  min-height:54px;
+}
+.app-container > .header .header-spacer{
+  grid-column:1 !important;
+  grid-row:1 !important;
+}
+.app-container > .header > img{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  justify-self:center !important;
+}
+.app-container > .header .header-right{
+  grid-column:3 !important;
+  grid-row:1 !important;
+  justify-self:end !important;
+  position:static !important;
+  transform:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:5px !important;
+}
+.my-business-card-btn,
+.logout-btn{
+  background:rgba(255,255,255,.72) !important;
+  color:#7b8490 !important;
+  border:1px solid #cfd5dc !important;
+  box-shadow:0 2px 7px rgba(70,80,90,.06) !important;
+}
+.my-business-card-btn{
+  border-radius:8px !important;
+  padding:5px 9px !important;
+  font-size:.67rem !important;
+  font-weight:750 !important;
+}
+.my-business-card-btn:active,
+.logout-btn:active{
+  background:#f3f5f7 !important;
+  color:#5f6873 !important;
+}
+.app-footer{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:4px 10px 28px;
+}
+.app-footer .logout-btn{
+  position:static !important;
+  margin:0 !important;
+  border-radius:8px !important;
+  padding:5px 12px !important;
+  min-height:0 !important;
+  height:auto !important;
+  font-size:.68rem !important;
+  line-height:1.2 !important;
+}
+.login-screen{
+  position:fixed !important;
+}
+.login-install-btn{
+  position:absolute !important;
+  left:50% !important;
+  bottom:16px !important;
+  transform:translateX(-50%) !important;
+  width:auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:4px 8px !important;
+  margin:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  color:#aeb5bd !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  font-size:.68rem !important;
+  font-weight:500 !important;
+  opacity:.72 !important;
+}
+.login-install-btn:active{
+  color:#8f98a2 !important;
+  background:transparent !important;
+}
+@media(max-width:360px){
+  .my-business-card-btn{font-size:.60rem !important;padding:4px 7px !important;}
+  .app-footer{padding-bottom:24px;}
+  .login-install-btn{bottom:12px !important;font-size:.64rem !important;}
+}
+</style>
+
+<style id="header-welcome-style">
+/* 모바일 헤더 좌측 3줄 초소형 환영 메시지 */
+.header-welcome{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:112px;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  line-height:1.05;
+  text-align:left;
+  pointer-events:none;
+  z-index:2;
+  overflow:hidden;
+}
+.header-welcome .welcome-line{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  letter-spacing:-.045em;
+}
+.header-welcome .welcome-name{
+  color:#526274;
+  font-size:.48rem;
+  font-weight:750;
+}
+.header-welcome .welcome-position{
+  color:#7d8996;
+  font-size:.43rem;
+  font-weight:600;
+  margin-top:1px;
+}
+.header-welcome .welcome-message{
+  color:#9aa4ae;
+  font-size:.43rem;
+  font-weight:500;
+  margin-top:2px;
+}
+@media(max-width:360px){
+  .header-welcome{left:10px;width:103px;}
+  .header-welcome .welcome-name{font-size:.45rem;}
+  .header-welcome .welcome-position,.header-welcome .welcome-message{font-size:.40rem;}
+}
+</style>
+<style id="final-user-request-refinement">
+/* 2026-09-18: 환영 문구 확대 / 이름+직위 / 줄간격 */
+.header-welcome{
+  width:150px !important;
+  line-height:1.15 !important;
+}
+.header-welcome .welcome-name{
+  font-size:.86rem !important;
+  font-weight:850 !important;
+  letter-spacing:-.055em !important;
+  color:#173f70 !important;
+}
+.header-welcome .welcome-position{
+  display:none !important;
+}
+.header-welcome .welcome-message{
+  font-size:.72rem !important;
+  font-weight:650 !important;
+  margin-top:8px !important;
+  line-height:1.25 !important;
+  letter-spacing:-.045em !important;
+  color:#65788e !important;
+}
+/* 코다피플 페이지: 세로 스크롤은 유지하되 스크롤바만 숨김 */
+#staffScreen{
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+}
+#staffScreen::-webkit-scrollbar{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
+/* 사무국 회의 자료 5개 탭 높이를 코다피플 5개 탭과 동일하게 */
+#meetingScreen #meetingTabs .month-tab{
+  height:42px !important;
+  min-height:42px !important;
+  padding:0 3px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+@media(max-width:360px){
+  .header-welcome{
+    left:10px !important;
+    width:125px !important;
+  }
+  .header-welcome .welcome-name{font-size:.76rem !important;}
+  .header-welcome .welcome-message{font-size:.64rem !important;margin-top:7px !important;}
+  #meetingScreen #meetingTabs .month-tab{
+    height:39px !important;
+    min-height:39px !important;
+    font-size:.77rem !important;
+  }
+}
+</style>
+<style id="welcome-final-refinement">
+/* 2026-09-18: 환영영역 10% 축소 / 메시지 2줄 고정 / KODA 로고 방향 침범 방지 */
+.header-welcome{
+  width:105px !important;
+  max-width:105px !important;
+  left:10px !important;
+  right:auto !important;
+  overflow:hidden !important;
+}
+.header-welcome .welcome-name{
+  font-size:.774rem !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+}
+.header-welcome .welcome-message{
+  width:100% !important;
+  max-width:100% !important;
+  font-size:.648rem !important;
+  margin-top:8px !important;
+  line-height:1.3 !important;
+  white-space:normal !important;
+  overflow:hidden !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  line-clamp:2 !important;
+  word-break:keep-all !important;
+}
+@media(max-width:360px){
+  .header-welcome{
+    width:95px !important;
+    max-width:95px !important;
+    left:8px !important;
+  }
+  .header-welcome .welcome-name{font-size:.684rem !important;}
+  .header-welcome .welcome-message{
+    font-size:.576rem !important;
+    margin-top:7px !important;
+  }
 }
 </style>
 </head>
@@ -2842,17 +3146,20 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     <div class="login-error" id="loginError"></div>
   </div>
+  <button type="button" id="installBtn" class="install-btn login-install-btn" style="display: none;">앱설치</button>
 </div>
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <div class="header-left">
-      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함 보기</button>
+    <div class="header-welcome" id="headerWelcome" aria-label="환영 메시지">
+      <span class="welcome-line welcome-name" id="welcomeName"></span>
+      <span class="welcome-line welcome-position" id="welcomePosition"></span>
+      <span class="welcome-line welcome-message" id="welcomeMessage"></span>
     </div>
+    <div class="header-spacer" aria-hidden="true"></div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
-      <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
-      <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
+      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함</button>
     </div>
   </div>
 
@@ -2953,12 +3260,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">코다자료</span>
     </button>
 
-    <!-- 7. 준비중 -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
-      <span class="quick-icon" style="background:#f7fafc;">
-        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
+    <!-- 7. 나의 명함 -->
+    <button class="quick-btn" type="button" onclick="openMyBusinessCard()" aria-label="나의 명함">
+      <span class="quick-icon" style="background:#fff;">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <rect x="7" y="12" width="38" height="28" rx="6" fill="#1769d2"/>
+          <rect x="11" y="16" width="30" height="20" rx="3" fill="#fff"/>
+          <circle cx="18" cy="24" r="3.2" fill="#1769d2"/>
+          <path d="M14 32c.8-3.1 2.6-4.6 5-4.6s4.2 1.5 5 4.6H14zm13-8h11v2.5H27zm0 5h9v2.5h-9z" fill="#1769d2"/>
+        </svg>
       </span>
-      <span class="quick-label">준비중</span>
+      <span class="quick-label">나의 명함</span>
     </button>
 
     <!-- 8. 준비중 -->
@@ -3011,6 +3323,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="schedule-container" id="scheduleContainer">
     <div class="loading-msg">최신 일정을 불러오는 중입니다...⏳</div>
+  </div>
+
+  <div class="app-footer">
+    <button type="button" id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
   </div>
 </div>
 
@@ -3142,12 +3458,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="meetingScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeMeetingScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">KODA 회의 및 동향 자료</div>
+    <div class="fullscreen-title">사무국 회의 자료</div>
   </div>
 
   <div class="fullscreen-tabs" id="meetingTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterMeeting('전체')">전체</button>
-    <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국 회의</button>
+    <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국회의</button>
     <button class="month-tab" data-cat="임원회의" onclick="filterMeeting('임원회의')">임원회의</button>
     <button class="month-tab" data-cat="일일동향" onclick="filterMeeting('일일동향')">일일동향</button>
     <button class="month-tab" data-cat="기타자료" onclick="filterMeeting('기타자료')">기타자료</button>
@@ -3193,8 +3509,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <img id="businessCardPreview" class="business-card-preview" src="" alt="나의 KODA 명함">
     </div>
     <div class="business-card-actions">
-      <button type="button" class="business-card-save-btn" onclick="saveMyBusinessCard()">명함 JPG 저장</button>
-      <button type="button" class="business-card-share-btn" onclick="shareMyBusinessCard()">갤러리/공유</button>
+      <button type="button" class="business-card-save-btn" onclick="saveMyBusinessCard()">갤러리 저장하기</button>
+      <button type="button" class="business-card-share-btn" onclick="shareMyBusinessCard()">공유하기</button>
+      <button type="button" class="business-card-qr-btn" onclick="showMyBusinessCardQR()">QR로 보기</button>
+    </div>
+    <div class="business-card-qr-area" id="businessCardQRArea" style="display:none;">
+      <div class="business-card-qr-title">상대방 카메라로 QR을 비춰주세요</div>
+      <div id="businessCardQR"></div>
+      <div class="business-card-qr-url-help">스캔하면 이 명함 이미지가 바로 표시됩니다.</div>
     </div>
     <div class="business-card-help" id="businessCardHelp">휴대폰에서는 ‘갤러리/공유’를 누른 후 사진 앱에 저장할 수 있습니다.</div>
     <div class="business-card-status" id="businessCardStatus"></div>
@@ -3396,6 +3718,72 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return membersData.some(m => m.name === normName && m.phone === normPhone);
   }
 
+  /* ===== 로그인 사용자 환영 메시지 ===== */
+  const WELCOME_MESSAGES = [
+    '오늘도 행복한 하루 보내세요~! 😊',
+    '오늘도 좋은 하루 보내세요~! ☀️',
+    '오늘도 웃음 가득한 하루 되세요~! 😄',
+    '오늘도 힘차게 시작해보세요~! 💙',
+    '오늘도 멋진 하루 보내세요~! ✨',
+    '기분 좋은 하루 보내세요~! 😊',
+    '오늘도 건강하고 행복하세요~! 🌿',
+    '오늘도 좋은 일만 가득하세요~! 🍀',
+    '오늘도 힘내세요~! 💪',
+    '오늘도 여유롭고 행복하게 보내세요~! 🌸',
+    '새로운 하루, 좋은 하루 되세요~! ☀️',
+    '오늘도 활기찬 하루 보내세요~! 🌈',
+    '웃음 가득한 하루 보내세요~! 😄',
+    '오늘도 반가운 하루 되세요~! 💙',
+    '오늘도 평안하고 행복하세요~! 🌷'
+  ];
+
+  function getTodayWelcomeMessage(){
+    const now = new Date();
+    const key = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86400000);
+    return WELCOME_MESSAGES[((key % WELCOME_MESSAGES.length) + WELCOME_MESSAGES.length) % WELCOME_MESSAGES.length];
+  }
+
+  function findLoggedInStaff(name, phone){
+    const n = String(name || '').trim();
+    const p = normalizePhone(phone);
+    if (!Array.isArray(staffData)) return null;
+    return staffData.find(item => String(item.name || '').trim() === n && normalizePhone(item.phone || item.contact || '') === p)
+      || staffData.find(item => String(item.name || '').trim() === n)
+      || null;
+  }
+
+  function renderHeaderWelcome(){
+    const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+    const nameEl = document.getElementById('welcomeName');
+    const posEl = document.getElementById('welcomePosition');
+    const msgEl = document.getElementById('welcomeMessage');
+    if (!nameEl || !posEl || !msgEl || !saved) return;
+
+    const person = findLoggedInStaff(saved.name, saved.phone);
+    const rawPosition = person && (person.pos || person.position) ? String(person.pos || person.position).trim() : '';
+    const normalizedPosition = stripAssociationWord(rawPosition);
+    const roleMap = [
+      { label:'전무', match:['전무'] },
+      { label:'실장', match:['기획운영실장','정책연구실장','실장'] },
+      { label:'팀장', match:['팀장'] },
+      { label:'파트장', match:['파트장'] },
+      { label:'대리', match:['대리'] },
+      { label:'책임연구원', match:['책임연구원'] }
+    ];
+    const role = roleMap.find(group =>
+      group.match.some(m => normalizeStaffText(normalizedPosition).includes(normalizeStaffText(m)))
+    )?.label || normalizedPosition || '';
+    nameEl.textContent = saved.name ? `${saved.name}${role ? ' ' + role : ''}님,` : '';
+    // 환영 문구는 6~7자 정도씩 끊어 정확히 2줄로 표시
+    const welcomeText = getTodayWelcomeMessage();
+    const cleanWelcomeText = String(welcomeText || '').trim();
+    const firstLine = cleanWelcomeText.slice(0, 7);
+    const secondLine = cleanWelcomeText.slice(7);
+    msgEl.innerHTML = secondLine
+      ? `${firstLine}<br>${secondLine}`
+      : firstLine;
+  }
+
   window.attemptLogin = async function() {
     const nameInput = document.getElementById('loginName');
     const phoneInput = document.getElementById('loginPhone');
@@ -3429,9 +3817,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
+    renderHeaderWelcome();
     loadData();
-    // 명함 버튼을 누르기 전에 시트4(임직원 정보)를 미리 준비합니다.
-    ensureBusinessCardStaffData().catch(()=>{});
+    // 시트4의 직위까지 확인한 뒤 환영 메시지를 한 번 더 갱신합니다.
+    ensureBusinessCardStaffData().then(() => renderHeaderWelcome()).catch(() => renderHeaderWelcome());
   }
 
   window.logoutUser = function() {
@@ -3468,12 +3857,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
       koda: headers.indexOf("KODA"),
-      phone: headers.indexOf("연락처") !== -1 ? headers.indexOf("연락처") : 7,
-      fax: headers.indexOf("팩스번호") !== -1 ? headers.indexOf("팩스번호") : 8,
-      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 9,
+      // 시트4 고정 열 기준: H=전화번호, I=팩스번호, J=연락처
+      phone: 7,
+      fax: 8,
+      contact: 9,
+      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : -1,
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, email: 9, note: 10 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, contact: 9, email: 10, note: 11 };
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -3487,8 +3878,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
         position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
-        phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
-        fax: idx.fax !== -1 && r[idx.fax] ? r[idx.fax].trim() : "",
+        phone: r.length > 7 && r[7] ? r[7].trim() : "",
+        fax: r.length > 8 && r[8] ? r[8].trim() : "",
+        contact: r.length > 9 && r[9] ? r[9].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
@@ -3539,7 +3931,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const authPhone = normalizePhone(auth.phone || '');
     return (staffData || []).find(item =>
       String(item.name || '').trim() === authName &&
-      normalizePhone(item.phone || '') === authPhone
+      normalizePhone(item.contact || '') === authPhone // 일치 여부를 J열(연락처)과 대조하도록 변경
     ) || null;
   }
 
@@ -3589,8 +3981,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const name=String(data.name || '').trim();
     const affiliation=String(data.affiliation || '').trim();
     const position=String(data.position || '').trim();
+    // 명함 표시용: T=시트4 H열 전화번호 / F=시트4 I열 팩스번호 / M=시트4 J열 연락처
     const phone=formatBusinessCardPhone(data.phone);
     const fax=formatBusinessCardPhone(data.fax);
+    const contact=formatBusinessCardPhone(data.contact);
     const email=String(data.email || '').trim();
 
     // KODA 로고 아래에서 이름까지의 세로 여백을 한 단계 더 확대
@@ -3623,9 +4017,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     ctx.fillStyle=dark;
     ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText(officePhone || '-',175,665);
-    ctx.fillText(officeFax || '-',175,730);
-    ctx.fillText(phone || '-',552,665);
+    ctx.fillText(officePhone || '-',175,665);  // T. = H열 전화번호
+    ctx.fillText(officeFax || '-',175,730);    // F. = I열 팩스번호
+    ctx.fillText(contact || '-',552,665);      // M. = J열 연락처
     ctx.fillText(email || '-',552,730);
 
     ctx.fillStyle=blue;
@@ -3713,6 +4107,132 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
     if(status) status.textContent='이미지를 길게 눌러 사진/갤러리에 저장해주세요.';
   };
+
+
+  // ===== 나의 명함 QR 보기 =====
+  let businessCardQRScriptPromise = null;
+
+  function loadBusinessCardQRLibrary() {
+    if (window.QRCode) return Promise.resolve();
+    if (businessCardQRScriptPromise) return businessCardQRScriptPromise;
+    businessCardQRScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('QR 라이브러리를 불러오지 못했습니다.'));
+      document.head.appendChild(script);
+    });
+    return businessCardQRScriptPromise;
+  }
+
+  function encodeBusinessCardForQR(data) {
+    const payload = {
+      n: String(data.name || ''),
+      a: String(data.affiliation || ''),
+      p: String(data.position || ''),
+      t: String(data.phone || ''),
+      f: String(data.fax || ''),
+      m: String(data.contact || ''),
+      e: String(data.email || '')
+    };
+    const bytes = new TextEncoder().encode(JSON.stringify(payload));
+    let binary = '';
+    bytes.forEach(b => binary += String.fromCharCode(b));
+    return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+
+  function decodeBusinessCardFromQR(encoded) {
+    try {
+      const base64 = encoded.replace(/-/g,'+').replace(/_/g,'/');
+      const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+      const binary = atob(padded);
+      const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+      const payload = JSON.parse(new TextDecoder().decode(bytes));
+      return {
+        name: payload.n || '',
+        affiliation: payload.a || '',
+        position: payload.p || '',
+        phone: payload.t || '',
+        fax: payload.f || '',
+        contact: payload.m || '',
+        email: payload.e || ''
+      };
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function businessCardQRShareURL(data) {
+    const base = window.location.href.split('#')[0].split('?')[0];
+    return base + '?koda_card=' + encodeURIComponent(encodeBusinessCardForQR(data));
+  }
+
+  window.showMyBusinessCardQR = async function() {
+    const area = document.getElementById('businessCardQRArea');
+    const qrBox = document.getElementById('businessCardQR');
+    const status = document.getElementById('businessCardStatus');
+    if (!area || !qrBox || !myBusinessCardData) return;
+
+    area.style.display = 'block';
+    qrBox.innerHTML = '<div style="font-size:.7rem;color:#7b8da3;padding:50px 0;">QR 생성 중...</div>';
+
+    try {
+      await loadBusinessCardQRLibrary();
+      qrBox.innerHTML = '';
+      const url = businessCardQRShareURL(myBusinessCardData);
+      new QRCode(qrBox, {
+        text: url,
+        width: 160,
+        height: 160,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      if (status) status.textContent = 'QR을 상대방 카메라로 비추면 명함 이미지가 표시됩니다.';
+    } catch(e) {
+      qrBox.innerHTML = '<div style="font-size:.7rem;color:#d33;padding:50px 0;">QR을 생성하지 못했습니다. 인터넷 연결을 확인해주세요.</div>';
+      if (status) status.textContent = '';
+      console.error('business card QR error', e);
+    }
+  };
+
+  function openScannedBusinessCard(encoded) {
+    const data = decodeBusinessCardFromQR(encoded);
+    if (!data) return;
+
+    // 로그인하지 않은 상대방도 QR 스캔만으로 명함 이미지를 볼 수 있도록
+    // 동일한 명함 생성 함수를 사용해 원본과 같은 JPG를 다시 생성합니다.
+    const viewer = document.createElement('div');
+    viewer.id = 'scannedBusinessCardViewer';
+    viewer.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#eef3f8;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;';
+    viewer.innerHTML = `
+      <div style="width:min(100%,520px);max-height:94vh;overflow:auto;background:#fff;border-radius:16px;padding:14px;box-shadow:0 16px 50px rgba(0,0,0,.22);box-sizing:border-box;text-align:center;">
+        <div style="font-size:1rem;font-weight:850;color:#173f70;margin:3px 0 12px;">KODA 명함</div>
+        <div id="scannedBusinessCardImageArea" style="background:#fff;"></div>
+        <div style="margin-top:10px;font-size:.68rem;color:#8190a2;">명함 이미지를 길게 누르면 사진에 저장할 수 있습니다.</div>
+      </div>`;
+    document.body.appendChild(viewer);
+
+    createBusinessCardJpg(data).then(jpg => {
+      const area = document.getElementById('scannedBusinessCardImageArea');
+      if (area) {
+        area.innerHTML = `<img src="${jpg}" alt="KODA 명함" style="display:block;width:100%;height:auto;border-radius:3px;">`;
+      }
+    }).catch(() => {
+      viewer.remove();
+    });
+  }
+
+  // QR 스캔으로 현재 페이지가 열렸다면 로그인 절차와 무관하게 명함만 표시
+  (function checkBusinessCardQRRoute() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('koda_card');
+    if (!encoded) return;
+    const start = () => openScannedBusinessCard(encoded);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start, {once:true});
+    } else {
+      setTimeout(start, 0);
+    }
+  })();
 
   let currentStaffCategory = '사무국';
 
