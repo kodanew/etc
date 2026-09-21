@@ -68,10 +68,7 @@
 
   /* 헤더 영역 */
   .header {
-    background:
-      radial-gradient(ellipse at 18% 30%, rgba(115, 170, 225, 0.16) 0%, rgba(115, 170, 225, 0) 46%),
-      radial-gradient(ellipse at 82% 68%, rgba(180, 195, 210, 0.18) 0%, rgba(180, 195, 210, 0) 48%),
-      linear-gradient(135deg, #f7fafc 0%, #edf3f8 45%, #f9fbfd 100%);
+    background-color: transparent;
     padding: 10px 12px;
     text-align: center;
     display: flex;
@@ -79,48 +76,6 @@
     align-items: center;
     position: relative;
     width: 100%;
-    min-height: 46px;
-    overflow: hidden;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(103, 143, 177, 0.16);
-  }
-
-  /* 헤더 전체에 은은한 푸른 물결/실버 은하수 느낌 */
-  .header::before {
-    content: "";
-    position: absolute;
-    left: -18%;
-    top: -75%;
-    width: 136%;
-    height: 210%;
-    border-radius: 50%;
-    background:
-      linear-gradient(105deg,
-        transparent 35%,
-        rgba(87, 148, 205, 0.08) 43%,
-        rgba(255, 255, 255, 0.32) 48%,
-        rgba(112, 164, 210, 0.10) 53%,
-        transparent 62%);
-    transform: rotate(-5deg);
-    pointer-events: none;
-  }
-
-  .header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 14% 42%, rgba(255,255,255,.72) 0 1px, transparent 1.5px),
-      radial-gradient(circle at 31% 68%, rgba(104,151,193,.22) 0 1px, transparent 1.5px),
-      radial-gradient(circle at 67% 25%, rgba(255,255,255,.75) 0 1px, transparent 1.5px),
-      radial-gradient(circle at 86% 58%, rgba(104,151,193,.18) 0 1px, transparent 1.5px);
-    opacity: .65;
-    pointer-events: none;
-  }
-
-  .header > * {
-    position: relative;
-    z-index: 1;
   }
   .header img {
     height: 26px; 
@@ -1781,6 +1736,143 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 
+
+/* 2026-09-20: 긴급공지 + 정부국회 페이지 */
+.emergency-notice-wrap{
+  width:calc(100% - 20px);
+  margin:0 10px 10px;
+  display:none;
+}
+.emergency-notice{
+  position:relative;
+  width:100%;
+  height:40px;
+  border:2px solid transparent;
+  border-radius:12px;
+  background:
+    linear-gradient(#f1f3f5,#f1f3f5) padding-box,
+    linear-gradient(90deg,#c62828 0%,#8b4513 52%,#c62828 100%) border-box;
+  box-shadow:0 4px 12px rgba(90,45,20,.08);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  overflow:hidden;
+}
+.emergency-icon{font-size:.9rem;flex:0 0 auto;line-height:1;}
+.emergency-badge{
+  flex:0 0 auto;
+  padding:4px 8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#c62828,#8b4513);
+  color:#fff;
+  font-size:.68rem;
+  font-weight:850;
+  line-height:1;
+  white-space:nowrap;
+}
+.emergency-marquee{
+  min-width:0;
+  flex:1 1 auto;
+  overflow:hidden;
+  white-space:nowrap;
+  color:#9b321e;
+  font-size:.84rem;
+  font-weight:800;
+  letter-spacing:-.035em;
+}
+.emergency-badge,
+.emergency-marquee{align-self:center;}
+.emergency-marquee-inner{
+  display:inline-block;
+  padding-left:100%;
+  animation:emergencyMarquee 15s linear infinite;
+}
+.emergency-marquee-inner.no-marquee{
+  padding-left:0;
+  animation:none;
+}
+@keyframes emergencyMarquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
+}
+
+
+/* 2026-09-21: 직원공지 GIF 1행 2열 */
+.employee-gif-notice-wrap{width:calc(100% - 20px);margin:0 10px 12px;display:none;}
+.employee-gif-notice-heading{display:flex;align-items:center;justify-content:space-between;padding:0 4px 7px;}
+.employee-gif-notice-heading .title{font-size:1rem;font-weight:850;color:#1a202c;letter-spacing:-.04em;}
+.employee-gif-notice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
+.employee-gif-notice-card{min-width:0;border:0;background:#fff;padding:0;margin:0;text-align:left;cursor:pointer;overflow:hidden;}
+.employee-gif-notice-badge{display:block;width:100%;padding:0 2px 5px;color:#718096;font-size:.62rem;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid #dfe6ee;margin-bottom:6px;}
+.employee-gif-notice-media{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;border-radius:8px;background:#eef2f6;border:1px solid #e3e9f1;}
+.employee-gif-notice-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:6px;padding:0 2px;color:#1a202c;font-size:.76rem;font-weight:800;line-height:1.35;word-break:keep-all;}
+.employee-gif-notice-card:active .employee-gif-notice-media{transform:scale(.985);}
+@media(max-width:360px){.employee-gif-notice-grid{gap:6px;}.employee-gif-notice-title{font-size:.7rem;}}
+
+/* 정부·국회 화면 */
+#govAssemblyScreen{background:#f4f7fb;}
+#govAssemblyScreen .govasm-header{
+  width:100%;max-width:430px;margin:0 auto;height:54px;
+  position:sticky;top:0;z-index:30;background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;padding:0 12px;
+}
+#govAssemblyScreen .govasm-back{
+  width:42px;height:42px;min-height:42px;padding:0;border:0;border-radius:14px;
+  background:#f1f6fd;color:#1769d2;font-size:1.55rem;font-weight:700;line-height:1;
+}
+#govAssemblyScreen .govasm-title{
+  text-align:center;color:#173f70;font-size:1.12rem;font-weight:850;
+  letter-spacing:-.045em;white-space:nowrap;
+}
+.govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
+.govasm-section{margin-bottom:16px;}
+.govasm-section:last-child{margin-bottom:0;}
+.govasm-section-head{
+  display:flex;align-items:center;width:100%;gap:9px;
+}
+.govasm-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;
+  font-size:.82rem;font-weight:850;padding:5px 10px;border-radius:6px;
+  margin:0;letter-spacing:-.035em;line-height:1.15;
+}
+.govasm-divider{
+  flex:1;height:1.5px;background:#d9e6f4;margin:0;
+}
+.govasm-divider.gov-divider{background:#1769d2;}
+.govasm-divider.assembly-divider{background:#64748b;}
+.govasm-divider.law-divider{background:#7b8794;}
+.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
+.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
+.govasm-badge.law{background:#eef1f4;color:#586474;}
+
+.govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.govasm-card{
+  min-width:0;height:72px;border:1.5px solid #dce6f2;border-radius:13px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  text-align:center;text-decoration:none;color:#27415f;
+  font-size:.96rem;font-weight:800;letter-spacing:-.045em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05);
+  transition:transform .12s,box-shadow .12s,background .12s;
+}
+.govasm-card:active{transform:scale(.97);background:#f8fbff;}
+.govasm-card.gov-card{border:1.5px solid #1769d2;}
+.govasm-card.assembly-card{border:1.5px solid #64748b;}
+.govasm-card.law-card{border:1.5px solid #7b8794;}
+.govasm-section-title{display:none;}
+@media(max-width:360px){
+  .emergency-notice{height:38px;padding:0 8px;gap:5px;}
+  .emergency-marquee{font-size:.88rem;}
+  .emergency-badge{font-size:.68rem;padding:4px 8px;}
+  .govasm-content{padding:10px 10px 20px;}
+  .govasm-grid{gap:6px;}
+  .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
+}
+
 </style>
 
 <style id="final-staff-header-fixes">
@@ -2247,6 +2339,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
       border-radius: 6px 0 10px 0; 
     }
   }
+</style>
+<style id="card-next-badge-style">
+  .card-next-badge {
+    position:absolute; bottom:0; right:0; background:#1769d2; color:#fff;
+    font-size:.55rem; font-weight:800; padding:3px 7px;
+    border-radius:8px 0 8px 0; z-index:5; line-height:1.1; pointer-events:none;
+    box-shadow:-1px -1px 4px rgba(23,105,210,.15);
+  }
+  @media(max-width:360px){.card-next-badge{font-size:.5rem;padding:2px 5px;border-radius:6px 0 10px 0;}}
 </style>
 
 <style id="news-screen-staff-style-match">
@@ -2774,6 +2875,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+<style id="date-title-layout-20260921">
+/* 협회공지: 뱃지와 날짜를 같은 줄, 제목은 다음 줄에서 뱃지 시작점과 정렬 */
+#newsList .news-card-item{display:block!important;}
+#newsList .news-meta-row{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;gap:8px!important;min-width:0!important;}
+#newsList .news-meta-row .news-badge{margin-right:0!important;flex:0 0 auto!important;white-space:nowrap!important;}
+#newsList .news-date-text{margin-left:auto!important;white-space:nowrap!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;font-weight:600!important;}
+#newsList .news-title-text{display:block!important;width:100%!important;margin-top:5px!important;min-width:0!important;padding:0!important;overflow-wrap:anywhere!important;word-break:keep-all!important;text-align:left!important;font-size:.82rem!important;line-height:1.35!important;font-weight:700!important;color:var(--text-dark)!important;}
+/* 코다자료: 등록일자 문구 없이 날짜만 표시 */
+#meetingScreen .meeting-card-meta{margin:5px 0 0!important;white-space:nowrap!important;text-align:right!important;align-self:start!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;}
+</style>
+
 <style id="koda-business-card-ui">
 /* ===== 나의 명함 ===== */
 .app-container > .header{
@@ -2851,23 +2963,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
   background:#fff; border-radius:3px; box-shadow:0 9px 24px rgba(17,49,87,.18);
 }
 .business-card-actions{
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:12px;
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;
 }
 .business-card-actions button{
-  min-height:44px; border:0; border-radius:10px; font-size:.76rem; font-weight:800;
-  cursor:pointer; white-space:nowrap;
+  min-height:44px; border:0; border-radius:10px; font-size:.78rem; font-weight:800;
+  cursor:pointer;
 }
 .business-card-save-btn{background:#1769d2;color:#fff;}
 .business-card-share-btn{background:#fff;color:#1769d2;border:1px solid #d5e2f1 !important;}
-.business-card-qr-btn{background:#eef5ff;color:#1769d2;border:1px solid #bcd4f2 !important;}
-.business-card-qr-area{
-  margin-top:12px; padding:13px 10px 11px; background:#fff; border:1px solid #dce7f3;
-  border-radius:12px; text-align:center;
-}
-.business-card-qr-title{font-size:.74rem;font-weight:800;color:#31577f;margin-bottom:9px;}
-#businessCardQR{display:flex;justify-content:center;align-items:center;min-height:160px;}
-#businessCardQR img,#businessCardQR canvas{display:block!important;width:160px!important;height:160px!important;}
-.business-card-qr-url-help{margin-top:8px;font-size:.64rem;color:#7b8da3;line-height:1.35;}
 .business-card-help{
   margin-top:9px; text-align:center; font-size:.67rem; line-height:1.4; color:#7b8da3;
 }
@@ -2878,10 +2981,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .my-business-card-btn{font-size:.60rem;padding:4px 6px;}
   .business-card-overlay{padding:10px;}
   .business-card-modal{padding:15px 10px 12px;}
-  .business-card-actions{grid-template-columns:1fr 1fr 1fr;gap:5px;}
-  .business-card-actions button{font-size:.67rem;padding:0 3px;}
-  #businessCardQR{min-height:145px;}
-  #businessCardQR img,#businessCardQR canvas{width:145px!important;height:145px!important;}
 }
 </style>
 
@@ -3130,6 +3229,117 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 </style>
+<style id="holiday-card-fix">
+.today-weather{cursor:pointer;user-select:none;}
+.today-weather:active{transform:scale(.98);}
+.calendar-holiday{font-size:.52rem;line-height:1.05;font-weight:650;color:#e05a63;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.business-card-actions{grid-template-columns:1fr 1fr;}
+.business-card-qr-btn{grid-column:1 / -1 !important;background:#173f70 !important;color:#fff !important;}
+.business-card-qr-image{width:220px;height:220px;display:block;background:#fff;border-radius:14px;padding:8px;box-sizing:border-box;box-shadow:0 8px 24px rgba(17,49,87,.14);}
+.qr-preview-wrap{display:flex;align-items:center;justify-content:center;padding:10px 0 4px;}
+.qr-name{text-align:center;color:#173f70;font-size:.88rem;font-weight:850;margin-top:8px;}
+.qr-actions{margin-top:10px;}
+.shared-business-card-mode{margin:0!important;background:#f4f7fb!important;}
+#sharedBusinessCardPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+.shared-card-inner{width:min(100%,520px);text-align:center;background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;box-shadow:0 14px 45px rgba(17,49,87,.13);}
+.shared-card-title{font-size:1.05rem;font-weight:900;color:#173f70;margin-bottom:14px;}
+.shared-card-image{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 7px 20px rgba(17,49,87,.15);}
+.shared-card-save{width:100%;margin-top:14px;min-height:48px;border:0;border-radius:12px;background:#1769d2;color:#fff;font-size:.9rem;font-weight:850;cursor:pointer;}
+.shared-card-tip{margin-top:10px;font-size:.68rem;line-height:1.45;color:#7b8da3;}
+</style>
+
+<style id="final-request-20260921">
+/* 2026-09-21 최종 UI 수정 */
+.emergency-notice{gap:8px;}
+.emergency-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1.15;
+}
+.emergency-marquee{
+  display:flex;
+  align-items:center;
+  height:100%;
+  font-size:.90rem;
+  line-height:1.15;
+}
+.emergency-badge,
+.emergency-marquee{align-self:center;}
+.emergency-marquee-inner{
+  line-height:1.15;
+}
+
+/* 국토교통부·국회: 법제처와 동일하게 뱃지 오른쪽에 구분선 */
+.govasm-section-head{
+  display:flex;
+  align-items:center;
+  width:100%;
+  gap:9px;
+}
+.govasm-section-head .govasm-divider{
+  flex:1;
+  height:1.5px;
+  margin:0;
+}
+/* 뱃지와 버튼 사이를 한 줄 정도 띄움 */
+.govasm-section .govasm-grid{
+  margin-top:12px;
+}
+
+/* 법제처: 뱃지/글씨/버튼 테두리 모두 짙은 초록색 */
+.govasm-badge.law{
+  background:#eef6ef;
+  color:#166534;
+}
+.govasm-divider.law-divider{
+  background:#166534;
+}
+.govasm-card.law-card{
+  border-color:#166534;
+  color:#166534;
+}
+.govasm-card.law-card:active{
+  background:#f3faf4;
+}
+
+/* 국토교통부: 6개 버튼을 뱃지와 같은 푸른색으로 */
+.govasm-badge.gov{color:#1769d2;}
+.govasm-divider.gov-divider{background:#1769d2;}
+.govasm-card.gov-card{
+  border-color:#1769d2;
+  color:#1769d2;
+}
+.govasm-card.gov-card:active{background:#f2f7ff;}
+
+/* NEXT 일정도 TODAY처럼 일정 카드 전체에 푸른색 테두리 */
+.event-card.next-card{
+  border:2.5px solid #1769d2;
+}
+</style>
+
+
+<style id="quick-icon-size-up-20260921">
+  /* 요청: 지정된 주요 퀵버튼 이모티콘 1사이즈 확대 */
+  .quick-btn[aria-label="협회공지"] .quick-icon svg,
+  .quick-btn[aria-label="코다피플"] .quick-icon svg,
+  .quick-btn[aria-label="코다자료"] .quick-icon svg,
+  .quick-btn[aria-label="KODA-TV"] .quick-icon svg,
+  .quick-btn[aria-label="코다기사"] .quick-icon svg,
+  .quick-btn[aria-label="정부국회"] .quick-icon svg,
+  .quick-btn[aria-label="관심일정"] .quick-icon svg{
+    width:39px !important;
+    height:39px !important;
+  }
+  /* 코다자료 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
+  .quick-menu-container .quick-btn[aria-label="코다자료"]{
+    transform:translateY(-1px)!important;
+  }
+  /* 관심일정 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
+  .quick-menu-container .quick-btn[aria-label="관심일정"]{
+    transform:translateY(1px)!important;
+  }
+</style>
 </head>
 <body>
 
@@ -3168,7 +3378,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="today-date" id="todayDateDisplay"></span>
       <span class="today-weekday" id="todayWeekdayDisplay"></span>
     </div>
-    <div class="today-weather" id="todayWeatherDisplay">
+    <div class="today-weather" id="todayWeatherDisplay" role="button" tabindex="0" onclick="openNaverWeather()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNaverWeather();}">
       <span class="today-weather-icon">☁️</span><span>날씨 확인 중</span>
     </div>
   </div>
@@ -3177,6 +3387,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="schedule-banner-track" id="scheduleBannerTrack"></div>
     <div class="banner-dots" id="bannerDots"></div>
     <button type="button" class="banner-pause-btn" id="bannerPauseBtn" onclick="toggleBannerPause()" aria-label="배너 자동 넘김 일시정지">Ⅱ</button>
+  </section>
+
+  <!-- 구글 시트6 B2가 "중요공지"일 때만 표시되는 긴급공지 -->
+  <div class="emergency-notice-wrap" id="emergencyNoticeWrap">
+    <div class="emergency-notice" role="status" aria-live="polite">
+      <span class="emergency-badge" id="emergencyNoticeBadge"></span>
+      <div class="emergency-marquee" id="emergencyNoticeMarquee">
+        <span class="emergency-marquee-inner" id="emergencyNoticeText"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 직원공지: Sheet6 G열 GIF + H열 제목, 상단 2개만 1행 2열로 표시 -->
+  <section class="employee-gif-notice-wrap" id="employeeGifNoticeWrap" aria-label="직원공지">
+    <div class="employee-gif-notice-heading"><span class="title">직원공지</span></div>
+    <div class="employee-gif-notice-grid" id="employeeGifNoticeGrid"></div>
   </section>
 
   <div class="calendar-wrapper" id="calendarWrapper">
@@ -3210,7 +3437,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">협회공지</span>
     </button>
 
-    <!-- 3. 임직원현황 -->
+    <!-- 3. 코다피플 -->
     <button class="quick-btn" onclick="openStaffScreen()">
       <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
@@ -3221,20 +3448,22 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">코다피플</span>
     </button>
 
-    <!-- 4. 언론보도 -->
-    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C"
-       target="_blank" class="quick-btn">
-      <span class="quick-icon">
+    <!-- 4. 코다자료 -->
+    <button class="quick-btn" onclick="openMeetingScreen()" aria-label="코다자료">
+      <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
-          <path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/>
+          <!-- 심플한 2단 서랍장: 각 서랍의 세로폭을 넉넉하게 -->
+          <rect x="8" y="8" width="36" height="15" rx="3" fill="#8b5cf6"/>
+          <rect x="8" y="27" width="36" height="15" rx="3" fill="#8b5cf6"/>
+          <rect x="21" y="14" width="10" height="3" rx="1.5" fill="#fff"/>
+          <rect x="21" y="33" width="10" height="3" rx="1.5" fill="#fff"/>
         </svg>
       </span>
-      <span class="quick-label">언론보도</span>
-    </a>
+      <span class="quick-label">코다자료</span>
+    </button>
 
     <!-- 5. KODA-TV -->
-    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn" aria-label="KODA-TV">
       <span class="quick-icon">
         <svg viewBox="0 0 64 44" aria-hidden="true">
           <rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/>
@@ -3246,68 +3475,49 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="sub-menu-container">
-    <!-- 6. 회의자료 -->
-    <button class="quick-btn" onclick="openMeetingScreen()" aria-label="회의자료">
-      <span class="quick-icon" style="background:#fff;">
+    <!-- 6. 코다기사 -->
+    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C"
+       target="_blank" class="quick-btn" aria-label="코다기사">
+      <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <path d="M8 35h36v5H8z" fill="#173f70"/>
-          <path d="M12 31h28v4H12z" fill="#173f70"/>
-          <path d="M15 10h22c1.7 0 3 1.3 3 3v14H12V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
-          <path d="M18 14h16v3H18zm0 6h12v3H18z" fill="#fff"/>
-          <path d="M11 40h4v5h-4zm26 0h4v5h-4z" fill="#173f70"/>
+          <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
+          <path d="M16 14h6v9l8-9h7l-9 10 10 14h-7l-7-10-2 2v8h-6z" fill="#fff"/>
         </svg>
       </span>
-      <span class="quick-label">코다자료</span>
-    </button>
+      <span class="quick-label">코다기사</span>
+    </a>
 
-    <!-- 7. 나의 명함 -->
-    <button class="quick-btn" type="button" onclick="openMyBusinessCard()" aria-label="나의 명함">
-      <span class="quick-icon" style="background:#fff;">
-        <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="7" y="12" width="38" height="28" rx="6" fill="#1769d2"/>
-          <rect x="11" y="16" width="30" height="20" rx="3" fill="#fff"/>
-          <circle cx="18" cy="24" r="3.2" fill="#1769d2"/>
-          <path d="M14 32c.8-3.1 2.6-4.6 5-4.6s4.2 1.5 5 4.6H14zm13-8h11v2.5H27zm0 5h9v2.5h-9z" fill="#1769d2"/>
-        </svg>
-      </span>
-      <span class="quick-label">나의 명함</span>
-    </button>
-
-    <!-- 8. 준비중 -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+    <!-- 7. 준비중 -->
+    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
       <span class="quick-icon" style="background:#f7fafc;">
         <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
       </span>
       <span class="quick-label">준비중</span>
     </button>
 
-    <!-- 9. 개발업법 : 비정형 지구 실루엣 -->
-    <a class="quick-btn"
-       href="https://www.law.go.kr/LSW/ais/main.do"
-       target="_blank" rel="noopener noreferrer" aria-label="LawBot">
+    <!-- 8. 준비중 (LawBot 대체) -->
+    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
+      <span class="quick-icon" style="background:#f7fafc;">
+        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
+      </span>
+      <span class="quick-label">준비중</span>
+    </button>
+
+    <!-- 9. 정부국회 -->
+    <button class="quick-btn" onclick="openGovAssemblyScreen()" aria-label="정부국회">
       <span class="quick-icon" style="background:#fff;">
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <!-- 완전한 원이 아닌 한쪽이 살짝 비대칭인 지구 실루엣 -->
-          <path d="M31 8
-                   C20 8 11 14 7 23
-                   C3 32 6 43 14 50
-                   C21 57 31 59 41 55
-                   C51 51 57 42 57 31
-                   C57 20 50 12 41 9
-                   C38 8 34 8 31 8Z"
-                fill="#8b929b"/>
-          <!-- 경도/위도 느낌의 회색 지구선 -->
-          <path d="M16 21 C25 26 40 27 50 21
-                   M10 32 C22 37 42 38 55 31
-                   M15 43 C25 40 41 40 51 44
-                   M31 9 C25 18 23 29 25 39 C26 47 29 53 34 57
-                   M40 10 C34 20 33 31 35 40 C36 47 40 52 44 54"
-                fill="none" stroke="#e6e8eb" stroke-width="2.2"
-                stroke-linecap="round" opacity=".95"/>
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <!-- 심플한 국회/공공기관 건물 실루엣 -->
+          <path d="M8 18h36L26 9 8 18z" fill="#8b929b"/>
+          <rect x="11" y="19" width="30" height="23" rx="1.5" fill="#8b929b"/>
+          <rect x="15" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="24" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="33" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="8" y="41" width="36" height="3" rx="1.5" fill="#707780"/>
         </svg>
       </span>
-      <span class="quick-label">LawBot</span>
-    </a>
+      <span class="quick-label">정부국회</span>
+    </button>
 
     <!-- 10. 관심일정 -->
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
@@ -3474,6 +3684,58 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
+<!-- ✨ 정부·국회 바로가기 페이지 ✨ -->
+<div class="fullscreen-screen" id="govAssemblyScreen">
+  <div class="govasm-header">
+    <button class="govasm-back" onclick="closeGovAssemblyScreen()" aria-label="뒤로가기">←</button>
+    <div class="govasm-title">국토교통부 · 국회 · 법제처</div>
+    <div></div>
+  </div>
+  <div class="govasm-content">
+    <section class="govasm-section">
+      <div class="govasm-section-head">
+        <span class="govasm-badge gov">국토교통부</span>
+        <div class="govasm-divider gov-divider"></div>
+      </div>
+      <div class="govasm-grid">
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/INSA/m_79/lst.jsp" target="_blank" rel="noopener noreferrer">인사발령</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/law/m_46/lst.jsp" target="_blank" rel="noopener noreferrer">입법예고</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp" target="_blank" rel="noopener noreferrer">정책자료</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/I0204/m_45/lst.jsp" target="_blank" rel="noopener noreferrer">행정규칙</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/WPGE0201/m_212/DTL.jsp" target="_blank" rel="noopener noreferrer">부서안내</a>
+      </div>
+    </section>
+
+    <section class="govasm-section">
+      <div class="govasm-section-head">
+        <span class="govasm-badge assembly">국회</span>
+        <div class="govasm-divider assembly-divider"></div>
+      </div>
+      <div class="govasm-grid">
+        <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/bbs/B0000051/list.do?menuNo=600101" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/na/agenda/agendaSchl.do?menuNo=600015" target="_blank" rel="noopener noreferrer">국회일정</a>
+        <a class="govasm-card assembly-card" href="https://ampos.nanet.go.kr/seminarList.do?searchGubun=cal#searchGubun=cal&curPage=1&curMonth=202609&fileNo=&searchType=&queryText=&fromDate=2026-09-21&endDate=2026-09-21&sort=asc" target="_blank" rel="noopener noreferrer">국회세미나</a>
+        <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/main/main.do" target="_blank" rel="noopener noreferrer">국토교통위</a>
+        <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/mem/cmmitMemList/list.do?menuNo=2000013" target="_blank" rel="noopener noreferrer">국토위현황</a>
+        <a class="govasm-card assembly-card" href="https://likms.assembly.go.kr/bill/bi/main/mainPage.do" target="_blank" rel="noopener noreferrer">의안검색</a>
+      </div>
+    </section>
+
+    <section class="govasm-section">
+      <div class="govasm-section-head">
+        <span class="govasm-badge law">법제처</span>
+        <div class="govasm-divider law-divider"></div>
+      </div>
+      <div class="govasm-grid">
+        <a class="govasm-card law-card" href="https://www.moleg.go.kr/index.es?sid=a1" target="_blank" rel="noopener noreferrer">홈페이지</a>
+        <a class="govasm-card law-card" href="https://www.law.go.kr/lsSc.do?menuId=1&subMenuId=15&query=%EB%B6%80%EB%8F%99%EC%82%B0%EA%B0%9C%EB%B0%9C%EC%97%85%EB%B2%95&dt=20201211" target="_blank" rel="noopener noreferrer">개발업법</a>
+        <a class="govasm-card law-card" href="https://law.go.kr/LSW/ais/main.do" target="_blank" rel="noopener noreferrer">AI-LAW봇</a>
+      </div>
+    </section>
+  </div>
+</div>
+
 <!-- ✨ 2. 협회공지 상세보기 페이지 (팝업 아님) ✨ -->
 <div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
   <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
@@ -3509,17 +3771,28 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <img id="businessCardPreview" class="business-card-preview" src="" alt="나의 KODA 명함">
     </div>
     <div class="business-card-actions">
-      <button type="button" class="business-card-save-btn" onclick="saveMyBusinessCard()">갤러리 저장하기</button>
-      <button type="button" class="business-card-share-btn" onclick="shareMyBusinessCard()">공유하기</button>
-      <button type="button" class="business-card-qr-btn" onclick="showMyBusinessCardQR()">QR로 보기</button>
-    </div>
-    <div class="business-card-qr-area" id="businessCardQRArea" style="display:none;">
-      <div class="business-card-qr-title">상대방 카메라로 QR을 비춰주세요</div>
-      <div id="businessCardQR"></div>
-      <div class="business-card-qr-url-help">스캔하면 이 명함 이미지가 바로 표시됩니다.</div>
+      <button type="button" class="business-card-save-btn" onclick="saveMyBusinessCard()">명함 JPG 저장</button>
+      <button type="button" class="business-card-share-btn" onclick="shareMyBusinessCard()">갤러리/공유</button>
+      <button type="button" class="business-card-save-btn business-card-qr-btn" onclick="openBusinessCardQR()">QR 보내기</button>
     </div>
     <div class="business-card-help" id="businessCardHelp">휴대폰에서는 ‘갤러리/공유’를 누른 후 사진 앱에 저장할 수 있습니다.</div>
     <div class="business-card-status" id="businessCardStatus"></div>
+  </div>
+</div>
+
+<!-- QR 보내기 팝업 -->
+<div class="business-card-overlay" id="businessCardQROverlay" onclick="closeBusinessCardQROnOutside(event)">
+  <div class="business-card-modal qr-modal" role="dialog" aria-modal="true" aria-labelledby="businessCardQRTitle">
+    <button type="button" class="business-card-close" onclick="closeBusinessCardQR()" aria-label="닫기">×</button>
+    <div class="business-card-modal-title" id="businessCardQRTitle">QR 보내기</div>
+    <div class="qr-preview-wrap"><img id="businessCardQRImage" class="business-card-qr-image" alt="나의 명함 QR코드"></div>
+    <div class="qr-name" id="businessCardQRName"></div>
+    <div class="business-card-help">상대방이 이 QR을 카메라로 찍으면 명함이 열리고, 상대방 휴대폰에서 갤러리에 저장할 수 있습니다.</div>
+    <div class="business-card-actions qr-actions">
+      <button type="button" class="business-card-save-btn" onclick="shareBusinessCardQR()">QR 공유</button>
+      <button type="button" class="business-card-share-btn" onclick="saveBusinessCardQR()">QR 저장</button>
+    </div>
+    <div class="business-card-status" id="businessCardQRStatus"></div>
   </div>
 </div>
 
@@ -3610,11 +3883,20 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let calYear = currentYear;
   let calMonth = currentMonth; 
 
-  const holidays2026 = [
-    "01-01", "02-16", "02-17", "02-18", "03-01", "03-02", "05-05", 
-    "05-24", "05-25", "06-03", "06-06", "08-15", "08-17", 
-    "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
-  ];
+  const holidayMap = {
+    2026: {
+      "01-01":"신정", "02-16":"설날 연휴", "02-17":"설날", "02-18":"설날 연휴",
+      "03-01":"삼일절", "03-02":"대체공휴일", "05-05":"어린이날",
+      "05-24":"부처님오신날", "05-25":"대체공휴일", "06-06":"현충일",
+      "08-15":"광복절", "08-17":"대체공휴일", "09-24":"추석 연휴",
+      "09-25":"추석", "09-26":"추석 연휴", "10-03":"개천절",
+      "10-05":"대체공휴일", "10-09":"한글날", "12-25":"성탄절"
+    }
+  };
+  function getHolidayName(year, month, day){
+    const key=String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+    return holidayMap[year]?.[key] || '';
+  }
 
   function splitCSV(csv) {
     const rows = [];
@@ -4108,131 +4390,40 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(status) status.textContent='이미지를 길게 눌러 사진/갤러리에 저장해주세요.';
   };
 
+  window.openNaverWeather = function(){ window.open('https://weather.naver.com/','_blank','noopener,noreferrer'); };
 
-  // ===== 나의 명함 QR 보기 =====
-  let businessCardQRScriptPromise = null;
-
-  function loadBusinessCardQRLibrary() {
-    if (window.QRCode) return Promise.resolve();
-    if (businessCardQRScriptPromise) return businessCardQRScriptPromise;
-    businessCardQRScriptPromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('QR 라이브러리를 불러오지 못했습니다.'));
-      document.head.appendChild(script);
-    });
-    return businessCardQRScriptPromise;
+  function businessCardShareUrl(data){
+    const base=window.location.origin + window.location.pathname;
+    const params=new URLSearchParams({shareCard:'1',name:data?.name||'',affiliation:data?.affiliation||'',position:data?.position||'',phone:data?.phone||'',fax:data?.fax||'',contact:data?.contact||'',email:data?.email||''});
+    return base+'?'+params.toString();
   }
-
-  function encodeBusinessCardForQR(data) {
-    const payload = {
-      n: String(data.name || ''),
-      a: String(data.affiliation || ''),
-      p: String(data.position || ''),
-      t: String(data.phone || ''),
-      f: String(data.fax || ''),
-      m: String(data.contact || ''),
-      e: String(data.email || '')
-    };
-    const bytes = new TextEncoder().encode(JSON.stringify(payload));
-    let binary = '';
-    bytes.forEach(b => binary += String.fromCharCode(b));
-    return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-  }
-
-  function decodeBusinessCardFromQR(encoded) {
-    try {
-      const base64 = encoded.replace(/-/g,'+').replace(/_/g,'/');
-      const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
-      const binary = atob(padded);
-      const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-      const payload = JSON.parse(new TextDecoder().decode(bytes));
-      return {
-        name: payload.n || '',
-        affiliation: payload.a || '',
-        position: payload.p || '',
-        phone: payload.t || '',
-        fax: payload.f || '',
-        contact: payload.m || '',
-        email: payload.e || ''
-      };
-    } catch(e) {
-      return null;
-    }
-  }
-
-  function businessCardQRShareURL(data) {
-    const base = window.location.href.split('#')[0].split('?')[0];
-    return base + '?koda_card=' + encodeURIComponent(encodeBusinessCardForQR(data));
-  }
-
-  window.showMyBusinessCardQR = async function() {
-    const area = document.getElementById('businessCardQRArea');
-    const qrBox = document.getElementById('businessCardQR');
-    const status = document.getElementById('businessCardStatus');
-    if (!area || !qrBox || !myBusinessCardData) return;
-
-    area.style.display = 'block';
-    qrBox.innerHTML = '<div style="font-size:.7rem;color:#7b8da3;padding:50px 0;">QR 생성 중...</div>';
-
-    try {
-      await loadBusinessCardQRLibrary();
-      qrBox.innerHTML = '';
-      const url = businessCardQRShareURL(myBusinessCardData);
-      new QRCode(qrBox, {
-        text: url,
-        width: 160,
-        height: 160,
-        correctLevel: QRCode.CorrectLevel.M
-      });
-      if (status) status.textContent = 'QR을 상대방 카메라로 비추면 명함 이미지가 표시됩니다.';
-    } catch(e) {
-      qrBox.innerHTML = '<div style="font-size:.7rem;color:#d33;padding:50px 0;">QR을 생성하지 못했습니다. 인터넷 연결을 확인해주세요.</div>';
-      if (status) status.textContent = '';
-      console.error('business card QR error', e);
-    }
+  window.openBusinessCardQR = function(){
+    if(!myBusinessCardData || !myBusinessCardJpgDataUrl) return;
+    const overlay=document.getElementById('businessCardQROverlay'), img=document.getElementById('businessCardQRImage'), name=document.getElementById('businessCardQRName');
+    if(!overlay||!img) return;
+    img.src='https://api.qrserver.com/v1/create-qr-code/?size=700x700&margin=12&data='+encodeURIComponent(businessCardShareUrl(myBusinessCardData));
+    if(name) name.textContent=(myBusinessCardData.name||'KODA')+'님의 명함 QR';
+    overlay.style.display='flex'; document.body.style.overflow='hidden';
+  };
+  window.closeBusinessCardQR = function(){ const o=document.getElementById('businessCardQROverlay'); if(o)o.style.display='none'; document.body.style.overflow='auto'; };
+  window.closeBusinessCardQROnOutside = function(e){ if(e.target?.id==='businessCardQROverlay') closeBusinessCardQR(); };
+  window.saveBusinessCardQR = function(){ const img=document.getElementById('businessCardQRImage'); if(!img?.src)return; const a=document.createElement('a'); a.href=img.src; a.download='KODA_명함_QR.png'; document.body.appendChild(a); a.click(); a.remove(); };
+  window.shareBusinessCardQR = async function(){
+    const img=document.getElementById('businessCardQRImage'); if(!img?.src)return;
+    try { const blob=await (await fetch(img.src)).blob(); const file=new File([blob],'KODA_명함_QR.png',{type:'image/png'}); if(navigator.share && navigator.canShare?.({files:[file]})){ await navigator.share({title:'KODA 명함 QR',text:'QR을 찍으면 명함을 저장할 수 있습니다.',files:[file]}); return; } } catch(e) { if(e?.name==='AbortError') return; }
+    saveBusinessCardQR();
   };
 
-  function openScannedBusinessCard(encoded) {
-    const data = decodeBusinessCardFromQR(encoded);
-    if (!data) return;
-
-    // 로그인하지 않은 상대방도 QR 스캔만으로 명함 이미지를 볼 수 있도록
-    // 동일한 명함 생성 함수를 사용해 원본과 같은 JPG를 다시 생성합니다.
-    const viewer = document.createElement('div');
-    viewer.id = 'scannedBusinessCardViewer';
-    viewer.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#eef3f8;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;';
-    viewer.innerHTML = `
-      <div style="width:min(100%,520px);max-height:94vh;overflow:auto;background:#fff;border-radius:16px;padding:14px;box-shadow:0 16px 50px rgba(0,0,0,.22);box-sizing:border-box;text-align:center;">
-        <div style="font-size:1rem;font-weight:850;color:#173f70;margin:3px 0 12px;">KODA 명함</div>
-        <div id="scannedBusinessCardImageArea" style="background:#fff;"></div>
-        <div style="margin-top:10px;font-size:.68rem;color:#8190a2;">명함 이미지를 길게 누르면 사진에 저장할 수 있습니다.</div>
-      </div>`;
-    document.body.appendChild(viewer);
-
-    createBusinessCardJpg(data).then(jpg => {
-      const area = document.getElementById('scannedBusinessCardImageArea');
-      if (area) {
-        area.innerHTML = `<img src="${jpg}" alt="KODA 명함" style="display:block;width:100%;height:auto;border-radius:3px;">`;
-      }
-    }).catch(() => {
-      viewer.remove();
-    });
+  async function openSharedBusinessCardIfNeeded(){
+    const params=new URLSearchParams(location.search); if(params.get('shareCard')!=='1') return;
+    const data={name:params.get('name')||'',affiliation:params.get('affiliation')||'',position:params.get('position')||'',phone:params.get('phone')||'',fax:params.get('fax')||'',contact:params.get('contact')||'',email:params.get('email')||''};
+    try {
+      const jpg=await createBusinessCardJpg(data);
+      document.body.classList.add('shared-business-card-mode');
+      document.body.innerHTML=`<main id="sharedBusinessCardPage"><section class="shared-card-inner"><div class="shared-card-title">${data.name||'KODA'}님의 명함</div><img id="sharedCardImage" class="shared-card-image" src="${jpg}" alt="명함"><button class="shared-card-save" id="sharedCardSave">갤러리에 저장하기</button><div class="shared-card-tip">아이폰은 버튼을 누른 뒤 공유 메뉴에서 ‘이미지 저장’을 선택하고, 안드로이드는 다운로드 또는 사진 저장을 선택하세요.</div></section></main>`;
+      document.getElementById('sharedCardSave').onclick=()=>{ const a=document.createElement('a'); a.href=jpg; a.download=(data.name||'KODA')+'_명함.jpg'; document.body.appendChild(a); a.click(); a.remove(); };
+    } catch(e) { console.error(e); }
   }
-
-  // QR 스캔으로 현재 페이지가 열렸다면 로그인 절차와 무관하게 명함만 표시
-  (function checkBusinessCardQRRoute() {
-    const params = new URLSearchParams(window.location.search);
-    const encoded = params.get('koda_card');
-    if (!encoded) return;
-    const start = () => openScannedBusinessCard(encoded);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', start, {once:true});
-    } else {
-      setTimeout(start, 0);
-    }
-  })();
 
   let currentStaffCategory = '사무국';
 
@@ -4949,7 +5140,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     rows.innerHTML='';
     [
       ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
-      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['이메일',staff.email],['비고',staff.note]
+      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['핸드폰',staff.contact],['이메일',staff.email],['비고',staff.note]
     ].forEach(([label,value])=>{
       const row=document.createElement('div'); row.className='modal-detail-row';
       const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
@@ -5260,7 +5451,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const mmdd = String(calMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
       let dateNumClass = "cal-date-num";
       
-      if (currentDayOfWeek === 0 || holidays2026.includes(mmdd)) dateNumClass += " text-red";
+      const holidayName = getHolidayName(calYear, calMonth, d);
+      if (currentDayOfWeek === 0 || holidayName) dateNumClass += " text-red";
       else if (currentDayOfWeek === 6) dateNumClass += " text-blue";
 
       const dateClick = monthBaseData.length > 0 ? `onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d})"` : "";
@@ -5268,6 +5460,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       grid.innerHTML += `
         <div class="${cellClass}" ${dateClick} style="${monthBaseData.length > 0 ? 'cursor:pointer;' : ''}">
           <div class="${dateNumClass}">${d}${todayBadge}</div>
+          ${holidayName ? `<div class="calendar-holiday">${holidayName}</div>` : ''}
           ${eventsHtml}
         </div>
       `;
@@ -5281,7 +5474,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-function createEventCard(event) {
+function createEventCard(event, isNext=false) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -5289,9 +5482,9 @@ function createEventCard(event) {
     const isToday = event.dday === "D-day";
 
     const card = document.createElement('div');
-    card.className = 'event-card' + (isToday ? ' today-card' : '');
+    card.className = 'event-card' + (isToday ? ' today-card' : (isNext ? ' next-card' : ''));
 
-    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
+    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : (isNext ? `<div class="card-next-badge">NEXT</div>` : '');
 
     card.innerHTML = `
       ${todayBadgeHtml}
@@ -5356,8 +5549,26 @@ function createEventCard(event) {
         pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
         todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-        
-        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+
+        // NEXT는 현재 달(오늘이 속한 달)의 일정에서만 표시한다.
+        // 10월·11월 등 이후 달을 열었을 때는 NEXT/파란 테두리를 표시하지 않는다.
+        const isCurrentMonthView =
+          !showBookmarksOnly &&
+          searchQuery === '' &&
+          calYear === currentYear &&
+          calMonth === currentMonth;
+
+        const nextEvent = isCurrentMonthView && futureEvents.length > 0
+          ? [...futureEvents].sort((a,b) => {
+              const da = new Date(currentYear, a.month - 1, a.day, ...(a.time ? a.time.split(':').map(Number) : [0,0])).getTime();
+              const db = new Date(currentYear, b.month - 1, b.day, ...(b.time ? b.time.split(':').map(Number) : [0,0])).getTime();
+              return da - db;
+            })[0]
+          : null;
+
+        futureEvents.forEach(event =>
+          listWrapper.appendChild(createEventCard(event, isCurrentMonthView && event === nextEvent))
+        );
         
         if (pastEvents.length > 0) {
             if (todayEvents.length > 0 || futureEvents.length > 0) {
@@ -5381,7 +5592,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -5393,8 +5604,9 @@ function createEventCard(event) {
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
       else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
+    else if (st.govAssemblyOpen) document.getElementById('govAssemblyScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.govAssemblyOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -5676,9 +5888,15 @@ function createEventCard(event) {
     const list = document.getElementById('newsList');
     list.innerHTML = '';
 
+    // 중요공지는 홈 화면의 긴급공지 전용으로만 사용하고,
+    // 협회공지 화면(전체 및 모든 탭)에서는 항상 제외한다.
+    const visibleNewsData = newsData.filter(item =>
+      normalizeNewsCategory(item.category) !== '중요공지'
+    );
+
     const filteredData = (category === '전체'
-      ? newsData.slice()
-      : newsData.filter(item => category === '회원사 소식'
+      ? visibleNewsData.slice()
+      : visibleNewsData.filter(item => category === '회원사 소식'
           ? String(item.category || '').trim() === '회원사 소식'
           : normalizeNewsCategory(item.category) === category))
       .map((item, order) => ({ item, order, sortDate: parseNewsDate(item.date).getTime() }))
@@ -5696,8 +5914,8 @@ function createEventCard(event) {
       card.type = 'button';
       card.className = 'day-event-item news-card-item';
       card.innerHTML = `
-        <div class="day-event-item-title news-title-row"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span><span class="news-title-text">${item.title}</span></div>
-        <div class="day-event-item-meta">작성일: ${item.date}</div>
+        <div class="news-meta-row"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span><span class="news-date-text">${item.date}</span></div>
+        <div class="day-event-item-title news-title-text">${item.title}</div>
       `;
       card.onclick = () => openNewsDetailScreen(globalIndex);
       list.appendChild(card);
@@ -5916,7 +6134,7 @@ function createEventCard(event) {
           <span class="news-badge">${item.badge || item.category || '기타자료'}</span>
           <span class="meeting-title-text">${item.title || '회의자료'}</span>
         </div>
-        ${item.date ? `<div class="meeting-card-meta">등록일자: ${item.date}</div>` : ''}`;
+        ${item.date ? `<div class="meeting-card-meta">${item.date}</div>` : ''}`;
       list.appendChild(card);
     });
   }
@@ -5942,6 +6160,103 @@ function createEventCard(event) {
     history.back();
   };
 
+
+
+  /* ===== 2026-09-21 직원공지 GIF =====
+     Sheet6: B열=구분, F열=관련 게시판/링크, G열=Google Drive GIF, H열=제목
+     목록 위에서부터 GIF가 등록된 2개만 표시합니다. */
+  function extractEmployeeGifUrl(rawUrl) {
+    const url = String(rawUrl || '').trim();
+    if (!/^https?:\/\//i.test(url)) return '';
+    const driveId = (typeof extractDriveFileId === 'function') ? extractDriveFileId(url) : null;
+    if (driveId) return `https://drive.google.com/uc?export=view&id=${driveId}`;
+    return url;
+  }
+
+  function loadEmployeeGifNotices() {
+    const wrap = document.getElementById('employeeGifNoticeWrap');
+    const grid = document.getElementById('employeeGifNoticeGrid');
+    if (!wrap || !grid) return;
+    fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now())
+      .then(response => { if (!response.ok) throw new Error('직원공지 CSV 응답 오류'); return response.text(); })
+      .then(csv => {
+        const rows = splitCSV(csv), notices = [];
+        for (let i=1; i<rows.length && notices.length<2; i++) {
+          const r=rows[i]||[];
+          const category=String(r[1]||'').trim();
+          const linkUrl=String(r[5]||'').trim();
+          const gifRaw=String(r[6]||'').trim();
+          const title=String(r[7]||'').trim();
+          if (!gifRaw || !title) continue;
+          const gifUrl=extractEmployeeGifUrl(gifRaw);
+          if (gifUrl) notices.push({category:category||'직원공지',linkUrl,gifUrl,title});
+        }
+        grid.innerHTML='';
+        if (!notices.length) { wrap.style.display='none'; return; }
+        notices.forEach(item=>{
+          const card=document.createElement('button'); card.type='button'; card.className='employee-gif-notice-card';
+          const badge=document.createElement('span'); badge.className='employee-gif-notice-badge'; badge.textContent=item.category;
+          const img=document.createElement('img'); img.className='employee-gif-notice-media'; img.alt=item.title; img.src=item.gifUrl; img.loading='eager';
+          const title=document.createElement('span'); title.className='employee-gif-notice-title'; title.textContent=item.title;
+          card.appendChild(badge); card.appendChild(img); card.appendChild(title);
+          card.addEventListener('click',()=>{ if(/^https?:\/\//i.test(item.linkUrl)) window.open(item.linkUrl,'_blank','noopener,noreferrer'); });
+          grid.appendChild(card);
+        });
+        wrap.style.display='block';
+      })
+      .catch(error=>{ console.warn('직원공지 GIF 불러오기 실패:',error); wrap.style.display='none'; });
+  }
+
+  /* ===== 2026-09-20 긴급공지: Sheet6 B2/D2/E2 ===== */
+  async function loadEmergencyNotice() {
+    const wrap = document.getElementById('emergencyNoticeWrap');
+    const badge = document.getElementById('emergencyNoticeBadge');
+    const textEl = document.getElementById('emergencyNoticeText');
+    if (!wrap || !badge || !textEl) return;
+
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now());
+      if (!response.ok) throw new Error('긴급공지 CSV 응답 오류');
+      const rows = splitCSV(await response.text());
+      // 2행(B2/D2/E2): splitCSV의 첫 데이터 행은 index 1
+      const row2 = rows[1] || [];
+      const category = String(row2[1] || '').trim();
+      const badgeText = String(row2[3] || '').trim();
+      const noticeText = String(row2[4] || '').trim();
+
+      if (category === '중요공지' && noticeText) {
+        badge.textContent = badgeText || '중요공지';
+        textEl.textContent = noticeText;
+        textEl.classList.remove('no-marquee');
+        // 짧은 문구는 정지 상태로 표시
+        if (noticeText.length <= 24) textEl.classList.add('no-marquee');
+        wrap.style.display = 'block';
+      } else {
+        wrap.style.display = 'none';
+      }
+    } catch (error) {
+      console.warn('긴급공지 불러오기 실패:', error);
+      wrap.style.display = 'none';
+    }
+  }
+
+  /* ===== 정부·국회 페이지 ===== */
+  window.openGovAssemblyScreen = function() {
+    const screen = document.getElementById('govAssemblyScreen');
+    if (!screen) return;
+    screen.style.display = 'flex';
+    screen.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ govAssemblyOpen: true }, "", "");
+  };
+
+  window.closeGovAssemblyScreen = function() {
+    history.back();
+  };
+
+  loadEmergencyNotice();
+  loadEmployeeGifNotices();
+
   initAuth();
 
 </script>
@@ -5958,3 +6273,5 @@ function createEventCard(event) {
   text-overflow: ellipsis !important;
 }
 </style>
+
+<script>openSharedBusinessCardIfNeeded();</script>
