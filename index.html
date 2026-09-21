@@ -153,7 +153,7 @@
   .today-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
   .today-date{font-size:1.05rem;font-weight:800;color:#123b70;letter-spacing:-.03em;white-space:nowrap;}
   .today-weekday{font-size:.84rem;font-weight:700;color:#4f6f95;white-space:nowrap;}
-  .today-weather{display:flex;align-items:center;gap:6px;color:#4f6f95;font-size:.78rem;font-weight:700;white-space:nowrap;}
+  .today-weather{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:4px;color:#4f6f95;font-size:.78rem;font-weight:700;white-space:nowrap;}
   .today-weather-icon{font-size:1.05rem;line-height:1;}
   .today-weather-temp{color:#123b70;font-weight:800;}
   @media(max-width:360px){.today-weather-bar{gap:7px}.today-date{font-size:.98rem}.today-weekday,.today-weather{font-size:.72rem}}
@@ -904,6 +904,14 @@
   .memo-save-btn:active {
     background: #2b6cb0;
   }
+
+  /* 내폰에 저장 버튼 (캘린더 추가) */
+  .save-phone-row{display:flex;justify-content:flex-end;margin-top:8px;}
+  .save-phone-btn{
+    background:#fff;color:#3182ce;border:1px solid #3182ce;border-radius:6px;
+    padding:5px 10px;font-size:0.7rem;font-weight:bold;cursor:pointer;line-height:1.2;
+  }
+  .save-phone-btn:active{background:#ebf4ff;}
 
   /* 풀스크린 전용 페이지 */
   
@@ -3386,10 +3394,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="today-weather-bar" aria-label="오늘 날짜와 날씨">
     <div class="today-date-info">
       <span class="today-date" id="todayDateDisplay"></span>
-      <span class="today-weekday" id="todayWeekdayDisplay"></span>
     </div>
     <div class="today-weather" id="todayWeatherDisplay" role="button" tabindex="0" onclick="openNaverWeather()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNaverWeather();}">
-      <span class="today-weather-icon">☁️</span><span>날씨 확인 중</span>
+      <span class="today-weather-temp">--°</span><span class="today-weather-icon">☁️</span>
     </div>
   </div>
 
@@ -3645,6 +3652,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="modal-value" id="modalNote"></span>
     </div>
 
+    <div class="save-phone-row">
+      <button type="button" class="save-phone-btn" id="saveToPhoneBtn" onclick="saveEventToPhone()">📅 내폰에 저장</button>
+    </div>
+
     <div class="memo-container">
       <div class="memo-header">
         <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
@@ -3848,11 +3859,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   function renderTodayDate(){
     const now=new Date();
-    const weekdays=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
-    const dateText=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
-    const dayText=weekdays[now.getDay()];
+    const weekdays=['일','월','화','수','목','금','토'];
+    const dateText=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}(${weekdays[now.getDay()]})`;
     ['#todayDateDisplay','#staffTodayDateDisplay'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.textContent=dateText;});
-    ['#todayWeekdayDisplay','#staffTodayWeekdayDisplay'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.textContent=dayText;});
+    ['#todayWeekdayDisplay','#staffTodayWeekdayDisplay'].forEach(sel=>{const el=document.querySelector(sel);if(el)el.textContent='';});
   }
   function weatherIcon(code){
     if(code===0) return '☀️';
@@ -3873,10 +3883,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`);
       if(!r.ok) throw new Error('weather');
       const d=await r.json(); const temp=Math.round(d.current.temperature_2m);
-      const html=`<span class="today-weather-icon staff-weather-icon">${weatherIcon(d.current.weather_code)}</span><span>오늘 날씨</span><span class="today-weather-temp staff-weather-temp">${temp}°C</span>`;
+      const html=`<span class="today-weather-temp staff-weather-temp">${temp}°</span><span class="today-weather-icon staff-weather-icon">${weatherIcon(d.current.weather_code)}</span>`;
       els.forEach(el=>el.innerHTML=html);
     }catch(e){
-      els.forEach(el=>el.innerHTML='<span class="today-weather-icon staff-weather-icon">🌤️</span><span>오늘 날씨</span>');
+      els.forEach(el=>el.innerHTML='<span class="today-weather-temp staff-weather-temp">--°</span><span class="today-weather-icon staff-weather-icon">🌤️</span>');
     }
   }
   renderTodayDate();
@@ -5803,6 +5813,92 @@ function createEventCard(event, isNext=false) {
     if (memoText === '') delete memos[event.id]; else memos[event.id] = memoText; 
     localStorage.setItem('koda_memos', JSON.stringify(memos));
     alert('메모가 기기에 안전하게 저장되었습니다.');
+  };
+
+
+  /* 내폰에 저장: .ics 파일을 생성하여 안드로이드/아이폰 기본 캘린더에 일정 추가 */
+  window.saveEventToPhone = function() {
+    if (currentModalGlobalIndex === null) return;
+    const ev = scheduleData[currentModalGlobalIndex];
+    if (!ev) return;
+
+    const pad = n => String(n).padStart(2, '0');
+    const fmtDT = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    const fmtD  = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+    const esc = t => String(t == null ? '' : t)
+      .replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+    const clean = t => (t && t.trim() !== 'ㅡ') ? t.trim() : '';
+
+    // 시간 추출 (시작 / 종료)
+    const src = `${ev.time || ''} ${ev.date || ''}`;
+    const re = /(오전|오후)?\s*(\d{1,2})(?::|시)\s*(\d{2})?/g;
+    const times = [];
+    let m;
+    while ((m = re.exec(src)) !== null && times.length < 2) {
+      let hh = Number(m[2]);
+      const mm = m[3] ? Number(m[3]) : 0;
+      if (m[1] === '오후' && hh < 12) hh += 12;
+      if (m[1] === '오전' && hh === 12) hh = 0;
+      if (hh > 23 || mm > 59) continue;
+      times.push([hh, mm]);
+    }
+
+    const y = currentYear, mo = Number(ev.month) - 1, dd = Number(ev.day);
+    let dtStart, dtEnd;
+    if (times.length) {
+      const start = new Date(y, mo, dd, times[0][0], times[0][1]);
+      let end = times.length > 1 ? new Date(y, mo, dd, times[1][0], times[1][1]) : new Date(start.getTime() + 60*60*1000);
+      if (end <= start) end = new Date(start.getTime() + 60*60*1000);
+      dtStart = `DTSTART:${fmtDT(start)}`;
+      dtEnd = `DTEND:${fmtDT(end)}`;
+    } else {
+      const start = new Date(y, mo, dd);
+      const end = new Date(y, mo, dd + 1);
+      dtStart = `DTSTART;VALUE=DATE:${fmtD(start)}`;
+      dtEnd = `DTEND;VALUE=DATE:${fmtD(end)}`;
+    }
+
+    const descParts = [];
+    if (clean(ev.attendees)) descParts.push(`참석: ${clean(ev.attendees)}`);
+    if (clean(ev.content))   descParts.push(`내용: ${clean(ev.content)}`);
+    if (clean(ev.host))      descParts.push(`주최/주관: ${clean(ev.host)}`);
+    if (clean(ev.note))      descParts.push(`비고: ${clean(ev.note)}`);
+
+    const now = new Date();
+    const stamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
+    const uid = `koda-${y}${pad(mo+1)}${pad(dd)}-${Math.abs(String(ev.id).split('').reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0,0))}@koda`;
+
+    const lines = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//KODA//Schedule//KO','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,`DTSTAMP:${stamp}`,dtStart,dtEnd,
+      `SUMMARY:${esc(clean(ev.title) || 'KODA 일정')}`,
+      `LOCATION:${esc(clean(ev.location))}`,
+      `DESCRIPTION:${esc(descParts.join('\n'))}`,
+      'BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:일정 알림','END:VALARM',
+      'END:VEVENT','END:VCALENDAR'
+    ];
+    const ics = lines.join('\r\n');
+
+    try {
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      if (isIos()) {
+        // 아이폰: 캘린더 추가 화면으로 바로 연결
+        window.location.href = url;
+      } else {
+        // 안드로이드/기타: 다운로드된 .ics를 기본 캘린더로 열어 추가
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'koda-event.ics';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch (e) {
+      alert('캘린더 저장에 실패했습니다. 브라우저를 확인해주세요.');
+    }
   };
 
   function hideModalDOM() { document.getElementById('eventModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
