@@ -1798,80 +1798,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 
 
-/* 2026-09-21: 직원공지 GIF 1행 2열 */
-.employee-gif-notice-wrap{width:calc(100% - 20px);margin:0 10px 12px;display:none;}
-.employee-gif-notice-heading{display:flex;align-items:center;justify-content:space-between;padding:0 4px 7px;}
-.employee-gif-notice-heading .title{font-size:1rem;font-weight:850;color:#1a202c;letter-spacing:-.04em;}
+/* 2026-09-21: 중요공지 바로 아래 GIF 1행 2열 */
+.employee-gif-notice-wrap{width:calc(100% - 20px);margin:8px 10px 12px;display:none;}
 .employee-gif-notice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
 .employee-gif-notice-card{min-width:0;border:0;background:#fff;padding:0;margin:0;text-align:left;cursor:pointer;overflow:hidden;}
-.employee-gif-notice-badge{display:block;width:100%;padding:0 2px 5px;color:#718096;font-size:.62rem;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid #dfe6ee;margin-bottom:6px;}
+.employee-gif-notice-badge-line{display:flex;align-items:center;width:100%;height:22px;margin:0 0 6px;}
+.employee-gif-notice-badge{display:inline-flex;align-items:center;max-width:72%;height:20px;padding:0 7px;border-radius:10px;background:#f1f4f7;color:#59636e;font-size:.59rem;font-weight:800;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.employee-gif-notice-badge-divider{flex:1;height:1px;margin-left:7px;background:#e7ebef;}
 .employee-gif-notice-media{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;border-radius:8px;background:#eef2f6;border:1px solid #e3e9f1;}
+.employee-gif-notice-media.is-broken{display:none;}
 .employee-gif-notice-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:6px;padding:0 2px;color:#1a202c;font-size:.76rem;font-weight:800;line-height:1.35;word-break:keep-all;}
 .employee-gif-notice-card:active .employee-gif-notice-media{transform:scale(.985);}
 @media(max-width:360px){.employee-gif-notice-grid{gap:6px;}.employee-gif-notice-title{font-size:.7rem;}}
-
-/* 정부·국회 화면 */
-#govAssemblyScreen{background:#f4f7fb;}
-#govAssemblyScreen .govasm-header{
-  width:100%;max-width:430px;margin:0 auto;height:54px;
-  position:sticky;top:0;z-index:30;background:#fff;
-  border-bottom:1px solid #edf2f7;
-  box-shadow:0 3px 14px rgba(25,67,110,.055);
-  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
-  align-items:center;padding:0 12px;
-}
-#govAssemblyScreen .govasm-back{
-  width:42px;height:42px;min-height:42px;padding:0;border:0;border-radius:14px;
-  background:#f1f6fd;color:#1769d2;font-size:1.55rem;font-weight:700;line-height:1;
-}
-#govAssemblyScreen .govasm-title{
-  text-align:center;color:#173f70;font-size:1.12rem;font-weight:850;
-  letter-spacing:-.045em;white-space:nowrap;
-}
-.govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
-.govasm-section{margin-bottom:16px;}
-.govasm-section:last-child{margin-bottom:0;}
-.govasm-section-head{
-  display:flex;align-items:center;width:100%;gap:9px;
-}
-.govasm-badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  flex:0 0 auto;
-  font-size:.82rem;font-weight:850;padding:5px 10px;border-radius:6px;
-  margin:0;letter-spacing:-.035em;line-height:1.15;
-}
-.govasm-divider{
-  flex:1;height:1.5px;background:#d9e6f4;margin:0;
-}
-.govasm-divider.gov-divider{background:#1769d2;}
-.govasm-divider.assembly-divider{background:#64748b;}
-.govasm-divider.law-divider{background:#7b8794;}
-.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
-.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
-.govasm-badge.law{background:#eef1f4;color:#586474;}
-
-.govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
-.govasm-card{
-  min-width:0;height:72px;border:1.5px solid #dce6f2;border-radius:13px;
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  text-align:center;text-decoration:none;color:#27415f;
-  font-size:.96rem;font-weight:800;letter-spacing:-.045em;
-  box-shadow:0 3px 11px rgba(24,71,120,.05);
-  transition:transform .12s,box-shadow .12s,background .12s;
-}
-.govasm-card:active{transform:scale(.97);background:#f8fbff;}
-.govasm-card.gov-card{border:1.5px solid #1769d2;}
-.govasm-card.assembly-card{border:1.5px solid #64748b;}
-.govasm-card.law-card{border:1.5px solid #7b8794;}
-.govasm-section-title{display:none;}
-@media(max-width:360px){
-  .emergency-notice{height:38px;padding:0 8px;gap:5px;}
-  .emergency-marquee{font-size:.88rem;}
-  .emergency-badge{font-size:.68rem;padding:4px 8px;}
-  .govasm-content{padding:10px 10px 20px;}
-  .govasm-grid{gap:6px;}
-  .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
-}
 
 </style>
 
@@ -3402,8 +3340,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <!-- 직원공지: Sheet6 G열 GIF + H열 제목, 상단 2개만 1행 2열로 표시 -->
   <section class="employee-gif-notice-wrap" id="employeeGifNoticeWrap" aria-label="직원공지">
-    <div class="employee-gif-notice-heading"><span class="title">직원공지</span></div>
-    <div class="employee-gif-notice-grid" id="employeeGifNoticeGrid"></div>
+      <div class="employee-gif-notice-grid" id="employeeGifNoticeGrid"></div>
   </section>
 
   <div class="calendar-wrapper" id="calendarWrapper">
@@ -6162,49 +6099,124 @@ function createEventCard(event, isNext=false) {
 
 
 
-  /* ===== 2026-09-21 직원공지 GIF =====
-     Sheet6: B열=구분, F열=관련 게시판/링크, G열=Google Drive GIF, H열=제목
-     목록 위에서부터 GIF가 등록된 2개만 표시합니다. */
-  function extractEmployeeGifUrl(rawUrl) {
+  /* ===== 2026-09-21 홈 하단 GIF 공지 =====
+     중요공지(빨간 테두리) 바로 아래에 Sheet6의 G/H 데이터를 2개 표시합니다.
+     GIF 위 뱃지는 Sheet4 I열의 위에서부터 2개를 사용합니다. */
+  function getEmployeeGifSourceUrls(rawUrl) {
     const url = String(rawUrl || '').trim();
-    if (!/^https?:\/\//i.test(url)) return '';
-    const driveId = (typeof extractDriveFileId === 'function') ? extractDriveFileId(url) : null;
-    if (driveId) return `https://drive.google.com/uc?export=view&id=${driveId}`;
-    return url;
+    if (!/^https?:\/\//i.test(url)) return [];
+    const id = (typeof extractDriveFileId === 'function') ? extractDriveFileId(url) : null;
+    if (id) {
+      return [
+        `https://lh3.googleusercontent.com/d/${id}`,
+        `https://drive.google.com/uc?export=view&id=${id}`,
+        `https://drive.google.com/thumbnail?id=${id}&sz=w1200`
+      ];
+    }
+    return [url];
   }
 
-  function loadEmployeeGifNotices() {
+  async function loadEmployeeGifNotices() {
     const wrap = document.getElementById('employeeGifNoticeWrap');
     const grid = document.getElementById('employeeGifNoticeGrid');
     if (!wrap || !grid) return;
-    fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now())
-      .then(response => { if (!response.ok) throw new Error('직원공지 CSV 응답 오류'); return response.text(); })
-      .then(csv => {
-        const rows = splitCSV(csv), notices = [];
-        for (let i=1; i<rows.length && notices.length<2; i++) {
-          const r=rows[i]||[];
-          const category=String(r[1]||'').trim();
-          const linkUrl=String(r[5]||'').trim();
-          const gifRaw=String(r[6]||'').trim();
-          const title=String(r[7]||'').trim();
-          if (!gifRaw || !title) continue;
-          const gifUrl=extractEmployeeGifUrl(gifRaw);
-          if (gifUrl) notices.push({category:category||'직원공지',linkUrl,gifUrl,title});
-        }
-        grid.innerHTML='';
-        if (!notices.length) { wrap.style.display='none'; return; }
-        notices.forEach(item=>{
-          const card=document.createElement('button'); card.type='button'; card.className='employee-gif-notice-card';
-          const badge=document.createElement('span'); badge.className='employee-gif-notice-badge'; badge.textContent=item.category;
-          const img=document.createElement('img'); img.className='employee-gif-notice-media'; img.alt=item.title; img.src=item.gifUrl; img.loading='eager';
-          const title=document.createElement('span'); title.className='employee-gif-notice-title'; title.textContent=item.title;
-          card.appendChild(badge); card.appendChild(img); card.appendChild(title);
-          card.addEventListener('click',()=>{ if(/^https?:\/\//i.test(item.linkUrl)) window.open(item.linkUrl,'_blank','noopener,noreferrer'); });
-          grid.appendChild(card);
+
+    try {
+      const [newsResponse, staffResponse] = await Promise.all([
+        fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'}),
+        fetch(STAFF_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'})
+      ]);
+      if (!newsResponse.ok || !staffResponse.ok) throw new Error('GIF 공지 CSV 응답 오류');
+
+      const [newsCsv, staffCsv] = await Promise.all([
+        newsResponse.text(), staffResponse.text()
+      ]);
+      const newsRows = splitCSV(newsCsv);
+      const staffRows = splitCSV(staffCsv);
+
+      // Sheet4 I열: 위에서부터 비어 있지 않은 2개를 뱃지로 사용
+      const badges = [];
+      for (let i=1; i<staffRows.length && badges.length<2; i++) {
+        const value = String((staffRows[i] || [])[8] || '').trim();
+        if (value) badges.push(value);
+      }
+
+      // Sheet6 목록 위에서부터 G열 GIF + H열 제목이 모두 있는 2개
+      const notices = [];
+      for (let i=1; i<newsRows.length && notices.length<2; i++) {
+        const r = newsRows[i] || [];
+        const gifRaw = String(r[6] || '').trim();   // G열
+        const title = String(r[7] || '').trim();    // H열
+        const linkUrl = String(r[5] || '').trim();  // F열
+        if (!gifRaw || !title) continue;
+        const sources = getEmployeeGifSourceUrls(gifRaw);
+        if (sources.length) notices.push({sources, title, linkUrl});
+      }
+
+      grid.innerHTML = '';
+      if (!notices.length) {
+        wrap.style.display = 'none';
+        return;
+      }
+
+      notices.forEach((item, index) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'employee-gif-notice-card';
+
+        // 정부·국회 페이지의 뱃지 느낌: 작은 라운드 뱃지 + 오른쪽 옅은 구분선
+        const badgeLine = document.createElement('div');
+        badgeLine.className = 'employee-gif-notice-badge-line';
+
+        const badge = document.createElement('span');
+        badge.className = 'employee-gif-notice-badge';
+        badge.textContent = badges[index] || '공지';
+
+        const divider = document.createElement('span');
+        divider.className = 'employee-gif-notice-badge-divider';
+
+        badgeLine.appendChild(badge);
+        badgeLine.appendChild(divider);
+
+        const img = document.createElement('img');
+        img.className = 'employee-gif-notice-media';
+        img.alt = item.title;
+        img.loading = 'eager';
+        img.decoding = 'async';
+
+        let sourceIndex = 0;
+        const tryNextSource = () => {
+          if (sourceIndex >= item.sources.length) {
+            img.removeAttribute('src');
+            img.classList.add('is-broken');
+            return;
+          }
+          img.src = item.sources[sourceIndex++];
+        };
+        img.addEventListener('error', tryNextSource);
+        tryNextSource();
+
+        const title = document.createElement('span');
+        title.className = 'employee-gif-notice-title';
+        title.textContent = item.title;
+
+        card.appendChild(badgeLine);
+        card.appendChild(img);
+        card.appendChild(title);
+
+        card.addEventListener('click', () => {
+          if (/^https?:\/\//i.test(item.linkUrl)) {
+            window.open(item.linkUrl, '_blank', 'noopener,noreferrer');
+          }
         });
-        wrap.style.display='block';
-      })
-      .catch(error=>{ console.warn('직원공지 GIF 불러오기 실패:',error); wrap.style.display='none'; });
+        grid.appendChild(card);
+      });
+
+      wrap.style.display = 'block';
+    } catch (error) {
+      console.warn('홈 GIF 공지 불러오기 실패:', error);
+      wrap.style.display = 'none';
+    }
   }
 
   /* ===== 2026-09-20 긴급공지: Sheet6 B2/D2/E2 ===== */
