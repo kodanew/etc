@@ -6152,14 +6152,15 @@ function createEventCard(event, isNext=false) {
       const notices = [];
 
       // Sheet6 목록 위에서부터 G열 GIF + H열 제목이 있는 2개를 표시
-      // I열은 GIF 위 뱃지로 사용합니다.
+      // I열은 GIF 위 뱃지, J열은 GIF 클릭 시 연결할 협회공지 D열 제목으로 사용합니다.
       for (let i=1; i<newsRows.length && notices.length<2; i++) {
         const r = newsRows[i] || [];
         const date = String(r[2] || '').trim();      // C열 작성일
         const category = String(r[1] || '').trim();  // B열 구분
-        const title = String(r[9] || '').trim();     // J열 제목
+        const title = String(r[7] || '').trim();     // H열 GIF 제목(화면 표시용)
         const gifRaw = String(r[6] || '').trim();    // G열 GIF
         const badgeText = String(r[8] || '').trim();// I열 뱃지
+        const gifLinkTitle = String(r[9] || '').trim(); // J열 GIF링크(협회공지 D열 제목과 매칭)
 
         if (!gifRaw || !title) continue;
 
@@ -6172,6 +6173,7 @@ function createEventCard(event, isNext=false) {
           category,
           badgeText: badgeText || category || '공지',
           title,
+          gifLinkTitle,
           sources
         });
       }
@@ -6235,13 +6237,14 @@ function createEventCard(event, isNext=false) {
               await loadNewsData();
             }
 
-            const gifTitle = String(item.title || '').trim();
+            const gifLinkTitle = String(item.gifLinkTitle || '').trim();
 
-            // GIF의 J열 제목과 협회공지의 D열 제목을 정확히 일치시킵니다.
+            // 화면에 표시되는 GIF 제목은 H열입니다.
+            // 클릭 연결용 J열 값을 협회공지 D열 제목과 정확히 일치시킵니다.
             // parseNewsCSV()에서 협회공지 title은 D열(r[3])을 사용합니다.
-            const detailIndex = gifTitle
+            const detailIndex = gifLinkTitle
               ? newsData.findIndex(n =>
-                  String(n.title || '').trim() === gifTitle
+                  String(n.title || '').trim() === gifLinkTitle
                 )
               : -1;
 
@@ -6249,9 +6252,9 @@ function createEventCard(event, isNext=false) {
               // 협회공지 목록을 거치지 않고 해당 게시물의 상세 화면을 바로 엽니다.
               openNewsDetailScreen(detailIndex);
             } else {
-              // J열 제목과 일치하는 D열 제목을 찾지 못한 경우에는
+              // J열 GIF링크와 일치하는 D열 제목을 찾지 못한 경우에는
               // 잘못된 공지로 이동하지 않고 현재 화면을 유지합니다.
-              console.warn('GIF 제목과 일치하는 협회공지 D열 제목을 찾지 못했습니다:', gifTitle);
+              console.warn('GIF J열 값과 일치하는 협회공지 D열 제목을 찾지 못했습니다:', gifLinkTitle);
             }
           } catch (error) {
             console.warn('GIF 공지 상세 연결 실패:', error);
