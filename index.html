@@ -6101,7 +6101,7 @@ function createEventCard(event, isNext=false) {
 
   /* ===== 2026-09-21 홈 하단 GIF 공지 =====
      중요공지(빨간 테두리) 바로 아래에 Sheet6의 G/H 데이터를 2개 표시합니다.
-     GIF 위 뱃지는 Sheet4 I열의 위에서부터 2개를 사용합니다. */
+     GIF 위 뱃지는 Sheet6 I열의 각 게시물 내용을 사용합니다. */
   function getEmployeeGifSourceUrls(rawUrl) {
     const url = String(rawUrl || '').trim();
     if (!/^https?:\/\//i.test(url)) return [];
@@ -6122,35 +6122,36 @@ function createEventCard(event, isNext=false) {
     if (!wrap || !grid) return;
 
     try {
-      const [newsResponse, staffResponse] = await Promise.all([
-        fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'}),
-        fetch(STAFF_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'})
-      ]);
-      if (!newsResponse.ok || !staffResponse.ok) throw new Error('GIF 공지 CSV 응답 오류');
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'});
+      if (!response.ok) throw new Error('GIF 공지 CSV 응답 오류');
 
-      const [newsCsv, staffCsv] = await Promise.all([
-        newsResponse.text(), staffResponse.text()
-      ]);
+      const newsCsv = await response.text();
       const newsRows = splitCSV(newsCsv);
-      const staffRows = splitCSV(staffCsv);
-
-      // Sheet4 I열: 위에서부터 비어 있지 않은 2개를 뱃지로 사용
-      const badges = [];
-      for (let i=1; i<staffRows.length && badges.length<2; i++) {
-        const value = String((staffRows[i] || [])[8] || '').trim();
-        if (value) badges.push(value);
-      }
-
-      // Sheet6 목록 위에서부터 G열 GIF + H열 제목이 모두 있는 2개
       const notices = [];
+
+      // Sheet6 목록 위에서부터 G열 GIF + H열 제목이 있는 2개를 표시
+      // I열은 GIF 위 뱃지로 사용합니다.
       for (let i=1; i<newsRows.length && notices.length<2; i++) {
         const r = newsRows[i] || [];
-        const gifRaw = String(r[6] || '').trim();   // G열
-        const title = String(r[7] || '').trim();    // H열
-        const linkUrl = String(r[5] || '').trim();  // F열
+        const date = String(r[2] || '').trim();      // C열 작성일
+        const category = String(r[1] || '').trim();  // B열 구분
+        const title = String(r[7] || '').trim();     // H열 제목
+        const gifRaw = String(r[6] || '').trim();    // G열 GIF
+        const badgeText = String(r[8] || '').trim();// I열 뱃지
+
         if (!gifRaw || !title) continue;
+
         const sources = getEmployeeGifSourceUrls(gifRaw);
-        if (sources.length) notices.push({sources, title, linkUrl});
+        if (!sources.length) continue;
+
+        notices.push({
+          rowIndex: i,
+          date,
+          category,
+          badgeText: badgeText || category || '공지',
+          title,
+          sources
+        });
       }
 
       grid.innerHTML = '';
@@ -6159,18 +6160,18 @@ function createEventCard(event, isNext=false) {
         return;
       }
 
-      notices.forEach((item, index) => {
+      notices.forEach((item) => {
         const card = document.createElement('button');
         card.type = 'button';
         card.className = 'employee-gif-notice-card';
 
-        // 정부·국회 페이지의 뱃지 느낌: 작은 라운드 뱃지 + 오른쪽 옅은 구분선
+        // Sheet6 I열 뱃지 + 정부·국회 페이지와 같은 작은 라운드 뱃지/구분선
         const badgeLine = document.createElement('div');
         badgeLine.className = 'employee-gif-notice-badge-line';
 
         const badge = document.createElement('span');
         badge.className = 'employee-gif-notice-badge';
-        badge.textContent = badges[index] || '공지';
+        badge.textContent = item.badgeText;
 
         const divider = document.createElement('span');
         divider.className = 'employee-gif-notice-badge-divider';
@@ -6204,11 +6205,39 @@ function createEventCard(event, isNext=false) {
         card.appendChild(img);
         card.appendChild(title);
 
-        card.addEventListener('click', () => {
-          if (/^https?:\/\//i.test(item.linkUrl)) {
-            window.open(item.linkUrl, '_blank', 'noopener,noreferrer');
+        // GIF를 클릭하면 외부 링크가 아니라 '협회공지'의 실제 상세 내용으로 이동
+        card.addEventListener('click', async () => {
+          try {
+            // 협회공지 데이터가 아직 로딩되지 않았다면 먼저 불러옵니다.
+            if (!Array.isArray(newsData) || newsData.length === 0) {
+              await loadNewsData();
+            }
+
+            // 협회공지에서 같은 제목/작성일의 실제 게시물을 찾아 상세 화면을 엽니다.
+            let detailIndex = newsData.findIndex(n =>
+              String(n.title || '').trim() === item.title &&
+              String(n.date || '').trim() === item.date
+            );
+
+            // 작성일 표기가 다른 경우 제목으로 한 번 더 찾습니다.
+            if (detailIndex < 0) {
+              detailIndex = newsData.findIndex(n =>
+                String(n.title || '').trim() === item.title
+              );
+            }
+
+            if (detailIndex >= 0 && typeof openNewsDetailScreen === 'function') {
+              openNewsDetailScreen(detailIndex);
+            } else if (typeof openNewsScreen === 'function') {
+              // 상세 게시물을 찾지 못한 경우 협회공지 목록으로 이동
+              openNewsScreen();
+            }
+          } catch (error) {
+            console.warn('GIF 공지 상세 연결 실패:', error);
+            if (typeof openNewsScreen === 'function') openNewsScreen();
           }
         });
+
         grid.appendChild(card);
       });
 
