@@ -1899,6 +1899,42 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .daily-trend-card{padding:16px 15px 14px;}
 }
 
+/* ===== 일일동향 인라인 카드 / 모바일 헤더 폭 ===== */
+#meetingScreen #dailyTrendScreen.daily-trend-inline{
+  display:none;
+  position:relative;
+  inset:auto;
+  z-index:auto;
+  width:100%;
+  max-width:430px;
+  margin:0 auto;
+  padding:0;
+  overflow:visible;
+  background:transparent;
+  box-sizing:border-box;
+}
+#meetingScreen #dailyTrendScreen.daily-trend-inline .daily-trend-grid{
+  width:100%;
+  padding:0 0 28px;
+  gap:10px;
+}
+#meetingScreen #dailyTrendScreen.daily-trend-inline .daily-trend-card{
+  width:100%;
+  box-sizing:border-box;
+  border-radius:15px;
+}
+#meetingScreen #dailyTrendScreen.daily-trend-inline .daily-trend-thumb-title{
+  min-height:2.8em;
+  -webkit-line-clamp:2;
+}
+#meetingScreen #dailyTrendScreen.daily-trend-inline .daily-trend-article{
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+  display:block;
+  -webkit-line-clamp:unset;
+}
+
 /* ===== 2026-09-16 회의자료 UI : KODA 임직원현황과 동일한 버튼/헤더 규격 ===== */
 #meetingScreen{
   display:none;
@@ -4022,16 +4058,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 </div>
 
-<!-- ✨ 일일동향 날짜별 카드 페이지 : Sheet9 B/D/E/F/G/H/I ✨ -->
-<div class="fullscreen-screen" id="dailyTrendScreen">
-  <div class="staff-mobile-header">
-    <button class="fullscreen-back-btn" onclick="closeDailyTrendScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">일일동향</div>
-    <div></div>
-  </div>
-  <div class="fullscreen-content" style="padding-top:0;">
-    <div id="dailyTrendGrid" class="daily-trend-grid"></div>
-  </div>
+<!-- ✨ 일일동향 : 회의자료 화면 안에서 바로 펼쳐지는 카드 목록 -->
+<div id="dailyTrendScreen" class="daily-trend-inline" style="display:none;">
+  <div id="dailyTrendGrid" class="daily-trend-grid"></div>
 </div>
 
 <!-- ✨ 일일동향 날짜별 전체보기 : 해당 날짜의 Sheet9 전체 내용 ✨ -->
@@ -6457,7 +6486,15 @@ function createEventCard(event, isNext=false) {
       let fileUrl = rawLink;
       const driveMatch = rawLink.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?.*?id=)([A-Za-z0-9_-]+)/i);
       if (driveMatch) fileUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
-      data.push({ category: category || '기타자료', date, badge: badge || category || '기타자료', title, fileUrl });
+      const isDaily = category === '일일동향';
+      const fullContent = isDaily ? String(r[5] || '').trim() : '';
+      const thumb = isDaily ? String(r[6] || '').trim() : '';
+      const dailyTitle = isDaily ? String(r[7] || '').trim() : title;
+      data.push({
+        category: category || '기타자료', date, badge: badge || category || '기타자료',
+        title: isDaily ? (dailyTitle || title) : title, fileUrl,
+        rowIndex:i, fullContent, thumb
+      });
     }
     return data.sort((a,b) => parseNewsDate(b.date) - parseNewsDate(a.date));
   }
@@ -6478,6 +6515,8 @@ function createEventCard(event, isNext=false) {
 
   function renderMeetingList(category) {
     const list = document.getElementById('meetingList');
+    const dailyScreen = document.getElementById('dailyTrendScreen');
+    if (dailyScreen) dailyScreen.style.display = 'none';
     if (!list) return;
 
     document.querySelectorAll('#meetingTabs .month-tab').forEach(btn => {
@@ -6508,8 +6547,21 @@ function createEventCard(event, isNext=false) {
       const card = document.createElement('div');
       card.className = 'meeting-card';
       card.type = 'button';
-      card.style.cursor = item.fileUrl ? 'pointer' : 'default';
-      card.onclick = () => { if (item.fileUrl) window.open(item.fileUrl, '_blank', 'noopener,noreferrer'); };
+      if (String(item.category || '').trim() === '일일동향') {
+        card.style.cursor = 'pointer';
+        card.onclick = () => {
+          const daily = dailyTrendData.find(d => (d.rowIndex === item.rowIndex) || (d.date === item.date && d.title === item.title));
+          if (daily) openDailyTrendItemDetail(daily);
+          else {
+            if (!dailyTrendData.length) loadDailyTrendData();
+            const fallback = {rowIndex:item.rowIndex,date:item.date,fullContent:item.fullContent||'',thumb:item.thumb||'',title:item.title||'',articleTitles:[],articleLinks:[]};
+            openDailyTrendItemDetail(fallback);
+          }
+        };
+      } else {
+        card.style.cursor = item.fileUrl ? 'pointer' : 'default';
+        card.onclick = () => { if (item.fileUrl) window.open(item.fileUrl, '_blank', 'noopener,noreferrer'); };
+      }
       card.innerHTML = `
         <div class="meeting-card-title meeting-title-row">
           <span class="news-badge">${item.badge || item.category || '기타자료'}</span>
@@ -6533,6 +6585,10 @@ function createEventCard(event, isNext=false) {
     document.body.style.overflow = 'hidden';
     history.pushState({ meetingOpen: true }, "", "");
     currentMeetingCategory = '전체';
+    const dailyScreen = document.getElementById('dailyTrendScreen');
+    const meetingList = document.getElementById('meetingList');
+    if (dailyScreen) dailyScreen.style.display = 'none';
+    if (meetingList) meetingList.style.display = 'block';
     if (meetingData.length === 0) loadMeetingData();
     else filterMeeting('전체');
   };
@@ -6541,16 +6597,15 @@ function createEventCard(event, isNext=false) {
     history.back();
   };
 
-  /* ===== 2026-09-22 일일동향 : Sheet9 B열=일일동향 =====
+  /* ===== 일일동향 : Sheet9 B열=일일동향 =====
+     최신 구조
      B열 : 구분
-     D열 : 날짜
-     E열 : 기존 기사/제목 데이터(호환용)
+     C열 : 등록일자
      F열 : 전체내용
      G열 : 썸네일
-     H열 : 썸네일 링크
-     I열 : 썸네일 하단 제목
-     J/K/L열 : 미리보기용 기사 한글 제목
-     M/N/O열 : J/K/L 각 기사 관련 링크(있는 경우)
+     H열 : 썸네일 하단 한글 제목
+     I/J/K열 : 추가 한글 기사 제목 3개
+     기사 제목 클릭 시 F열 전체내용 안의 유사 제목 링크로 연결
   */
   let dailyTrendData = [];
   let dailyTrendGroups = [];
@@ -6570,192 +6625,183 @@ function createEventCard(event, isNext=false) {
     return `${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
   }
 
+  function extractDailyTrendLinks(content){
+    const str=String(content||'');
+    const links=[];
+    const urlRegex=/(https?:\/\/[^\s<]+)/gi;
+    let m;
+    while((m=urlRegex.exec(str))!==null){
+      let url=m[1].replace(/[.,)]+$/,'');
+      const before=str.slice(Math.max(0,m.index-180),m.index);
+      const cleanBefore=before.replace(/\s+/g,' ').trim();
+      const titleGuess=cleanBefore.split(/\n|[|｜]/).pop().replace(/[:：\-–—]+$/,'').trim();
+      links.push({url,title:titleGuess});
+    }
+    return links;
+  }
+
+  function similarityScore(a,b){
+    const x=String(a||'').replace(/[^가-힣A-Za-z0-9]/g,'').toLowerCase();
+    const y=String(b||'').replace(/[^가-힣A-Za-z0-9]/g,'').toLowerCase();
+    if(!x||!y) return 0;
+    if(x===y) return 10000;
+    if(x.includes(y)||y.includes(x)) return 5000 + Math.min(x.length,y.length);
+    let score=0;
+    for(const ch of x){ if(y.includes(ch)) score++; }
+    return score / Math.max(x.length,y.length);
+  }
+
+  function findSimilarDailyTrendLink(title, content){
+    const t=String(title||'').trim();
+    if(!t) return '';
+    const links=extractDailyTrendLinks(content);
+    if(!links.length) return '';
+    let best=links[0], bestScore=0;
+    links.forEach(link=>{
+      const s=similarityScore(t,link.title || link.url);
+      if(s>bestScore){bestScore=s;best=link;}
+    });
+    // F열에 제목과 URL이 함께 들어오는 일반적인 경우 우선 사용합니다.
+    if(best && best.url) return best.url;
+    return '';
+  }
+
   function parseDailyTrendCSV(csv){
-    const rows = splitCSV(csv);
-    const data = [];
-    for(let i=1; i<rows.length; i++){
-      const r = rows[i] || [];
-      const category = String(r[1] || '').trim();
-      if(category !== '일일동향') continue;
+    const rows=splitCSV(csv);
+    const data=[];
+    for(let i=1;i<rows.length;i++){
+      const r=rows[i]||[];
+      const category=String(r[1]||'').trim();
+      if(category!=='일일동향') continue;
 
-      const date = String(r[3] || '').trim();
-      const legacyTitle = String(r[4] || '').trim();
-      const fullContent = String(r[5] || '').trim();
-      const thumb = String(r[6] || '').trim();
-      const thumbLink = String(r[7] || '').trim();
-      const thumbTitle = String(r[8] || '').trim();
-      const articleTitles = [9,10,11].map(idx => String(r[idx] || '').trim());
-      const articleLinks = [12,13,14].map(idx => String(r[idx] || '').trim());
+      const date=String(r[2]||'').trim();       // C열 등록일자
+      const fullContent=String(r[5]||'').trim(); // F열 전체내용
+      const thumb=String(r[6]||'').trim();       // G열 썸네일
+      const title=String(r[7]||'').trim();       // H열 한글 제목
+      const articleTitles=[8,9,10].map(idx=>String(r[idx]||'').trim()); // I/J/K
+      if(!date && !fullContent && !thumb && !title && !articleTitles.some(Boolean)) continue;
 
-      if(!date && !legacyTitle && !fullContent && !thumb && !thumbTitle && !articleTitles.some(Boolean)) continue;
+      const allTitles=[title,...articleTitles].filter(Boolean);
       data.push({
-        rowIndex:i, date, dateKey:normalizeDailyTrendDate(date),
-        legacyTitle, fullContent, thumb, thumbLink, thumbTitle,
-        articles:articleTitles.map((title,n)=>({title,link:articleLinks[n]})).filter(x=>x.title || x.link)
+        rowIndex:i,date,dateKey:normalizeDailyTrendDate(date),fullContent,thumb,
+        title,articleTitles,allTitles,
+        articleLinks:allTitles.map(t=>findSimilarDailyTrendLink(t,fullContent))
       });
     }
-    data.sort((a,b) => parseNewsDate(b.date) - parseNewsDate(a.date));
-    return data;
+    return data.sort((a,b)=>{
+      const diff=parseNewsDate(b.date)-parseNewsDate(a.date);
+      return diff || (b.rowIndex-a.rowIndex);
+    });
   }
 
   function groupDailyTrendByDate(data){
-    const map = new Map();
-    data.forEach(item => {
-      const key = item.dateKey || item.date || '날짜 미상';
-      if(!map.has(key)) map.set(key, {key, rawDate:item.date, items:[]});
+    // 최신 화면은 게시물 단위로 표시하되, 기존 날짜 그룹/전체보기 기능과 호환합니다.
+    const map=new Map();
+    data.forEach(item=>{
+      const key=item.dateKey||item.date||'날짜 미상';
+      if(!map.has(key)) map.set(key,{key,rawDate:item.date,items:[]});
       map.get(key).items.push(item);
     });
-    return Array.from(map.values()).sort((a,b) => {
-      const bd=parseNewsDate(b.rawDate), ad=parseNewsDate(a.rawDate);
-      return bd-ad;
-    });
+    return Array.from(map.values()).sort((a,b)=>parseNewsDate(b.rawDate)-parseNewsDate(a.rawDate));
   }
 
   function makeSafeHttpUrl(raw){
-    const url=String(raw || '').trim();
-    return /^https?:\/\//i.test(url) ? url : '';
+    const url=String(raw||'').trim();
+    return /^https?:\/\//i.test(url)?url:'';
   }
-
   function buildDailyTrendImageUrl(raw){
     const url=makeSafeHttpUrl(raw);
     if(!url) return '';
-    if(typeof toDisplayableImageUrl === 'function') return toDisplayableImageUrl(url);
+    if(typeof toDisplayableImageUrl==='function') return toDisplayableImageUrl(url);
     return url;
   }
 
-  function createDailyTrendArticle(article){
+  function createDailyTrendTitleLink(title, link, extraClass=''){
     const a=document.createElement('a');
-    a.className='daily-trend-article';
-    a.textContent=article.title || '관련 기사';
-    const link=makeSafeHttpUrl(article.link);
-    if(link){
-      a.href=link; a.target='_blank'; a.rel='noopener noreferrer';
-    }else{
-      a.href='javascript:void(0)';
-      a.setAttribute('aria-disabled','true');
-      a.addEventListener('click',e=>e.preventDefault());
-    }
+    a.className=`daily-trend-title-link ${extraClass}`.trim();
+    a.textContent=title||'';
+    const safe=makeSafeHttpUrl(link);
+    if(safe){a.href=safe;a.target='_blank';a.rel='noopener noreferrer';}
+    else {a.href='javascript:void(0)';a.setAttribute('aria-disabled','true');a.addEventListener('click',e=>e.preventDefault());}
     return a;
   }
 
-  function createDailyTrendCard(group){
+  function createDailyTrendCard(item){
     const card=document.createElement('article');
     card.className='daily-trend-card';
+    card.addEventListener('click',(e)=>{
+      if(e.target.closest('a,button')) return;
+      openDailyTrendItemDetail(item);
+    });
 
-    const head=document.createElement('div');
-    head.className='daily-trend-card-head';
+    const head=document.createElement('div'); head.className='daily-trend-card-head';
+    const badge=document.createElement('span'); badge.className='daily-trend-date-badge'; badge.textContent=formatDailyTrendBadge(item.date);
+    const divider=document.createElement('div'); divider.className='daily-trend-divider';
+    const plus=document.createElement('button'); plus.type='button'; plus.className='daily-trend-plus'; plus.textContent='+';
+    plus.setAttribute('aria-label',`${formatDailyTrendBadge(item.date)} 전체보기`);
+    plus.addEventListener('click',e=>{e.stopPropagation();openDailyTrendItemDetail(item);});
+    head.append(badge,divider,plus);
 
-    const badge=document.createElement('span');
-    badge.className='daily-trend-date-badge';
-    badge.textContent=formatDailyTrendBadge(group.rawDate);
-
-    const divider=document.createElement('div');
-    divider.className='daily-trend-divider';
-
-    const plus=document.createElement('button');
-    plus.type='button'; plus.className='daily-trend-plus'; plus.textContent='+';
-    plus.setAttribute('aria-label',`${formatDailyTrendBadge(group.rawDate)} 전체보기`);
-    plus.addEventListener('click',()=>openDailyTrendDetail(group.key));
-
-    head.appendChild(badge); head.appendChild(divider); head.appendChild(plus);
-
-    const main=document.createElement('div');
-    main.className='daily-trend-main';
-
-    const thumbItem=group.items.find(x=>x.thumb) || group.items[0] || {};
-    const thumbWrap=document.createElement('div');
-    thumbWrap.className='daily-trend-thumb-wrap';
-
-    const thumbUrl=buildDailyTrendImageUrl(thumbItem.thumb);
-    const thumbLink=makeSafeHttpUrl(thumbItem.thumbLink);
+    const main=document.createElement('div'); main.className='daily-trend-main';
+    const left=document.createElement('div'); left.className='daily-trend-thumb-wrap';
+    const thumbUrl=buildDailyTrendImageUrl(item.thumb);
     if(thumbUrl){
-      const img=document.createElement('img');
-      img.className='daily-trend-thumb'; img.src=thumbUrl;
-      img.alt=thumbItem.thumbTitle || '일일동향 썸네일'; img.loading='lazy';
+      const img=document.createElement('img'); img.className='daily-trend-thumb'; img.src=thumbUrl; img.alt=item.title||'일일동향 썸네일'; img.loading='lazy';
       img.onerror=()=>{img.style.display='none';};
-      if(thumbLink){
-        const a=document.createElement('a');
-        a.className='daily-trend-thumb-link'; a.href=thumbLink;
-        a.target='_blank'; a.rel='noopener noreferrer'; a.appendChild(img); thumbWrap.appendChild(a);
-      }else thumbWrap.appendChild(img);
+      const link=item.fullContent ? findSimilarDailyTrendLink(item.title,item.fullContent) : '';
+      if(link){const a=document.createElement('a');a.className='daily-trend-thumb-link';a.href=link;a.target='_blank';a.rel='noopener noreferrer';a.appendChild(img);left.appendChild(a);}
+      else left.appendChild(img);
     }else{
-      const ph=document.createElement('div'); ph.className='daily-trend-thumb-placeholder'; ph.textContent='이미지 없음';
-      thumbWrap.appendChild(ph);
+      const ph=document.createElement('div');ph.className='daily-trend-thumb-placeholder';ph.textContent='이미지 없음';left.appendChild(ph);
     }
+    const hTitle=createDailyTrendTitleLink(item.title,item.articleLinks[0],'daily-trend-thumb-title');
+    left.appendChild(hTitle);
 
-    const thumbTitle=document.createElement('div');
-    thumbTitle.className='daily-trend-thumb-title';
-    thumbTitle.textContent=thumbItem.thumbTitle || '';
-    thumbWrap.appendChild(thumbTitle);
+    const articles=document.createElement('div'); articles.className='daily-trend-articles';
+    item.articleTitles.forEach((title,n)=>{
+      if(!title) return;
+      const a=createDailyTrendTitleLink(title,item.articleLinks[n+1],'daily-trend-article');
+      articles.appendChild(a);
+    });
 
-    const articles=document.createElement('div');
-    articles.className='daily-trend-articles';
-    const previewArticles=[];
-    group.items.forEach(item=>item.articles.forEach(article=>{
-      if(article.title && previewArticles.length<3) previewArticles.push(article);
-    }));
-    // J/K/L이 비어 있는 기존 데이터는 E/F 구조를 임의로 재배치하지 않고 빈 상태로 둡니다.
-    previewArticles.forEach(article=>articles.appendChild(createDailyTrendArticle(article)));
-
-    main.appendChild(thumbWrap); main.appendChild(articles); card.appendChild(head); card.appendChild(main);
+    main.append(left,articles); card.append(head,main);
     return card;
   }
 
   function renderDailyTrendList(){
-    const grid=document.getElementById('dailyTrendGrid');
-    if(!grid) return;
+    const grid=document.getElementById('dailyTrendGrid'); if(!grid) return;
     grid.innerHTML='';
-    if(!dailyTrendGroups.length){
-      const empty=document.createElement('div'); empty.className='daily-trend-empty';
-      empty.innerHTML='등록된 일일동향이 없습니다.<br>시트9 B열에 <b>일일동향</b>을 입력해 주세요.';
-      grid.appendChild(empty); return;
+    if(!dailyTrendData.length){
+      const empty=document.createElement('div');empty.className='daily-trend-empty';
+      empty.innerHTML='등록된 일일동향이 없습니다.<br>시트9 B열에 <b>일일동향</b>을 입력해 주세요.';grid.appendChild(empty);return;
     }
-    dailyTrendGroups.forEach(group=>grid.appendChild(createDailyTrendCard(group)));
+    dailyTrendData.forEach(item=>grid.appendChild(createDailyTrendCard(item)));
   }
 
-  function renderDailyTrendDetail(group){
+  function renderDailyTrendDetail(item){
     const dateEl=document.getElementById('dailyTrendDetailDate');
     const card=document.getElementById('dailyTrendDetailCard');
-    if(!dateEl || !card) return;
-    dateEl.textContent=group.rawDate || group.key || '날짜';
-    card.innerHTML='';
+    if(!dateEl||!card) return;
+    dateEl.textContent=item.date||'등록일자'; card.innerHTML='';
 
-    group.items.forEach(item=>{
-      const row=document.createElement('article');
-      row.className='daily-trend-detail-row';
+    const row=document.createElement('article');row.className='daily-trend-detail-row';
+    const head=document.createElement('div');head.className='daily-trend-detail-head';
+    const badge=document.createElement('span');badge.className='daily-trend-detail-badge';badge.textContent=item.date||'일일동향';
+    const title=document.createElement('div');title.className='daily-trend-detail-title';title.textContent=item.title||'일일동향';
+    head.append(badge,title);row.appendChild(head);
 
-      const head=document.createElement('div');
-      head.className='daily-trend-detail-head';
-      const badge=document.createElement('span');
-      badge.className='daily-trend-detail-badge'; badge.textContent='일일동향';
-      const title=document.createElement('div');
-      title.className='daily-trend-detail-title';
-      title.textContent=item.thumbTitle || item.legacyTitle || '일일동향';
-      head.appendChild(badge); head.appendChild(title);
-      row.appendChild(head);
+    const body=document.createElement('div');body.className='daily-trend-detail-body';
+    const content=item.fullContent||'';
+    if(typeof renderTextWithImages==='function') renderTextWithImages(body,content); else body.innerText=content;
+    if(!content) body.innerText='등록된 전체 내용이 없습니다.';
+    row.appendChild(body);card.appendChild(row);
+  }
 
-      const thumbUrl=buildDailyTrendImageUrl(item.thumb);
-      if(thumbUrl){
-        const img=document.createElement('img');
-        img.className='daily-trend-detail-thumb-full'; img.src=thumbUrl;
-        img.alt=item.thumbTitle || '일일동향 썸네일'; img.loading='lazy';
-        row.appendChild(img);
-      }
-
-      const body=document.createElement('div');
-      body.className='daily-trend-detail-body';
-      const content=item.fullContent || '';
-      if(typeof renderTextWithImages === 'function') renderTextWithImages(body,content);
-      else body.textContent=content;
-      if(!content) body.textContent='등록된 전체 내용이 없습니다.';
-      row.appendChild(body);
-      card.appendChild(row);
-    });
-
-    if(!group.items.length){
-      const empty=document.createElement('div'); empty.className='daily-trend-detail-empty';
-      empty.textContent='해당 날짜의 내용이 없습니다.'; card.appendChild(empty);
-    }
+  function openDailyTrendItemDetail(item){
+    renderDailyTrendDetail(item);
+    const screen=document.getElementById('dailyTrendDetailScreen');if(!screen)return;
+    screen.style.display='flex';screen.scrollTop=0;document.body.style.overflow='hidden';
+    history.pushState({dailyTrendDetailOpen:true,dailyTrendRowIndex:item.rowIndex},'', '');
   }
 
   async function loadDailyTrendData(){
@@ -6767,6 +6813,8 @@ function createEventCard(event, isNext=false) {
       dailyTrendData=parseDailyTrendCSV(await response.text());
       dailyTrendGroups=groupDailyTrendByDate(dailyTrendData);
       renderDailyTrendList();
+      // 전체 목록에서도 일일동향 게시물을 클릭하면 F열 전체내용 상세보기로 연결되도록 동기화
+      if(meetingData.length) renderMeetingList(currentMeetingCategory);
     }catch(error){
       console.warn('일일동향 불러오기 실패:',error);
       if(grid) grid.innerHTML='<div class="daily-trend-empty">일일동향을 불러오지 못했습니다.<br>시트9가 웹에 게시되어 있는지 확인해주세요.</div>';
@@ -6774,22 +6822,23 @@ function createEventCard(event, isNext=false) {
   }
 
   window.openDailyTrendScreen=function(){
+    // 일일동향은 별도 페이지로 전환하지 않고 회의자료 화면 아래 영역에 표시합니다.
+    const grid=document.getElementById('dailyTrendGrid');
     const screen=document.getElementById('dailyTrendScreen');
-    if(!screen) return;
-    screen.style.display='flex'; screen.scrollTop=0; document.body.style.overflow='hidden';
-    history.pushState({dailyTrendOpen:true},'','');
+    if(screen) screen.style.display='block';
+    if(grid){grid.style.display='grid';}
+    const meetingList=document.getElementById('meetingList');
+    if(meetingList) meetingList.style.display='none';
+    document.querySelectorAll('#meetingTabs .month-tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.cat==='일일동향'));
     if(!dailyTrendData.length) loadDailyTrendData(); else renderDailyTrendList();
   };
-  window.closeDailyTrendScreen=function(){history.back();};
 
+  window.closeDailyTrendScreen=function(){
+    const meetingList=document.getElementById('meetingList');if(meetingList)meetingList.style.display='block';
+    const grid=document.getElementById('dailyTrendGrid');if(grid)grid.style.display='none';
+  };
   window.openDailyTrendDetail=function(groupKey){
-    const group=dailyTrendGroups.find(g=>g.key===groupKey);
-    if(!group) return;
-    renderDailyTrendDetail(group);
-    const screen=document.getElementById('dailyTrendDetailScreen');
-    if(!screen) return;
-    screen.style.display='flex'; screen.scrollTop=0; document.body.style.overflow='hidden';
-    history.pushState({dailyTrendDetailOpen:true,dailyTrendGroupKey:groupKey},'','');
+    const group=dailyTrendGroups.find(g=>g.key===groupKey);if(group&&group.items[0])openDailyTrendItemDetail(group.items[0]);
   };
   window.closeDailyTrendDetailScreen=function(){history.back();};
 
