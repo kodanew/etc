@@ -2378,6 +2378,338 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #meetingScreen .month-tab{font-size:.7rem;}
 }
 
+
+/* ===== 일일동향 : 날짜별 2단 카드형 뉴스 ===== */
+#meetingScreen.daily-view #meetingList{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  align-items:start;
+}
+.daily-news-card{
+  background:#fff;
+  border:1px solid #e1e8f0;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 5px 16px rgba(24,71,120,.055);
+  min-width:0;
+}
+.daily-news-date-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:11px 11px 9px;
+  min-width:0;
+}
+.daily-news-date-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  padding:4px 7px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#475569;
+  font-size:.62rem;
+  line-height:1;
+  font-weight:850;
+  white-space:nowrap;
+}
+.daily-news-date-divider{
+  width:1px;
+  height:14px;
+  flex:0 0 1px;
+  background:#cbd5e1;
+}
+.daily-news-more{
+  margin-left:auto;
+  flex:0 0 auto;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#1769d2;
+  font-size:1.35rem;
+  font-weight:500;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.daily-news-more:active{background:#eef6ff;}
+.daily-news-date{
+  color:#334155;
+  font-size:.70rem;
+  line-height:1.2;
+  font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.daily-news-hero{
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:9px;
+  padding:0 11px 10px;
+  min-width:0;
+}
+.daily-news-thumb-wrap{
+  width:92px;
+  height:72px;
+  border-radius:10px;
+  overflow:hidden;
+  background:#eef2f7;
+  border:1px solid #e7edf4;
+}
+.daily-news-thumb{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+.daily-news-thumb-placeholder{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:#94a3b8; font-size:.65rem; font-weight:700;
+}
+.daily-news-hero-title{
+  min-width:0;
+  align-self:center;
+  color:#172b45;
+  font-size:.86rem;
+  line-height:1.4;
+  font-weight:850;
+  letter-spacing:-.035em;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  word-break:keep-all;
+}
+.daily-news-links{
+  border-top:1px solid #edf2f7;
+  padding:2px 11px 8px;
+}
+.daily-news-link{
+  display:block;
+  position:relative;
+  padding:8px 15px 8px 0;
+  color:#334155;
+  text-decoration:none;
+  font-size:.72rem;
+  line-height:1.35;
+  font-weight:650;
+  border-bottom:1px solid #f1f4f7;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.daily-news-link:last-child{border-bottom:0;}
+.daily-news-link::after{
+  content:'›';
+  position:absolute;
+  right:1px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9aa9ba;
+  font-size:.95rem;
+  font-weight:500;
+}
+.daily-news-link:active{background:#f8fafc;}
+.daily-news-empty{
+  grid-column:1/-1;
+  background:#fff;
+  border:1px dashed #cfd9e6;
+  border-radius:14px;
+  padding:42px 20px;
+  text-align:center;
+  color:#8a9aaf;
+  font-size:.78rem;
+  line-height:1.5;
+}
+@media(max-width:360px){
+  #meetingScreen.daily-view #meetingList{gap:8px;}
+  .daily-news-card{border-radius:14px;}
+  .daily-news-date-row{padding:9px 8px 8px;gap:5px;}
+  .daily-news-date-badge{font-size:.54rem;padding:4px 5px;}
+  .daily-news-date{font-size:.62rem;}
+  .daily-news-hero{grid-template-columns:76px minmax(0,1fr);gap:7px;padding:0 8px 8px;}
+  .daily-news-thumb-wrap{width:76px;height:61px;border-radius:8px;}
+  .daily-news-hero-title{font-size:.75rem;line-height:1.35;}
+  .daily-news-links{padding:1px 8px 6px;}
+  .daily-news-link{font-size:.64rem;padding:7px 12px 7px 0;}
+}
+
+
+/* ===== 일일동향 : 날짜 상세보기 ===== */
+#dailyTrendDetailScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1600;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#f4f7fb;
+  padding:0 10px 20px;
+  box-sizing:border-box;
+}
+#dailyTrendDetailScreen .daily-detail-wrap{
+  width:100%;
+  max-width:430px;
+  margin:0 auto;
+}
+.daily-detail-header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  height:54px;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;
+  padding:0 8px;
+  box-sizing:border-box;
+  background:#fff;
+  border-bottom:1px solid #e8eef5;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+}
+.daily-detail-back{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:14px;
+  background:#f1f6fd;
+  color:#1769d2;
+  font-size:1.5rem;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+}
+.daily-detail-title{
+  min-width:0;
+  text-align:center;
+  color:#173f70;
+  font-size:1.02rem;
+  font-weight:850;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.daily-detail-body{padding:14px 0 28px;}
+.daily-detail-date-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 2px 12px;
+}
+.daily-detail-date-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#ebf8ff;
+  color:#1769d2;
+  font-size:.66rem;
+  line-height:1;
+  font-weight:850;
+  white-space:nowrap;
+}
+.daily-detail-date-divider{
+  flex:1;
+  height:1.5px;
+  background:#1769d2;
+}
+.daily-detail-article{
+  background:#fff;
+  border:1px solid #e1e8f0;
+  border-radius:15px;
+  padding:12px;
+  margin-bottom:9px;
+  box-shadow:0 4px 13px rgba(24,71,120,.045);
+}
+.daily-detail-article:last-child{margin-bottom:0;}
+.daily-detail-category{
+  display:inline-flex;
+  align-items:center;
+  min-height:20px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#52657c;
+  font-size:.60rem;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:7px;
+}
+.daily-detail-main{
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:10px;
+  align-items:start;
+}
+.daily-detail-thumb-link{
+  display:block;
+  width:92px;
+  height:72px;
+  border-radius:10px;
+  overflow:hidden;
+  background:#eef2f7;
+  border:1px solid #e7edf4;
+}
+.daily-detail-thumb-link img{
+  width:100%; height:100%; display:block; object-fit:cover;
+}
+.daily-detail-thumb-empty{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:#94a3b8; font-size:.62rem; font-weight:700;
+}
+.daily-detail-title-link{
+  display:block;
+  color:#172b45;
+  text-decoration:none;
+  font-size:.86rem;
+  line-height:1.45;
+  font-weight:850;
+  letter-spacing:-.035em;
+  word-break:keep-all;
+}
+.daily-detail-title-link:hover{text-decoration:underline;}
+.daily-detail-no-link{color:#172b45;}
+.daily-detail-source{
+  margin-top:8px;
+  padding-top:7px;
+  border-top:1px solid #f0f3f7;
+  color:#8a9aaf;
+  font-size:.62rem;
+  line-height:1.35;
+  word-break:break-all;
+}
+.daily-detail-source a{color:#64748b;text-decoration:none;}
+.daily-detail-empty{
+  background:#fff;
+  border:1px dashed #cfd9e6;
+  border-radius:14px;
+  padding:40px 20px;
+  text-align:center;
+  color:#8a9aaf;
+  font-size:.76rem;
+  line-height:1.5;
+}
+@media(max-width:360px){
+  #dailyTrendDetailScreen{padding:0 8px 18px;}
+  .daily-detail-header{grid-template-columns:48px minmax(0,1fr) 48px;padding:0 4px;}
+  .daily-detail-back{width:38px;height:38px;border-radius:12px;}
+  .daily-detail-title{font-size:.94rem;}
+  .daily-detail-body{padding-top:12px;}
+  .daily-detail-date-badge{font-size:.60rem;padding:5px 7px;}
+  .daily-detail-main{grid-template-columns:76px minmax(0,1fr);gap:8px;}
+  .daily-detail-thumb-link{width:76px;height:61px;border-radius:8px;}
+  .daily-detail-title-link{font-size:.76rem;line-height:1.38;}
+}
+
 /* 협회공지(newsScreen / newsDetailScreen) 스타일 */
 #newsScreen, #newsDetailScreen{
   display:none; position:fixed; inset:0; z-index:1500;
@@ -3735,6 +4067,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="fullscreen-content" style="padding-top:15px;">
     <div id="meetingList"></div>
+  </div>
+</div>
+
+<!-- ✨ 일일동향 날짜별 전체기사 상세 페이지 ✨ -->
+<div class="fullscreen-screen" id="dailyTrendDetailScreen" style="z-index:1600; background:#f4f7fb;">
+  <div class="daily-detail-wrap">
+    <div class="daily-detail-header">
+      <button class="daily-detail-back" type="button" onclick="closeDailyTrendDetail()" aria-label="뒤로가기">←</button>
+      <div class="daily-detail-title" id="dailyDetailTitle">일일동향 상세</div>
+      <div></div>
+    </div>
+    <div class="daily-detail-body">
+      <div class="daily-detail-date-head">
+        <span class="daily-detail-date-badge" id="dailyDetailDateBadge">날짜</span>
+        <span class="daily-detail-date-divider"></span>
+      </div>
+      <div id="dailyDetailList"></div>
+    </div>
   </div>
 </div>
 
@@ -5657,7 +6007,7 @@ function createEventCard(event, isNext=false) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'dailyTrendDetailScreen', 'govAssemblyScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
 
     // 브라우저 뒤로가기로 명함 상태가 해제되면 명함 팝업도 함께 닫습니다.
@@ -5673,10 +6023,14 @@ function createEventCard(event, isNext=false) {
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
+      else if (st.dailyDetailOpen) {
+        document.getElementById('meetingScreen').style.display = 'flex';
+        document.getElementById('dailyTrendDetailScreen').style.display = 'block';
+      }
       else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
     else if (st.govAssemblyOpen) document.getElementById('govAssemblyScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.govAssemblyOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.dailyDetailOpen || st.govAssemblyOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -6138,40 +6492,262 @@ function createEventCard(event, isNext=false) {
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i] || [];
       const category = String(r[1] || '').trim();   // B열 구분
-      const date = String(r[2] || '').trim();       // C열 등록일자
-      const badge = String(r[3] || '').trim();      // D열 뱃지
-      const title = String(r[4] || '').trim();      // E열 제목
-      const rawLink = String(r[5] || '').trim();    // F열 파일링크
-      if (!category && !title && !rawLink) continue;
+      const date = String(r[2] || '').trim();       // 기존 회의자료 C열 등록일자
+      const badge = String(r[3] || '').trim();      // 기존 회의자료 D열 뱃지
+      const title = String(r[4] || '').trim();     // E열 제목
+      const rawLink = String(r[5] || '').trim();   // F열 파일링크
+      const thumbnail = String(r[6] || '').trim();// G열 썸네일
+      if (!category && !title && !rawLink && !thumbnail) continue;
       let fileUrl = rawLink;
       const driveMatch = rawLink.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?.*?id=)([A-Za-z0-9_-]+)/i);
       if (driveMatch) fileUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
-      data.push({ category: category || '기타자료', date, badge: badge || category || '기타자료', title, fileUrl });
+      data.push({
+        category: category || '기타자료',
+        date,
+        badge: badge || category || '기타자료',
+        title,
+        fileUrl,
+        thumbnail,
+        // 일일동향 전용: B=일일동향, C=소식구분, D=날짜, E=제목, F=링크, G=썸네일
+        dailySubcategory: String(r[2] || '').trim(),
+        dailyDate: String(r[3] || '').trim(),
+        dailyTitle: title,
+        dailyLink: rawLink,
+        dailyThumbnail: thumbnail,
+        // 일일동향 H열: G열 썸네일을 눌렀을 때 이동할 썸네일 링크
+        dailyThumbnailLink: String(r[7] || '').trim()
+      });
     }
     return data.sort((a,b) => parseNewsDate(b.date) - parseNewsDate(a.date));
   }
 
+  function dailyImageUrl(rawUrl) {
+    const u = String(rawUrl || '').trim();
+    if (!u) return '';
+    if (typeof toDisplayableImageUrl === 'function') return toDisplayableImageUrl(u);
+    return u;
+  }
+
+  function escapeDailyHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+  }
+
+  function formatDailyDate(dateStr) {
+    const raw = String(dateStr || '').trim();
+    const d = parseNewsDate(raw);
+    if (!isNaN(d.getTime())) {
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    }
+    return raw;
+  }
+
+  function dailyDateKey(dateStr) {
+    const d = parseNewsDate(dateStr);
+    if (!isNaN(d.getTime())) return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return String(dateStr || '').trim();
+  }
+
+  function getDailyArticleGroups() {
+    const rows = meetingData
+      .filter(item => String(item.category || '').trim() === '일일동향')
+      .map(item => ({
+        ...item,
+        subcategory: String(item.dailySubcategory || '').trim(),
+        date: String(item.dailyDate || '').trim(),
+        title: String(item.dailyTitle || '').trim(),
+        link: String(item.dailyLink || '').trim(),
+        thumbnail: String(item.dailyThumbnail || '').trim(),
+        thumbnailLink: String(item.dailyThumbnailLink || '').trim()
+      }))
+      .filter(item => item.date || item.title || item.link || item.thumbnail);
+
+    const groups = new Map();
+    rows.forEach(item => {
+      const key = dailyDateKey(item.date);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    });
+
+    return Array.from(groups.entries()).sort((a,b) => {
+      const da = parseNewsDate(a[1][0]?.date || '');
+      const db = parseNewsDate(b[1][0]?.date || '');
+      return db - da;
+    });
+  }
+
+  function renderDailyTrendList() {
+    const list = document.getElementById('meetingList');
+    const screen = document.getElementById('meetingScreen');
+    if (!list || !screen) return;
+    screen.classList.add('daily-view');
+
+    const groups = getDailyArticleGroups();
+    if (!groups.length) {
+      list.innerHTML = '<div class="daily-news-empty">등록된 일일동향이 없습니다.<br>구글 시트9의 B열에 <b>일일동향</b>을 입력하고 C~H열 자료를 등록해주세요.</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    groups.forEach(([key, items]) => {
+      const datedItem = items.find(x => x.date) || items[0];
+      const dateText = formatDailyDate(datedItem.date);
+      const dateKey = key || dailyDateKey(datedItem.date);
+
+      // G열 썸네일이 있는 행의 E/F를 대표 기사로 사용
+      const hero = items.find(x => x.thumbnail && (x.title || x.link)) || items.find(x => x.thumbnail) || items.find(x => x.title || x.link) || items[0];
+      const heroTitle = hero.title || '관련 기사';
+      const heroLink = hero.link;
+      const heroImg = dailyImageUrl(hero.thumbnail);
+      // G열 썸네일은 H열 썸네일 링크로 연결. H가 비어 있으면 이미지만 새 창으로 표시.
+      const heroThumbLink = hero.thumbnailLink || heroImg;
+
+      // C열 소식구분별로 1개씩 선택. 하나라도 비면 회원사 소식에서 보충.
+      const pickOne = (name) => items.find(x => x.subcategory === name && (x.title || x.link));
+      const selected = [];
+      ['회원사 소식','정책 및 부동산개발업계 동향소식','기타소식'].forEach(name => {
+        const found = pickOne(name);
+        if (found && !selected.includes(found)) selected.push(found);
+      });
+      if (selected.length < 3) {
+        items.filter(x => x.subcategory === '회원사 소식' && (x.title || x.link) && !selected.includes(x) && x !== hero)
+          .forEach(x => { if (selected.length < 3) selected.push(x); });
+      }
+      if (selected.length < 3) {
+        items.filter(x => (x.title || x.link) && !selected.includes(x) && x !== hero)
+          .forEach(x => { if (selected.length < 3) selected.push(x); });
+      }
+
+      const card = document.createElement('article');
+      card.className = 'daily-news-card';
+      const heroHtml = heroImg
+        ? `<a class="daily-news-thumb-wrap" href="${escapeDailyHtml(heroThumbLink)}" target="_blank" rel="noopener noreferrer"><img class="daily-news-thumb" src="${escapeDailyHtml(heroImg)}" alt="${escapeDailyHtml(heroTitle)}" onerror="this.parentElement.innerHTML='<div class=\'daily-news-thumb-placeholder\'>이미지</div>'"></a>`
+        : `<div class="daily-news-thumb-wrap"><div class="daily-news-thumb-placeholder">이미지 없음</div></div>`;
+
+      const linksHtml = selected.map(item => {
+        const label = item.title || item.link || '기사 보기';
+        const href = item.link || '#';
+        return href && href !== '#'
+          ? `<a class="daily-news-link" href="${escapeDailyHtml(href)}" target="_blank" rel="noopener noreferrer" title="${escapeDailyHtml(label)}">${escapeDailyHtml(label)}</a>`
+          : `<span class="daily-news-link" title="${escapeDailyHtml(label)}">${escapeDailyHtml(label)}</span>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="daily-news-date-row">
+          <span class="daily-news-date-badge">${escapeDailyHtml(dateText)}</span>
+          <span class="daily-news-date-divider"></span>
+          <button class="daily-news-more" type="button" aria-label="${escapeDailyHtml(dateText)} 전체기사 보기" onclick="openDailyTrendDetail('${escapeDailyHtml(dateKey)}')">+</button>
+        </div>
+        <div class="daily-news-hero">
+          ${heroHtml}
+          ${heroLink ? `<a class="daily-news-hero-title" href="${escapeDailyHtml(heroLink)}" target="_blank" rel="noopener noreferrer">${escapeDailyHtml(heroTitle)}</a>` : `<div class="daily-news-hero-title">${escapeDailyHtml(heroTitle)}</div>`}
+        </div>
+        <div class="daily-news-links">${linksHtml || '<span class="daily-news-link">추가 기사가 없습니다.</span>'}</div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function renderDailyTrendDetail(dateKey) {
+    const screen = document.getElementById('dailyTrendDetailScreen');
+    const titleEl = document.getElementById('dailyDetailTitle');
+    const dateBadge = document.getElementById('dailyDetailDateBadge');
+    const list = document.getElementById('dailyDetailList');
+    if (!screen || !titleEl || !dateBadge || !list) return;
+
+    const groups = getDailyArticleGroups();
+    const group = groups.find(([key]) => key === dateKey) || groups.find(([,items]) => dailyDateKey(items[0]?.date || '') === dateKey);
+    if (!group) {
+      titleEl.textContent = '일일동향 상세';
+      dateBadge.textContent = dateKey || '일일동향';
+      list.innerHTML = '<div class="daily-detail-empty">해당 날짜의 자료를 찾을 수 없습니다.</div>';
+      return;
+    }
+
+    const items = group[1] || [];
+    const dateText = formatDailyDate(items.find(x => x.date)?.date || dateKey);
+    titleEl.textContent = `${dateText} 일일동향`;
+    dateBadge.textContent = dateText;
+
+    list.innerHTML = '';
+    items.forEach((item, idx) => {
+      const title = item.title || item.link || '제목 없음';
+      const img = dailyImageUrl(item.thumbnail);
+      const thumbHref = item.thumbnailLink || img;
+      const articleHref = item.link || '';
+      const category = item.subcategory || '기타소식';
+      const thumbHtml = img
+        ? `<a class="daily-detail-thumb-link" href="${escapeDailyHtml(thumbHref)}" target="_blank" rel="noopener noreferrer"><img src="${escapeDailyHtml(img)}" alt="${escapeDailyHtml(title)}" onerror="this.parentElement.innerHTML='<div class=\'daily-detail-thumb-empty\'>이미지</div>'"></a>`
+        : `<div class="daily-detail-thumb-link"><div class="daily-detail-thumb-empty">이미지 없음</div></div>`;
+      const titleHtml = articleHref
+        ? `<a class="daily-detail-title-link" href="${escapeDailyHtml(articleHref)}" target="_blank" rel="noopener noreferrer">${escapeDailyHtml(title)}</a>`
+        : `<div class="daily-detail-title-link daily-detail-no-link">${escapeDailyHtml(title)}</div>`;
+      const sourceHtml = articleHref
+        ? `<div class="daily-detail-source">기사 링크 · <a href="${escapeDailyHtml(articleHref)}" target="_blank" rel="noopener noreferrer">${escapeDailyHtml(articleHref)}</a></div>`
+        : '';
+
+      const article = document.createElement('article');
+      article.className = 'daily-detail-article';
+      article.innerHTML = `
+        <div class="daily-detail-category">${escapeDailyHtml(category)}</div>
+        <div class="daily-detail-main">
+          ${thumbHtml}
+          <div>
+            ${titleHtml}
+            ${sourceHtml}
+          </div>
+        </div>
+      `;
+      list.appendChild(article);
+    });
+
+    screen.scrollTop = 0;
+  }
+
+  window.openDailyTrendDetail = function(dateKey) {
+    const screen = document.getElementById('dailyTrendDetailScreen');
+    if (!screen) return;
+    renderDailyTrendDetail(String(dateKey || ''));
+    screen.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ meetingOpen: true, dailyDetailOpen: true }, '', '');
+  };
+
+  window.closeDailyTrendDetail = function() {
+    history.back();
+  };
+
   async function loadMeetingData() {
     const list = document.getElementById('meetingList');
     if (!list) return;
-    list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">회의자료를 불러오는 중입니다...⏳</div>';
+    list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">자료를 불러오는 중입니다...⏳</div>';
     try {
       const response = await fetch(MEETING_SHEET_CSV_URL + '&t=' + Date.now());
       if (!response.ok) throw new Error('회의자료 CSV 응답 오류');
       meetingData = parseMeetingCSV(await response.text());
       renderMeetingList(currentMeetingCategory);
     } catch (error) {
-      list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">회의자료를 불러오지 못했습니다.<br>시트9가 웹에 게시되어 있는지 확인해주세요.</div>';
+      list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">자료를 불러오지 못했습니다.<br>시트9가 웹에 게시되어 있는지 확인해주세요.</div>';
     }
   }
 
   function renderMeetingList(category) {
     const list = document.getElementById('meetingList');
+    const screen = document.getElementById('meetingScreen');
+    const titleEl = screen ? screen.querySelector('.fullscreen-title') : null;
     if (!list) return;
 
     document.querySelectorAll('#meetingTabs .month-tab').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.cat === category);
     });
+
+    if (category === '일일동향') {
+      if (titleEl) titleEl.textContent = '일일동향';
+      renderDailyTrendList();
+      return;
+    }
+
+    if (screen) screen.classList.remove('daily-view');
+    if (titleEl) titleEl.textContent = '사무국 회의 자료';
 
     const filtered = category === '전체'
       ? meetingData.slice()
@@ -6186,8 +6762,8 @@ function createEventCard(event, isNext=false) {
             <path d="M16 10h20c1.7 0 3 1.3 3 3v14H13V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
             <path d="M19 14h14v3H19zm0 6h10v3H19z" fill="#fff"/>
           </svg>
-          <div class="meeting-empty-title">등록된 회의자료가 없습니다.</div>
-          <div class="meeting-empty-text">추후 Google Sheets 및 Google Drive와 연동하여<br>회의자료를 등록할 수 있도록 구성할 예정입니다.</div>
+          <div class="meeting-empty-title">등록된 자료가 없습니다.</div>
+          <div class="meeting-empty-text">Google Sheets 및 Google Drive와 연동하여<br>자료를 등록할 수 있도록 구성되어 있습니다.</div>
         </div>`;
       return;
     }
