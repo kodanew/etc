@@ -3420,15 +3420,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
   min-width:0; display:flex; flex-direction:column;
 }
 .daily-trend-article{
-  display:block; min-width:0; padding:2px 0 9px; margin-bottom:8px;
+  display:-webkit-box; min-width:0; padding:0 0 7px; margin-bottom:7px;
   color:#334e68; text-decoration:none; cursor:pointer;
-  font-size:.78rem; line-height:1.42; font-weight:700;
+  font-size:.76rem; line-height:1.35; font-weight:700;
+  -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
   letter-spacing:-.035em; word-break:keep-all;
 }
 .daily-trend-article + .daily-trend-article{
-  border-top:1px solid #edf1f5; padding-top:9px;
+  border-top:1px solid #edf1f5; padding-top:7px;
 }
-.daily-trend-article:last-child{margin-bottom:0; padding-bottom:1px;}
+.daily-trend-article:last-child{margin-bottom:0; padding-bottom:0;}
 .daily-trend-article:active{color:#1769d2;}
 .daily-trend-empty{
   background:#fff; border:1px solid #e2eaf4; border-radius:14px;
@@ -6633,23 +6634,30 @@ function createEventCard(event, isNext=false) {
 
   function dailyTrendImageUrl(value) {
     let v = String(value || '').trim();
-    /* =IMAGE("URL") 형태 */
-    const imageFormula = v.match(/=IMAGE\(\s*["']([^"']+)["']/i);
-    if (imageFormula) v = imageFormula[1].trim();
 
-    /* 셀 안에 URL이 섞여 있는 경우 */
-    const urlMatch = v.match(/https?:\/\/[^\s"')]+/i);
-    if (urlMatch) v = urlMatch[0];
+    /* IMAGE/HYPERLINK 수식에서 첫 번째 따옴표 안 URL 추출 */
+    const formulaMatch = v.match(/(?:IMAGE|HYPERLINK)\s*\(\s*["']([^"']+)["']/i);
+    if (formulaMatch) v = formulaMatch[1].trim();
 
-    /* Google Drive 공유 링크는 기존 앱의 이미지 변환 함수를 재사용 */
+    /* 셀 안에 URL이 섞여 있으면 http부터 공백 전까지 추출 */
+    const httpPos = v.search(/https?:/i);
+    if (httpPos >= 0) {
+      v = v.slice(httpPos).split(/[\s"')]+/)[0].replace(/[.,;]+$/, '');
+    }
+
+    /* Google Drive 공유 링크 */
+    if (/drive\.google\.com/i.test(v)) {
+      const id = extractDriveFileId(v);
+      if (id) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w1200';
+    }
+
     if (typeof toDisplayableImageUrl === 'function') {
       const converted = toDisplayableImageUrl(v);
       if (converted) return converted;
     }
 
-    /* 파일 ID만 입력된 경우도 처리 */
     if (/^[a-zA-Z0-9_-]{20,}$/.test(v)) {
-      return 'https://drive.google.com/uc?export=view&id=' + encodeURIComponent(v);
+      return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(v) + '&sz=w1200';
     }
     return v;
   }
@@ -6711,21 +6719,30 @@ function createEventCard(event, isNext=false) {
     const keys = [
       ['article1','link1'], ['article2','link2'], ['article3','link3']
     ];
+
     keys.forEach(([titleKey, linkKey]) => {
       let title = '', link = '';
+
       for (const item of items) {
-        if (!title && String(item[titleKey] || '').trim()) title = String(item[titleKey]).trim();
-        if (!link && dailyTrendUrl(item[linkKey])) link = dailyTrendUrl(item[linkKey]);
+        const rawTitle = String(item[titleKey] || '').trim();
+        const explicitLink = dailyTrendUrl(item[linkKey]);
+
+        /* J/K/L 셀 자체에 "한글 제목 + URL"이 들어있는 경우도 처리 */
+        if (!title && rawTitle) {
+          title = rawTitle;
+          const embedded = dailyTrendUrl(rawTitle);
+          if (embedded) {
+            link = embedded;
+            title = rawTitle.replace(embedded, '')
+              .replace(/^[\\s|·:：-]+|[\\s|·:：-]+$/g,'')
+              .trim();
+          }
+        }
+        if (!link && explicitLink) link = explicitLink;
+
         if (title && link) break;
       }
-      /* J/K/L 제목 자체에 URL이 포함되어 있으면 우선 사용 */
-      if (title && !link) {
-        const embedded = dailyTrendUrl(title);
-        if (embedded) {
-          link = embedded;
-          title = title.replace(embedded, '').replace(/^[\\s|·:：-]+|[\\s|·:：-]+$/g,'').trim();
-        }
-      }
+
       if (title && !seen.has(title)) {
         seen.add(title);
         out.push({title, link});
