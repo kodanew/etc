@@ -3384,7 +3384,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .daily-trend-date-badge{
   flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
   min-height:25px; padding:4px 9px; border-radius:7px;
-  background:#fff0f6; color:#c53078; font-size:.76rem;
+  background:#eaf3ff; color:#1769d2; font-size:.76rem;
   line-height:1.1; font-weight:850; letter-spacing:-.03em;
 }
 .daily-trend-divider{
@@ -3547,6 +3547,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
   max-height:2.84em;
   text-overflow:ellipsis;
 }
+</style>
+
+<style id="daily-trend-final-layout">
+.daily-trend-body{align-items:stretch !important;}
+.daily-trend-media{display:flex !important;flex-direction:column !important;height:100% !important;}
+.daily-trend-main-title{min-height:0 !important;display:block !important;}
+.daily-trend-main-title-link{display:block;color:inherit;text-decoration:none;}
+.daily-trend-articles{
+  display:grid !important;grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  height:100% !important;min-height:0 !important;align-self:stretch !important;
+}
+.daily-trend-article{
+  display:flex !important;align-items:center !important;min-height:0 !important;
+  margin:0 !important;padding:7px 0 !important;border-top:0 !important;
+  color:#000 !important;font-weight:500 !important;
+}
+.daily-trend-article + .daily-trend-article{border-top:1px solid #edf1f5 !important;padding-top:7px !important;}
+.daily-trend-article-text{color:#000 !important;line-height:1.35 !important;max-height:2.7em !important;}
+.daily-trend-article:active,.daily-trend-article:hover{color:#1769d2 !important;}
 </style>
 
 </head>
@@ -6769,7 +6788,9 @@ function createEventCard(event, isNext=false) {
   function renderDailyTrendCard(date, items) {
     const imageUrl = dailyTrendImageUrl(firstDailyTrendValue(items,'imageUrl'));
     const imageLink = dailyTrendUrl(firstDailyTrendValue(items,'imageLink'));
-    const title = firstDailyTrendValue(items,'title') || '일일동향';
+    const titleParsed = dailyTrendTextAndUrl(firstDailyTrendValue(items,'title'));
+    const title = titleParsed.text || '일일동향';
+    const titleLink = titleParsed.link;
     const articles = dailyTrendArticleItems(items);
 
     const card = document.createElement('article');
@@ -6822,33 +6843,48 @@ function createEventCard(event, isNext=false) {
     }
     media.appendChild(mediaLink);
 
-    const titleEl = document.createElement('div');
-    titleEl.className = 'daily-trend-main-title';
-    titleEl.textContent = title;
-    media.appendChild(titleEl);
+    if (titleLink) {
+      const titleLinkEl = document.createElement('a');
+      titleLinkEl.className = 'daily-trend-main-title daily-trend-main-title-link';
+      titleLinkEl.href = titleLink;
+      titleLinkEl.target = '_blank';
+      titleLinkEl.rel = 'noopener noreferrer';
+      titleLinkEl.textContent = title;
+      media.appendChild(titleLinkEl);
+    } else {
+      const titleEl = document.createElement('div');
+      titleEl.className = 'daily-trend-main-title';
+      titleEl.textContent = title;
+      media.appendChild(titleEl);
+    }
 
     const articleWrap = document.createElement('div');
     articleWrap.className = 'daily-trend-articles';
-    articles.forEach(article => {
+
+    for (let idx = 0; idx < 3; idx++) {
+      const article = articles[idx];
       const a = document.createElement('a');
       a.className = 'daily-trend-article';
-      const articleText = document.createElement('span');
-      articleText.className = 'daily-trend-article-text';
-      articleText.textContent = article.title;
-      a.appendChild(articleText);
-      if (article.link) {
-        a.href = article.link;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
+
+      if (article && article.title) {
+        const articleText = document.createElement('span');
+        articleText.className = 'daily-trend-article-text';
+        articleText.textContent = article.title;
+        a.appendChild(articleText);
+
+        if (article.link) {
+          a.href = article.link;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        } else {
+          a.href = '#';
+          a.addEventListener('click', e => e.preventDefault());
+        }
       } else {
-        a.href = '#';
-        a.addEventListener('click', e => e.preventDefault());
+        a.setAttribute('aria-hidden', 'true');
+        a.style.cursor = 'default';
       }
       articleWrap.appendChild(a);
-    });
-
-    if (!articles.length) {
-      articleWrap.innerHTML = '<div style="font-size:.74rem;color:#a0aec0;line-height:1.5;">등록된 주요 기사가 없습니다.</div>';
     }
 
     body.appendChild(media);
