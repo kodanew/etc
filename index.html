@@ -3482,6 +3482,63 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .daily-trend-main-title{font-size:.79rem;}
   .daily-trend-detail{padding-left:13px;padding-right:13px;}
 }
+
+/* 일일동향 헤더는 정부·국회 헤더와 동일한 폭/정렬로 표시 */
+#dailyTrendScreen,
+#dailyTrendDetailScreen{
+  padding:0 !important;
+}
+#dailyTrendScreen .govasm-header,
+#dailyTrendDetailScreen .govasm-header{
+  width:100%;
+  max-width:430px;
+  min-height:54px;
+  height:54px;
+  margin:0 auto;
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;
+  padding:0 12px;
+  box-sizing:border-box;
+}
+#dailyTrendScreen .govasm-back,
+#dailyTrendDetailScreen .govasm-back{
+  width:42px;
+  height:42px;
+  min-height:42px;
+  padding:0;
+  border:0;
+  border-radius:14px;
+  background:#f1f6fd;
+  color:#1769d2;
+  font-size:1.55rem;
+  font-weight:700;
+  line-height:1;
+}
+#dailyTrendScreen .govasm-title,
+#dailyTrendDetailScreen .govasm-title{
+  text-align:center;
+  color:#173f70;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+/* 오른쪽 대표 기사 제목은 정확히 최대 2줄 */
+.daily-trend-article{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  max-height:2.84em;
+  text-overflow:ellipsis;
+}
 </style>
 
 </head>
@@ -6567,8 +6624,34 @@ function createEventCard(event, isNext=false) {
   }
 
   function dailyTrendUrl(value) {
-    const v = String(value || '').trim();
+    let v = String(value || '').trim();
+    /* 셀에 링크가 수식/텍스트로 들어온 경우 URL 부분을 먼저 추출 */
+    const urlMatch = v.match(/https?:\/\/[^\s"')]+/i);
+    if (urlMatch) v = urlMatch[0];
     return /^https?:\/\//i.test(v) ? v : '';
+  }
+
+  function dailyTrendImageUrl(value) {
+    let v = String(value || '').trim();
+    /* =IMAGE("URL") 형태 */
+    const imageFormula = v.match(/=IMAGE\(\s*["']([^"']+)["']/i);
+    if (imageFormula) v = imageFormula[1].trim();
+
+    /* 셀 안에 URL이 섞여 있는 경우 */
+    const urlMatch = v.match(/https?:\/\/[^\s"')]+/i);
+    if (urlMatch) v = urlMatch[0];
+
+    /* Google Drive 공유 링크는 기존 앱의 이미지 변환 함수를 재사용 */
+    if (typeof toDisplayableImageUrl === 'function') {
+      const converted = toDisplayableImageUrl(v);
+      if (converted) return converted;
+    }
+
+    /* 파일 ID만 입력된 경우도 처리 */
+    if (/^[a-zA-Z0-9_-]{20,}$/.test(v)) {
+      return 'https://drive.google.com/uc?export=view&id=' + encodeURIComponent(v);
+    }
+    return v;
   }
 
   function dailyTrendDateValue(v) {
@@ -6635,6 +6718,14 @@ function createEventCard(event, isNext=false) {
         if (!link && dailyTrendUrl(item[linkKey])) link = dailyTrendUrl(item[linkKey]);
         if (title && link) break;
       }
+      /* J/K/L 제목 자체에 URL이 포함되어 있으면 우선 사용 */
+      if (title && !link) {
+        const embedded = dailyTrendUrl(title);
+        if (embedded) {
+          link = embedded;
+          title = title.replace(embedded, '').replace(/^[\\s|·:：-]+|[\\s|·:：-]+$/g,'').trim();
+        }
+      }
       if (title && !seen.has(title)) {
         seen.add(title);
         out.push({title, link});
@@ -6644,7 +6735,7 @@ function createEventCard(event, isNext=false) {
   }
 
   function renderDailyTrendCard(date, items) {
-    const imageUrl = firstDailyTrendValue(items,'imageUrl');
+    const imageUrl = dailyTrendImageUrl(firstDailyTrendValue(items,'imageUrl'));
     const imageLink = dailyTrendUrl(firstDailyTrendValue(items,'imageLink'));
     const title = firstDailyTrendValue(items,'title') || '일일동향';
     const articles = dailyTrendArticleItems(items);
