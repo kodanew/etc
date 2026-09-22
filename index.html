@@ -3568,6 +3568,67 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .daily-trend-article:active,.daily-trend-article:hover{color:#1769d2 !important;}
 </style>
 
+
+/* 일일동향 모바일 줄바꿈/2줄 최적화 */
+.daily-trend-main-title{
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  white-space:normal !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  max-height:2.8em !important;
+}
+.daily-trend-article{
+  font-size:.82rem !important;
+  line-height:1.38 !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  white-space:normal !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+}
+.daily-trend-detail-section-body,
+.daily-trend-section-body{
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line{
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:5px !important;
+  margin:0 0 8px !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line-number{
+  flex:0 0 auto;
+  font-weight:800;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  min-width:0;
+  flex:1 1 auto;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+@media(max-width:360px){
+  .daily-trend-article{font-size:.79rem !important;}
+}
+
 </head>
 <body>
 
@@ -6709,6 +6770,7 @@ function createEventCard(event, isNext=false) {
       if (!r.some(v => String(v || '').trim())) continue;
       result.push({
         date: String(r[1] || '').trim(),          // B
+        detailTitle: String(r[2] || '').trim(),   // C
         imageUrl: String(r[3] || '').trim(),      // D
         imageLink: String(r[4] || '').trim(),     // E
         title: String(r[5] || '').trim(),         // F
@@ -6777,14 +6839,49 @@ function createEventCard(event, isNext=false) {
     return {text, link:url};
   }
 
+  // G/H/I 셀 안에 여러 기사(제목 + URL)가 들어있는 경우 각각 분리한다.
+  // 한 셀에 URL이 여러 개 있어도 URL별로 하나의 기사로 인식한다.
+  function dailyTrendMultiEntries(value) {
+    const raw = String(value || '').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+    if (!raw) return [];
+    const urlRe = /https?:\/\/[^\s"')<>]+/ig;
+    const matches = [...raw.matchAll(urlRe)];
+    if (!matches.length) {
+      return raw.split(/\n+/).map(v=>v.trim()).filter(Boolean).map(v=>({text:v.replace(/^\s*\d+[.)]\s*/,''),link:''}));
+    }
+    const out=[]; const seen=new Set();
+    let cursor=0;
+    matches.forEach((m, idx)=>{
+      const url=m[0].replace(/[.,;]+$/,'');
+      const segment=raw.slice(cursor,m.index).trim();
+      let text=segment
+        .replace(/^\s*\d+[.)]\s*/gm,'')
+        .replace(/[\s|·:：-]+$/,'')
+        .trim();
+      // 제목과 URL이 다음 줄에 배치된 경우에도 제목만 정확히 연결
+      if (!text && idx > 0) {
+        const between=raw.slice(matches[idx-1].index + matches[idx-1][0].length, m.index).trim();
+        text=between.replace(/^\s*\d+[.)]\s*/gm,'').replace(/[\s|·:：-]+$/,'').trim();
+      }
+      if (text && !seen.has(text)) { seen.add(text); out.push({text,link:url}); }
+      cursor=m.index + m[0].length;
+    });
+    // URL 뒤에만 남은 제목도 보존하되 링크는 직전 URL에 연결하지 않는다.
+    const tail=raw.slice(cursor).trim().replace(/^\s*\d+[.)]\s*/gm,'').trim();
+    if (tail && !seen.has(tail)) out.push({text:tail,link:''});
+    return out;
+  }
+
   function dailyTrendCollectSection(items, key) {
     const out=[]; const seen=new Set();
     items.forEach(item=>{
-      const parsed=dailyTrendTextAndUrl(item[key]);
-      if(parsed.text && !seen.has(parsed.text)){ seen.add(parsed.text); out.push(parsed); }
+      dailyTrendMultiEntries(item[key]).forEach(parsed=>{
+        if(parsed.text && !seen.has(parsed.text)) { seen.add(parsed.text); out.push(parsed); }
+      });
     });
     return out;
   }
+
   function renderDailyTrendCard(date, items) {
     const imageUrl = dailyTrendImageUrl(firstDailyTrendValue(items,'imageUrl'));
     const imageLink = dailyTrendUrl(firstDailyTrendValue(items,'imageLink'));
@@ -6936,8 +7033,19 @@ function createEventCard(event, isNext=false) {
     list.forEach((entry,idx)=>{
       const row=document.createElement('div'); row.className='daily-trend-line';
       const link=entry.link || (fallbackLinks&&fallbackLinks[idx]?fallbackLinks[idx].link:'');
-      if(link){ const a=document.createElement('a'); a.href=link; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent=entry.text; row.appendChild(a); }
-      else row.textContent=entry.text;
+      let text=String(entry.text||'').trim();
+      const numMatch=text.match(/^(\d+)[.)]\s*/);
+      const content=text.replace(/^(\d+)[.)]\s*/,'').trim();
+      const titleNode=document.createElement('span');
+      titleNode.className='daily-trend-line-title';
+      titleNode.textContent=content || text;
+      if(numMatch){
+        const num=document.createElement('span'); num.className='daily-trend-line-number'; num.textContent=numMatch[1]+'.';
+        row.appendChild(num);
+      }
+      if(link){
+        const a=document.createElement('a'); a.href=link; a.target='_blank'; a.rel='noopener noreferrer'; a.appendChild(titleNode); row.appendChild(a);
+      } else row.appendChild(titleNode);
       container.appendChild(row);
     });
   }
@@ -6952,7 +7060,7 @@ function createEventCard(event, isNext=false) {
     const first = items && items.length ? items[0] : findDailyTrendDateItems(date)[0];
     const articleLinks = dailyTrendArticleItems(items || findDailyTrendDateItems(date));
     document.getElementById('dailyTrendDetailTitle').textContent =
-      firstDailyTrendValue(items || [], 'title') || date || '일일동향';
+      firstDailyTrendValue(items || [], 'detailTitle') || date || '일일동향';
     document.getElementById('dailyTrendDetailDate').textContent = '작성일자  ·  ' + (date || '');
 
     const dateItems = items || findDailyTrendDateItems(date);
