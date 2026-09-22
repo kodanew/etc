@@ -3569,65 +3569,169 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 
-/* 일일동향 모바일 줄바꿈/2줄 최적화 */
-.daily-trend-main-title{
+
+<style id="daily-trend-mobile-final">
+/* ===== 일일동향 최종 모바일 레이아웃 ===== */
+.daily-trend-body{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  align-items:stretch !important;
+}
+.daily-trend-media{
+  min-width:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+.daily-trend-image-link{
+  width:100% !important;
+  aspect-ratio:16/9 !important;
+  overflow:hidden !important;
+  flex:0 0 auto !important;
+}
+.daily-trend-image{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  min-width:0 !important;
+  margin-top:8px !important;
+  color:#203a59 !important;
+  font-size:.84rem !important;
+  line-height:1.4 !important;
+  font-weight:800 !important;
+  letter-spacing:-.035em !important;
+  white-space:normal !important;
   word-break:break-all !important;
   overflow-wrap:anywhere !important;
-  white-space:normal !important;
   display:-webkit-box !important;
   -webkit-box-orient:vertical !important;
   -webkit-line-clamp:2 !important;
   overflow:hidden !important;
   text-overflow:ellipsis !important;
+  height:2.8em !important;
   max-height:2.8em !important;
+  min-height:2.8em !important;
+  text-decoration:none !important;
+}
+.daily-trend-articles{
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  align-self:stretch !important;
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
 }
 .daily-trend-article{
-  font-size:.82rem !important;
-  line-height:1.38 !important;
-  word-break:break-all !important;
-  overflow-wrap:anywhere !important;
-  white-space:normal !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  border-top:0 !important;
   display:flex !important;
   align-items:center !important;
+  color:#000 !important;
+  text-decoration:none !important;
+  font-size:.84rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #edf1f5 !important;
 }
 .daily-trend-article-text{
+  min-width:0 !important;
+  width:100% !important;
+  color:#000 !important;
   display:-webkit-box !important;
   -webkit-box-orient:vertical !important;
   -webkit-line-clamp:2 !important;
   overflow:hidden !important;
   text-overflow:ellipsis !important;
+  white-space:normal !important;
   word-break:break-all !important;
   overflow-wrap:anywhere !important;
   line-height:1.38 !important;
   max-height:2.76em !important;
 }
-.daily-trend-detail-section-body,
+
+/* ===== 일일동향 상세 본문 ===== */
+.daily-trend-detail{
+  color:#000 !important;
+}
+.daily-trend-section{
+  margin:0 0 36px !important;
+}
+.daily-trend-section:last-child{margin-bottom:0 !important;}
+.daily-trend-section-title{
+  margin:0 0 14px !important;
+  padding-left:11px !important;
+  border-left:4px solid #1769d2 !important;
+  color:#1769d2 !important;
+  font-size:1.15rem !important;
+  line-height:1.4 !important;
+  font-weight:900 !important;
+  letter-spacing:-.045em !important;
+}
+.daily-trend-section:nth-child(2) .daily-trend-section-title,
+.daily-trend-section:nth-child(3) .daily-trend-section-title{
+  border-left-color:#1769d2 !important;
+  color:#1769d2 !important;
+}
 .daily-trend-section-body{
+  color:#000 !important;
+  font-size:.96rem !important;
+  line-height:1.72 !important;
+  white-space:normal !important;
   word-break:break-all !important;
   overflow-wrap:anywhere !important;
 }
 .daily-trend-line{
   display:flex !important;
   align-items:flex-start !important;
-  gap:5px !important;
-  margin:0 0 8px !important;
-  word-break:break-all !important;
-  overflow-wrap:anywhere !important;
+  gap:6px !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+  color:#000 !important;
 }
 .daily-trend-line-number{
-  flex:0 0 auto;
-  font-weight:800;
+  flex:0 0 auto !important;
+  width:20px !important;
+  color:#000 !important;
+  font-weight:800 !important;
+  line-height:1.72 !important;
 }
 .daily-trend-line > a,
 .daily-trend-line-title{
-  min-width:0;
-  flex:1 1 auto;
+  display:block !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  color:#000 !important;
+  font-weight:500 !important;
+  line-height:1.72 !important;
+  text-decoration:none !important;
+  white-space:normal !important;
   word-break:break-all !important;
   overflow-wrap:anywhere !important;
 }
+.daily-trend-line > a:hover{color:#000 !important;text-decoration:none !important;}
 @media(max-width:360px){
-  .daily-trend-article{font-size:.79rem !important;}
+  .daily-trend-body{gap:9px !important;}
+  .daily-trend-article{font-size:.81rem !important;}
+  .daily-trend-main-title,.daily-trend-main-title-link{font-size:.81rem !important;}
+  .daily-trend-detail{padding-left:13px !important;padding-right:13px !important;}
+  .daily-trend-section-title{font-size:1.08rem !important;}
+  .daily-trend-section-body{font-size:.92rem !important;}
 }
+</style>
 
 </head>
 <body>
