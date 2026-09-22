@@ -3358,7 +3358,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   position:fixed; inset:0; z-index:1550;
   display:none; flex-direction:column; overflow-y:auto;
   -webkit-overflow-scrolling:touch; background:#f4f7fb;
-  padding:0 10px 18px; box-sizing:border-box;
+  padding:0 0 18px; box-sizing:border-box;
+}
+#dailyTrendScreen .govasm-header,
+#dailyTrendDetailScreen .govasm-header{
+  width:100%; max-width:430px; margin:0 auto; box-sizing:border-box;
 }
 #dailyTrendScreen .govasm-header,
 #dailyTrendDetailScreen .govasm-header{
@@ -3366,7 +3370,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 .daily-trend-content{
   width:100%; max-width:430px; margin:0 auto;
-  padding:12px 14px 28px; box-sizing:border-box;
+  padding:12px 0 28px; box-sizing:border-box;
 }
 .daily-trend-card{
   background:#fff; border:1px solid #e2eaf4; border-radius:16px;
@@ -3420,11 +3424,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
   min-width:0; display:flex; flex-direction:column;
 }
 .daily-trend-article{
-  display:-webkit-box; min-width:0; padding:0 0 7px; margin-bottom:7px;
+  display:block; min-width:0; padding:0 0 7px; margin-bottom:7px;
   color:#334e68; text-decoration:none; cursor:pointer;
-  font-size:.76rem; line-height:1.35; font-weight:700;
-  -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
-  letter-spacing:-.035em; word-break:keep-all;
+  font-size:.76rem; line-height:1.28; font-weight:700;
+  letter-spacing:-.035em; word-break:keep-all; overflow:visible;
+}
+.daily-trend-article-text{
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  overflow:hidden; line-height:1.28; max-height:2.56em;
 }
 .daily-trend-article + .daily-trend-article{
   border-top:1px solid #edf1f5; padding-top:7px;
@@ -6634,34 +6641,39 @@ function createEventCard(event, isNext=false) {
 
   function dailyTrendImageUrl(value) {
     let v = String(value || '').trim();
+    if (!v) return '';
 
-    /* IMAGE/HYPERLINK 수식에서 첫 번째 따옴표 안 URL 추출 */
+    // CSV에서 수식/HTML/링크가 그대로 넘어오는 경우 URL을 최대한 복원
+    const imgSrc = v.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (imgSrc) v = imgSrc[1];
     const formulaMatch = v.match(/(?:IMAGE|HYPERLINK)\s*\(\s*["']([^"']+)["']/i);
     if (formulaMatch) v = formulaMatch[1].trim();
+    const urlMatch = v.match(/https?:\/\/[^\s"'<>]+/i);
+    if (urlMatch) v = urlMatch[0].replace(/[.,;]+$/, '');
 
-    /* 셀 안에 URL이 섞여 있으면 http부터 공백 전까지 추출 */
-    const httpPos = v.search(/https?:/i);
-    if (httpPos >= 0) {
-      v = v.slice(httpPos).split(/[\s"')]+/)[0].replace(/[.,;]+$/, '');
+    // Google Drive: 공유 링크/파일 ID를 브라우저 표시용 URL로 변환
+    if (/drive\.google\.com|docs\.google\.com/i.test(v)) {
+      const id = typeof extractDriveFileId === 'function' ? extractDriveFileId(v) : (v.match(/(?:id=|\/d\/|file\/d\/)([A-Za-z0-9_-]{20,})/)||[])[1];
+      if (id) return [
+        'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w1600',
+        'https://drive.google.com/uc?export=view&id=' + encodeURIComponent(id),
+        'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id) + '=w1600'
+      ];
     }
-
-    /* Google Drive 공유 링크 */
-    if (/drive\.google\.com/i.test(v)) {
-      const id = extractDriveFileId(v);
-      if (id) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w1200';
+    if (/^[a-zA-Z0-9_-]{20,}$/.test(v)) {
+      const id = encodeURIComponent(v);
+      return [
+        'https://drive.google.com/thumbnail?id=' + id + '&sz=w1600',
+        'https://drive.google.com/uc?export=view&id=' + id,
+        'https://lh3.googleusercontent.com/d/' + id + '=w1600'
+      ];
     }
-
     if (typeof toDisplayableImageUrl === 'function') {
       const converted = toDisplayableImageUrl(v);
       if (converted) return converted;
     }
-
-    if (/^[a-zA-Z0-9_-]{20,}$/.test(v)) {
-      return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(v) + '&sz=w1200';
-    }
     return v;
   }
-
   function dailyTrendDateValue(v) {
     const raw = String(v || '').trim();
     const m = raw.match(/(\d{2,4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})(?:\s+(\d{1,2})(?::(\d{2}))?)?/);
@@ -6716,41 +6728,44 @@ function createEventCard(event, isNext=false) {
   function dailyTrendArticleItems(items) {
     const out = [];
     const seen = new Set();
-    const keys = [
-      ['article1','link1'], ['article2','link2'], ['article3','link3']
-    ];
-
+    const keys = [['article1','link1'],['article2','link2'],['article3','link3']];
     keys.forEach(([titleKey, linkKey]) => {
-      let title = '', link = '';
-
       for (const item of items) {
-        const rawTitle = String(item[titleKey] || '').trim();
-        const explicitLink = dailyTrendUrl(item[linkKey]);
-
-        /* J/K/L 셀 자체에 "한글 제목 + URL"이 들어있는 경우도 처리 */
-        if (!title && rawTitle) {
-          title = rawTitle;
-          const embedded = dailyTrendUrl(rawTitle);
-          if (embedded) {
-            link = embedded;
-            title = rawTitle.replace(embedded, '')
-              .replace(/^[\\s|·:：-]+|[\\s|·:：-]+$/g,'')
-              .trim();
-          }
+        let rawTitle = String(item[titleKey] || '').trim();
+        let link = dailyTrendUrl(item[linkKey]);
+        if (!rawTitle) continue;
+        const embedded = dailyTrendUrl(rawTitle);
+        if (embedded) {
+          link = link || embedded;
+          rawTitle = rawTitle.replace(embedded, '').replace(/[\s|·:：-]+$/,'').trim();
         }
-        if (!link && explicitLink) link = explicitLink;
-
-        if (title && link) break;
-      }
-
-      if (title && !seen.has(title)) {
-        seen.add(title);
-        out.push({title, link});
+        if (rawTitle && !seen.has(rawTitle)) {
+          seen.add(rawTitle); out.push({title:rawTitle, link:link});
+          break;
+        }
       }
     });
     return out;
   }
 
+  function dailyTrendTextAndUrl(value) {
+    let text = String(value || '').trim();
+    if (!text) return {text:'', link:''};
+    const url = dailyTrendUrl(text);
+    if (url) {
+      text = text.replace(url,'').replace(/[\s|·:：-]+$/,'').trim();
+    }
+    return {text, link:url};
+  }
+
+  function dailyTrendCollectSection(items, key) {
+    const out=[]; const seen=new Set();
+    items.forEach(item=>{
+      const parsed=dailyTrendTextAndUrl(item[key]);
+      if(parsed.text && !seen.has(parsed.text)){ seen.add(parsed.text); out.push(parsed); }
+    });
+    return out;
+  }
   function renderDailyTrendCard(date, items) {
     const imageUrl = dailyTrendImageUrl(firstDailyTrendValue(items,'imageUrl'));
     const imageLink = dailyTrendUrl(firstDailyTrendValue(items,'imageLink'));
@@ -6789,13 +6804,19 @@ function createEventCard(event, isNext=false) {
     if (imageUrl) {
       const img = document.createElement('img');
       img.className = 'daily-trend-image';
-      img.src = imageUrl;
-      img.alt = title;
-      img.loading = 'lazy';
-      img.onerror = () => {
-        mediaLink.innerHTML = '<span class="daily-trend-image-placeholder">이미지를 불러올 수 없습니다</span>';
+      img.alt = title; img.loading = 'eager';
+      const candidates = Array.isArray(imageUrl) ? imageUrl : [imageUrl];
+      let imageIndex = 0;
+      const tryNextImage = () => {
+        if (imageIndex >= candidates.length) {
+          mediaLink.innerHTML = '<span class="daily-trend-image-placeholder">이미지를 불러올 수 없습니다</span>';
+          return;
+        }
+        img.src = candidates[imageIndex++];
       };
+      img.onerror = tryNextImage;
       mediaLink.appendChild(img);
+      tryNextImage();
     } else {
       mediaLink.innerHTML = '<span class="daily-trend-image-placeholder">이미지 없음</span>';
     }
@@ -6811,7 +6832,10 @@ function createEventCard(event, isNext=false) {
     articles.forEach(article => {
       const a = document.createElement('a');
       a.className = 'daily-trend-article';
-      a.textContent = article.title;
+      const articleText = document.createElement('span');
+      articleText.className = 'daily-trend-article-text';
+      articleText.textContent = article.title;
+      a.appendChild(articleText);
       if (article.link) {
         a.href = article.link;
         a.target = '_blank';
@@ -6868,48 +6892,19 @@ function createEventCard(event, isNext=false) {
     return raw.split(/\n+/).map(v => v.trim()).filter(Boolean);
   }
 
-  function renderDailyTrendSection(container, text, fallbackLinks) {
-    container.innerHTML = '';
-    const lines = splitDailyTrendLines(text);
-    if (!lines.length && fallbackLinks && fallbackLinks.length) {
-      fallbackLinks.forEach(x => lines.push(x.title));
-    }
-    if (!lines.length) {
-      container.innerHTML = '<span style="color:#a0aec0;">등록된 내용이 없습니다.</span>';
-      return;
-    }
-
-    lines.forEach((line, idx) => {
-      const row = document.createElement('div');
-      row.className = 'daily-trend-line';
-
-      // 셀 내용 안에 URL이 함께 들어온 경우 해당 URL을 클릭 링크로 처리
-      const urlMatch = line.match(/https?:\/\/[^\s)]+/i);
-      if (urlMatch) {
-        const url = urlMatch[0].replace(/[.,;]+$/,'');
-        const before = line.slice(0, line.indexOf(url)).trim();
-        const after = line.slice(line.indexOf(url) + url.length).trim();
-        if (before) row.appendChild(document.createTextNode(before + ' '));
-        const a = document.createElement('a');
-        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
-        a.textContent = before ? '관련기사' : url;
-        row.appendChild(a);
-        if (after) row.appendChild(document.createTextNode(' ' + after));
-      } else {
-        const link = fallbackLinks && fallbackLinks[idx] ? fallbackLinks[idx].link : '';
-        if (link) {
-          const a = document.createElement('a');
-          a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer';
-          a.textContent = line;
-          row.appendChild(a);
-        } else {
-          row.textContent = line;
-        }
-      }
+  function renderDailyTrendSection(container, entries, fallbackLinks) {
+    container.innerHTML='';
+    let list = Array.isArray(entries) ? entries : splitDailyTrendLines(entries).map(x=>({text:x,link:''}));
+    if(!list.length && fallbackLinks && fallbackLinks.length) list=fallbackLinks.map(x=>({text:x.title,link:x.link}));
+    if(!list.length){ container.innerHTML='<span style="color:#a0aec0;">등록된 내용이 없습니다.</span>'; return; }
+    list.forEach((entry,idx)=>{
+      const row=document.createElement('div'); row.className='daily-trend-line';
+      const link=entry.link || (fallbackLinks&&fallbackLinks[idx]?fallbackLinks[idx].link:'');
+      if(link){ const a=document.createElement('a'); a.href=link; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent=entry.text; row.appendChild(a); }
+      else row.textContent=entry.text;
       container.appendChild(row);
     });
   }
-
   function findDailyTrendDateItems(date) {
     return dailyTrendData.filter(item => String(item.date || '').trim() === String(date || '').trim());
   }
@@ -6924,21 +6919,10 @@ function createEventCard(event, isNext=false) {
       firstDailyTrendValue(items || [], 'title') || date || '일일동향';
     document.getElementById('dailyTrendDetailDate').textContent = '작성일자  ·  ' + (date || '');
 
-    renderDailyTrendSection(
-      document.getElementById('dailyTrendSectionG'),
-      firstDailyTrendValue(items || [], 'memberNews'),
-      articleLinks.slice(0,1)
-    );
-    renderDailyTrendSection(
-      document.getElementById('dailyTrendSectionH'),
-      firstDailyTrendValue(items || [], 'policyNews'),
-      articleLinks.slice(1,2)
-    );
-    renderDailyTrendSection(
-      document.getElementById('dailyTrendSectionI'),
-      firstDailyTrendValue(items || [], 'otherNews'),
-      articleLinks.slice(2,3)
-    );
+    const dateItems = items || findDailyTrendDateItems(date);
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionG'), dailyTrendCollectSection(dateItems,'memberNews'), articleLinks.slice(0,1));
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionH'), dailyTrendCollectSection(dateItems,'policyNews'), articleLinks.slice(1,2));
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionI'), dailyTrendCollectSection(dateItems,'otherNews'), articleLinks.slice(2,3));
 
     detail.style.display = 'flex';
     document.getElementById('dailyTrendScreen').style.display = 'none';
