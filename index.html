@@ -4000,6 +4000,127 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .daily-trend-line > a .daily-trend-line-title{display:block!important;width:100%!important;margin:0!important;padding:0!important;text-indent:0!important;word-break:break-all!important;overflow-wrap:anywhere!important}
 @media(max-width:360px){.daily-trend-article{font-size:.77rem!important;line-height:1.28!important}.daily-trend-article-text{line-height:1.28!important;max-height:2.56em!important}}
 </style>
+
+<style id="daily-trend-fix-20260923-2">
+/* ===== 2026-09-23 일일동향 카드 / 상세기사 제목 최종 보정 ===== */
+
+/* 1) 카드 전체 높이는 제목이 잘리지 않도록 내용에 맞춰 자연스럽게 늘립니다. */
+.daily-trend-card{
+  padding:12px 12px 15px !important;
+  margin-bottom:11px !important;
+}
+.daily-trend-card-head{
+  margin-bottom:9px !important;
+  gap:7px !important;
+}
+.daily-trend-body{
+  grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr) !important;
+  gap:9px !important;
+  align-items:start !important;
+}
+
+/* 왼쪽 대표 한글 제목: 2줄에서 잘라내지 않고 최대 3줄까지 표시 */
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  margin-top:7px !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:4.20em !important;
+  line-height:1.40 !important;
+  -webkit-line-clamp:3 !important;
+  overflow:hidden !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+
+/* 오른쪽 기사 4개가 카드 높이를 고르게 사용하되, 기사 사이 여백은 최소화 */
+.daily-trend-articles{
+  height:var(--daily-trend-left-height,auto) !important;
+  padding:1px 0 !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+}
+.daily-trend-article{
+  padding:3px 0 !important;
+  font-size:.82rem !important;
+  line-height:1.32 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  align-items:flex-start !important;
+}
+.daily-trend-article + .daily-trend-article{
+  padding-top:4px !important;
+}
+.daily-trend-article-text{
+  line-height:1.32 !important;
+  max-height:2.64em !important;
+  -webkit-line-clamp:2 !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* 작은 화면에서도 오른쪽 기사 제목이 지나치게 잘리지 않도록 */
+@media(max-width:360px){
+  .daily-trend-card{
+    padding:11px 10px 14px !important;
+  }
+  .daily-trend-body{
+    gap:7px !important;
+  }
+  .daily-trend-main-title,
+  .daily-trend-main-title-link{
+    font-size:.80rem !important;
+    line-height:1.36 !important;
+    max-height:4.08em !important;
+  }
+  .daily-trend-article{
+    font-size:.76rem !important;
+    line-height:1.28 !important;
+  }
+  .daily-trend-article-text{
+    line-height:1.28 !important;
+    max-height:2.56em !important;
+  }
+}
+
+/* ===== 2) 일자별 상세보기: 번호/하이픈은 별도 영역,
+   기사 제목의 2번째 줄부터는 첫 한글 제목 글자와 같은 X좌표에서 시작 ===== */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+}
+.daily-trend-line-number{
+  width:20px !important;
+  min-width:20px !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  min-width:0 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+  line-height:1.72 !important;
+  white-space:normal !important;
+  /* 단어마다 줄바꿈시키지 않고, 문장 전체를 자연스럽게 채운 뒤
+     줄을 넘길 때는 한글 한 글자 단위로 다음 줄로 넘어가도록 합니다. */
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line > a{
+  display:block !important;
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -7431,14 +7552,18 @@ function createEventCard(event, isNext=false) {
       const row=document.createElement('div'); row.className='daily-trend-line';
       const link=entry.link || (fallbackLinks&&fallbackLinks[idx]?fallbackLinks[idx].link:'');
       let text=String(entry.text||'').trim();
-      const numMatch=text.match(/^(\d+)[.)]\s*/);
-      const content=text.replace(/^(\d+)[.)]\s*/,'').trim();
+      /* 번호/하이픈은 제목과 분리합니다.
+         따라서 제목이 다음 줄로 넘어가도 첫 한글 제목 글자의 X좌표에서 계속됩니다. */
+      const bulletMatch=text.match(/^(?:([0-9]+)[.)]|([-–—•]))\s*/);
+      const content=text.replace(/^(?:[0-9]+[.)]|[-–—•])\s*/,'').trim();
       const titleNode=document.createElement('span');
       titleNode.className='daily-trend-line-title';
       titleNode.textContent=content || text;
-      if(numMatch){
-        const num=document.createElement('span'); num.className='daily-trend-line-number'; num.textContent=numMatch[1]+'.';
-        row.appendChild(num);
+      if(bulletMatch){
+        const bullet=document.createElement('span');
+        bullet.className='daily-trend-line-number';
+        bullet.textContent=bulletMatch[1] ? bulletMatch[1]+'.' : bulletMatch[2];
+        row.appendChild(bullet);
       }
       if(link){
         const a=document.createElement('a'); a.href=link; a.target='_blank'; a.rel='noopener noreferrer'; a.appendChild(titleNode); row.appendChild(a);
