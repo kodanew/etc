@@ -4754,6 +4754,132 @@ button,.nav-btn,.action-btn{min-height:44px;}
 })();
 </script>
 
+
+<style id="hard-fix-20260923">
+/* ===== 충돌 CSS 최종 정리: 일일동향 / 코다피플 sticky ===== */
+
+/* 일일동향: 제목 자체는 각 행의 시작점에 붙이고, 남는 높이는 제목과 제목 사이에만 배분 */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(0,1fr) auto minmax(0,1fr) auto !important;
+  align-items:start !important;
+  justify-items:stretch !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  margin:0 !important; padding:0 !important; gap:0 !important;
+  overflow:hidden !important; box-sizing:border-box !important;
+}
+.daily-trend-article{
+  width:100% !important; height:auto !important; min-height:0 !important;
+  margin:0 !important; padding:0 !important;
+  display:block !important; overflow:hidden !important;
+  align-self:start !important; box-sizing:border-box !important;
+  font-size:.84rem !important; line-height:1.30 !important; font-weight:600 !important;
+  border:0 !important;
+}
+.daily-trend-article:nth-child(1){grid-row:1 !important;}
+.daily-trend-article:nth-child(2){grid-row:3 !important; border-top:1px dotted #000 !important; padding-top:6px !important;}
+.daily-trend-article:nth-child(3){grid-row:5 !important; border-top:1px dotted #000 !important; padding-top:6px !important;}
+.daily-trend-article-text{
+  display:-webkit-box !important; -webkit-box-orient:vertical !important; -webkit-line-clamp:2 !important;
+  width:100% !important; height:auto !important; min-height:0 !important; max-height:2.6em !important;
+  margin:0 !important; padding:0 !important; overflow:hidden !important;
+  white-space:normal !important; word-break:keep-all !important; overflow-wrap:break-word !important;
+  font-size:.84rem !important; line-height:1.30 !important;
+}
+
+/* 코다피플: 검색창/기수영역을 '불투명한 별도 층'으로 만들어 목록이 절대 비치지 않게 함 */
+#staffScreen{
+  overflow:hidden !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important; z-index:1 !important;
+  overflow-y:auto !important; overflow-x:hidden !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+#staffScreen .staff-search-wrap,
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  isolation:isolate !important;
+  opacity:1 !important;
+  background:#f4f7fb !important;
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  overflow:visible !important;
+}
+#staffScreen .staff-search-wrap{
+  top:0 !important; z-index:1000 !important;
+  margin:0 0 8px !important; padding:4px 0 6px !important;
+}
+#staffScreen #arpCohortFilters{
+  top:var(--staff-search-sticky-height,57px) !important; z-index:999 !important;
+  margin:0 0 10px !important; padding:4px 0 6px !important;
+}
+/* 실제 가림판: z-index 음수 사용 금지 */
+#staffScreen .staff-search-wrap::before,
+#staffScreen #arpCohortFilters::before{
+  content:"" !important; position:absolute !important;
+  left:-30px !important; right:-30px !important; top:-1px !important; bottom:-1px !important;
+  background:#f4f7fb !important; opacity:1 !important;
+  z-index:0 !important; pointer-events:none !important;
+}
+#staffScreen .staff-search-wrap > *,
+#staffScreen #arpCohortFilters > *{
+  position:relative !important; z-index:1 !important;
+}
+#staffScreen #staffList{position:relative !important; z-index:1 !important;}
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,57px) + var(--staff-cohort-sticky-height,0px) + 8px) !important;
+}
+</style>
+
+
+<script id="hard-fix-staff-scroll-20260923">
+(function(){
+  function hardUpdateStaffHeights(){
+    const screen=document.getElementById('staffScreen');
+    const content=screen && screen.querySelector('.fullscreen-content');
+    const search=document.querySelector('#staffScreen .staff-search-wrap');
+    const cohort=document.getElementById('arpCohortFilters');
+    if(!content || !search) return;
+    const sh=Math.ceil(search.getBoundingClientRect().height||0);
+    const visible=cohort && getComputedStyle(cohort).display!=='none' && cohort.classList.contains('show');
+    const ch=visible ? Math.ceil(cohort.getBoundingClientRect().height||0) : 0;
+    content.style.setProperty('--staff-search-sticky-height',sh+'px');
+    content.style.setProperty('--staff-cohort-sticky-height',ch+'px');
+  }
+  window.hardUpdateStaffHeights=hardUpdateStaffHeights;
+  function bind(){
+    hardUpdateStaffHeights();
+    window.addEventListener('resize',()=>requestAnimationFrame(hardUpdateStaffHeights),{passive:true});
+    window.addEventListener('orientationchange',()=>setTimeout(hardUpdateStaffHeights,150),{passive:true});
+    const cohort=document.getElementById('arpCohortFilters');
+    if(cohort && window.MutationObserver){
+      new MutationObserver(()=>requestAnimationFrame(hardUpdateStaffHeights)).observe(cohort,{attributes:true,childList:true,subtree:true});
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+
+  window.scrollToArpCohort=function(cohort){
+    const target=document.getElementById('arp-cohort-'+cohort);
+    const content=document.querySelector('#staffScreen .fullscreen-content');
+    if(!target || !content) return;
+    hardUpdateStaffHeights();
+    const search=document.querySelector('#staffScreen .staff-search-wrap');
+    const cohortWrap=document.getElementById('arpCohortFilters');
+    const sh=Math.ceil(search?.getBoundingClientRect().height||0);
+    const ch=(cohortWrap && getComputedStyle(cohortWrap).display!=='none') ? Math.ceil(cohortWrap.getBoundingClientRect().height||0) : 0;
+    const gap=8;
+    const targetTop=target.getBoundingClientRect().top;
+    const contentTop=content.getBoundingClientRect().top;
+    const desired=targetTop-contentTop+content.scrollTop-(sh+ch+gap);
+    content.scrollTo({top:Math.max(0,desired),behavior:'smooth'});
+  };
+})();
+</script>
+
 </head>
 <body>
 
