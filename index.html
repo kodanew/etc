@@ -4465,6 +4465,87 @@ button,.nav-btn,.action-btn{min-height:44px;}
   padding:0 !important;
 }
 </style>
+
+<style id="final-user-request-20260923-2">
+/* ===== 일일동향: 폴드/대화면 포함 모든 화면에서 3개 기사 간격을 동일 비율로 유지 ===== */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article,
+.daily-trend-article-text{
+  min-height:0 !important;
+  box-sizing:border-box !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+  border:0 !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+}
+
+/* ===== 코다피플: 고정 검색/기수 영역 뒤로 목록이 숨겨지도록 불투명 레이어 확보 ===== */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:0 !important;
+  background:#f4f7fb !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:100 !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  box-shadow:0 4px 7px rgba(244,247,251,.98) !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:57px !important;
+  z-index:99 !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  box-shadow:0 4px 7px rgba(244,247,251,.98) !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{top:0 !important;}
+  #staffScreen #arpCohortFilters{top:54px !important;}
+}
+</style>
 </head>
 <body>
 
@@ -5200,6 +5281,34 @@ button,.nav-btn,.action-btn{min-height:44px;}
    * - D열에 ARP/ARPY가 명시되어 있으면 해당 영역만 허용
    * - 그 외 권한은 기존처럼 전체 접근 허용
    */
+  function canAccessMemberCompany() {
+    const member = getCurrentPermissionMember();
+    if (!member) return true;
+
+    const c = permissionText(member.permission);
+    const d = permissionText(member.permissionContent);
+
+    // 전체/관리자는 회원사 정보까지 허용
+    if (c.includes('전체') || c.includes('관리자')) return true;
+
+    // Sheet3에서 ARP(Y)가 권한으로 지정된 경우 회원사 정보는 차단
+    // ARP(Y), ARP&ARPY, ARP, ARPY 모두 같은 방식으로 처리
+    const isArpPermission = c.includes('arp') || c.includes('arpy') ||
+      c.includes('arp(y)') || c.includes('arp및arpy') || c.includes('arparpy');
+    if (isArpPermission) return false;
+
+    // D열에 ARP(Y) 권한이 명시된 경우도 동일하게 회원사 접근 차단
+    const dHasArpPermission = d.includes('arp') || d.includes('arpy') ||
+      d.includes('arp(y)') || d.includes('arp및arpy') || d.includes('arparpy');
+    if (dHasArpPermission) return false;
+
+    // C열이 회원사인 경우에는 회원사 정보 접근 허용
+    if (c.includes('회원사')) return true;
+
+    // 기존 계정은 기존 동작 유지
+    return true;
+  }
+
   function canAccessStaffCategory(category) {
     const member = getCurrentPermissionMember();
     if (!member) return true;
@@ -5213,7 +5322,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (c.includes('전체') || c.includes('관리자')) return true;
 
     // C열이 ARP&ARPY로 명시되어 있으면 두 영역 모두 허용합니다.
-    const cHasBoth = c.includes('arp&arpy') || c.includes('arparpy') || c.includes('arp및arpy') || (c.includes('arp') && c.includes('arpy'));
+    const cHasBoth = c.includes('arp(y)') || c.includes('arp&arpy') || c.includes('arparpy') || c.includes('arp및arpy') || (c.includes('arp') && c.includes('arpy'));
     if (cHasBoth) return true;
 
     // C열이 단일 권한으로 명시된 경우 해당 영역만 허용합니다.
@@ -5241,7 +5350,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function refreshPermissionUI() {
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
       const cat = btn.dataset.cat;
-      const denied = (cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat);
+      const denied = (cat === 'ARP' || cat === 'ARPY') ? !canAccessStaffCategory(cat) : (cat === '회원사' && !canAccessMemberCompany());
       btn.classList.toggle('permission-denied-tab', denied);
       btn.setAttribute('aria-disabled', denied ? 'true' : 'false');
       btn.title = denied ? '해당정보에 접근권한이 없습니다' : '';
@@ -5707,6 +5816,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
       showPermissionDenied();
       return;
     }
+    if (category === '회원사' && !canAccessMemberCompany()) {
+      refreshPermissionUI();
+      const deniedList = document.getElementById('staffList');
+      const deniedCount = document.querySelector('#staffTabs .month-tab[data-cat="회원사"] .tab-count');
+      if (deniedCount) deniedCount.textContent = '';
+      if (deniedList) deniedList.innerHTML = '';
+      setupArpCohortFilters('');
+      showPermissionDenied();
+      return;
+    }
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
@@ -5763,6 +5882,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
       if ((cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat)) {
         em.textContent = '';
         btn.setAttribute('aria-disabled','true');
+      } else if (cat === '회원사' && !canAccessMemberCompany()) {
+        em.textContent = '';
+        btn.setAttribute('aria-disabled','true');
       } else {
         em.textContent = `(${counts[cat] ?? 0})`;
         btn.setAttribute('aria-disabled','false');
@@ -5777,9 +5899,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   function renderMemberCompanyList() {
-    updateStaffTabCounts();
     const list = document.getElementById('staffList');
     if (!list) return;
+    if (!canAccessMemberCompany()) {
+      list.innerHTML = '';
+      setupArpCohortFilters('');
+      showPermissionDenied();
+      return;
+    }
+    updateStaffTabCounts();
     list.classList.add('member-company-list');
     list.classList.remove('executive-list');
     if (!list.dataset.memberClickBound) {
@@ -5853,6 +5981,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   async function loadMemberCompanyData(forceRefresh = false) {
+    if (!canAccessMemberCompany()) {
+      memberCompanyData = [];
+      memberCompanyLoaded = false;
+      updateStaffTabCounts();
+      return;
+    }
     if (memberCompanyLoading) return;
 
     if (!forceRefresh && !memberCompanyData.length) loadMemberCompanyCache();
@@ -6113,6 +6247,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     list.classList.remove('member-company-list', 'executive-list');
 
     if (categoryFilter === '회원사') {
+      if (!canAccessMemberCompany()) {
+        list.innerHTML = '';
+        showPermissionDenied();
+        return;
+      }
       if (!memberCompanyData.length) loadMemberCompanyCache();
       renderMemberCompanyList();
       if (!memberCompanyLoaded && !memberCompanyLoading) loadMemberCompanyData();
