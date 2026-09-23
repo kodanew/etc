@@ -3854,7 +3854,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
 }
 </style>
-\n<style id="daily-trend-user-request-20260923-final">\n/* ===== 2026-09-23 일일동향 오른쪽 기사 세로 균형 최종 조정 ===== */\n.daily-trend-body{\n  align-items:start !important;\n}\n\n/* 왼쪽 영역의 실제 높이(썸네일 + 썸네일 제목)와 동일한 높이 */\n.daily-trend-articles{\n  height:var(--daily-trend-image-height, auto) !important;\n  align-self:start !important;\n  display:grid !important;\n  grid-template-rows:repeat(3, minmax(0, 1fr)) !important;\n  min-height:0 !important;\n  overflow:hidden !important;\n}\n\n/* 첫 기사 위 / 마지막 기사 아래 여백을 동일하게 7px */\n.daily-trend-article{\n  min-width:0 !important;\n  min-height:0 !important;\n  height:auto !important;\n  margin:0 !important;\n  padding:7px 0 !important;\n  display:flex !important;\n  align-items:flex-start !important;\n  box-sizing:border-box !important;\n  border-top:0 !important;\n  color:#000 !important;\n  font-size:.90rem !important;\n  line-height:1.38 !important;\n  font-weight:700 !important;\n  letter-spacing:-.035em !important;\n  word-break:keep-all !important;\n  overflow:hidden !important;\n}\n\n/* 1번/2번 구분선: 기사 사이의 정확한 중앙 경계 */\n.daily-trend-article + .daily-trend-article{\n  border-top:1px solid #dfe5ec !important;\n}\n\n/* 제목은 블록 하나로 처리하여 2줄째도 첫 줄의 시작 X좌표에서 시작 */\n.daily-trend-article-text{\n  display:block !important;\n  width:100% !important;\n  min-width:0 !important;\n  margin:0 !important;\n  padding:0 !important;\n  color:#000 !important;\n  font-size:inherit !important;\n  font-weight:inherit !important;\n  line-height:1.38 !important;\n  white-space:normal !important;\n  word-break:keep-all !important;\n  overflow-wrap:normal !important;\n  text-indent:0 !important;\n  overflow:hidden !important;\n  display:-webkit-box !important;\n  -webkit-box-orient:vertical !important;\n  -webkit-line-clamp:2 !important;\n  max-height:2.76em !important;\n}\n\n/* 상세보기 본문 기사 제목도 숫자/하이픈 아래로 밀리지 않고 제목 첫 글자 위치에 맞춤 */\n.daily-trend-line{\n  display:flex !important;\n  align-items:flex-start !important;\n  gap:6px !important;\n}\n.daily-trend-line > a,\n.daily-trend-line-title{\n  display:block !important;\n  flex:1 1 auto !important;\n  min-width:0 !important;\n  margin:0 !important;\n  padding:0 !important;\n  text-indent:0 !important;\n  white-space:normal !important;\n  word-break:keep-all !important;\n  overflow-wrap:normal !important;\n  line-height:1.72 !important;\n}\n.daily-trend-line-title{\n  color:#000 !important;\n}\n\n@media(max-width:360px){\n  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}\n}\n</style>\n
+\n
 
 <style id="daily-trend-definitive-20260923">
 /* ===== 일일동향 오른쪽 기사 영역: 왼쪽 전체 높이와 1:1 정렬 ===== */
@@ -4325,6 +4325,65 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 .daily-trend-nav-btn:not(:disabled):active{
   background:#f3f7fb !important;
+}
+</style>
+
+<style id="final-20260923-ui-permission-fix">
+/* ===== 최종 UI 보정 ===== */
+.daily-trend-card{
+  padding-bottom:10px !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  -webkit-line-clamp:2 !important;
+  max-height:2.8em !important;
+  height:2.8em !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  padding:0 !important;
+  margin:0 !important;
+  font-weight:600 !important;
+  color:#203a59 !important;
+  line-height:1.30 !important;
+  display:flex !important;
+  align-items:center !important;
+  min-height:0 !important;
+}
+.daily-trend-article-text{
+  color:#203a59 !important;
+  font-weight:600 !important;
+  line-height:1.30 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #dfe5ec !important;
+  padding-top:0 !important;
+}
+.daily-trend-articles{
+  padding:0 !important;
+  margin:0 !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+}
+/* 권한 제한 탭: 존재는 보이되 실제 데이터 접근은 차단 */
+#staffTabs .month-tab.permission-denied-tab{
+  opacity:.45 !important;
+  position:relative !important;
+}
+#staffTabs .month-tab.permission-denied-tab::after{
+  content:'🔒';
+  font-size:.58rem;
+  margin-left:3px;
+}
+/* 상세보기 하단은 마지막 본문 뒤에 한 줄보다 조금 넉넉한 공간 */
+.daily-trend-detail{
+  padding-bottom:3.2em !important;
+}
+.daily-trend-detail-nav{
+  margin-top:12px !important;
+  padding-top:8px !important;
+  padding-bottom:12px !important;
 }
 </style>
 </head>
@@ -5017,22 +5076,87 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const r = rows[i];
       const name = r[0] ? r[0].trim() : '';
       const phone = r[1] ? normalizePhone(r[1]) : '';
-      if (name && phone) list.push({ name, phone });
+      const permission = r[2] ? r[2].trim() : '';   // C열: 권한
+      const permissionContent = r[3] ? r[3].trim() : ''; // D열: 권한내용
+      if (name && phone) list.push({ name, phone, permission, permissionContent });
     }
     return list;
   }
 
   async function loadMembersData() {
     try {
-      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet3 CSV response error');
       membersData = parseMembersCSV(await response.text());
     } catch (error) { membersData = []; }
   }
 
-  function isAuthorizedMember(name, phone) {
+  function findAuthorizedMember(name, phone) {
     const normName = (name || '').trim();
     const normPhone = normalizePhone(phone);
-    return membersData.some(m => m.name === normName && m.phone === normPhone);
+    return membersData.find(m => m.name === normName && m.phone === normPhone) || null;
+  }
+
+  function isAuthorizedMember(name, phone) {
+    return !!findAuthorizedMember(name, phone);
+  }
+
+  function getCurrentPermissionMember() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+      if (!saved) return null;
+      return findAuthorizedMember(saved.name, saved.phone);
+    } catch(e) { return null; }
+  }
+
+  function permissionText(value) {
+    return String(value || '').replace(/\s+/g,'').toLowerCase();
+  }
+
+  /*
+   * Sheet3 C열=권한, D열=권한내용을 기준으로 제한합니다.
+   * - 회원사: 기본적으로 Sheet8(ARP/ARPY) 접근 차단
+   * - C열이 ARP / ARPY / ARP&ARPY이면 해당 영역 허용
+   * - D열에 '전체'가 있으면 전체 허용
+   * - D열에 ARP/ARPY가 명시되어 있으면 해당 영역만 허용
+   * - 그 외 권한은 기존처럼 전체 접근 허용
+   */
+  function canAccessStaffCategory(category) {
+    const member = getCurrentPermissionMember();
+    if (!member) return true;
+    const c = permissionText(member.permission);
+    const d = permissionText(member.permissionContent);
+    const target = permissionText(category);
+    if (!['arp','arpy'].includes(target)) return true;
+    if (c.includes('전체') || d.includes('전체') || c.includes('관리자')) return true;
+
+    if (c === 'arp&arpy' || c === 'arparpy' || c.includes('arp&arpy') || c.includes('arp및arpy')) return true;
+    if (c === target) return true;
+
+    // D열에 명시된 세부 권한이 있으면 그것을 우선 반영
+    const hasArp = d.includes('arp');
+    const hasArpy = d.includes('arpy');
+    if (hasArp || hasArpy) {
+      return target === 'arp' ? hasArp : hasArpy;
+    }
+
+    // C열이 회원사인 경우 ARP/ARPY 차단
+    if (c.includes('회원사')) return false;
+    return true;
+  }
+
+  function showPermissionDenied() {
+    alert('해당정보에 접근권한이 없습니다');
+  }
+
+  function refreshPermissionUI() {
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      const cat = btn.dataset.cat;
+      const denied = (cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat);
+      btn.classList.toggle('permission-denied-tab', denied);
+      btn.setAttribute('aria-disabled', denied ? 'true' : 'false');
+      btn.title = denied ? '해당정보에 접근권한이 없습니다' : '';
+    });
   }
 
   /* ===== 로그인 사용자 환영 메시지 ===== */
@@ -5119,8 +5243,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     if (membersData.length === 0) await loadMembersData(); 
 
-    if (isAuthorizedMember(nameInput.value.trim(), phoneInput.value.trim())) {
-      localStorage.setItem('koda_auth', JSON.stringify({ name: nameInput.value.trim(), phone: normalizePhone(phoneInput.value.trim()) }));
+    const matchedMember = findAuthorizedMember(nameInput.value.trim(), phoneInput.value.trim());
+    if (matchedMember) {
+      localStorage.setItem('koda_auth', JSON.stringify({
+        name: nameInput.value.trim(),
+        phone: normalizePhone(phoneInput.value.trim()),
+        permission: matchedMember.permission || '',
+        permissionContent: matchedMember.permissionContent || ''
+      }));
       enterApp();
     } else {
       errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 다시 확인해주세요.';
@@ -5135,6 +5265,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
     renderHeaderWelcome();
+    refreshPermissionUI();
     loadData();
     // 시트4의 직위까지 확인한 뒤 환영 메시지를 한 번 더 갱신합니다.
     ensureBusinessCardStaffData().then(() => renderHeaderWelcome()).catch(() => renderHeaderWelcome());
@@ -5477,6 +5608,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.filterStaff = function(category) {
     const validCategories = ['사무국','7대 임원','회원사','ARP','ARPY'];
     if (!validCategories.includes(category)) category = '사무국';
+    if ((category === 'ARP' || category === 'ARPY') && !canAccessStaffCategory(category)) {
+      refreshPermissionUI();
+      showPermissionDenied();
+      return;
+    }
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
@@ -5529,7 +5665,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
       const cat = btn.dataset.cat;
       const em = btn.querySelector('.tab-count');
-      if (em) em.textContent = `(${counts[cat] ?? 0})`;
+      if (!em) return;
+      if ((cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat)) em.textContent = '';
+      else em.textContent = `(${counts[cat] ?? 0})`;
     });
   }
 
@@ -6115,8 +6253,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value = '';
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
+    refreshPermissionUI();
     if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
-    if (!arpLoaded && !arpLoading) loadArpData();
+    if (canAccessStaffCategory('ARP') && canAccessStaffCategory('ARPY') && !arpLoaded && !arpLoading) loadArpData();
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -7809,6 +7948,10 @@ function createEventCard(event, isNext=false) {
     detail.style.display = 'flex';
     document.getElementById('dailyTrendScreen').style.display = 'none';
     document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      detail.scrollTop = 0;
+      window.scrollTo(0, 0);
+    });
     if (!skipHistory) history.pushState({ dailyTrendDetailOpen:true }, "", "");
   }
 
@@ -7823,6 +7966,11 @@ function createEventCard(event, isNext=false) {
     const [nextDate, nextItems] = groups[nextIdx];
     window.currentDailyTrendDate = nextDate;
     openDailyTrendDetail(nextDate, nextItems, true);
+    requestAnimationFrame(() => {
+      const screen = document.getElementById('dailyTrendDetailScreen');
+      if (screen) screen.scrollTop = 0;
+      window.scrollTo(0, 0);
+    });
   }
   window.navigateDailyTrendDate = navigateDailyTrendDate;
 
