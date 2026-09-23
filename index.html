@@ -4235,6 +4235,98 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 </style>
+
+<style id="daily-trend-user-request-20260923-2">
+/* ===== 2026-09-23 추가 요청 ===== */
+/* 썸네일 아래 대표 한글 제목은 최대 2줄 */
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  -webkit-line-clamp:2 !important;
+  max-height:2.8em !important;
+  height:2.8em !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+/* 오른쪽 4개 기사: 왼쪽 대표 제목과 같은 색 / 한 단계 얇은 굵기 */
+.daily-trend-article,
+.daily-trend-article-text{
+  color:#203a59 !important;
+  font-weight:600 !important;
+}
+
+/* 기사 사이 구분선은 옅은 미세 점선, 기사 영역은 동일한 높이로 균등 분할 */
+.daily-trend-articles{
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+  padding:0 !important;
+}
+.daily-trend-article{
+  padding:0 !important;
+  margin:0 !important;
+  line-height:1.30 !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #dfe5ec !important;
+  padding-top:0 !important;
+}
+.daily-trend-article-text{
+  line-height:1.30 !important;
+}
+
+/* 상세보기: 하이픈과 제목 사이에 정확히 한 칸 */
+.daily-trend-line.has-hyphen{
+  grid-template-columns:auto minmax(0,1fr) !important;
+  column-gap:0 !important;
+}
+.daily-trend-line.has-hyphen .daily-trend-line-number{
+  width:auto !important;
+  min-width:0 !important;
+  white-space:pre !important;
+}
+.daily-trend-line-title{
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+}
+
+/* 상세보기 마지막 여백은 글자 한 줄 정도 */
+.daily-trend-detail{
+  padding-bottom:1.72em !important;
+}
+
+/* 상세보기 하단 일자 이동 버튼 */
+.daily-trend-detail-nav{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  gap:6px !important;
+  margin-top:4px !important;
+  padding-top:4px !important;
+}
+.daily-trend-nav-btn{
+  appearance:none !important;
+  border:1px solid #d9e2ec !important;
+  background:#fff !important;
+  color:#526b86 !important;
+  border-radius:7px !important;
+  padding:6px 9px !important;
+  font-size:.72rem !important;
+  line-height:1.2 !important;
+  font-weight:650 !important;
+  letter-spacing:-.03em !important;
+  cursor:pointer !important;
+}
+.daily-trend-nav-btn:disabled{
+  opacity:.35 !important;
+  cursor:default !important;
+}
+.daily-trend-nav-btn:not(:disabled):active{
+  background:#f3f7fb !important;
+}
+</style>
 </head>
 <body>
 
@@ -4698,6 +4790,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <h2 class="daily-trend-section-title">3. 기타 소식</h2>
       <div id="dailyTrendSectionI" class="daily-trend-section-body"></div>
     </section>
+    <div class="daily-trend-detail-nav" aria-label="일자 이동">
+      <button type="button" id="dailyTrendNextBtn" class="daily-trend-nav-btn" onclick="navigateDailyTrendDate(-1)">&lt;다음일자</button>
+      <button type="button" id="dailyTrendPrevBtn" class="daily-trend-nav-btn" onclick="navigateDailyTrendDate(1)">이전일자&gt;</button>
+    </div>
   </div>
 </div>
 
@@ -7665,18 +7761,23 @@ function createEventCard(event, isNext=false) {
     list.forEach((entry,idx)=>{
       const row=document.createElement('div'); row.className='daily-trend-line';
       const link=entry.link || (fallbackLinks&&fallbackLinks[idx]?fallbackLinks[idx].link:'');
-      let text=String(entry.text||'').trim();
+      let text=String(entry.text||'').replace(/[\r\n]+/g,' ').replace(/\s+/g,' ').trim();
       /* 번호/하이픈은 제목과 분리합니다.
-         따라서 제목이 다음 줄로 넘어가도 첫 한글 제목 글자의 X좌표에서 계속됩니다. */
+         제목 전체를 하나의 문장으로 유지하고, 줄이 바뀌어도 제목 첫 글자 위치에서 이어집니다. */
       const bulletMatch=text.match(/^(?:([0-9]+)[.)]|([-–—•]))\s*/);
-      const content=text.replace(/^(?:[0-9]+[.)]|[-–—•])\s*/,'').trim();
+      const content=text.replace(/^(?:[0-9]+[.)]|[-–—•])\s*/,'').replace(/[\r\n]+/g,' ').replace(/\s+/g,' ').trim();
       const titleNode=document.createElement('span');
       titleNode.className='daily-trend-line-title';
       titleNode.textContent=content || text;
       if(bulletMatch){
         const bullet=document.createElement('span');
         bullet.className='daily-trend-line-number';
-        bullet.textContent=bulletMatch[1] ? bulletMatch[1]+'.' : bulletMatch[2];
+        if (bulletMatch[1]) {
+          bullet.textContent = bulletMatch[1] + '.';
+        } else {
+          bullet.textContent = '- ';
+          row.classList.add('has-hyphen');
+        }
         row.appendChild(bullet);
       }
       if(link){
@@ -7689,9 +7790,10 @@ function createEventCard(event, isNext=false) {
     return dailyTrendData.filter(item => String(item.date || '').trim() === String(date || '').trim());
   }
 
-  function openDailyTrendDetail(date, items) {
+  function openDailyTrendDetail(date, items, skipHistory) {
     const detail = document.getElementById('dailyTrendDetailScreen');
     if (!detail) return;
+    window.currentDailyTrendDate = date;
 
     const first = items && items.length ? items[0] : findDailyTrendDateItems(date)[0];
     const articleLinks = dailyTrendArticleItems(items || findDailyTrendDateItems(date));
@@ -7707,8 +7809,22 @@ function createEventCard(event, isNext=false) {
     detail.style.display = 'flex';
     document.getElementById('dailyTrendScreen').style.display = 'none';
     document.body.style.overflow = 'hidden';
-    history.pushState({ dailyTrendDetailOpen:true }, "", "");
+    if (!skipHistory) history.pushState({ dailyTrendDetailOpen:true }, "", "");
   }
+
+  function navigateDailyTrendDate(offset) {
+    const groups = groupDailyTrendByDate(dailyTrendData);
+    if (!groups.length) return;
+    const currentDate = String(window.currentDailyTrendDate || '').trim();
+    let idx = groups.findIndex(([d]) => String(d).trim() === currentDate);
+    if (idx < 0) idx = 0;
+    const nextIdx = idx + offset;
+    if (nextIdx < 0 || nextIdx >= groups.length) return;
+    const [nextDate, nextItems] = groups[nextIdx];
+    window.currentDailyTrendDate = nextDate;
+    openDailyTrendDetail(nextDate, nextItems, true);
+  }
+  window.navigateDailyTrendDate = navigateDailyTrendDate;
 
   window.openDailyTrendScreen = function() {
     const screen = document.getElementById('dailyTrendScreen');
