@@ -4428,6 +4428,43 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen #arpCohortFilters{top:54px !important; padding-top:3px !important; padding-bottom:5px !important;}
 }
 </style>
+
+<style id="daily-trend-three-article-balance-final">
+/* ===== 일일동향: J·K·L 3개 기사만 노출 / 세로 균형 ===== */
+.daily-trend-articles{
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  box-sizing:border-box !important;
+  margin:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  font-size:.96rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+  color:#203a59 !important;
+  border:0 !important;
+}
+.daily-trend-article-text{
+  margin:0 !important;
+  padding:0 !important;
+  color:#203a59 !important;
+  font-size:.96rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+  padding:0 !important;
+}
+</style>
 </head>
 <body>
 
@@ -7733,8 +7770,7 @@ function createEventCard(event, isNext=false) {
     const keys = [
       ['article1','link1'],
       ['article2','link2'],
-      ['article3','link3'],
-      ['article4','link4']
+      ['article3','link3']
     ];
     keys.forEach(([titleKey, linkKey]) => {
       for (const item of items) {
@@ -7884,7 +7920,7 @@ function createEventCard(event, isNext=false) {
     const articleWrap = document.createElement('div');
     articleWrap.className = 'daily-trend-articles';
 
-    for (let idx = 0; idx < 4; idx++) {
+    for (let idx = 0; idx < 3; idx++) {
       const article = articles[idx];
       const a = document.createElement('a');
       a.className = 'daily-trend-article';
