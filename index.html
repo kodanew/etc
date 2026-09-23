@@ -3570,6 +3570,70 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 
 
+<style id="daily-trend-user-final-adjustments">
+/* 2026-09-23 일일동향 기사 제목 최종 정렬 */
+.daily-trend-body{
+  align-items:start !important;
+}
+.daily-trend-media{
+  align-self:start !important;
+}
+/* 썸네일 오른쪽 기사 영역은 썸네일 높이에 맞추고, 첫 기사는 상단에서 살짝 내려 시작 */
+.daily-trend-articles{
+  height:var(--daily-trend-image-height, auto) !important;
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+}
+.daily-trend-article{
+  flex:1 1 0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border-top:0 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article:first-child{
+  padding-top:7px !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+  padding-top:6px !important;
+}
+.daily-trend-article-text{
+  width:100% !important;
+  min-width:0 !important;
+  color:#000 !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  text-indent:0 !important;
+}
+/* 첫 단어/한글 제목 시작점에서 다음 줄도 같은 위치로 정렬 */
+.daily-trend-article-text::first-line{ text-indent:0 !important; }
+/* 썸네일과 오른쪽 기사 시작 높이를 조금 다르게 */
+.daily-trend-image-link{
+  margin-bottom:0 !important;
+}
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
+
 <style id="daily-trend-mobile-final">
 /* ===== 일일동향 최종 모바일 레이아웃 ===== */
 .daily-trend-body{
@@ -3733,6 +3797,63 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+<style id="daily-trend-user-final-adjustments-2">
+/* 2026-09-23 사용자 요청 최종 적용 */
+.daily-trend-body{
+  align-items:start !important;
+}
+.daily-trend-media{
+  align-self:start !important;
+}
+.daily-trend-articles{
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  height:auto !important;
+}
+.daily-trend-article{
+  flex:1 1 0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border-top:0 !important;
+  color:#000 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article:first-child{
+  padding-top:7px !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+  padding-top:6px !important;
+}
+.daily-trend-article-text{
+  width:100% !important;
+  min-width:0 !important;
+  color:#000 !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  text-indent:0 !important;
+}
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
 </head>
 <body>
 
@@ -7090,6 +7211,20 @@ function createEventCard(event, isNext=false) {
 
     body.appendChild(media);
     body.appendChild(articleWrap);
+
+    // 오른쪽 3개 기사 영역을 썸네일 이미지 높이에 맞춰 정렬합니다.
+    const syncArticleHeight = () => {
+      const imageBox = media.querySelector('.daily-trend-image-link');
+      if (!imageBox) return;
+      const h = imageBox.getBoundingClientRect().height;
+      if (h > 0) articleWrap.style.setProperty('height', h + 'px', 'important');
+    };
+    requestAnimationFrame(syncArticleHeight);
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(syncArticleHeight);
+      ro.observe(media);
+      ro.observe(body);
+    }
     card.appendChild(head);
     card.appendChild(body);
     return card;
