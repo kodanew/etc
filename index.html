@@ -4546,6 +4546,214 @@ button,.nav-btn,.action-btn{min-height:44px;}
   #staffScreen #arpCohortFilters{top:54px !important;}
 }
 </style>
+
+<style id="final-fix-20260923-1222">
+/* =========================================================
+   2026-09-23 최종 보정
+   1) 일일동향 3개 기사: 대화면에서도 제목 주변 여백 균형
+   2) 코다피플 검색창/기수버튼: 목록이 뒤로 비치지 않는 완전 불투명 sticky
+   3) 기수 이동: 해당 기수 뱃지가 고정영역 바로 아래에서 시작
+   ========================================================= */
+
+/* ----- 일일동향: 대화면에서 제목 아래로 과도하게 남는 빈 공간 방지 ----- */
+.daily-trend-articles{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  align-items:stretch !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article{
+  flex:0 0 auto !important;
+  width:100% !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:block !important;
+  box-sizing:border-box !important;
+  align-items:initial !important;
+  overflow:hidden !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  min-height:0 !important;
+  max-height:2.6em !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.30 !important;
+  font-size:.84rem !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+  padding-top:6px !important;
+}
+
+/* ----- 코다피플: 하나의 스크롤 컨테이너만 사용 ----- */
+#staffScreen{
+  overflow:hidden !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+  height:calc(100vh - 54px - 80px) !important;
+  max-height:calc(100vh - 54px - 80px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  background:#f4f7fb !important;
+}
+
+/* 검색창과 기수버튼이 지나가는 목록을 완전히 가리는 불투명 영역 */
+#staffScreen .staff-search-wrap,
+#staffScreen #arpCohortFilters{
+  isolation:isolate !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:200 !important;
+  margin:0 0 8px !important;
+  padding:4px 0 6px !important;
+  box-shadow:none !important;
+}
+#staffScreen .staff-search-wrap::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,57px) !important;
+  z-index:199 !important;
+  margin:0 0 10px !important;
+  padding:4px 0 6px !important;
+  box-shadow:none !important;
+}
+#staffScreen #arpCohortFilters::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* 기수 그룹 자체도 고정영역 뒤에 들어가지 않도록 기본 scroll-margin 확보 */
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,57px) + var(--staff-cohort-sticky-height,0px) + 8px) !important;
+}
+
+@media(max-width:360px){
+  #staffScreen .fullscreen-content{
+    height:calc(100vh - 68px - 68px) !important;
+    max-height:calc(100vh - 68px - 68px) !important;
+  }
+  #staffScreen .staff-search-wrap{
+    top:0 !important;
+    padding-top:3px !important;
+    padding-bottom:5px !important;
+  }
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,54px) !important;
+    padding-top:3px !important;
+    padding-bottom:5px !important;
+  }
+}
+</style>
+
+<script>
+/* 2026-09-23: 코다피플 sticky 높이/기수 이동 보정 */
+(function(){
+  function updateStaffStickyHeights(){
+    const screen = document.getElementById('staffScreen');
+    const content = screen && screen.querySelector('.fullscreen-content');
+    const search = document.getElementById('staffSearchInput');
+    const searchWrap = document.querySelector('#staffScreen .staff-search-wrap');
+    const cohort = document.getElementById('arpCohortFilters');
+    if(!content || !searchWrap) return;
+
+    const searchH = Math.ceil(searchWrap.getBoundingClientRect().height || 0);
+    content.style.setProperty('--staff-search-sticky-height', Math.max(searchH, 54) + 'px');
+
+    const cohortVisible = cohort && getComputedStyle(cohort).display !== 'none' && cohort.classList.contains('show');
+    const cohortH = cohortVisible ? Math.ceil(cohort.getBoundingClientRect().height || 0) : 0;
+    content.style.setProperty('--staff-cohort-sticky-height', cohortH + 'px');
+
+    if(search){
+      searchWrap.style.setProperty('--staff-search-real-height', searchH + 'px');
+    }
+  }
+
+  function bindStaffStickyFix(){
+    updateStaffStickyHeights();
+    window.addEventListener('resize', updateStaffStickyHeights, {passive:true});
+    window.addEventListener('orientationchange', ()=>setTimeout(updateStaffStickyHeights,120), {passive:true});
+
+    const cohort = document.getElementById('arpCohortFilters');
+    if(cohort && typeof MutationObserver !== 'undefined'){
+      new MutationObserver(()=>requestAnimationFrame(updateStaffStickyHeights)).observe(cohort,{attributes:true,childList:true,subtree:true});
+    }
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',bindStaffStickyFix);
+  else bindStaffStickyFix();
+
+  /* 기존 기수 이동 함수보다 뒤에 선언되어 실제 클릭 시 이 함수를 사용 */
+  window.scrollToArpCohort = function(cohort){
+    const target = document.getElementById(`arp-cohort-${cohort}`);
+    const screen = document.getElementById('staffScreen');
+    const content = screen && screen.querySelector('.fullscreen-content');
+    if(!target || !content) return;
+
+    updateStaffStickyHeights();
+    const searchWrap = document.querySelector('#staffScreen .staff-search-wrap');
+    const cohortWrap = document.getElementById('arpCohortFilters');
+    const searchH = Math.ceil(searchWrap?.getBoundingClientRect().height || 0);
+    const cohortH = (cohortWrap && getComputedStyle(cohortWrap).display !== 'none')
+      ? Math.ceil(cohortWrap.getBoundingClientRect().height || 0) : 0;
+    const topOffset = searchH + cohortH + 8;
+    const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - topOffset;
+
+    content.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  };
+})();
+</script>
+
 </head>
 <body>
 
