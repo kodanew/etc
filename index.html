@@ -3854,7 +3854,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
 }
 </style>
-\n
 
 <style id="daily-trend-definitive-20260923">
 /* ===== 일일동향 오른쪽 기사 영역: 왼쪽 전체 높이와 1:1 정렬 ===== */
@@ -4384,6 +4383,49 @@ button,.nav-btn,.action-btn{min-height:44px;}
   margin-top:12px !important;
   padding-top:8px !important;
   padding-bottom:12px !important;
+}
+</style>
+
+<style id="koda-codapeople-sticky-permission-fix-20260923">
+/* 코다피플: 검색창은 스크롤 중에도 상단 고정 */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:60 !important;
+  margin:0 0 8px !important;
+  padding:4px 0 6px !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:57px !important;
+  z-index:59 !important;
+  margin:0 0 10px !important;
+  padding:4px 0 6px !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #arpCohortFilters.show{
+  display:grid !important;
+}
+
+/* 권한 제한 버튼은 클릭 자체를 막고 잠금 상태를 명확하게 표시 */
+#staffTabs .month-tab.permission-denied-tab{
+  opacity:.42 !important;
+  cursor:not-allowed !important;
+}
+#staffTabs .month-tab.permission-denied-tab:active{
+  transform:none !important;
+}
+
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{top:0 !important; padding-top:3px !important; padding-bottom:5px !important;}
+  #staffScreen #arpCohortFilters{top:54px !important; padding-top:3px !important; padding-bottom:5px !important;}
 }
 </style>
 </head>
@@ -5124,24 +5166,34 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function canAccessStaffCategory(category) {
     const member = getCurrentPermissionMember();
     if (!member) return true;
+
     const c = permissionText(member.permission);
     const d = permissionText(member.permissionContent);
     const target = permissionText(category);
     if (!['arp','arpy'].includes(target)) return true;
-    if (c.includes('전체') || d.includes('전체') || c.includes('관리자')) return true;
 
-    if (c === 'arp&arpy' || c === 'arparpy' || c.includes('arp&arpy') || c.includes('arp및arpy')) return true;
-    if (c === target) return true;
+    // C열 '전체/관리자'는 모든 권한을 허용합니다.
+    if (c.includes('전체') || c.includes('관리자')) return true;
 
-    // D열에 명시된 세부 권한이 있으면 그것을 우선 반영
-    const hasArp = d.includes('arp');
-    const hasArpy = d.includes('arpy');
-    if (hasArp || hasArpy) {
-      return target === 'arp' ? hasArp : hasArpy;
+    // C열이 ARP&ARPY로 명시되어 있으면 두 영역 모두 허용합니다.
+    const cHasBoth = c.includes('arp&arpy') || c.includes('arparpy') || c.includes('arp및arpy') || (c.includes('arp') && c.includes('arpy'));
+    if (cHasBoth) return true;
+
+    // C열이 단일 권한으로 명시된 경우 해당 영역만 허용합니다.
+    if (c === target || (target === 'arp' && c === 'arp회원') || (target === 'arpy' && c === 'arpy회원')) return true;
+
+    // 중요: C열이 '회원사'인 사용자는 Sheet8의 ARP/ARPY를 기본적으로 차단합니다.
+    // D열에 단순히 문자열이 적혀 있어도 C열의 기본 권한을 넘어 접근시키지 않습니다.
+    if (c.includes('회원사')) return false;
+
+    // C열이 상위 권한으로 지정되지 않은 경우 D열의 세부 권한을 사용합니다.
+    const dHasArp = d.includes('arp');
+    const dHasArpy = d.includes('arpy');
+    if (dHasArp || dHasArpy) {
+      return target === 'arp' ? dHasArp : dHasArpy;
     }
 
-    // C열이 회원사인 경우 ARP/ARPY 차단
-    if (c.includes('회원사')) return false;
+    // C/D 모두 특정 제한을 표시하지 않은 기존 계정은 기존 동작을 유지합니다.
     return true;
   }
 
@@ -5610,6 +5662,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (!validCategories.includes(category)) category = '사무국';
     if ((category === 'ARP' || category === 'ARPY') && !canAccessStaffCategory(category)) {
       refreshPermissionUI();
+      const deniedList = document.getElementById('staffList');
+      const deniedCount = document.querySelector(`#staffTabs .month-tab[data-cat=\"${category}\"] .tab-count`);
+      if (deniedCount) deniedCount.textContent = '';
+      if (deniedList) deniedList.innerHTML = '';
+      setupArpCohortFilters('');
       showPermissionDenied();
       return;
     }
@@ -5666,8 +5723,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const cat = btn.dataset.cat;
       const em = btn.querySelector('.tab-count');
       if (!em) return;
-      if ((cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat)) em.textContent = '';
-      else em.textContent = `(${counts[cat] ?? 0})`;
+      if ((cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat)) {
+        em.textContent = '';
+        btn.setAttribute('aria-disabled','true');
+      } else {
+        em.textContent = `(${counts[cat] ?? 0})`;
+        btn.setAttribute('aria-disabled','false');
+      }
     });
   }
 
@@ -5847,6 +5909,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   async function loadArpData() {
+    if (!canAccessStaffCategory('ARP') && !canAccessStaffCategory('ARPY')) {
+      arpData = [];
+      arpLoaded = false;
+      updateStaffTabCounts();
+      return;
+    }
     if (arpLoading) return;
     arpLoading = true;
     const list = document.getElementById('staffList');
@@ -5889,7 +5957,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
       btn.className = 'arp-cohort-btn';
       btn.textContent = `${i}기`;
       btn.dataset.cohort = String(i);
-      btn.addEventListener('click', () => scrollToArpCohort(i));
+      btn.addEventListener('click', () => {
+        const cat = wrap.dataset.category;
+        if (!canAccessStaffCategory(cat)) { showPermissionDenied(); return; }
+        scrollToArpCohort(i);
+      });
       wrap.appendChild(btn);
     }
   }
@@ -5915,6 +5987,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function renderArpList(categoryFilter) {
     const list = document.getElementById('staffList');
     if (!list) return;
+    if (!canAccessStaffCategory(categoryFilter)) {
+      setupArpCohortFilters('');
+      list.innerHTML = '';
+      showPermissionDenied();
+      return;
+    }
     setupArpCohortFilters(categoryFilter);
     list.classList.remove('member-company-list','executive-list');
     list.classList.add('arp-list');
