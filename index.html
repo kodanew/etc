@@ -3855,6 +3855,133 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 \n<style id="daily-trend-user-request-20260923-final">\n/* ===== 2026-09-23 일일동향 오른쪽 기사 세로 균형 최종 조정 ===== */\n.daily-trend-body{\n  align-items:start !important;\n}\n\n/* 왼쪽 영역의 실제 높이(썸네일 + 썸네일 제목)와 동일한 높이 */\n.daily-trend-articles{\n  height:var(--daily-trend-image-height, auto) !important;\n  align-self:start !important;\n  display:grid !important;\n  grid-template-rows:repeat(3, minmax(0, 1fr)) !important;\n  min-height:0 !important;\n  overflow:hidden !important;\n}\n\n/* 첫 기사 위 / 마지막 기사 아래 여백을 동일하게 7px */\n.daily-trend-article{\n  min-width:0 !important;\n  min-height:0 !important;\n  height:auto !important;\n  margin:0 !important;\n  padding:7px 0 !important;\n  display:flex !important;\n  align-items:flex-start !important;\n  box-sizing:border-box !important;\n  border-top:0 !important;\n  color:#000 !important;\n  font-size:.90rem !important;\n  line-height:1.38 !important;\n  font-weight:700 !important;\n  letter-spacing:-.035em !important;\n  word-break:keep-all !important;\n  overflow:hidden !important;\n}\n\n/* 1번/2번 구분선: 기사 사이의 정확한 중앙 경계 */\n.daily-trend-article + .daily-trend-article{\n  border-top:1px solid #dfe5ec !important;\n}\n\n/* 제목은 블록 하나로 처리하여 2줄째도 첫 줄의 시작 X좌표에서 시작 */\n.daily-trend-article-text{\n  display:block !important;\n  width:100% !important;\n  min-width:0 !important;\n  margin:0 !important;\n  padding:0 !important;\n  color:#000 !important;\n  font-size:inherit !important;\n  font-weight:inherit !important;\n  line-height:1.38 !important;\n  white-space:normal !important;\n  word-break:keep-all !important;\n  overflow-wrap:normal !important;\n  text-indent:0 !important;\n  overflow:hidden !important;\n  display:-webkit-box !important;\n  -webkit-box-orient:vertical !important;\n  -webkit-line-clamp:2 !important;\n  max-height:2.76em !important;\n}\n\n/* 상세보기 본문 기사 제목도 숫자/하이픈 아래로 밀리지 않고 제목 첫 글자 위치에 맞춤 */\n.daily-trend-line{\n  display:flex !important;\n  align-items:flex-start !important;\n  gap:6px !important;\n}\n.daily-trend-line > a,\n.daily-trend-line-title{\n  display:block !important;\n  flex:1 1 auto !important;\n  min-width:0 !important;\n  margin:0 !important;\n  padding:0 !important;\n  text-indent:0 !important;\n  white-space:normal !important;\n  word-break:keep-all !important;\n  overflow-wrap:normal !important;\n  line-height:1.72 !important;\n}\n.daily-trend-line-title{\n  color:#000 !important;\n}\n\n@media(max-width:360px){\n  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}\n}\n</style>\n
+
+<style id="daily-trend-definitive-20260923">
+/* ===== 일일동향 오른쪽 기사 영역: 왼쪽 전체 높이와 1:1 정렬 ===== */
+.daily-trend-body{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  align-items:start !important;
+}
+.daily-trend-media{
+  min-width:0 !important;
+  height:auto !important;
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+.daily-trend-image-link{
+  flex:0 0 auto !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  flex:0 0 auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:2.8em !important;
+  margin-top:8px !important;
+}
+
+/* JS가 계산한 왼쪽 전체 높이를 그대로 사용. 내부 여백은 바깥에서 균등하게 처리 */
+.daily-trend-articles{
+  min-width:0 !important;
+  height:var(--daily-trend-left-height, auto) !important;
+  align-self:start !important;
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  padding:7px 0 !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border:0 !important;
+  color:#000 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  font-size:inherit !important;
+  font-weight:inherit !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+  overflow:hidden !important;
+}
+
+/* 상세보기 본문: 번호와 제목을 분리하고 제목 자체를 독립 블록으로 만들어
+   2번째 줄이 반드시 1번째 줄의 첫 글자와 동일한 X좌표에서 시작 */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+}
+.daily-trend-line-number{
+  display:block !important;
+  width:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+  text-indent:0 !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+}
+.daily-trend-line > a{
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+}
+
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
 </head>
 <body>
 
@@ -7213,18 +7340,24 @@ function createEventCard(event, isNext=false) {
     body.appendChild(media);
     body.appendChild(articleWrap);
 
-    // 오른쪽 3개 기사 영역 전체를 왼쪽의 '썸네일 + 썸네일 제목' 세로 폭과 정확히 맞춥니다.
-    // 첫 기사 위 여백과 마지막 기사 아래 여백이 동일하게 유지되도록 CSS grid와 함께 사용합니다.
+    // 오른쪽 기사 영역의 높이를 왼쪽 전체(썸네일 + 썸네일 제목)와 정확히 동일하게 맞춥니다.
+    // 이미지가 늦게 로드되는 경우까지 다시 계산하여 항상 좌우 하단 라인이 일치하도록 합니다.
     const syncArticleHeight = () => {
-      const h = media.getBoundingClientRect().height;
-      if (h > 0) articleWrap.style.setProperty('height', h + 'px', 'important');
+      const h = Math.ceil(media.getBoundingClientRect().height);
+      if (h > 0) {
+        body.style.setProperty('--daily-trend-left-height', h + 'px');
+        articleWrap.style.height = h + 'px';
+      }
     };
-    requestAnimationFrame(syncArticleHeight);
+    const syncSoon = () => requestAnimationFrame(() => requestAnimationFrame(syncArticleHeight));
+    syncSoon();
     if (typeof ResizeObserver !== 'undefined') {
       const ro = new ResizeObserver(syncArticleHeight);
       ro.observe(media);
       ro.observe(body);
+      mediaLink.querySelectorAll('img').forEach(img => img.addEventListener('load', syncSoon));
     }
+    window.addEventListener('resize', syncSoon, {passive:true});
     card.appendChild(head);
     card.appendChild(body);
     return card;
