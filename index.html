@@ -4121,6 +4121,120 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="daily-trend-final-user-fix-20260923">
+/* ===== 일일동향 카드: 4개 기사 / 옅은 미세 점선 / 동일한 세로 간격 ===== */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+  padding:0 !important;
+  margin:0 !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:3px 0 !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  border:0 !important;
+  position:relative !important;
+  color:#000 !important;
+  /* 기존 .90rem → 1사이즈 축소 */
+  font-size:.82rem !important;
+  line-height:1.30 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #d9e0e8 !important;
+  padding-top:3px !important;
+}
+.daily-trend-article-text{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  font-size:inherit !important;
+  font-weight:inherit !important;
+  line-height:1.30 !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+  overflow:hidden !important;
+  max-height:2.60em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+}
+
+/* ===== 일자별 상세보기: 제목 전체를 하나의 문장으로 감싸고 자연스럽게 줄바꿈 ===== */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+}
+.daily-trend-line-number{
+  display:block !important;
+  width:20px !important;
+  min-width:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  line-height:1.72 !important;
+  text-indent:0 !important;
+  white-space:normal !important;
+  /* 단어 단위 강제 줄바꿈이 아니라, 문장 전체 폭을 채운 뒤 자연스럽게 한 글자씩 줄바꿈 */
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  hyphens:none !important;
+}
+.daily-trend-line > a{
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+}
+
+@media(max-width:360px){
+  .daily-trend-article{
+    font-size:.76rem !important;
+    line-height:1.28 !important;
+  }
+  .daily-trend-article-text{
+    line-height:1.28 !important;
+    max-height:2.56em !important;
+  }
+}
+</style>
 </head>
 <body>
 
