@@ -7525,13 +7525,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const content = screen && screen.querySelector('.fullscreen-content');
     if (!target || !content) return;
 
-    // 검색창/기수 버튼은 이제 목록 스크롤 컨테이너 밖에 있으므로
-    // 기수 뱃지가 목록 상단에서 잘리지 않도록 목록 자체를 8px 여유 두고 이동합니다.
-    const targetRect = target.getBoundingClientRect();
+    // 검색창/기수 버튼은 화면 상단에 고정(fixed)되어 있으므로,
+    // 고정 영역의 실제 하단 위치를 측정해서 그 아래에 기수 뱃지가 오도록 이동합니다.
+    // (고정 영역 하단 그림자 8px + 여유 간격 포함)
+    const GAP = 16;
     const contentRect = content.getBoundingClientRect();
-    const targetTop = targetRect.top - contentRect.top + content.scrollTop;
+    const searchWrap = screen.querySelector('.staff-search-wrap');
+    const cohortWrap = document.getElementById('arpCohortFilters');
+    let fixedBottom = contentRect.top;
+    [searchWrap, cohortWrap].forEach(el => {
+      if (!el || getComputedStyle(el).display === 'none') return;
+      fixedBottom = Math.max(fixedBottom, el.getBoundingClientRect().bottom);
+    });
+    const visibleTop = fixedBottom - contentRect.top + GAP;
+
+    const targetTop = target.getBoundingClientRect().top - contentRect.top + content.scrollTop;
+    const destination = Math.max(0, targetTop - visibleTop);
+
+    // 목록 끝쪽 기수처럼 스크롤 여유가 부족하면 마지막 그룹에 여백을 더해 끝까지 이동 가능하게 함
     const maxTop = Math.max(0, content.scrollHeight - content.clientHeight);
-    const destination = Math.min(maxTop, Math.max(0, targetTop - 8));
+    if (destination > maxTop) {
+      const groups = document.querySelectorAll('#staffList .arp-cohort-group');
+      const last = groups[groups.length - 1];
+      if (last) {
+        const cur = parseFloat(last.style.minHeight) || last.getBoundingClientRect().height;
+        last.style.minHeight = Math.ceil(cur + (destination - maxTop)) + 'px';
+      }
+    }
 
     content.scrollTo({top: destination, behavior:'smooth'});
   }
@@ -10370,6 +10390,32 @@ function createEventCard(event, isNext=false) {
   #fullMenuScreen .fullmenu-content{
     width:calc(100% - 20px) !important;
   }
+}
+</style>
+
+<style id="koda-20260928-cohort-news-request">
+/* 1) ARP/ARPY 기수 버튼: 위쪽 검색창 하단 그림자(6px)에 버튼 윗 테두리가 가려지지 않도록 윗 여백 확보 */
+#staffScreen #arpCohortFilters{
+  padding-top:12px !important;
+}
+/* 고정 영역이 8px 늘어난 만큼 목록 시작 위치도 아래로 이동 */
+#staffScreen[data-staff-category="ARP"] .fullscreen-content{
+  padding-top:166px !important;
+}
+#staffScreen[data-staff-category="ARPY"] .fullscreen-content{
+  padding-top:116px !important;
+}
+/* 기수 이동 시 뱃지가 고정 영역(그림자 포함) 아래에서 시작 */
+#staffScreen .fullscreen-content{scroll-padding-top:190px !important;}
+#staffScreen #staffList.arp-list .arp-cohort-group,
+#staffScreen #staffList.arp-list .arp-cohort-title{scroll-margin-top:190px !important;}
+
+/* 2) 협회공지 5개 버튼 글자 크기 1단계(+1px) 상향 */
+#newsScreen #newsTabs .month-tab{
+  font-size:clamp(11px, calc(2.8vw + 1px), 13px) !important;
+}
+@media(max-width:360px){
+  #newsScreen #newsTabs .month-tab{font-size:11px !important;}
 }
 </style>
 </body>
