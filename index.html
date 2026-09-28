@@ -5961,7 +5961,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="quick-menu-container">
     <!-- 1. 홈페이지 -->
-    <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
+    <a href="https://www.koda.or.kr/main/" target="_blank" rel="noopener noreferrer" class="quick-btn">
       <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA"></span>
       <span class="quick-label">홈페이지</span>
     </a>
@@ -5992,7 +5992,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" onclick="openMeetingScreen()" aria-label="코다자료">
       <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- 심플한 2단 서랍장: 각 서랍의 세로폭을 넉넉하게 -->
           <rect x="8" y="8" width="36" height="15" rx="3" fill="#8b5cf6"/>
           <rect x="8" y="27" width="36" height="15" rx="3" fill="#8b5cf6"/>
           <rect x="21" y="14" width="10" height="3" rx="1.5" fill="#fff"/>
@@ -6003,7 +6002,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </button>
 
     <!-- 5. KODA-TV -->
-    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn" aria-label="KODA-TV">
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" rel="noopener noreferrer" class="quick-btn" aria-label="KODA-TV">
       <span class="quick-icon">
         <svg viewBox="0 0 64 44" aria-hidden="true">
           <rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/>
@@ -6012,12 +6011,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       </span>
       <span class="quick-label">KODA-TV</span>
     </a>
-  </div>
 
-  <div class="sub-menu-container">
     <!-- 6. 코다기사 -->
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C"
-       target="_blank" class="quick-btn" aria-label="코다기사">
+       target="_blank" rel="noopener noreferrer" class="quick-btn" aria-label="코다기사">
       <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
           <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
@@ -6027,19 +6024,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">코다기사</span>
     </a>
 
-    <!-- 7. 준비중 -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
-      <span class="quick-icon" style="background:#f7fafc;">
-        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
-      </span>
-      <span class="quick-label">준비중</span>
-    </button>
-
-    <!-- 8. 일일동향 -->
+    <!-- 7. 일일동향 -->
     <button class="quick-btn" onclick="openDailyTrendScreen()" aria-label="일일동향">
       <span class="quick-icon news-quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- NEWS 소식과 같은 분홍색 계열의 뉴스 아이콘 -->
           <path d="M9 11h34a3 3 0 0 1 3 3v23a4 4 0 0 1-4 4H13a6 6 0 0 1-6-6V14a3 3 0 0 1 3-3z" fill="#d53f8c"/>
           <path d="M13 17h24v4H13zM13 24h16v4H13zM13 31h20v4H13z" fill="#fff"/>
           <path d="M39 17h4v18h-4z" fill="#b83280"/>
@@ -6048,11 +6036,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">일일동향</span>
     </button>
 
-    <!-- 9. 정부국회 -->
+    <!-- 8. 정부국회 -->
     <button class="quick-btn" onclick="openGovAssemblyScreen()" aria-label="정부국회">
       <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- 심플한 국회/공공기관 건물 실루엣 -->
           <path d="M8 18h36L26 9 8 18z" fill="#8b929b"/>
           <rect x="11" y="19" width="30" height="23" rx="1.5" fill="#8b929b"/>
           <rect x="15" y="23" width="4" height="15" rx="1" fill="#fff"/>
@@ -6064,8 +6051,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">정부국회</span>
     </button>
 
-    <!-- 10. 관심일정 -->
-    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
+    <!-- 9. 관심일정 -->
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()" aria-label="관심일정">
       <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
           <path d="M13 8h26v37L26 38l-13 7z" fill="#D35400"/>
@@ -6073,6 +6060,19 @@ button,.nav-btn,.action-btn{min-height:44px;}
         </svg>
       </span>
       <span class="quick-label">관심일정</span>
+    </button>
+
+    <!-- 10. 전체메뉴 -->
+    <button class="quick-btn" onclick="openFullMenuScreen()" aria-label="전체메뉴">
+      <span class="quick-icon full-menu-quick-icon">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <rect x="8" y="8" width="14" height="14" rx="3" fill="#1769d2"/>
+          <rect x="30" y="8" width="14" height="14" rx="3" fill="#6b8db8"/>
+          <rect x="8" y="30" width="14" height="14" rx="3" fill="#6b8db8"/>
+          <rect x="30" y="30" width="14" height="14" rx="3" fill="#1769d2"/>
+        </svg>
+      </span>
+      <span class="quick-label">전체메뉴</span>
     </button>
   </div>
 
@@ -8381,7 +8381,7 @@ function createEventCard(event, isNext=false) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen', 'dailyTrendScreen', 'dailyTrendDetailScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen', 'dailyTrendScreen', 'dailyTrendDetailScreen', 'fullMenuScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
 
     // 브라우저 뒤로가기로 명함 상태가 해제되면 명함 팝업도 함께 닫습니다.
@@ -9950,6 +9950,301 @@ function createEventCard(event, isNext=false) {
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>clean(document.body));
   else clean(document.body);
+})();
+</script>
+
+<style id="koda-20260928-fullmenu-final">
+/* ARP / ARPY 최상단 1기 버튼 클리핑 방지 */
+#staffScreen #arpCohortFilters{
+  overflow:visible !important;
+  contain:none !important;
+  clip-path:none !important;
+  padding-top:12px !important;
+  padding-bottom:10px !important;
+}
+#staffScreen #arpCohortFilters .arp-cohort-btn{
+  overflow:visible !important;
+  margin-top:3px !important;
+}
+#staffScreen[data-staff-category="ARP"] .fullscreen-content{
+  padding-top:166px !important;
+}
+#staffScreen[data-staff-category="ARPY"] .fullscreen-content{
+  padding-top:116px !important;
+}
+
+/* 달력 일정 상세보기: 행사명 바로 오른쪽 끝에 즐겨찾기 별 */
+#eventModal .modal-title-area{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+  padding-right:34px !important;
+}
+#eventModal .modal-title{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+#eventModal .modal-star{
+  flex:0 0 auto !important;
+  margin:0 0 0 auto !important;
+  width:34px !important;
+  height:34px !important;
+  min-height:34px !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+  font-size:1.35rem !important;
+}
+
+/* 전체메뉴 */
+#fullMenuScreen{
+  position:fixed;
+  inset:0;
+  z-index:1800;
+  display:none;
+  flex-direction:column;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#f4f7fb;
+}
+#fullMenuScreen .full-menu-header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;
+  height:58px;
+  padding:0 12px;
+  background:#fff;
+  border-bottom:1px solid #e6edf5;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+}
+#fullMenuScreen .full-menu-back{
+  width:42px;height:42px;min-height:42px;
+  border:0;border-radius:13px;
+  background:#f1f6fd;color:#1769d2;
+  font-size:1.45rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+#fullMenuScreen .full-menu-title{
+  text-align:center;
+  color:#173f70;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.04em;
+}
+#fullMenuScreen .full-menu-content{
+  width:min(430px,calc(100vw - 20px));
+  margin:0 auto;
+  padding:16px 0 28px;
+}
+.full-menu-section{margin-bottom:18px;}
+.full-menu-section-head{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0 2px 10px;
+}
+.full-menu-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:27px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#edf5ff;
+  color:#1769d2;
+  border:1px solid #cfe0f8;
+  font-size:.72rem;
+  font-weight:850;
+  white-space:nowrap;
+}
+.full-menu-divider{
+  height:1px;
+  flex:1;
+  background:#d7e3ef;
+}
+.full-menu-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.full-menu-card{
+  min-width:0;
+  min-height:72px;
+  padding:11px 6px;
+  border:1px solid #dfe8f2;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(28,70,120,.055);
+  color:#17385f;
+  font:inherit;
+  font-size:.75rem;
+  font-weight:800;
+  line-height:1.25;
+  text-align:center;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  word-break:keep-all;
+  cursor:pointer;
+  transition:transform .12s,box-shadow .12s,border-color .12s;
+}
+.full-menu-card:active{
+  transform:scale(.98);
+  border-color:#b9d1eb;
+  box-shadow:0 2px 7px rgba(28,70,120,.07);
+}
+.full-menu-card.primary{
+  border-color:#c7dcf4;
+  background:linear-gradient(180deg,#fff,#f8fbff);
+}
+.full-menu-card.external::after{
+  content:'↗';
+  margin-left:3px;
+  font-size:.68rem;
+  color:#8aa1bb;
+}
+.full-menu-section.home .full-menu-badge{background:#edf5ff;color:#1769d2;}
+.full-menu-section.news .full-menu-badge{background:#fff8e6;color:#a36b00;border-color:#f0dfad;}
+.full-menu-section.people .full-menu-badge{background:#edf5ff;color:#1769d2;}
+.full-menu-section.materials .full-menu-badge{background:#f3edff;color:#7b4bd6;border-color:#ded0fb;}
+.full-menu-section.quick .full-menu-badge{background:#f1f4f7;color:#56687d;border-color:#dce4ec;}
+@media(min-width:600px){
+  #fullMenuScreen .full-menu-content{width:min(600px,calc(100vw - 30px));}
+  .full-menu-grid{gap:10px;}
+  .full-menu-card{min-height:82px;font-size:.8rem;}
+}
+</style>
+
+<!-- ✨ 전체메뉴 ✨ -->
+<div id="fullMenuScreen" aria-label="전체메뉴">
+  <div class="full-menu-header">
+    <button type="button" class="full-menu-back" onclick="closeFullMenuScreen()" aria-label="뒤로가기">←</button>
+    <div class="full-menu-title">전체메뉴</div>
+    <div></div>
+  </div>
+
+  <div class="full-menu-content">
+    <section class="full-menu-section home">
+      <div class="full-menu-section-head">
+        <span class="full-menu-badge">홈페이지</span>
+        <div class="full-menu-divider"></div>
+      </div>
+      <div class="full-menu-grid">
+        <a class="full-menu-card primary external" href="https://www.koda.or.kr/main/" target="_blank" rel="noopener noreferrer">홈페이지</a>
+      </div>
+    </section>
+
+    <section class="full-menu-section news">
+      <div class="full-menu-section-head">
+        <span class="full-menu-badge">협회공지</span>
+        <div class="full-menu-divider"></div>
+      </div>
+      <div class="full-menu-grid">
+        <button class="full-menu-card" type="button" onclick="openNewsCategoryFromFullMenu('협회활동')">협회활동</button>
+        <button class="full-menu-card" type="button" onclick="openNewsCategoryFromFullMenu('교육·ARP')">교육·ARP</button>
+        <button class="full-menu-card" type="button" onclick="openNewsCategoryFromFullMenu('회원사소식')">회원사소식</button>
+        <button class="full-menu-card" type="button" onclick="openNewsCategoryFromFullMenu('경조사')">경조사</button>
+      </div>
+    </section>
+
+    <section class="full-menu-section people">
+      <div class="full-menu-section-head">
+        <span class="full-menu-badge">코다피플</span>
+        <div class="full-menu-divider"></div>
+      </div>
+      <div class="full-menu-grid">
+        <button class="full-menu-card" type="button" onclick="openStaffCategoryFromFullMenu('사무국')">사무국</button>
+        <button class="full-menu-card" type="button" onclick="openStaffCategoryFromFullMenu('7대 임원')">7대임원</button>
+        <button class="full-menu-card" type="button" onclick="openStaffCategoryFromFullMenu('회원사')">회원사</button>
+        <button class="full-menu-card" type="button" onclick="openStaffCategoryFromFullMenu('ARP')">ARP</button>
+        <button class="full-menu-card" type="button" onclick="openStaffCategoryFromFullMenu('ARPY')">ARPY</button>
+      </div>
+    </section>
+
+    <section class="full-menu-section materials">
+      <div class="full-menu-section-head">
+        <span class="full-menu-badge">코다자료</span>
+        <div class="full-menu-divider"></div>
+      </div>
+      <div class="full-menu-grid">
+        <button class="full-menu-card" type="button" onclick="openMeetingCategoryFromFullMenu('사무국 회의')">사무국회의</button>
+        <button class="full-menu-card" type="button" onclick="openMeetingCategoryFromFullMenu('임원회의')">임원회의</button>
+        <button class="full-menu-card" type="button" onclick="openMeetingCategoryFromFullMenu('스페잇슈')">스페잇슈</button>
+        <button class="full-menu-card" type="button" onclick="openMeetingCategoryFromFullMenu('기타자료')">기타자료</button>
+      </div>
+    </section>
+
+    <section class="full-menu-section quick">
+      <div class="full-menu-section-head">
+        <span class="full-menu-badge">주요 메뉴</span>
+        <div class="full-menu-divider"></div>
+      </div>
+      <div class="full-menu-grid">
+        <a class="full-menu-card external" href="https://www.youtube.com/@kodatv9717" target="_blank" rel="noopener noreferrer">KODA-TV</a>
+        <a class="full-menu-card external" href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" rel="noopener noreferrer">코다기사</a>
+        <button class="full-menu-card" type="button" onclick="closeFullMenuAndOpen('daily')">일일동향</button>
+        <button class="full-menu-card" type="button" onclick="closeFullMenuAndOpen('gov')">정부국회</button>
+        <button class="full-menu-card" type="button" onclick="closeFullMenuAndOpen('bookmark')">관심일정</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script id="koda-20260928-fullmenu-script">
+(function(){
+  window.openFullMenuScreen = function(){
+    const screen=document.getElementById('fullMenuScreen');
+    if(!screen) return;
+    screen.style.display='flex';
+    screen.scrollTop=0;
+    document.body.style.overflow='hidden';
+    history.pushState({fullMenuOpen:true},'', '');
+  };
+
+  window.closeFullMenuScreen = function(){
+    history.back();
+  };
+
+  window.openNewsCategoryFromFullMenu = function(category){
+    closeFullMenuScreen();
+    setTimeout(function(){
+      openNewsScreen();
+      setTimeout(function(){ filterNews(category); }, 0);
+    }, 0);
+  };
+
+  window.openStaffCategoryFromFullMenu = function(category){
+    closeFullMenuScreen();
+    setTimeout(function(){
+      openStaffScreen();
+      setTimeout(function(){ filterStaff(category); }, 0);
+    }, 0);
+  };
+
+  window.openMeetingCategoryFromFullMenu = function(category){
+    closeFullMenuScreen();
+    setTimeout(function(){
+      openMeetingScreen();
+      setTimeout(function(){ filterMeeting(category); }, 0);
+    }, 0);
+  };
+
+  window.closeFullMenuAndOpen = function(target){
+    closeFullMenuScreen();
+    setTimeout(function(){
+      if(target==='daily') openDailyTrendScreen();
+      else if(target==='gov') openGovAssemblyScreen();
+      else if(target==='bookmark') toggleBookmarksOnly();
+    }, 0);
+  };
 })();
 </script>
 </body>
