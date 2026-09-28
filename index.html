@@ -8037,8 +8037,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     localStorage.setItem('koda_bookmarks', JSON.stringify(bookmarks));
     
     const modalStar = document.getElementById('modalStarBtn');
-    if (bookmarks.includes(event.id)) modalStar.classList.add('starred');
-    else modalStar.classList.remove('starred');
+    if (bookmarks.includes(event.id)) { modalStar.innerText = '★'; modalStar.classList.add('starred'); }
+    else { modalStar.innerText = '☆'; modalStar.classList.remove('starred'); }
     updateView();
   }
 
@@ -10096,7 +10096,10 @@ function createEventCard(event, isNext=false) {
 <section class="fullmenu-section">
 <div class="fullmenu-section-head"><span class="fullmenu-badge">홈페이지</span><div class="fullmenu-divider"></div></div>
 <div class="fullmenu-grid">
-<a class="fullmenu-card" href="https://www.koda.or.kr/main/" rel="noopener noreferrer" target="_blank">홈페이지</a>
+<a class="fullmenu-card" href="https://www.koda.or.kr/main/" rel="noopener noreferrer" target="_blank">공식 홈페이지</a>
+<a class="fullmenu-card" href="https://www.koda.or.kr/edu/" rel="noopener noreferrer" target="_blank">전문인력 교육</a>
+<a class="fullmenu-card" href="https://kodaarp.kr/arp/" rel="noopener noreferrer" target="_blank">ARP·ARPY</a>
+<a class="fullmenu-card" href="https://www.koda.or.kr/lab/" rel="noopener noreferrer" target="_blank">정책연구실</a>
 </div>
 </section>
 </main>
@@ -10417,6 +10420,24 @@ function createEventCard(event, isNext=false) {
 @media(max-width:360px){
   #newsScreen #newsTabs .month-tab{font-size:11px !important;}
 }
+</style>
+
+<style id="koda-20260928-star-request">
+/* 일정 상세 팝업 즐겨찾기 별: 행사명 바로 오른쪽, 한 칸 띄우고 같은 줄에 배치 */
+#eventModal .modal-title-area{display:block !important; padding-right:34px !important; white-space:normal !important;}
+#eventModal .modal-title{display:inline !important;}
+#eventModal .modal-star{
+  display:inline !important;
+  width:auto !important; height:auto !important; min-width:0 !important;
+  padding:0 !important; margin:0 0 0 .3em !important;
+  vertical-align:baseline !important;
+  font-size:1.25rem !important; line-height:1 !important;
+  background:transparent !important; border:0 !important;
+  color:#cbd5e0 !important;
+  -webkit-text-stroke:0 !important;
+}
+/* 선택 시: 속이 꽉 찬 금색 별 */
+#eventModal .modal-star.starred{color:#f5b301 !important;}
 </style>
 </body>
 </html>
