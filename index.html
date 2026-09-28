@@ -5879,7 +5879,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
-\n\n</head>
+\n\n
+
+</head>
 <body>
 
 <div class="login-screen" id="loginScreen">
@@ -7444,6 +7446,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (!wrap) return;
     // 기수 버튼은 ARP 또는 ARPY를 선택했을 때만 표시합니다.
     const isArp = categoryFilter === 'ARP' || categoryFilter === 'ARPY';
+    const staffScreen = document.getElementById('staffScreen');
+    if (staffScreen) staffScreen.dataset.staffCategory = isArp ? categoryFilter : '';
     wrap.classList.toggle('show', isArp);
     wrap.setAttribute('aria-hidden', isArp ? 'false' : 'true');
     if (!isArp) { wrap.innerHTML = ''; return; }
@@ -9602,33 +9606,11 @@ function createEventCard(event, isNext=false) {
 </script>
 
 <script id="final-sticky-height-observer-20260923">
+/* 기수/검색 영역은 최종 CSS에서 fixed로 분리했으므로 위치 계산을 하지 않습니다. */
 (function(){
-  function sync(){
-    const screen=document.getElementById('staffScreen');
-    const content=screen && screen.querySelector('.fullscreen-content');
-    const search=screen && screen.querySelector('.staff-search-wrap');
-    const cohort=document.getElementById('arpCohortFilters');
-    if(!content || !search) return;
-    const sh=Math.ceil(search.getBoundingClientRect().height || 0);
-    const visible=cohort && getComputedStyle(cohort).display!=='none' && cohort.classList.contains('show');
-    const ch=visible ? Math.ceil(cohort.getBoundingClientRect().height || 0) : 0;
-    content.style.setProperty('--staff-search-sticky-height', sh+'px');
-    content.style.setProperty('--staff-cohort-sticky-height', ch+'px');
-  }
-  function start(){
-    sync();
-    window.addEventListener('resize',()=>requestAnimationFrame(sync),{passive:true});
-    window.addEventListener('orientationchange',()=>setTimeout(sync,120),{passive:true});
-    const cohort=document.getElementById('arpCohortFilters');
-    if(cohort && window.MutationObserver){
-      new MutationObserver(()=>requestAnimationFrame(sync))
-        .observe(cohort,{attributes:true,childList:true,subtree:true});
-    }
-    setTimeout(sync,50);
-    setTimeout(sync,250);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start);
-  else start();
+  function sync(){ return; }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync);
+  else sync();
 })();
 </script>
 
@@ -9648,7 +9630,78 @@ function createEventCard(event, isNext=false) {
 
 <script>openSharedBusinessCardIfNeeded();</script>
 
-<style id="koda-20260928-final-conflict-resolution">\n/* 2026-09-28 최종 충돌 정리\n   1) ARP/ARPY 기수 sticky 기준점을 CSS 고정값으로 고정\n   2) 코다피플/협회공지/코다자료의 5개 버튼 세로폭 통일\n   3) 스페잇슈는 회의자료의 실제 '스페잇슈' 카테고리와 연동\n*/\n\n/* ---------- 코다피플 ARP / ARPY: sticky top 재계산 차단 ---------- */\n#staffScreen #arpCohortFilters {\n  position: sticky !important;\n  top: 56px !important;\n  transform: none !important;\n  -webkit-transform: none !important;\n  will-change: auto !important;\n  backface-visibility: hidden !important;\n  -webkit-backface-visibility: hidden !important;\n  contain: layout paint !important;\n  z-index: 999 !important;\n}\n\n/* 검색창 높이 변수에 의존하던 기존 top 계산은 더 이상 사용하지 않습니다. */\n#staffScreen .fullscreen-content {\n  scroll-padding-top: 56px !important;\n}\n\n#staffScreen #arpCohortFilters .arp-cohort-btn {\n  transform: none !important;\n  -webkit-transform: none !important;\n  will-change: auto !important;\n}\n\n@media (max-width: 360px) {\n  #staffScreen #arpCohortFilters {\n    top: 54px !important;\n  }\n  #staffScreen .fullscreen-content {\n    scroll-padding-top: 54px !important;\n  }\n}\n\n/* ---------- 5개 버튼 세로폭 완전 통일\n   기준: 코다피플 '사무국' 버튼 ---------- */\n#staffScreen #staffTabs .month-tab,\n#newsScreen #newsTabs .month-tab,\n#meetingScreen #meetingTabs .month-tab {\n  height: 42px !important;\n  min-height: 42px !important;\n  max-height: 42px !important;\n  box-sizing: border-box !important;\n  display: flex !important;\n  align-items: center !important;\n  justify-content: center !important;\n}\n\n/* 버튼 높이를 42px로 맞추면서 각 버튼 영역도 동일하게 유지 */\n#staffScreen #staffTabs,\n#newsScreen #newsTabs,\n#meetingScreen #meetingTabs {\n  box-sizing: border-box !important;\n}\n\n/* 좁은 휴대폰에서도 높이만큼은 동일하게 유지 */\n@media (max-width: 360px) {\n  #staffScreen #staffTabs .month-tab,\n  #newsScreen #newsTabs .month-tab,\n  #meetingScreen #meetingTabs .month-tab {\n    height: 42px !important;\n    min-height: 42px !important;\n    max-height: 42px !important;\n  }\n}\n</style>
+<style id="koda-20260928-final-conflict-resolution">
+/* 2026-09-28 최종 충돌 정리
+   1) ARP/ARPY 기수 sticky 기준점을 CSS 고정값으로 고정
+   2) 코다피플/협회공지/코다자료의 5개 버튼 세로폭 통일
+   3) 스페잇슈는 회의자료의 실제 '스페잇슈' 카테고리와 연동
+*/
+
+/* ---------- 코다피플 ARP / ARPY: sticky top 재계산 차단 ---------- */
+#staffScreen #arpCohortFilters {
+  position: sticky !important;
+  top: 56px !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  will-change: auto !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  contain: layout paint !important;
+  z-index: 999 !important;
+}
+
+/* 검색창 높이 변수에 의존하던 기존 top 계산은 더 이상 사용하지 않습니다. */
+#staffScreen .fullscreen-content {
+  scroll-padding-top: 56px !important;
+}
+
+#staffScreen #arpCohortFilters .arp-cohort-btn {
+  transform: none !important;
+  -webkit-transform: none !important;
+  will-change: auto !important;
+}
+
+@media (max-width: 360px) {
+  #staffScreen #arpCohortFilters {
+    top: 54px !important;
+  }
+  #staffScreen .fullscreen-content {
+    scroll-padding-top: 54px !important;
+  }
+}
+
+/* ---------- 5개 버튼 세로폭 완전 통일
+   기준: 코다피플 '사무국' 버튼 ---------- */
+#staffScreen #staffTabs .month-tab,
+#newsScreen #newsTabs .month-tab,
+#meetingScreen #meetingTabs .month-tab {
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 버튼 높이를 42px로 맞추면서 각 버튼 영역도 동일하게 유지 */
+#staffScreen #staffTabs,
+#newsScreen #newsTabs,
+#meetingScreen #meetingTabs {
+  box-sizing: border-box !important;
+}
+
+/* 좁은 휴대폰에서도 높이만큼은 동일하게 유지 */
+@media (max-width: 360px) {
+  #staffScreen #staffTabs .month-tab,
+  #newsScreen #newsTabs .month-tab,
+  #meetingScreen #meetingTabs .month-tab {
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+  }
+}
+</style>
 
 
 <style id="koda-20260928-scroll-lock-final">
@@ -9772,4 +9825,107 @@ function createEventCard(event, isNext=false) {
   transition:none !important;
 }
 
+</style>
+
+<style id="koda-20260928-absolute-scroll-fix">
+/* 2026-09-28: 최종 스크롤/여백 충돌 정리 */
+
+/* 협회공지·코다자료: 버튼 바로 아래 첫 게시물의 시작 여백을 동일하게 축소 */
+#newsScreen .fullscreen-content,
+#meetingScreen .fullscreen-content{
+  padding-top:8px !important;
+}
+
+/* 코다피플: 검색창과 ARP/ARPY 기수영역을 스크롤 컨테이너 밖의 고정층처럼 표시 */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding-top:62px !important;
+  scroll-padding-top:0 !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+
+#staffScreen .staff-search-wrap{
+  position:fixed !important;
+  top:108px !important;
+  left:50% !important;
+  width:min(430px, calc(100vw - 20px)) !important;
+  max-width:430px !important;
+  margin:0 !important;
+  padding:7px 0 !important;
+  box-sizing:border-box !important;
+  transform:translateX(-50%) !important;
+  z-index:1700 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  box-shadow:0 6px 0 #f4f7fb !important;
+}
+
+#staffScreen #arpCohortFilters{
+  position:fixed !important;
+  top:166px !important;
+  left:50% !important;
+  width:min(430px, calc(100vw - 20px)) !important;
+  max-width:430px !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  transform:translateX(-50%) !important;
+  z-index:1699 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  box-shadow:0 8px 0 #f4f7fb !important;
+  transition:none !important;
+  will-change:auto !important;
+  contain:layout paint !important;
+}
+
+/* 고정층은 실제 배경으로 목록을 완전히 가림 */
+#staffScreen .staff-search-wrap::before,
+#staffScreen #arpCohortFilters::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-30px !important;
+  right:-30px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+
+/* 기수 버튼 자체에는 이동 효과를 절대 적용하지 않음 */
+#staffScreen #arpCohortFilters .arp-cohort-btn,
+#staffScreen #arpCohortFilters > *{
+  transform:none !important;
+  -webkit-transform:none !important;
+  transition:none !important;
+  will-change:auto !important;
+}
+
+/* 고정된 검색/기수층 아래에서 목록이 시작되도록 카테고리별 여백 */
+#staffScreen[data-staff-category="ARP"] .fullscreen-content{
+  padding-top:158px !important;
+}
+#staffScreen[data-staff-category="ARPY"] .fullscreen-content{
+  padding-top:108px !important;
+}
+
+@media(max-width:600px){
+  #staffScreen .staff-search-wrap{
+    top:108px !important;
+    width:calc(100vw - 14px) !important;
+  }
+  #staffScreen #arpCohortFilters{
+    top:166px !important;
+    width:calc(100vw - 14px) !important;
+  }
+}
+
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{top:108px !important;}
+  #staffScreen #arpCohortFilters{top:166px !important;}
+}
 </style>
