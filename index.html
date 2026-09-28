@@ -5815,6 +5815,82 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 </style>
+
+<style id="final-20260928-arp-fullmenu-alignment">
+/* 2026-09-28 최종 보정
+   1) ARP / ARPY 기수 버튼 윗 테두리 잘림 방지 + 버튼 이하 영역을 소폭 하향
+   2) 전체메뉴의 폭/헤더/뒤로가기 UI를 정부국회 페이지와 동일한 모바일 기준으로 통일
+*/
+#staffScreen #arpCohortFilters{
+  padding-top:6px !important;
+  padding-bottom:7px !important;
+  margin-bottom:12px !important;
+  box-sizing:border-box !important;
+}
+#staffScreen #arpCohortFilters .arp-cohort-btn{
+  position:relative !important;
+  top:1px !important;
+}
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,58px) + 2px) !important;
+}
+
+/* 전체메뉴 = 정부국회와 동일한 430px 모바일 폭 */
+#fullMenuScreen .fullmenu-header,
+#fullMenuScreen .fullmenu-content{
+  width:100% !important;
+  max-width:430px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box !important;
+}
+#fullMenuScreen .fullmenu-header{
+  height:54px !important;
+  position:sticky !important;
+  top:0 !important;
+  z-index:30 !important;
+  display:grid !important;
+  grid-template-columns:54px minmax(0,1fr) 54px !important;
+  align-items:center !important;
+  padding:0 12px !important;
+  background:#fff !important;
+  border-bottom:1px solid #edf2f7 !important;
+  box-shadow:0 3px 14px rgba(25,67,110,.055) !important;
+}
+#fullMenuScreen .fullmenu-back{
+  width:42px !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  border-radius:14px !important;
+  background:#f1f6fd !important;
+  color:#1769d2 !important;
+  font-size:1.55rem !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+}
+#fullMenuScreen .fullmenu-title{
+  text-align:center !important;
+  color:#173f70 !important;
+  font-size:1.12rem !important;
+  font-weight:850 !important;
+  letter-spacing:-.045em !important;
+  white-space:nowrap !important;
+}
+#fullMenuScreen .fullmenu-dummy{width:54px !important;}
+#fullMenuScreen .fullmenu-content{
+  padding:12px 14px 24px !important;
+}
+@media(max-width:360px){
+  #fullMenuScreen .fullmenu-header{padding:0 12px !important;}
+  #fullMenuScreen .fullmenu-content{padding-left:10px !important;padding-right:10px !important;}
+}
+</style>
+
 </head>
 <body>
 <div class="login-screen" id="loginScreen">
