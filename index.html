@@ -5879,7 +5879,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
-\n\n
+
 
 </head>
 <body>
@@ -6109,8 +6109,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="month-tab" data-cat="ARPY" onclick="filterStaff('ARPY')">ARPY <em class="tab-count">(0)</em></button>
   </div>
 
-  <div class="fullscreen-content">
-<div class="staff-search-wrap">
+  <div class="staff-search-wrap">
       <span class="staff-search-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <circle cx="10.8" cy="10.8" r="6.8"></circle>
@@ -6121,6 +6120,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
     </div>
     <div id="arpCohortFilters" aria-label="ARP 기수 바로가기"></div>
+
+  <div class="fullscreen-content">
+
     <div class="day-event-list" id="staffList"></div>
   </div>
 </div>
@@ -7482,24 +7484,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const content = screen && screen.querySelector('.fullscreen-content');
     if (!target || !content) return;
 
-    const searchWrap = screen.querySelector('.staff-search-wrap');
-    const cohortWrap = document.getElementById('arpCohortFilters');
-
-    /* 실제 sticky 요소의 화면 높이를 다시 측정합니다.
-       기기마다 검색창/기수 버튼의 줄바꿈 높이가 다르므로 고정 px를 쓰지 않습니다. */
-    const searchH = Math.ceil(searchWrap ? searchWrap.getBoundingClientRect().height : 0);
-    const cohortVisible = cohortWrap &&
-      getComputedStyle(cohortWrap).display !== 'none' &&
-      cohortWrap.classList.contains('show');
-    const cohortH = cohortVisible ? Math.ceil(cohortWrap.getBoundingClientRect().height) : 0;
-
-    /* sticky 영역의 가장 아래에서 8px 아래가 기수 뱃지의 시작점 */
-    const offset = searchH + cohortH + 8;
+    // 검색창/기수 버튼은 이제 목록 스크롤 컨테이너 밖에 있으므로
+    // 기수 뱃지가 목록 상단에서 잘리지 않도록 목록 자체를 8px 여유 두고 이동합니다.
     const targetRect = target.getBoundingClientRect();
     const contentRect = content.getBoundingClientRect();
     const targetTop = targetRect.top - contentRect.top + content.scrollTop;
     const maxTop = Math.max(0, content.scrollHeight - content.clientHeight);
-    const destination = Math.min(maxTop, Math.max(0, targetTop - offset));
+    const destination = Math.min(maxTop, Math.max(0, targetTop - 8));
 
     content.scrollTo({top: destination, behavior:'smooth'});
   }
@@ -7937,7 +7928,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       row.appendChild(l); row.appendChild(v); rows.appendChild(row);
     });
 
-    const normPhone=(staff.phone||'').replace(/[^0-9]/g,'');
+    const normPhone=(staff.contact||'').replace(/[^0-9]/g,'');
     const callBtn=document.getElementById('staffBtnCall'), smsBtn=document.getElementById('staffBtnSms'), emailBtn=document.getElementById('staffBtnEmail');
     if(normPhone){callBtn.href=`tel:${normPhone}`;smsBtn.href=`sms:${normPhone}`;callBtn.style.display='block';smsBtn.style.display='block';}
     else{callBtn.style.display='none';smsBtn.style.display='none';}
@@ -9928,4 +9919,163 @@ function createEventCard(event, isNext=false) {
   #staffScreen .staff-search-wrap{top:108px !important;}
   #staffScreen #arpCohortFilters{top:166px !important;}
 }
+</style>
+
+
+<style id="koda-20260928-final-structural-cohort-fix">
+/* 2026-09-28: KODA People controls are structurally outside the scrolling list. */
+#staffScreen{
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+}
+#staffScreen .staff-mobile-header,
+#staffScreen #staffTabs,
+#staffScreen .staff-search-wrap,
+#staffScreen #arpCohortFilters,
+#staffScreen .fullscreen-content{
+  width:min(430px, calc(100% - 20px)) !important;
+  max-width:430px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box !important;
+}
+#staffScreen .staff-mobile-header{
+  flex:0 0 54px !important;
+}
+#staffScreen #staffTabs{
+  flex:0 0 54px !important;
+  height:54px !important;
+  min-height:54px !important;
+  padding:7px 0 !important;
+  overflow:visible !important;
+}
+#staffScreen .staff-search-wrap{
+  position:relative !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  transform:none !important;
+  flex:0 0 auto !important;
+  margin-top:0 !important;
+  margin-bottom:5px !important;
+  padding:4px 0 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  z-index:20 !important;
+  box-shadow:none !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+}
+#staffScreen .staff-search{
+  transform:none !important;
+}
+#staffScreen #arpCohortFilters{
+  position:relative !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  transform:none !important;
+  flex:0 0 auto !important;
+  width:min(430px, calc(100% - 20px)) !important;
+  margin:0 auto 7px !important;
+  padding:3px 0 3px !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  z-index:19 !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  contain:none !important;
+  box-shadow:none !important;
+  transition:none !important;
+  will-change:auto !important;
+}
+#staffScreen #arpCohortFilters.show{
+  display:grid !important;
+}
+#staffScreen #arpCohortFilters::before,
+#staffScreen #arpCohortFilters::after,
+#staffScreen .staff-search-wrap::before{
+  display:none !important;
+}
+#staffScreen #arpCohortFilters .arp-cohort-btn{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  height:34px !important;
+  min-height:34px !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+  padding:0 4px !important;
+  transform:none !important;
+  -webkit-transform:none !important;
+  transition:none !important;
+  will-change:auto !important;
+  overflow:visible !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+  margin-top:0 !important;
+  padding:0 0 30px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  background:#f4f7fb !important;
+  transform:none !important;
+  isolation:isolate !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  scroll-padding-top:8px !important;
+}
+#staffScreen .fullscreen-content #staffList{
+  padding-top:2px !important;
+}
+#staffScreen #arpCohortFilters .arp-cohort-btn:first-child{
+  margin-top:0 !important;
+}
+#staffScreen .staff-search-wrap + #arpCohortFilters{
+  margin-top:0 !important;
+}
+@media(max-width:600px){
+  #staffScreen .staff-mobile-header,
+  #staffScreen #staffTabs,
+  #staffScreen .staff-search-wrap,
+  #staffScreen #arpCohortFilters,
+  #staffScreen .fullscreen-content{
+    width:calc(100% - 14px) !important;
+    max-width:430px !important;
+  }
+  #staffScreen #arpCohortFilters .arp-cohort-btn{
+    height:34px !important;
+    min-height:34px !important;
+    font-size:.70rem !important;
+  }
+}
+@media(max-width:360px){
+  #staffScreen .staff-mobile-header,
+  #staffScreen #staffTabs,
+  #staffScreen .staff-search-wrap,
+  #staffScreen #arpCohortFilters,
+  #staffScreen .fullscreen-content{
+    width:calc(100% - 12px) !important;
+  }
+  #staffScreen #arpCohortFilters{
+    padding-top:4px !important;
+    padding-bottom:4px !important;
+  }
+  #staffScreen #arpCohortFilters .arp-cohort-btn{
+    height:33px !important;
+    min-height:33px !important;
+    font-size:.68rem !important;
+  }
+}
+
+/* Sheet4 J열(핸드폰)을 직원 상세보기의 전화/문자 링크에 사용 */
 </style>
