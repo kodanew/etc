@@ -854,57 +854,6 @@
   .btn-call { background-color: #38a169; }
   .btn-sms { background-color: #3182ce; }
   .btn-email { background-color: #d69e2e; }
-
-  /* 나만의 메모 영역 */
-  .memo-container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border-color);
-  }
-  
-  .memo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .memo-input {
-    width: 100%;
-    min-height: 60px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 8px;
-    font-family: inherit;
-    font-size: 0.8rem;
-    resize: vertical;
-    margin-top: 6px;
-    box-sizing: border-box;
-    background-color: #fafafa;
-  }
-  .memo-input:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: #ffffff;
-  }
-
-  /* 메모 저장 버튼 */
-  .memo-save-btn {
-    background: #3182ce; 
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .memo-save-btn:active {
-    background: #2b6cb0;
-  }
-
   /* 풀스크린 전용 페이지 */
   
   .association-news-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:14px 12px 28px;overflow:auto;}
@@ -6235,13 +6184,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="modal-value" id="modalNote"></span>
     </div>
 
-    <div class="memo-container">
-      <div class="memo-header">
-        <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
-        <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
-      </div>
-      <textarea id="modalMemo" class="memo-input" placeholder="필요한 메모를 자유롭게 작성하세요..."></textarea>
-    </div>
   </div>
 </div>
 
@@ -6475,7 +6417,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
-  let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
   
   let showBookmarksOnly = false;
   let searchQuery = '';
@@ -8620,8 +8561,6 @@ function createEventCard(event, isNext=false) {
     renderTextWithImages(document.getElementById('modalContent'), event.content);
     document.getElementById('modalHost').innerText = event.host;
     renderTextWithImages(document.getElementById('modalNote'), event.note);
-    document.getElementById('modalMemo').value = memos[event.id] || '';
-
     const modalStar = document.getElementById('modalStarBtn');
     if (bookmarks.includes(event.id)) { modalStar.innerText = '★'; modalStar.classList.add('starred'); } 
     else { modalStar.innerText = '☆'; modalStar.classList.remove('starred'); }
@@ -8629,15 +8568,6 @@ function createEventCard(event, isNext=false) {
     document.getElementById('eventModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ modalOpen: true }, "", "");
-  };
-
-  window.saveEventMemo = function() {
-    if (currentModalGlobalIndex === null) return;
-    const event = scheduleData[currentModalGlobalIndex];
-    const memoText = document.getElementById('modalMemo').value.trim();
-    if (memoText === '') delete memos[event.id]; else memos[event.id] = memoText; 
-    localStorage.setItem('koda_memos', JSON.stringify(memos));
-    alert('메모가 기기에 안전하게 저장되었습니다.');
   };
 
   function hideModalDOM() { document.getElementById('eventModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
@@ -9719,3 +9649,127 @@ function createEventCard(event, isNext=false) {
 <script>openSharedBusinessCardIfNeeded();</script>
 
 <style id="koda-20260928-final-conflict-resolution">\n/* 2026-09-28 최종 충돌 정리\n   1) ARP/ARPY 기수 sticky 기준점을 CSS 고정값으로 고정\n   2) 코다피플/협회공지/코다자료의 5개 버튼 세로폭 통일\n   3) 스페잇슈는 회의자료의 실제 '스페잇슈' 카테고리와 연동\n*/\n\n/* ---------- 코다피플 ARP / ARPY: sticky top 재계산 차단 ---------- */\n#staffScreen #arpCohortFilters {\n  position: sticky !important;\n  top: 56px !important;\n  transform: none !important;\n  -webkit-transform: none !important;\n  will-change: auto !important;\n  backface-visibility: hidden !important;\n  -webkit-backface-visibility: hidden !important;\n  contain: layout paint !important;\n  z-index: 999 !important;\n}\n\n/* 검색창 높이 변수에 의존하던 기존 top 계산은 더 이상 사용하지 않습니다. */\n#staffScreen .fullscreen-content {\n  scroll-padding-top: 56px !important;\n}\n\n#staffScreen #arpCohortFilters .arp-cohort-btn {\n  transform: none !important;\n  -webkit-transform: none !important;\n  will-change: auto !important;\n}\n\n@media (max-width: 360px) {\n  #staffScreen #arpCohortFilters {\n    top: 54px !important;\n  }\n  #staffScreen .fullscreen-content {\n    scroll-padding-top: 54px !important;\n  }\n}\n\n/* ---------- 5개 버튼 세로폭 완전 통일\n   기준: 코다피플 '사무국' 버튼 ---------- */\n#staffScreen #staffTabs .month-tab,\n#newsScreen #newsTabs .month-tab,\n#meetingScreen #meetingTabs .month-tab {\n  height: 42px !important;\n  min-height: 42px !important;\n  max-height: 42px !important;\n  box-sizing: border-box !important;\n  display: flex !important;\n  align-items: center !important;\n  justify-content: center !important;\n}\n\n/* 버튼 높이를 42px로 맞추면서 각 버튼 영역도 동일하게 유지 */\n#staffScreen #staffTabs,\n#newsScreen #newsTabs,\n#meetingScreen #meetingTabs {\n  box-sizing: border-box !important;\n}\n\n/* 좁은 휴대폰에서도 높이만큼은 동일하게 유지 */\n@media (max-width: 360px) {\n  #staffScreen #staffTabs .month-tab,\n  #newsScreen #newsTabs .month-tab,\n  #meetingScreen #meetingTabs .month-tab {\n    height: 42px !important;\n    min-height: 42px !important;\n    max-height: 42px !important;\n  }\n}\n</style>
+
+
+<style id="koda-20260928-scroll-lock-final">
+/* =========================================================
+   2026-09-28 스크롤 고정 최종 보정
+   A. 코다자료 5개 탭은 목록 스크롤과 완전히 분리
+   B. 코다피플 ARP/ARPY 기수 버튼은 이름 목록 스크롤과 완전히 분리
+   C. 달력 일정 상세 팝업의 개인 메모 기능 제거
+   ========================================================= */
+
+/* ---------- A. 코다자료: 5개 탭 고정 ---------- */
+#meetingScreen{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+#meetingScreen .staff-mobile-header{
+  position:sticky !important;
+  top:0 !important;
+  z-index:120 !important;
+}
+#meetingScreen #meetingTabs{
+  position:sticky !important;
+  top:54px !important;
+  z-index:119 !important;
+  width:100% !important;
+  max-width:430px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding:12px 0 10px !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+}
+#meetingScreen #meetingTabs::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  z-index:-1 !important;
+  background:#f4f7fb !important;
+}
+#meetingScreen #meetingList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* ---------- B. 코다피플: 검색/기수 영역을 목록 스크롤과 분리 ---------- */
+/* staffScreen은 이미 54px 헤더 + 54px 5탭 + 내부 목록 구조이므로,
+   기수 영역은 내부 sticky 재계산을 사용하지 않고 고정된 상단 영역으로 둡니다. */
+#staffScreen .fullscreen-content{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  position:relative !important;
+  padding-top:8px !important;
+}
+
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:110 !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  margin:0 0 0 !important;
+  padding:7px 0 7px !important;
+}
+
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:58px !important;
+  z-index:109 !important;
+  transform:none !important;
+  -webkit-transform:none !important;
+  will-change:auto !important;
+  contain:layout paint !important;
+  margin:0 0 10px !important;
+  padding:4px 0 7px !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+
+#staffScreen #arpCohortFilters::before,
+#staffScreen .staff-search-wrap::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-40px !important;
+  right:-40px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+
+#staffScreen #arpCohortFilters .arp-cohort-btn{
+  position:relative !important;
+  transform:none !important;
+  -webkit-transform:none !important;
+  will-change:auto !important;
+}
+
+/* 기존 JS가 계산하는 sticky 높이 변수는 위치 결정에 사용하지 않습니다. */
+#staffScreen .fullscreen-content{
+  scroll-padding-top:116px !important;
+}
+
+@media(max-width:360px){
+  #staffScreen #arpCohortFilters{
+    top:58px !important;
+  }
+  #staffScreen .fullscreen-content{
+    scroll-padding-top:116px !important;
+  }
+}
+
+/* 기존 MutationObserver/height 계산 코드가 top 위치를 건드리지 못하도록 무력화 */
+#staffScreen #arpCohortFilters,
+#staffScreen #arpCohortFilters > *{
+  transition:none !important;
+}
+
+</style>
