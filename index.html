@@ -6076,6 +6076,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div aria-hidden="true" class="header-spacer"></div>
 <img alt="KODA 로고" src="koda-logo-re.png"/>
 <div class="header-right">
+<button aria-label="Language" class="my-business-card-btn lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" type="button">Language</button>
 <button class="my-business-card-btn" id="myBusinessCardBtn" onclick="openMyBusinessCard()" type="button">나의 명함</button>
 </div>
 </div>
@@ -6150,6 +6151,23 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="#315b8d" height="15" rx="3" width="15" x="8" y="8"></rect><rect fill="#6f8fb4" height="15" rx="3" width="15" x="29" y="8"></rect><rect fill="#6f8fb4" height="15" rx="3" width="15" x="8" y="29"></rect><rect fill="#315b8d" height="15" rx="3" width="15" x="29" y="29"></rect></svg></span>
 <span class="quick-label">전체메뉴</span>
 </button></div>
+<!-- 퀵버튼 3행: 11~15번 (준비중). 나중에 id="quickBtn11" ~ "quickBtn15" 버튼의 아이콘/라벨/onclick 만 교체하세요 -->
+<div class="sub-menu-container" id="quickRow3"><button aria-label="준비중" class="quick-btn quick-btn-soon" data-slot="11" id="quickBtn11" onclick="showComingSoon()" type="button">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="none" height="34" rx="9" stroke="#b8c2d0" stroke-dasharray="5 4" stroke-width="2.5" width="34" x="9" y="9"></rect><circle cx="19" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="26" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="33" cy="26" fill="#b8c2d0" r="2.6"></circle></svg></span>
+<span class="quick-label">준비중</span>
+</button><button aria-label="준비중" class="quick-btn quick-btn-soon" data-slot="12" id="quickBtn12" onclick="showComingSoon()" type="button">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="none" height="34" rx="9" stroke="#b8c2d0" stroke-dasharray="5 4" stroke-width="2.5" width="34" x="9" y="9"></rect><circle cx="19" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="26" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="33" cy="26" fill="#b8c2d0" r="2.6"></circle></svg></span>
+<span class="quick-label">준비중</span>
+</button><button aria-label="준비중" class="quick-btn quick-btn-soon" data-slot="13" id="quickBtn13" onclick="showComingSoon()" type="button">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="none" height="34" rx="9" stroke="#b8c2d0" stroke-dasharray="5 4" stroke-width="2.5" width="34" x="9" y="9"></rect><circle cx="19" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="26" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="33" cy="26" fill="#b8c2d0" r="2.6"></circle></svg></span>
+<span class="quick-label">준비중</span>
+</button><button aria-label="준비중" class="quick-btn quick-btn-soon" data-slot="14" id="quickBtn14" onclick="showComingSoon()" type="button">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="none" height="34" rx="9" stroke="#b8c2d0" stroke-dasharray="5 4" stroke-width="2.5" width="34" x="9" y="9"></rect><circle cx="19" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="26" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="33" cy="26" fill="#b8c2d0" r="2.6"></circle></svg></span>
+<span class="quick-label">준비중</span>
+</button><button aria-label="준비중" class="quick-btn quick-btn-soon" data-slot="15" id="quickBtn15" onclick="showComingSoon()" type="button">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="none" height="34" rx="9" stroke="#b8c2d0" stroke-dasharray="5 4" stroke-width="2.5" width="34" x="9" y="9"></rect><circle cx="19" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="26" cy="26" fill="#b8c2d0" r="2.6"></circle><circle cx="33" cy="26" fill="#b8c2d0" r="2.6"></circle></svg></span>
+<span class="quick-label">준비중</span>
+</button></div>
 <div class="schedule-container" id="scheduleContainer">
 <div class="loading-msg">최신 일정을 불러오는 중입니다...⏳</div>
 </div>
@@ -6221,7 +6239,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <button class="modal-close" onclick="closeModalAction()">×</button>
 <div class="modal-title-area">
 <div class="modal-title" id="modalTitle"></div>
-<button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button>
+<span class="modal-actions-inline"><button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button><button aria-label="공유" class="modal-share" id="modalShareBtn" onclick="shareEventModal(event)" type="button"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path></svg></button></span>
 </div>
 <div class="modal-detail-row">
 <span class="modal-label">일시</span>
@@ -8029,6 +8047,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   let currentModalGlobalIndex = null;
+  /* 일정 상세 팝업의 공유 버튼: 홈 카드 공유(shareEvent)와 동일 동작 */
+  window.shareEventModal = function(e) {
+    if (currentModalGlobalIndex === null) return;
+    shareEvent(e, currentModalGlobalIndex);
+  };
   window.toggleBookmarkModal = function() {
     if (currentModalGlobalIndex === null) return;
     const event = scheduleData[currentModalGlobalIndex];
@@ -10562,5 +10585,435 @@ function createEventCard(event, isNext=false) {
   setInterval(update,500);
 })();
 </script>
+
+<style id="koda-20260929-share-soon-lang">
+/* ===== 1) 일정 상세 팝업: 별표 바로 오른쪽 공유 아이콘 (홈 카드의 공유 아이콘과 동일) ===== */
+#eventModal .modal-actions-inline{white-space:nowrap !important;}
+#eventModal .modal-share{
+  display:inline-block !important;
+  width:auto !important; height:auto !important; min-width:0 !important; min-height:0 !important;
+  padding:0 !important; margin:0 0 0 .5em !important;
+  border:0 !important; background:transparent !important;
+  color:#cbd5e0 !important; cursor:pointer !important;
+  vertical-align:middle !important; line-height:1 !important;
+  -webkit-tap-highlight-color:transparent;
+}
+#eventModal .modal-share svg{width:18px !important; height:18px !important; display:block !important;}
+#eventModal .modal-share:active{color:#718096 !important;}
+
+/* ===== 2) 퀵버튼 3행: 준비중 (11~15번) ===== */
+.quick-btn.quick-btn-soon .quick-icon{opacity:.7;}
+.quick-btn.quick-btn-soon .quick-label{color:#a0aec0;font-weight:700;}
+.quick-btn.quick-btn-soon:hover .quick-icon{transform:none;box-shadow:0 5px 14px rgba(22,52,95,.08);}
+.koda-toast{
+  position:fixed; left:50%; bottom:86px; transform:translateX(-50%);
+  background:rgba(26,32,44,.92); color:#fff; padding:9px 16px; border-radius:20px;
+  font-size:.78rem; font-weight:700; z-index:9999; pointer-events:none;
+  opacity:0; transition:opacity .2s;
+}
+.koda-toast.show{opacity:1;}
+
+/* ===== 3) 헤더 우측: Language 버튼(위) + 나의 명함 버튼(아래) ===== */
+.app-container > .header .header-right{
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  justify-content:center !important;
+  gap:3px !important;
+  padding-top:0 !important;
+}
+.app-container > .header .header-right .my-business-card-btn{
+  padding:3px 9px !important;
+  line-height:1.2 !important;
+}
+.app-container > .header .header-right #myBusinessCardBtn{
+  transform:translateY(2px);          /* 나의 명함 버튼: 살짝 아래로 */
+}
+.lang-toggle-btn{letter-spacing:0 !important;}
+@media(max-width:360px){
+  .app-container > .header .header-right .my-business-card-btn{padding:3px 7px !important;}
+}
+</style>
+
+<script id="koda-coming-soon">
+(function(){
+  var timer=null;
+  window.showComingSoon=function(){
+    var t=document.getElementById('kodaToast');
+    if(!t){ t=document.createElement('div'); t.id='kodaToast'; t.className='koda-toast'; document.body.appendChild(t); }
+    t.textContent='준비중입니다';
+    void t.offsetWidth;
+    t.classList.add('show');
+    clearTimeout(timer);
+    timer=setTimeout(function(){ t.classList.remove('show'); },1400);
+  };
+})();
+</script>
+
+<script id="koda-i18n">
+/* =====================================================================
+   KODA 한/영 전환 (Language 버튼)
+   - 기본: 한글. 버튼을 누르면 화면 전체 UI 문구가 영어로 바뀌고, 다시 누르면 한글 복귀
+   - 선택한 언어는 기기에 저장(localStorage: koda_lang)
+   - 구글시트에서 불러오는 데이터(행사명, 장소, 이름, 회사명 등)는 원문 그대로 표시
+   - 원리: 화면에 나타나는 한글 문구를 사전(DICT)/패턴(RULES)으로 실시간 치환
+           → 새 문구를 추가하려면 DICT 에 '한글':'English' 한 줄만 추가하면 됩니다.
+   ===================================================================== */
+(function(){
+  'use strict';
+  var KEY = 'koda_lang';
+  var lang = 'ko';
+  try { if (localStorage.getItem(KEY) === 'en') lang = 'en'; } catch(e) {}
+
+  var HANGUL = /[가-힣]/;
+  var ATTRS  = ['placeholder','title','alt'];   /* aria-label 은 기존 CSS 선택자가 한글값에 의존하므로 제외 */
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var MON3   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var WD3    = {'일':'Sun','월':'Mon','화':'Tue','수':'Wed','목':'Thu','금':'Fri','토':'Sat'};
+
+  /* ---------------- 1. 정확히 일치하는 문구 사전 ---------------- */
+  var DICT = {
+    /* 로그인 / 공통 */
+    'KODA 일정 안내':'KODA Schedule',
+    '한국디벨로퍼협회(KODA) 일정 안내':'KODA Schedule',
+    '등록된 회원만 이용하실 수 있습니다.':'Available to registered members only.',
+    '이름과 핸드폰 번호를 입력해주세요.':'Please enter your name and mobile number.',
+    '이름과 핸드폰 번호를 모두 입력해주세요.':'Please enter both your name and mobile number.',
+    '입장하기':'Enter','앱설치':'Install App','확인 중...':'Verifying...',
+    '이름':'Name','핸드폰 번호 (- 없이 입력)':'Mobile number (digits only)',
+    '등록된 회원 정보와 일치하지 않습니다. 다시 확인해주세요.':'Your details do not match a registered member. Please check and try again.',
+    '로그아웃':'Log out','로그아웃 하시겠습니까?':'Log out?',
+    '해당정보에 접근권한이 없습니다':'You do not have access to this information.',
+    '나의 명함':'My Card','날씨 확인 중':'Checking weather','오늘 날씨':"Today's Weather",
+    '맨 위로':'Top',
+
+    /* 퀵버튼 */
+    '협회공지':'Notices','코다자료':'Materials','코다피플':'People','일일동향':'Daily Trends',
+    '코다기사':'News','정부국회':'Gov & Assembly','홈페이지':'Homepage','관심일정':'Favorites',
+    '전체메뉴':'All Menu','준비중':'Coming Soon','준비중입니다':'Coming soon.','준비중입니다.':'Coming soon.',
+    '최신 일정을 불러오는 중입니다...':'Loading the latest schedule...',
+    '최신 일정을 새로고침 중입니다...':'Refreshing the schedule...',
+    '일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.':'Could not load the schedule. Please check your network.',
+    '데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.':'Could not load data. Please check your network.',
+
+    /* 달력 / 일정 */
+    '일정':'Schedule','일정 안내':'Schedule','표시할 일정이 없습니다.':'No events to display.',
+    '등록된 일정이 없습니다.':'No events registered.','예정 일정이 없습니다.':'No upcoming events.',
+    '등록된 관심일정이 없습니다. 즐겨찾기 해주세요':'No favorite events yet. Tap ★ to add some.',
+    '지난 일정 보기':'Show past events','지난 일정 닫기':'Hide past events',
+    '일시':'Date','장소':'Venue','참석':'Attendees','내용':'Details','주최/주관':'Host','비고':'Notes',
+    '회장님 참석':'Chairman attending','회장님 일정':"Chairman's event",'첨부 이미지':'Attached image',
+    '신정':'New Year','설날 연휴':'Seollal','설날':'Seollal','삼일절':'Mar 1st','대체공휴일':'Sub Hol.',
+    '어린이날':'Children','부처님오신날':'Buddha','현충일':'Memorial','광복절':'Lib. Day',
+    '추석 연휴':'Chuseok','추석':'Chuseok','개천절':'Founding','한글날':'Hangeul','성탄절':'Christmas',
+    '일요일':'Sunday','월요일':'Monday','화요일':'Tuesday','수요일':'Wednesday','목요일':'Thursday','금요일':'Friday','토요일':'Saturday',
+    '배너 자동 넘김 일시정지':'Pause banner autoplay','배너 자동 넘김 재생':'Play banner autoplay',
+    '이미지 권한 제한됨':'Image access restricted','클릭하여 구글 드라이브에서 원본 보기':'Tap to view the original on Google Drive',
+    '썸네일 권한 제한됨':'Thumbnail access restricted','원본 링크 열기':'Open original link',
+
+    /* 협회공지 / 코다자료 */
+    '전체':'All','협회활동':'Activities','교육·ARP':'Edu·ARP','회원사소식':'Member News','경조사':'Life Events',
+    '회원사 소식':'Member News','중요공지':'Important','공지':'Notice','날짜 미정':'Date TBD',
+    '협회 소식을 불러오는 중입니다...':'Loading association news...',
+    '등록된 소식이 없습니다.':'No news registered.',
+    '소식 상세보기':'News Details','관련링크':'Related Link',
+    '사무국 회의 자료':'Secretariat Meeting Materials','사무국 회의':'Secretariat Meeting','사무국회의':'Secretariat Mtg',
+    '임원회의':'Board Meeting','스페잇슈':'Special Issue','기타자료':'Other Materials','회의자료':'Meeting Materials',
+    '회의자료를 불러오는 중입니다...':'Loading meeting materials...',
+    '회의자료를 불러오지 못했습니다.':'Could not load meeting materials.',
+    '시트9가 웹에 게시되어 있는지 확인해주세요.':'Please check that Sheet 9 is published to the web.',
+    '등록된 회의자료가 없습니다.':'No meeting materials registered.',
+    '추후 Google Sheets 및 Google Drive와 연동하여':'Coming soon: linked with Google Sheets and Google Drive,',
+    '회의자료를 등록할 수 있도록 구성할 예정입니다.':'so that meeting materials can be registered.',
+
+    /* 코다피플 */
+    'KODA 임직원, 회원사 현황':'KODA Staff & Members',
+    '사무국':'Secretariat','7대 임원':'7th Executives','7대임원':'7th Executives','회원사':'Members','임원':'Executives',
+    '직원 상세정보':'Staff Details','상세정보':'Details',
+    '📞 전화걸기':'📞 Call','💬 문자발송':'💬 Text','✉️ 이메일':'✉️ Email',
+    '회사명 또는 이름으로 검색':'Search by company or name',
+    '협회장':'President','수석부회장':'Senior Vice President','부회장':'Vice President','이사':'Director','감사':'Auditor',
+    '전무':'Managing Director','실장':'Director','기획운영실장':'Dir. Planning & Ops','정책연구실장':'Dir. Policy Research',
+    '팀장':'Team Leader','파트장':'Part Leader','대리':'Assistant Manager','책임연구원':'Senior Researcher','관리자':'Admin',
+    '정회원':'Regular Member','준회원':'Associate Member','기타':'Other','분류없음':'Uncategorized',
+    '구분':'Category','성명':'Name','소속':'Affiliation','직위':'Position','부서':'Department','이메일':'Email',
+    '팩스번호':'Fax','회원사 구분':'Member Type','지정대표자':'Representative','가입일자':'Joined','기수':'Cohort','회차':'Round',
+    '직원 정보를 불러오는 중입니다...':'Loading staff info...',
+    '회원사 정보를 불러오는 중입니다.':'Loading member companies...',
+    '회원사 정보를 불러오는 중입니다...':'Loading member companies...',
+    '회원사 정보를 불러오지 못했습니다.':'Could not load member companies.',
+    '등록된 회원사가 없습니다.':'No member companies registered.',
+    'ARP 정보를 불러오는 중입니다...':'Loading ARP info...',
+    'Sheet8(ARP) 정보를 불러오지 못했습니다.':'Could not load Sheet8 (ARP) info.',
+    'Sheet8 정보를 불러오는 중입니다.':'Loading Sheet8 info...',
+    '상세정보를 표시하는 중...':'Loading details...',
+    '검색 결과가 없습니다.':'No results found.','해당되는 인원이 없습니다.':'No matching people.',
+    'ARP 기수 바로가기':'Jump to ARP cohort','검색어 지우기':'Clear search',
+
+    /* 정부·국회 */
+    '국토교통부 · 국회 · 법제처':'MOLIT · National Assembly · MOLEG',
+    '국토교통부':'MOLIT','보도자료':'Press Releases','인사발령':'Appointments','입법예고':'Legislative Notices',
+    '정책자료':'Policy Materials','행정규칙':'Admin Rules','부서안내':'Departments',
+    '국회':'National Assembly','국회일정':'NA Schedule','국회세미나':'NA Seminars','국토교통위':'Land Committee',
+    '국토위현황':'Committee Status','의안검색':'Bill Search','법제처':'MOLEG','개발업법':'Development Act','AI-LAW봇':'AI-LAW Bot',
+
+    /* 일일동향 */
+    '<다음일자':'<Next Date','이전일자>':'Prev Date>',
+    '1. 회원사 소식':'1. Member News','2. 정책 및 부동산개발업계 동향':'2. Policy & Real Estate Development Trends','3. 기타 소식':'3. Other News',
+    '일일동향을 불러오는 중입니다...':'Loading daily trends...',
+    '일일동향 데이터를 불러오지 못했습니다.':'Could not load daily trend data.',
+    'Google Sheet11이 웹에 게시되어 있는지 확인해주세요.':'Please check that Google Sheet 11 is published to the web.',
+    '등록된 일일동향이 없습니다.':'No daily trends registered.','등록된 내용이 없습니다.':'No content registered.',
+    '이미지를 불러올 수 없습니다':'Image unavailable','이미지 없음':'No image','일자 이동':'Change date',
+
+    /* 전체메뉴 */
+    '코다뉴스':'KODA News','전문인력 교육':'Professional Training',
+
+    /* 나의 명함 */
+    'KODA 나의 명함':'My KODA Card','나의 KODA 명함':'My KODA business card','나의 명함 QR코드':'My card QR code',
+    '명함 JPG 저장':'Save Card as JPG','갤러리/공유':'Gallery / Share','QR 보내기':'Send QR','QR 공유':'Share QR','QR 저장':'Save QR',
+    '휴대폰에서는 ‘갤러리/공유’를 누른 후 사진 앱에 저장할 수 있습니다.':'On mobile, tap “Gallery / Share” to save it to your Photos app.',
+    '상대방이 이 QR을 카메라로 찍으면 명함이 열리고, 상대방 휴대폰에서 갤러리에 저장할 수 있습니다.':'When someone scans this QR with their camera, your card opens and they can save it to their gallery.',
+    '내 명함 정보를 확인하는 중입니다...':'Checking your card info...',
+    '로그인한 이름·전화번호와 시트4 정보가 일치하는 명함 정보를 찾지 못했습니다.':'No card information matches your login name and phone number.',
+    '명함 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.':'Could not load card info. Please try again shortly.',
+    '명함 JPG 저장을 시작했습니다.':'Saving the card as JPG...',
+    '공유 화면에서 사진 앱/갤러리로 저장할 수 있습니다.':'You can save it to Photos/Gallery from the share sheet.',
+    '이미지를 길게 눌러 사진/갤러리에 저장해주세요.':'Long-press the image to save it to Photos/Gallery.',
+    'QR을 찍으면 명함을 저장할 수 있습니다.':'Scan the QR to save the card.',
+    '갤러리에 저장하기':'Save to Gallery',
+
+    /* 기타 aria / alt / 알림 */
+    '뒤로가기':'Back','닫기':'Close','새로고침':'Refresh','공유':'Share',
+    'KODA 로고':'KODA logo','협회공지 썸네일 이미지':'Notice thumbnail',
+    '환영 메시지':'Welcome message','오늘 날짜와 날씨':"Today's date and weather",
+    '예정 일정 배너':'Upcoming schedule banner','직원공지':'Staff notice',
+    '현재 브라우저에서는 공유 기능이 지원되지 않습니다.':'Sharing is not supported in this browser.',
+    '공유 실패':'Share failed'
+  };
+
+  /* iOS 설치 안내 alert (여러 줄) */
+  DICT["아이폰 화면 맨 아래의 '공유(내보내기) [↑]' 버튼을 누른 후,\n'홈 화면에 추가 [+]'를 선택해주세요!"] =
+    "At the bottom of your iPhone screen, tap the 'Share [↑]' button,\nthen choose 'Add to Home Screen [+]'.";
+
+  /* ---------------- 2. 패턴(정규식) 규칙 : 날짜·숫자 등 동적 문구 ---------------- */
+  var RULES = [
+    [/^(\d{4})년 (\d{1,2})월$/, function(m){ return MONTHS[+m[2]-1] + ' ' + m[1]; }],
+    [/^(\d{4})년 (\d{1,2})월 (\d{1,2})일 일정$/, function(m){ return 'Events on ' + MON3[+m[2]-1] + ' ' + (+m[3]) + ', ' + m[1]; }],
+    [/^총 (\d+)개의 일정이 있습니다\. 확인할 일정을 선택하세요\.$/, function(m){ return m[1] + (m[1]==='1'?' event':' events') + '. Select one to view.'; }],
+    [/^(\d+)개사$/, function(m){ return m[1] + (m[1]==='1'?' company':' companies'); }],
+    [/^(\d+)명$/,   function(m){ return m[1] + (m[1]==='1'?' person':' people'); }],
+    [/^(\d+)기$/,   function(m){ return 'Cohort ' + m[1]; }],
+    [/^일정 (\d+)$/, function(m){ return 'Event ' + m[1]; }],
+    [/^작성일: ?(.*)$/, function(m){ return 'Posted: ' + m[1]; }],
+    [/^작성일자 ?· ?(.*)$/, function(m){ return 'Posted · ' + m[1]; }],
+    [/^(.+) 기사 전체보기$/, function(m){ return 'View all articles for ' + m[1]; }],
+    [/^(.+)님의 명함 QR$/, function(m){ return m[1] + "'s Card QR"; }],
+    [/^(.+)님의 명함$/, function(m){ return m[1] + "'s Business Card"; }],
+    /* 환영 이름줄: "홍길동 전무님," → "홍길동 Managing Director," */
+    [/^(.+?) (\S+)님,$/, function(m){ return m[1] + ' ' + (DICT[m[2]] || m[2]) + ','; }],
+    [/^(.+?)님,$/, function(m){ return m[1] + ','; }]
+  ];
+
+  /* 헤더 환영 메시지 (한글 부분만 비교 → 이모지 무관) */
+  var WELCOME = [
+    ['오늘도행복한하루보내세요',        ['Have a happy','day today~! 😊']],
+    ['오늘도좋은하루보내세요',          ['Have a great','day today~! ☀️']],
+    ['오늘도웃음가득한하루되세요',      ['Have a day full','of smiles~! 😄']],
+    ['오늘도힘차게시작해보세요',        ['Start today','with energy~! 💙']],
+    ['오늘도멋진하루보내세요',          ['Have a lovely','day today~! ✨']],
+    ['기분좋은하루보내세요',            ['Have a feel-good','day~! 😊']],
+    ['오늘도건강하고행복하세요',        ['Stay healthy and','happy today~! 🌿']],
+    ['오늘도좋은일만가득하세요',        ['Wishing you all','good things~! 🍀']],
+    ['오늘도힘내세요',                  ['Cheer up','today~! 💪']],
+    ['오늘도여유롭고행복하게보내세요',  ['Have a relaxed,','happy day~! 🌸']],
+    ['새로운하루좋은하루되세요',        ['A brand-new day,','have a good one~! ☀️']],
+    ['오늘도활기찬하루보내세요',        ['Have an','energetic day~! 🌈']],
+    ['웃음가득한하루보내세요',          ['Have a day full','of smiles~! 😄']],
+    ['오늘도반가운하루되세요',          ['Have a','delightful day~! 💙']],
+    ['오늘도평안하고행복하세요',        ['Stay peaceful','and happy~! 🌷']]
+  ];
+
+  /* 상단 탭(.month-tab)은 폭이 좁아 짧은 영문 사용 */
+  var TAB_SHORT = {'사무국':'Office','7대 임원':'7th Exec.','회원사':'Members','회원사소식':'Members',
+                   '사무국회의':'Office','임원회의':'Board','스페잇슈':'Special','기타자료':'Other'};
+  function inTab(n){ var p = n.parentNode; return !!(p && p.closest && p.closest('.month-tab')); }
+
+  /* ---------------- 3. 번역 함수 ---------------- */
+  function tr(str){
+    if (!str || !HANGUL.test(str)) return str;
+    var m = str.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    var core = m[2];
+    if (!core) return str;
+    var out = lookup(core);
+    if (out === undefined) {
+      /* 끝의 ⏳ 이모지 허용 */
+      var t = core.replace(/\s*⏳$/, '');
+      if (t !== core) { var o2 = lookup(t); if (o2 !== undefined) out = o2 + '⏳'; }
+    }
+    if (out === undefined) {
+      /* 여러 줄 alert 메시지: 줄 단위 번역 */
+      if (core.indexOf('\n') > -1) {
+        var any = false;
+        var lines = core.split('\n').map(function(l){ var r = tr(l); if (r !== l) any = true; return r; });
+        if (any) out = lines.join('\n');
+      }
+    }
+    if (out === undefined) {
+      /* "09.29(화) 14:00~" 같은 날짜 안의 요일만 영어로 */
+      var w = core.replace(/(\d)\(([일월화수목금토])\)/g, function(_, d, k){ return d + '(' + WD3[k] + ')'; });
+      if (w !== core) out = w;
+    }
+    return (out === undefined || out === core) ? str : m[1] + out + m[3];
+  }
+  function lookup(core){
+    if (Object.prototype.hasOwnProperty.call(DICT, core)) return DICT[core];
+    var c = core.replace(/\s+/g, ' ');
+    if (Object.prototype.hasOwnProperty.call(DICT, c)) return DICT[c];
+    for (var i = 0; i < RULES.length; i++) {
+      var mm = c.match(RULES[i][0]);
+      if (mm) return RULES[i][1](mm);
+    }
+    return undefined;
+  }
+
+  /* ---------------- 4. DOM 적용 / 복원 ---------------- */
+  var textRec = new WeakMap();   /* 텍스트노드 → {ko, en} */
+  var attrRec = new WeakMap();   /* 요소 → { attr: {ko, en} } */
+
+  function doText(n){
+    var v = n.nodeValue;
+    if (!v || !HANGUL.test(v)) return;
+    var t;
+    if (inTab(n)) {
+      var mm = v.match(/^(\s*)([\s\S]*?)(\s*)$/), c = mm[2].replace(/\s+/g, ' ');
+      if (Object.prototype.hasOwnProperty.call(TAB_SHORT, c)) t = mm[1] + TAB_SHORT[c] + mm[3];
+    }
+    if (t === undefined) t = tr(v);
+    if (t !== v) { textRec.set(n, {ko: v, en: t}); n.nodeValue = t; }
+  }
+  function doAttr(el, a){
+    var v = el.getAttribute(a);
+    if (!v || !HANGUL.test(v)) return;
+    var t = tr(v);
+    if (t !== v) {
+      var r = attrRec.get(el); if (!r) { r = {}; attrRec.set(el, r); }
+      r[a] = {ko: v, en: t};
+      el.setAttribute(a, t);
+    }
+  }
+  function doSubtree(root){
+    if (!root) return;
+    if (root.nodeType === 3) { doText(root); return; }
+    if (root.nodeType !== 1) return;
+    var tag = root.nodeName;
+    if (tag === 'SCRIPT' || tag === 'STYLE') return;
+    ATTRS.forEach(function(a){ if (root.hasAttribute && root.hasAttribute(a)) doAttr(root, a); });
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null);
+    var n;
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 3) {
+        var p = n.parentNode && n.parentNode.nodeName;
+        if (p !== 'SCRIPT' && p !== 'STYLE') doText(n);
+      } else {
+        var nm = n.nodeName;
+        if (nm === 'SCRIPT' || nm === 'STYLE') continue;
+        for (var i = 0; i < ATTRS.length; i++) if (n.hasAttribute(ATTRS[i])) doAttr(n, ATTRS[i]);
+      }
+    }
+  }
+  function undoAll(){
+    var w = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null);
+    var n;
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 3) {
+        var r = textRec.get(n);
+        if (r && n.nodeValue === r.en) n.nodeValue = r.ko;
+        textRec.delete(n);
+      } else {
+        var ar = attrRec.get(n);
+        if (ar) {
+          for (var a in ar) if (n.getAttribute(a) === ar[a].en) n.setAttribute(a, ar[a].ko);
+          attrRec.delete(n);
+        }
+      }
+    }
+    var wm = document.getElementById('welcomeMessage');
+    if (wm && wm.dataset.koHtml !== undefined) { wm.innerHTML = wm.dataset.koHtml; delete wm.dataset.koHtml; delete wm.dataset.enHtml; }
+  }
+
+  /* 헤더 환영 메시지는 두 줄(<br>)로 쪼개져 있어 통째로 처리 */
+  function doWelcome(){
+    var el = document.getElementById('welcomeMessage');
+    if (!el) return;
+    if (el.dataset.enHtml !== undefined && el.innerHTML === el.dataset.enHtml) return;   /* 이미 영어 */
+    var txt = el.textContent || '';
+    if (!HANGUL.test(txt)) return;
+    var key = txt.replace(/[^가-힣]/g, '');
+    for (var i = 0; i < WELCOME.length; i++) {
+      if (WELCOME[i][0] === key) {
+        var en = WELCOME[i][1][0] + '<br>' + WELCOME[i][1][1];
+        el.dataset.koHtml = el.innerHTML;
+        el.innerHTML = en;
+        el.dataset.enHtml = el.innerHTML;
+        return;
+      }
+    }
+  }
+
+  /* 브라우저 기본 알림창(alert/confirm)도 번역 */
+  var _alert = window.alert, _confirm = window.confirm;
+  window.alert   = function(msg){ return _alert.call(window,   lang === 'en' ? tr(String(msg)) : msg); };
+  window.confirm = function(msg){ return _confirm.call(window, lang === 'en' ? tr(String(msg)) : msg); };
+
+  /* ---------------- 5. 변경 감시 (JS가 새로 그리는 화면도 자동 번역) ---------------- */
+  var CFG = {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:ATTRS};
+  var observer = new MutationObserver(function(records){
+    if (lang !== 'en') return;
+    observer.disconnect();
+    try {
+      doWelcome();
+      for (var i = 0; i < records.length; i++) {
+        var r = records[i];
+        if (r.type === 'characterData') doText(r.target);
+        else if (r.type === 'attributes') doAttr(r.target, r.attributeName);
+        else for (var j = 0; j < r.addedNodes.length; j++) doSubtree(r.addedNodes[j]);
+      }
+    } finally { observer.observe(document.documentElement, CFG); }
+  });
+
+  function refreshButton(){
+    var b = document.getElementById('langToggleBtn');
+    if (!b) return;
+    b.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+    b.setAttribute('data-lang', lang);
+  }
+
+  function apply(){
+    observer.disconnect();
+    document.documentElement.lang = (lang === 'en') ? 'en' : 'ko';
+    if (lang === 'en') {
+      doWelcome();
+      doSubtree(document.body);
+      document.title = 'KODA Schedule';
+    } else {
+      undoAll();
+      document.title = '한국디벨로퍼협회(KODA) 일정 안내';
+    }
+    refreshButton();
+    observer.observe(document.documentElement, CFG);
+  }
+
+  window.toggleLanguage = function(){
+    lang = (lang === 'ko') ? 'en' : 'ko';
+    try { localStorage.setItem(KEY, lang); } catch(e) {}
+    apply();
+  };
+  window.getKodaLanguage = function(){ return lang; };
+
+  /* 시작 시: 저장된 언어가 영어면 바로 적용, 아니면 감시만 시작 */
+  apply();
+})();
+</script>
+
 </body>
 </html>
