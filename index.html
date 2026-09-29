@@ -6052,21 +6052,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
-<style id="koda-ext-20260929">
-.koda-act{display:flex;gap:8px;margin-top:14px}
-.koda-btn{flex:1;padding:11px 8px;border:0;border-radius:10px;background:#0052cc;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer}
-.koda-btn.sub{background:#edf2f7;color:#1a202c}
-.koda-new{position:absolute;top:8px;right:10px;background:#e53e3e;color:#fff;font-size:9px;font-weight:800;border-radius:8px;padding:1px 6px;z-index:2}
-.koda-dot{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;line-height:18px;background:#e53e3e;color:#fff;font-size:10px;font-weight:800;border-radius:9px;padding:0 5px;text-align:center}
-.fullmenu-card{position:relative}
-.koda-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2147483000;display:none;align-items:flex-end;justify-content:center}
-.koda-sheet{background:#fff;width:100%;max-width:600px;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px;user-select:text;-webkit-user-select:text}
-.koda-h{display:flex;justify-content:space-between;align-items:center;font-size:1rem;margin-bottom:10px}
-.koda-h button{border:0;background:none;font-size:1.6rem;cursor:pointer}
-.koda-sheet select,.koda-sheet textarea{width:100%;border:1px solid #e2e8f0;border-radius:10px;padding:10px;font:inherit;margin-bottom:8px}
-.koda-it{border-top:1px solid #e2e8f0;padding:9px 0;font-size:.8rem;line-height:1.5}
-.koda-st{display:inline-block;background:#c5a977;color:#fff;border-radius:6px;padding:0 6px;font-size:.7rem;margin-left:4px}
-</style>
 </head>
 <body>
 <div class="login-screen" id="loginScreen">
@@ -6262,15 +6247,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <span class="modal-label">비고</span>
 <span class="modal-value" id="modalNote"></span>
 </div>
-<div class="koda-act" id="kodaModalActions"><button class="koda-btn" onclick="kodaCal('g')" type="button">📅 구글 캘린더</button><button class="koda-btn sub" onclick="kodaCal('ics')" type="button">📲 내 캘린더(아이폰 등)</button></div>
-
 </div>
 </div>
-<div class="koda-ov" id="kodaInq"><div class="koda-sheet"><div class="koda-h"><b>📬 문의·건의함</b><button onclick="kodaCloseInq()" type="button">×</button></div>
-<select id="kInqCat"><option>일정 문의</option><option>회원정보 수정</option><option>건의사항</option><option>기타</option></select>
-<textarea id="kInqTxt" maxlength="1000" placeholder="사무국에 전달할 내용을 적어주세요." rows="5"></textarea>
-<button class="koda-btn" onclick="kodaSendInq()" style="width:100%" type="button">사무국에 보내기</button>
-<div style="margin:14px 0 4px;font-weight:700">내 문의 내역</div><div id="kInqList"></div></div></div>
 <!-- ✨ 1. 협회공지 목록 페이지 ✨ -->
 <div class="fullscreen-screen" id="newsScreen">
 <div class="staff-mobile-header">
@@ -8655,116 +8633,6 @@ function createEventCard(event, isNext=false) {
     history.pushState({ modalOpen: true }, "", "");
   };
 
-  /* ===== KODA 확장: 캘린더 추가 / QR 출석 / NEW 뱃지 / 문의함 ===== */
-  const KODA_GAS_URL = 'PASTE_APPS_SCRIPT_WEBAPP_URL_HERE'; // 배포한 웹앱 주소(…/exec)
-  const kq = id => document.getElementById(id);
-  const kEsc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  async function kGas(params) {
-    if (!/^https:/.test(KODA_GAS_URL)) { alert('서비스 준비 중입니다.'); return null; }
-    const a = getLoggedInAuth() || {};
-    const qs = new URLSearchParams(Object.assign({}, params, { name: a.name || '', phone: normalizePhone(a.phone || '') }));
-    try { return await (await fetch(KODA_GAS_URL + '?' + qs)).json(); }
-    catch (e) { return { ok: false, msg: '네트워크 오류입니다. 잠시 후 다시 시도해주세요.' }; }
-  }
-
-  /* 1) 캘린더 추가 (알림: 하루 전·1시간 전) */
-  window.kodaCal = function(type) {
-    const e = scheduleData[currentModalGlobalIndex]; if (!e) return;
-    const t = (getEventTime(e) || '09:00').split(':');
-    const s = new Date(currentYear, Number(e.month) - 1, Number(e.day), +t[0], +t[1]);
-    if (isNaN(s)) { alert('일정 날짜를 확인할 수 없습니다.'); return; }
-    const en = new Date(s.getTime() + 2 * 3600e3), p2 = n => String(n).padStart(2, '0');
-    const f = x => x.getFullYear() + p2(x.getMonth() + 1) + p2(x.getDate()) + 'T' + p2(x.getHours()) + p2(x.getMinutes()) + '00';
-    const loc = e.location && e.location !== 'ㅡ' ? e.location : '';
-    const memo = [e.content, e.host ? '주최/주관: ' + e.host : ''].filter(Boolean).join('\n');
-    if (type === 'g') {
-      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(e.title) +
-        '&dates=' + f(s) + '/' + f(en) + '&ctz=Asia%2FSeoul&location=' + encodeURIComponent(loc) + '&details=' + encodeURIComponent(memo), '_blank');
-      return;
-    }
-    const esc = x => String(x).replace(/\\/g, '\\\\').replace(/[,;]/g, m => '\\' + m).replace(/\r?\n/g, '\\n');
-    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//KODA//KO', 'BEGIN:VEVENT', 'UID:' + e.id + '-' + f(s) + '@koda',
-      'DTSTAMP:' + new Date().toISOString().replace(/[-:]|\.\d{3}/g, ''), 'DTSTART:' + f(s), 'DTEND:' + f(en),
-      'SUMMARY:' + esc(e.title), 'LOCATION:' + esc(loc), 'DESCRIPTION:' + esc(memo),
-      'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:내일 일정', 'END:VALARM',
-      'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:1시간 후 일정', 'END:VALARM',
-      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
-    a.download = 'koda-event.ics'; document.body.appendChild(a); a.click(); a.remove();
-  };
-
-  /* 2) QR 출석: QR 주소 = 앱주소/?checkin=행사ID → 로그인 후 자동 처리 */
-  (function() {
-    const c = new URLSearchParams(location.search).get('checkin');
-    if (c) { sessionStorage.setItem('koda_checkin', c); history.replaceState(null, '', location.pathname); }
-  })();
-  async function kCheckin() {
-    const id = sessionStorage.getItem('koda_checkin');
-    if (!id || !getLoggedInAuth()) return;
-    const ev = scheduleData.find(x => String(x.id) === id);
-    if (!ev) return;
-    sessionStorage.removeItem('koda_checkin');
-    if (getEventDate(ev).getTime() !== new Date(currentYear, currentMonth - 1, currentDay).getTime()) { alert('행사 당일에만 출석 체크할 수 있습니다.'); return; }
-    if (!confirm('[' + ev.title + ']\n출석 체크 하시겠습니까?')) return;
-    const r = await kGas({ action: 'checkin', eventId: id, title: ev.title });
-    if (r) alert(r.msg || (r.ok ? '출석 완료!' : '출석 처리에 실패했습니다.'));
-  }
-  setInterval(kCheckin, 1500);
-
-  /* 5) NEW 뱃지: 안 읽은 협회공지 표시 (첫 방문 시에는 전부 읽음 처리) */
-  const K_SEEN = 'koda_news_seen_v1', nKey = n => n.date + '|' + n.title;
-  function kUnseen() {
-    if (!newsData.length) return [];
-    let s = null; try { s = JSON.parse(localStorage.getItem(K_SEEN) || 'null'); } catch (e) {}
-    if (!s) { kMarkSeen(true); return []; }
-    return newsData.filter(n => n.category !== '중요공지' && !s.includes(nKey(n)));
-  }
-  function kMarkSeen(silent) {
-    try { localStorage.setItem(K_SEEN, JSON.stringify(newsData.map(nKey))); } catch (e) {}
-    if (!silent) kDots([]);
-  }
-  function kDots(u) {
-    document.querySelectorAll('.koda-dot').forEach(x => x.remove());
-    ['협회활동', '교육·ARP', '회원사소식', '경조사'].forEach(cat => {
-      const n = u.filter(x => normalizeNewsCategory(x.category) === cat).length;
-      const b = document.querySelector('[onclick*="openFullMenuNews(\'' + cat + '\')"]');
-      if (n && b) b.insertAdjacentHTML('beforeend', '<span class="koda-dot">' + n + '</span>');
-    });
-  }
-  function kDecorate() {
-    const u = kUnseen(); kDots(u);
-    const L = kq('newsList'); if (!L) return;
-    u.forEach(n => [...L.children].forEach(c => {
-      if (c.textContent.includes(n.title) && !c.querySelector('.koda-new')) { c.style.position = 'relative'; c.insertAdjacentHTML('afterbegin', '<span class="koda-new">NEW</span>'); }
-    }));
-  }
-  setTimeout(function() {
-    const f = window.filterNews, c = window.closeNewsScreen;
-    if (f) window.filterNews = function() { const r = f.apply(this, arguments); kDecorate(); return r; };
-    if (c) window.closeNewsScreen = function() { const r = c.apply(this, arguments); kMarkSeen(); return r; };
-  }, 0);
-
-  /* 6) 문의·건의함 */
-  window.kodaCloseInq = () => { kq('kodaInq').style.display = 'none'; };
-  window.kodaOpenInq = function() {
-    if (!getLoggedInAuth()) { alert('로그인 후 이용할 수 있습니다.'); return; }
-    kq('kodaInq').style.display = 'flex'; kLoadInq();
-  };
-  async function kLoadInq() {
-    const box = kq('kInqList'); box.textContent = '불러오는 중...';
-    const r = await kGas({ action: 'myInquiries' });
-    if (!r || !r.ok) { box.textContent = (r && r.msg) || '내역을 불러오지 못했습니다.'; return; }
-    box.innerHTML = r.list.length ? r.list.map(i => '<div class="koda-it"><b>' + kEsc(i.cat) + '</b><span class="koda-st">' + kEsc(i.st) + '</span> <small>' + kEsc(i.d) + '</small><br>' + kEsc(i.txt) + (i.ans ? '<br><b style="color:#0052cc">답변</b> ' + kEsc(i.ans) : '') + '</div>').join('') : '<div class="koda-it">문의 내역이 없습니다.</div>';
-  }
-  window.kodaSendInq = async function() {
-    const txt = kq('kInqTxt').value.trim();
-    if (txt.length < 5) { alert('내용을 5자 이상 입력해주세요.'); return; }
-    const r = await kGas({ action: 'inquiry', cat: kq('kInqCat').value, txt: txt });
-    if (r && r.ok) { kq('kInqTxt').value = ''; alert('접수되었습니다.'); kLoadInq(); } else if (r) alert(r.msg || '전송에 실패했습니다.');
-  };
-
-
   function hideModalDOM() { document.getElementById('eventModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
   window.closeModalAction = function() { history.back(); };
   window.closeModalOnOutsideClick = function(e) { if(e.target.id === 'eventModal') history.back(); };
@@ -10226,10 +10094,6 @@ function createEventCard(event, isNext=false) {
 <button class="fullmenu-card" onclick="openFullMenuScreenTarget('daily')">일일동향</button>
 <button class="fullmenu-card" onclick="openFullMenuScreenTarget('gov')">정부국회</button>
 </div>
-</section>
-<section class="fullmenu-section">
-<div class="fullmenu-section-head"><span class="fullmenu-badge">회원서비스</span><div class="fullmenu-divider"></div></div>
-<div class="fullmenu-grid"><button class="fullmenu-card" onclick="kodaOpenInq()" type="button">📬 문의·건의</button></div>
 </section>
 <section class="fullmenu-section">
 <div class="fullmenu-section-head"><span class="fullmenu-badge">홈페이지</span><div class="fullmenu-divider"></div></div>
